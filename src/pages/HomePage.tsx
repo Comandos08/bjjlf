@@ -155,11 +155,11 @@ function HeroSlider() {
   );
 }
 
-function SectionHeading({ title, action }: { title: string; action?: React.ReactNode }) {
+function SectionHeading({ title, action, dark = true }: { title: React.ReactNode; action?: React.ReactNode; dark?: boolean }) {
   return (
     <div className="flex items-end justify-between gap-4 mb-8">
       <h2
-        className="font-display text-foreground"
+        className={`font-display ${dark ? "text-foreground" : "text-[#0F0F0F]"}`}
         style={{ fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 900, letterSpacing: "0.02em" }}
       >
         {title}
