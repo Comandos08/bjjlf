@@ -57,7 +57,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-navbar border-b-2 border-primary" style={{ boxShadow: "0 2px 0 0 #C41E3A" }}>
+    <header className="sticky top-0 z-50 bg-navbar" style={{ borderBottom: "2px solid #C41E3A" }}>
       <div className="max-w-[1280px] mx-auto flex h-16 items-center justify-between px-4 lg:px-6 gap-4">
         {/* LEFT — Logo */}
         <Link to="/" className="flex items-center shrink-0">
@@ -78,8 +78,8 @@ export function Navbar() {
                   onMouseLeave={() => setOpenMenu(null)}
                 >
                   <button
-                    className="flex items-center gap-1 px-3 py-2 font-heading text-[12px] uppercase tracking-[0.1em] text-[#CCCCCC] hover:text-white transition-base"
-                    style={{ fontWeight: 700 }}
+                    className="flex items-center gap-1 px-3 py-2 uppercase text-[12px] text-[#CCCCCC] hover:text-white transition-base"
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" }}
                   >
                     {label}
                     <ChevronDown className="h-3 w-3" />
@@ -108,9 +108,9 @@ export function Navbar() {
               <Link
                 key={item.key}
                 to={item.to ?? "/"}
-                className="px-3 py-2 font-heading text-[12px] uppercase tracking-[0.1em] text-[#CCCCCC] hover:text-white transition-base"
-                style={{ fontWeight: 700 }}
-                activeProps={{ style: { color: "#FFFFFF", borderBottom: "2px solid #B8960C", fontWeight: 700 } }}
+                className="px-3 py-2 uppercase text-[12px] text-[#CCCCCC] hover:text-white transition-base"
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" }}
+                activeProps={{ style: { color: "#FFFFFF", borderBottom: "2px solid #B8960C", fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" } }}
                 activeOptions={{ exact: item.to === "/" }}
               >
                 {label}
@@ -156,9 +156,9 @@ export function Navbar() {
                 key={item.key}
                 to={item.to ?? "/"}
                 onClick={() => setOpen(false)}
-                className="py-3 font-heading uppercase tracking-[0.1em] text-[12px] text-[#CCCCCC]"
-                style={{ fontWeight: 700 }}
-                activeProps={{ className: "py-3 font-heading uppercase tracking-[0.1em] text-[12px] text-gold" }}
+                className="py-3 uppercase text-[12px] text-[#CCCCCC]"
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" }}
+                activeProps={{ className: "py-3 uppercase text-[12px] text-gold", style: { fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" } }}
                 activeOptions={{ exact: item.to === "/" }}
               >
                 {t(`nav.${item.key}`)}
