@@ -57,7 +57,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-navbar border-b-2 border-primary" style={{ boxShadow: "0 2px 0 0 #C41E3A" }}>
+    <header className="sticky top-0 z-50 bg-navbar" style={{ borderBottom: "2px solid #C41E3A" }}>
       <div className="max-w-[1280px] mx-auto flex h-16 items-center justify-between px-4 lg:px-6 gap-4">
         {/* LEFT — Logo */}
         <Link to="/" className="flex items-center shrink-0">
