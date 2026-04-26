@@ -7,6 +7,7 @@ import { NEWS } from "@/data/news";
 import { useI18n, formatDateShort } from "@/lib/i18n";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
+import { SafeImage } from "@/components/SafeImage";
 const HERO_IMG = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=1440&h=600&fit=crop&q=80";
 
 const SLIDES = [
@@ -37,7 +38,7 @@ function HeroSlider() {
     <section className="relative w-full overflow-hidden bg-black" style={{ height: "560px" }}>
       {SLIDES.map((s, idx) => (
         <div key={idx} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: idx === i ? 1 : 0 }}>
-          <img src={s.image} alt="" className="h-full w-full object-cover" />
+          <SafeImage src={s.image} alt={s.badge} fallbackLabel={s.badge} wrapperClassName="absolute inset-0" />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3) 100%)" }} />
         </div>
       ))}
@@ -85,7 +86,7 @@ function HeroSlider() {
                   idx === i ? "border-l-[3px] border-gold bg-black/40" : "border-l-[3px] border-transparent hover:bg-black/30",
                 )}
               >
-                <img src={s.image} alt="" className="h-10 w-16 object-cover" />
+                <SafeImage src={s.image} alt={s.badge} fallbackLabel={s.badge} hideFallbackIcon wrapperClassName="h-10 w-16 shrink-0" />
                 <div>
                   <div className={cn(typo.label.sm, "tracking-[0.08em]", idx === i ? "text-white" : "text-[#888]")}>
                     {s.badge}
@@ -145,9 +146,12 @@ function EventsSection() {
               className="rounded-none bg-white border border-[#E5E5E5] flex flex-col group hover:border-primary hover:shadow-[0_4px_16px_rgba(196,30,58,0.12)]"
               style={{ transition: "all 0.18s ease" }}
             >
-              <div className="bg-[#F7F9FC] h-32 overflow-hidden">
-                <img src={e.image} alt={`${e.name} — Brazilian Jiu-Jitsu event`} loading="lazy" className="h-full w-full object-cover" />
-              </div>
+              <SafeImage
+                src={e.image}
+                alt={`${e.name} — Brazilian Jiu-Jitsu event`}
+                fallbackLabel={e.name}
+                wrapperClassName="h-32 bg-[#F7F9FC]"
+              />
               <div className="p-4 space-y-2.5 flex-1 flex flex-col">
                 <h3 className={cn(typo.heading.sm, "text-[#0F0F0F] text-sm leading-tight")}>{e.name}</h3>
                 <div className={cn(typo.body.xs, "flex items-center gap-1.5 text-[#6B7280]")}>
@@ -186,9 +190,13 @@ function NewsSection() {
         <div className="grid md:grid-cols-3 gap-4">
           {items.map((n) => (
             <Link key={n.id} to="/news" className="group bg-white border border-[#E5E5E5] hover:border-primary transition-base flex flex-col">
-              <div className="relative h-[180px] overflow-hidden bg-[#E5E5E5]">
-                <img src={n.image} alt={n.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-              </div>
+              <SafeImage
+                src={n.image}
+                alt={n.title}
+                fallbackLabel={n.title}
+                wrapperClassName="h-[180px]"
+                className="transition-transform duration-500 group-hover:scale-105"
+              />
               <div className="p-4 flex-1 flex flex-col gap-2">
                 <span className={cn(typo.label.sm, "text-primary")}>{n.category}</span>
                 <h3 className={cn(typo.body.md, "text-[#111] font-semibold leading-[1.35]")}>{n.title}</h3>
@@ -365,7 +373,7 @@ function YouTubeSection() {
           {videos.map((v, i) => (
             <a key={i} href="#" className="group bg-white border border-[#E5E5E5] hover:border-primary transition-base">
               <div className="relative aspect-video bg-[#1A1A1A] overflow-hidden">
-                <img src={v.img} alt={v.t} loading="lazy" className="h-full w-full object-cover opacity-70 group-hover:opacity-90 transition-opacity" />
+                <SafeImage src={v.img} alt={v.t} fallbackLabel={v.t} wrapperClassName="absolute inset-0" className="opacity-70 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute inset-0 grid place-items-center">
                   <span className="h-14 w-14 rounded-full bg-primary grid place-items-center group-hover:scale-110 transition-transform" style={{ borderRadius: "9999px" }}>
                     <Play className="h-6 w-6 text-white ml-0.5" fill="currentColor" />
