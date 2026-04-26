@@ -22,7 +22,18 @@ const entries = new Map<string, ImageEntry>();
 const listeners = new Set<Listener>();
 let counter = 0;
 
+// Cached snapshot — MUST be a stable reference between emits, otherwise
+// useSyncExternalStore will detect a change on every render and trigger an
+// infinite update loop in the consuming component.
+let cachedSnapshot: ImageEntry[] = [];
+const EMPTY_SNAPSHOT: ImageEntry[] = [];
+
+function recomputeSnapshot() {
+  cachedSnapshot = Array.from(entries.values()).reverse();
+}
+
 function emit() {
+  recomputeSnapshot();
   for (const l of listeners) l();
 }
 
@@ -34,13 +45,13 @@ function subscribe(l: Listener) {
 }
 
 function getSnapshot(): ImageEntry[] {
-  // Return a stable-sorted array, newest first. Map iteration preserves
-  // insertion order so we just reverse it.
-  return Array.from(entries.values()).reverse();
+  // Return the cached array reference. It is only replaced inside emit(),
+  // which is exactly when useSyncExternalStore expects a new value.
+  return cachedSnapshot;
 }
 
 function getServerSnapshot(): ImageEntry[] {
-  return [];
+  return EMPTY_SNAPSHOT;
 }
 
 /** Allocate a stable id for one image instance. */
