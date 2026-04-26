@@ -496,7 +496,8 @@ function YouTubeSection() {
     <section className="py-16 lg:py-20 bg-white">
       <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
         <SectionHeading
-          title={<span className="text-[#0F0F0F]">{t("home.youtube.title")}</span> as unknown as string}
+          dark={false}
+          title={t("home.youtube.title")}
           action={
             <a href="#" className="text-primary text-[13px] uppercase tracking-[0.08em] font-bold hover:text-primary-dark transition-base inline-flex items-center gap-1">
               {t("home.youtube.visit")} <ArrowRight className="h-3.5 w-3.5" />
