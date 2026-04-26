@@ -40,7 +40,7 @@ export function GraduateProfile() {
           <div>
             <h2 className={cn(typo.heading.lg, "mb-6 text-gold")}>Graduation history</h2>
             <ol className="space-y-2 relative pl-10 border-l-2 border-border">
-              {g.history.map((h) => (
+              {g.history.map((h: { year: number; belt: string; promotedBy: string }) => (
                 <li key={h.year} className="relative pb-6 last:pb-0">
                   <span className="absolute -left-[49px] top-0 h-9 w-9 grid place-items-center bg-background border-2 border-primary text-primary font-display rounded-full text-sm">{String(h.year).slice(2)}</span>
                   <div className={typo.heading.md}>
