@@ -186,13 +186,12 @@ function EventsSection() {
           {EVENTS.slice(0, 6).map((e) => (
             <article
               key={e.id}
-              className="bg-white border border-[#E5E5E5] hover:border-primary transition-base group"
-              style={{ boxShadow: "0 0 0 0 transparent" }}
+              className="rounded-none bg-white border border-[#E5E5E5] transition-base group hover:border-primary hover:shadow-[0_4px_12px_rgba(196,30,58,0.15)] flex flex-col"
             >
-              <div className="bg-[#F7F9FC] p-4 h-[100px] grid place-items-center">
-                <img src={e.image} alt={e.name} loading="lazy" className="h-full w-full object-cover" />
+              <div className="bg-[#F7F9FC] p-3 h-20 grid place-items-center">
+                <img src={e.image} alt={e.name} loading="lazy" className="h-full w-full object-contain rounded-none" />
               </div>
-              <div className="p-4 space-y-2.5">
+              <div className="p-4 space-y-2.5 flex-1 flex flex-col">
                 <h3
                   className="text-[14px] text-[#0F0F0F] leading-tight uppercase"
                   style={{ fontFamily: "Barlow Condensed", fontWeight: 800, letterSpacing: "0.02em" }}
@@ -205,7 +204,7 @@ function EventsSection() {
                 <div className="flex items-center gap-1.5 text-[12px] text-[#6B7280]">
                   <MapPin className="h-3.5 w-3.5" /> {e.location}
                 </div>
-                <button className="w-full h-8 bg-primary hover:bg-primary-dark text-white text-[11px] uppercase tracking-[0.08em] font-bold transition-base">
+                <button className="mt-auto w-full h-9 rounded-none bg-primary hover:bg-primary-dark text-white text-[11px] uppercase tracking-[0.08em] font-bold transition-base">
                   {t("home.events.register")}
                 </button>
               </div>
