@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, type ImgHTMLAttributes } from "react";
+import { useEffect, useMemo, useRef, useState, type ImgHTMLAttributes } from "react";
 import { ImageOff } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { withImageCache } from "@/lib/image-cache";
 import {
   registerImage,
   reportImageStatus,
