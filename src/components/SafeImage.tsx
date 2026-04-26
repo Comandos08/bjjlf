@@ -100,6 +100,7 @@ export function SafeImage({
 function Fallback({ label, hideIcon }: { label?: string; hideIcon?: boolean }) {
   return (
     <div
+      data-testid="safe-image-fallback"
       className="flex h-full w-full flex-col items-center justify-center gap-2 px-3 text-center"
       style={{
         background:
