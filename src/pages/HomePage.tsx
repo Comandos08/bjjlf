@@ -347,8 +347,8 @@ function YouTubeSection() {
   const { t } = useI18n();
   const videos = [
     { t: "World Championship 2024 — Best Submissions", img: "https://images.unsplash.com/photo-1554482585-c2e0b6c2cf80?auto=format&fit=crop&w=700&q=70" },
-    { t: "Black Belt Promotions Ceremony", img: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=700&q=70" },
-    { t: "Mestre Roberto — A Life on the Mat", img: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=700&q=70" },
+    { t: "Black Belt Promotions Ceremony", img: "https://images.unsplash.com/photo-1517438984742-1262db08379e?w=500&h=280&fit=crop" },
+    { t: "Mestre Roberto — A Life on the Mat", img: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=500&h=280&fit=crop" },
   ];
   return (
     <section className="py-16 lg:py-20 bg-white">
