@@ -40,9 +40,15 @@ export function SafeImage({
   const [errored, setErrored] = useState(false);
   const idRef = useRef<string | null>(null);
 
+  // Resolve the URL through the cache helper. In production this is a no-op;
+  // in dev it appends a per-session bust token so a previously-failed (404)
+  // response can't be served from the browser's HTTP/disk cache.
+  const resolvedSrc = useMemo(() => withImageCache(typeof src === "string" ? src : undefined) ?? src, [src]);
+
   useEffect(() => {
     if (!isDev || !src) return;
     const id = registerImage({
+      // Register the *original* URL so the debug panel stays readable.
       url: String(src),
       label: fallbackLabel ?? alt ?? "",
       source,
@@ -62,7 +68,7 @@ export function SafeImage({
     >
       {!errored && src ? (
         <img
-          src={src}
+          src={resolvedSrc}
           alt={alt}
           loading={loading}
           onLoad={(e) => {
