@@ -254,14 +254,17 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function TextInput({ className = "", ...props }: React.InputHTMLAttributes<HTMLInputElement> & { value?: string; onChange?: (v: string) => void }) {
-  const { onChange, ...rest } = props;
+type TextInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> & {
+  onChange?: (v: string) => void;
+};
+
+function TextInput({ className = "", onChange, ...rest }: TextInputProps) {
   return (
     <input
       {...rest}
       onChange={(e) => onChange?.(e.target.value)}
       className={`w-full h-10 px-3.5 border border-[#E5E5E5] bg-white text-[14px] text-[#0F0F0F] focus:outline-none focus:border-primary transition-base ${className}`}
-      style={{ fontFamily: "DM Sans", boxShadow: "none" }}
+      style={{ fontFamily: "DM Sans" }}
       onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 3px rgba(196, 30, 58, 0.1)")}
       onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
     />
