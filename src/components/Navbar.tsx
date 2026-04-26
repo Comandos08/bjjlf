@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, X, Search, ShoppingBag, User, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, Search, ShoppingBag, User, ChevronDown, Globe } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { useI18n, type Lang } from "@/lib/i18n";
 
@@ -8,6 +8,7 @@ type NavItem = {
   key: string;
   to?: "/" | "/news" | "/graduates" | "/about" | "/register/athlete" | "/register/academy";
   children?: { label: string; to: NavItem["to"] }[];
+  nowrap?: boolean;
 };
 
 export function Navbar() {
@@ -25,6 +26,7 @@ export function Navbar() {
     },
     {
       key: "blackbelts",
+      nowrap: true,
       children: [
         { label: t("grad.title"), to: "/graduates" },
       ],
@@ -78,8 +80,8 @@ export function Navbar() {
                   onMouseLeave={() => setOpenMenu(null)}
                 >
                   <button
-                    className="flex items-center gap-1 px-3 py-2 uppercase text-[12px] text-[#CCCCCC] hover:text-white transition-base"
-                    style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" }}
+                    className={`flex items-center gap-1 px-3 py-2 uppercase text-[12px] text-[#CCCCCC] hover:text-white transition-base ${item.nowrap ? "whitespace-nowrap" : ""}`}
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em", ...(item.nowrap ? { whiteSpace: "nowrap" } : {}) }}
                   >
                     {label}
                     <ChevronDown className="h-3 w-3" />
@@ -108,8 +110,8 @@ export function Navbar() {
               <Link
                 key={item.key}
                 to={item.to ?? "/"}
-                className="px-3 py-2 uppercase text-[12px] text-[#CCCCCC] hover:text-white transition-base"
-                style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" }}
+                className={`px-3 py-2 uppercase text-[12px] text-[#CCCCCC] hover:text-white transition-base ${item.nowrap ? "whitespace-nowrap" : ""}`}
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em", ...(item.nowrap ? { whiteSpace: "nowrap" } : {}) }}
                 activeProps={{ style: { color: "#FFFFFF", borderBottom: "2px solid #B8960C", fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" } }}
                 activeOptions={{ exact: item.to === "/" }}
               >
@@ -119,21 +121,24 @@ export function Navbar() {
           })}
         </nav>
 
-        {/* RIGHT — Lang + Search + Shop + Login + Join */}
-        <div className="hidden md:flex items-center gap-2 shrink-0">
+        {/* RIGHT — Lang + Shop + Login + Join */}
+        <div className="hidden md:flex items-center gap-4 shrink-0">
           <LangToggle lang={lang} onChange={setLang} />
-          <button className="h-9 w-9 grid place-items-center text-[#CCCCCC] hover:text-gold transition-base" aria-label={t("nav.search")}>
-            <Search className="h-4 w-4" />
+          <button
+            aria-label="Shop"
+            className="text-gray-400 hover:text-white transition-base"
+          >
+            <ShoppingBag size={18} />
           </button>
-          <button className="hidden lg:inline-flex h-9 px-4 items-center gap-2 border border-[#444] text-[#CCCCCC] text-[11px] uppercase tracking-[0.1em] font-bold hover:border-gold hover:text-gold transition-base">
-            <ShoppingBag className="h-3.5 w-3.5" />
-            {t("nav.shop")}
+          <button
+            aria-label="Login"
+            className="text-gray-400 hover:text-white transition-base"
+          >
+            <User size={18} />
           </button>
-          <button className="hidden lg:inline-flex h-9 px-3 items-center gap-2 text-[#CCCCCC] text-[11px] uppercase tracking-[0.1em] font-bold hover:text-white transition-base">
-            <User className="h-3.5 w-3.5" />
-            {t("nav.login")}
-          </button>
-          <button className="h-9 px-4 bg-primary text-white text-[11px] uppercase tracking-[0.1em] font-bold hover:bg-primary-dark transition-base">
+          <button
+            className="ml-2 h-9 px-4 bg-primary text-white text-[11px] uppercase tracking-[0.1em] font-bold hover:bg-primary-dark transition-base"
+          >
             {t("nav.join")}
           </button>
         </div>
@@ -156,20 +161,23 @@ export function Navbar() {
                 key={item.key}
                 to={item.to ?? "/"}
                 onClick={() => setOpen(false)}
-                className="py-3 uppercase text-[12px] text-[#CCCCCC]"
+                className="py-3 uppercase text-[12px] text-[#CCCCCC] whitespace-nowrap"
                 style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" }}
-                activeProps={{ className: "py-3 uppercase text-[12px] text-gold", style: { fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" } }}
+                activeProps={{ className: "py-3 uppercase text-[12px] text-gold whitespace-nowrap", style: { fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" } }}
                 activeOptions={{ exact: item.to === "/" }}
               >
                 {t(`nav.${item.key}`)}
               </Link>
             ))}
-            <div className="flex items-center gap-2 pt-3 border-t border-[#222] mt-2">
+            <div className="flex items-center gap-3 pt-3 border-t border-[#222] mt-2">
               <LangToggle lang={lang} onChange={setLang} />
-              <button className="flex-1 h-9 px-3 text-[#CCCCCC] text-[11px] uppercase tracking-[0.1em] font-bold border border-[#444]">
-                {t("nav.login")}
+              <button aria-label="Shop" className="text-gray-400 hover:text-white">
+                <ShoppingBag size={18} />
               </button>
-              <button className="flex-1 h-9 px-3 bg-primary text-white text-[11px] uppercase tracking-[0.1em] font-bold">
+              <button aria-label="Login" className="text-gray-400 hover:text-white">
+                <User size={18} />
+              </button>
+              <button className="ml-auto h-9 px-4 bg-primary text-white text-[11px] uppercase tracking-[0.1em] font-bold">
                 {t("nav.join")}
               </button>
             </div>
@@ -181,21 +189,73 @@ export function Navbar() {
 }
 
 function LangToggle({ lang, onChange }: { lang: Lang; onChange: (l: Lang) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function onClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [open]);
+
+  const options: { code: Lang; flag: string; label: string }[] = [
+    { code: "pt", flag: "🇧🇷", label: "Português" },
+    { code: "en", flag: "🇺🇸", label: "English" },
+  ];
+
   return (
-    <div className="inline-flex">
-      {(["pt", "en"] as const).map((l) => (
-        <button
-          key={l}
-          onClick={() => onChange(l)}
-          className={`h-7 w-9 text-[11px] font-bold tracking-[0.05em] transition-base ${
-            lang === l
-              ? "bg-gold text-[#0F0F0F]"
-              : "border border-[#444] text-[#888] hover:text-white hover:border-[#666]"
-          } ${l === "en" ? "ml-[-1px]" : ""}`}
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-1.5 text-gray-400 hover:text-white transition-base"
+        aria-label="Change language"
+        aria-expanded={open}
+      >
+        <Globe size={18} />
+        <span
+          className="text-[10px] font-bold"
+          style={{ color: "#B8960C" }}
         >
-          {l.toUpperCase()}
-        </button>
-      ))}
+          {lang.toUpperCase()}
+        </span>
+      </button>
+      {open && (
+        <div
+          className="absolute right-0 top-full mt-1 min-w-[180px] py-1 z-50"
+          style={{
+            background: "#1A1A1A",
+            border: "1px solid #333",
+            borderTop: "2px solid #C41E3A",
+            borderRadius: 0,
+          }}
+        >
+          {options.map((o) => {
+            const active = lang === o.code;
+            return (
+              <button
+                key={o.code}
+                onClick={() => {
+                  onChange(o.code);
+                  setOpen(false);
+                }}
+                className="flex items-center gap-2 w-full text-left px-4 py-2.5 text-[12px] hover:bg-dark transition-base"
+                style={{
+                  color: active ? "#B8960C" : "#CCCCCC",
+                  fontWeight: active ? 700 : 500,
+                }}
+              >
+                <span>{o.flag}</span>
+                <span>{o.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
