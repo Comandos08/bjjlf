@@ -4,6 +4,8 @@ import { PageHero } from "@/components/Stepper";
 import { Search, MapPin } from "lucide-react";
 import { GRADUATES } from "@/data/graduates";
 import { useI18n } from "@/lib/i18n";
+import { typo } from "@/lib/typography";
+import { cn } from "@/lib/utils";
 
 const GRADES = ["All", "1st Degree", "2nd Degree", "3rd Degree", "4th Degree"];
 
@@ -40,8 +42,7 @@ export function GraduatesPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9CA3AF]" />
             <input
               placeholder={t("grad.search")}
-              className="w-full h-10 pl-9 pr-3 border border-[#E5E5E5] bg-white text-[14px] text-[#0F0F0F] focus:outline-none focus:border-primary transition-base"
-              style={{ fontFamily: "DM Sans" }}
+              className={cn(typo.body.sm, "w-full h-10 pl-9 pr-3 border border-[#E5E5E5] bg-white text-[#0F0F0F] focus:outline-none focus:border-primary transition-base")}
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
@@ -53,7 +54,7 @@ export function GraduatesPage() {
       </section>
 
       <section className="max-w-[1280px] mx-auto px-4 lg:px-6 pb-16">
-        <p className="text-[13px] text-[#6B7280] mb-5" style={{ fontFamily: "DM Sans" }}>
+        <p className={cn(typo.body.sm, "text-[#6B7280] mb-5")}>
           <span className="text-primary font-bold">{list.length}</span> {list.length === 1 ? t("grad.foundOne") : t("grad.found")}
         </p>
         <div className="grid gap-3.5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}>
@@ -66,24 +67,24 @@ export function GraduatesPage() {
             >
               <div className="relative">
                 <div
-                  className="h-[72px] w-[72px] grid place-items-center rounded-full text-white"
-                  style={{ background: beltBg, border: `3px solid ${beltBg}`, borderRadius: "9999px", fontFamily: "Barlow Condensed", fontWeight: 900, fontSize: "20px" }}
+                  className={cn(typo.heading.sm, "h-[72px] w-[72px] grid place-items-center rounded-full text-white text-[20px]")}
+                  style={{ background: beltBg, border: `3px solid ${beltBg}`, borderRadius: "9999px" }}
                 >
                   {g.name.split(" ").map((s) => s[0]).slice(0, 2).join("")}
                 </div>
               </div>
-              <h3 className="text-[14px] text-[#0F0F0F] mt-3" style={{ fontFamily: "DM Sans", fontWeight: 600 }}>{g.name}</h3>
+              <h3 className={cn(typo.body.sm, "text-[#0F0F0F] mt-3 font-semibold")}>{g.name}</h3>
               <span
-                className="mt-1.5 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.08em] text-white font-bold"
-                style={{ background: beltBg, borderRadius: "9999px", fontFamily: "Barlow Condensed" }}
+                className={cn(typo.label.sm, "mt-1.5 px-2.5 py-0.5 text-white")}
+                style={{ background: beltBg, borderRadius: "9999px" }}
               >
                 {g.beltGrade}
               </span>
-              <p className="text-[12px] text-[#9CA3AF] mt-2" style={{ fontFamily: "DM Sans" }}>{g.academy}</p>
-              <p className="text-[12px] text-[#6B7280] mt-1 inline-flex items-center gap-1" style={{ fontFamily: "DM Sans" }}>
+              <p className={cn(typo.body.xs, "text-[#9CA3AF] mt-2")}>{g.academy}</p>
+              <p className={cn(typo.body.xs, "text-[#6B7280] mt-1 inline-flex items-center gap-1")}>
                 <MapPin className="h-3 w-3" /> {g.state}, {g.country}
               </p>
-              <span className="mt-3 w-full text-center py-2 text-[11px] uppercase tracking-[0.1em] font-bold border border-primary text-primary hover:bg-primary hover:text-white transition-base">
+              <span className={cn(typo.button.sm, "mt-3 w-full text-center py-2 border border-primary text-primary hover:bg-primary hover:text-white transition-base")}>
                 {t("grad.viewProfile")}
               </span>
             </Link>
@@ -97,10 +98,9 @@ export function GraduatesPage() {
 function FilterSelect({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: string[] }) {
   return (
     <div>
-      <label className="block text-[10px] uppercase tracking-[0.1em] text-[#374151] mb-1" style={{ fontFamily: "DM Sans", fontWeight: 600 }}>{label}</label>
+      <label className={cn(typo.label.md, "block text-[#374151] mb-1")}>{label}</label>
       <select
-        className="h-10 w-full bg-white border border-[#E5E5E5] px-3 text-[14px] text-[#0F0F0F] focus:outline-none focus:border-primary transition-base cursor-pointer"
-        style={{ fontFamily: "DM Sans" }}
+        className={cn(typo.body.sm, "h-10 w-full bg-white border border-[#E5E5E5] px-3 text-[#0F0F0F] focus:outline-none focus:border-primary transition-base cursor-pointer")}
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >

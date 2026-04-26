@@ -4,6 +4,8 @@ import { BELTS, type BeltColor } from "@/lib/belts";
 import { useI18n } from "@/lib/i18n";
 import { ArrowLeft, ArrowRight, CheckCircle2, Search, CreditCard, Lock, AlertTriangle } from "lucide-react";
 import dragon from "@/assets/dragon-logo.png";
+import { typo } from "@/lib/typography";
+import { cn } from "@/lib/utils";
 
 export function AthleteRegistration() {
   const { t } = useI18n();
@@ -60,7 +62,7 @@ export function AthleteRegistration() {
               <Field label={t("reg.email")}><TextInput type="email" value={data.email} onChange={(v) => set("email", v)} placeholder="you@email.com" /></Field>
               <Field label={t("reg.password")}><TextInput type="password" value={data.password} onChange={(v) => set("password", v)} placeholder={t("reg.password.min")} /></Field>
               <Field label={t("reg.password.confirm")}><TextInput type="password" placeholder={t("reg.password.min")} /></Field>
-              <p className="text-[12px] text-[#6B7280] flex items-center gap-2" style={{ fontFamily: "DM Sans" }}>
+              <p className={cn(typo.body.xs, "text-[#6B7280] flex items-center gap-2")}>
                 <Lock className="h-3 w-3 text-gold" /> {t("reg.encrypted")}
               </p>
             </div>
@@ -101,14 +103,13 @@ export function AthleteRegistration() {
                         key={b.value}
                         type="button"
                         onClick={() => set("belt", b.value)}
-                        className="px-4 py-2 text-[12px] uppercase tracking-[0.08em] font-bold transition-base"
+                        className={cn(typo.button.md, "px-4 py-2 transition-base")}
                         style={{
                           background: b.hex,
                           color: b.text,
                           border: "1px solid " + (b.value === "white" ? "#E5E5E5" : b.hex),
                           boxShadow: selected ? "0 0 0 3px #B8960C" : "none",
                           transform: selected ? "scale(1.05)" : "scale(1)",
-                          fontFamily: "Barlow Condensed",
                         }}
                       >
                         {b.label}
@@ -128,7 +129,7 @@ export function AthleteRegistration() {
                     {["Gracie Legacy — Rio", "Checkmat HQ", "Atos San Diego", "Alliance Lisbon"]
                       .filter((a) => a.toLowerCase().includes(data.academy.toLowerCase()))
                       .map((a) => (
-                        <button key={a} type="button" onClick={() => set("academy", a)} className="w-full text-left px-3 py-2 text-[13px] text-[#0F0F0F] hover:bg-[#F7F9FC]" style={{ fontFamily: "DM Sans" }}>
+                        <button key={a} type="button" onClick={() => set("academy", a)} className={cn(typo.body.sm, "w-full text-left px-3 py-2 text-[#0F0F0F] hover:bg-[#F7F9FC]")}>
                           {a}
                         </button>
                       ))}
@@ -153,7 +154,7 @@ export function AthleteRegistration() {
                     style={{ borderLeft: "4px solid #B8960C", background: "#FFFBEB", color: "#92400E" }}
                   >
                     <AlertTriangle className="h-5 w-5 shrink-0 mt-0.5" />
-                    <p className="text-[14px]" style={{ fontFamily: "DM Sans" }}>{t("reg.guardian.required")}</p>
+                    <p className={typo.body.sm}>{t("reg.guardian.required")}</p>
                   </div>
                   <Field label={t("reg.guardian.name")}><TextInput value={data.guardianName} onChange={(v) => set("guardianName", v)} /></Field>
                   <div className="grid sm:grid-cols-2 gap-5">
@@ -171,8 +172,8 @@ export function AthleteRegistration() {
               ) : (
                 <div className="text-center py-12">
                   <CheckCircle2 className="h-12 w-12 text-gold mx-auto mb-3" />
-                  <p className="text-[#0F0F0F] text-[15px]" style={{ fontFamily: "DM Sans", fontWeight: 600 }}>{t("reg.guardian.adult")}</p>
-                  <p className="text-[12px] text-[#6B7280] mt-2" style={{ fontFamily: "DM Sans" }}>{t("reg.guardian.continue")}</p>
+                  <p className={cn(typo.body.md, "text-[#0F0F0F] font-semibold")}>{t("reg.guardian.adult")}</p>
+                  <p className={cn(typo.body.xs, "text-[#6B7280] mt-2")}>{t("reg.guardian.continue")}</p>
                 </div>
               )}
             </div>
@@ -183,9 +184,9 @@ export function AthleteRegistration() {
               <FormSectionTitle>{t("reg.payment.title")}</FormSectionTitle>
               <div className="border border-gold p-5 flex items-center justify-between" style={{ background: "#FFFBEB" }}>
                 <div>
-                  <p className="text-gold text-[12px] uppercase tracking-[0.1em] font-bold" style={{ fontFamily: "Barlow Condensed" }}>{t("reg.payment.annual")}</p>
-                  <p className="text-[28px] text-[#0F0F0F]" style={{ fontFamily: "Barlow Condensed", fontWeight: 900 }}>
-                    $ 89.00 <span className="text-[13px] text-[#6B7280]" style={{ fontFamily: "DM Sans", fontWeight: 400 }}>{t("reg.payment.year")}</span>
+                  <p className={cn(typo.button.md, "text-gold")}>{t("reg.payment.annual")}</p>
+                  <p className={cn(typo.heading.md, "text-[#0F0F0F]")}>
+                    $ 89.00 <span className={cn(typo.body.sm, "text-[#6B7280] font-normal")}>{t("reg.payment.year")}</span>
                   </p>
                 </div>
                 <CreditCard className="h-8 w-8 text-gold" />
@@ -206,19 +207,19 @@ export function AthleteRegistration() {
             <button
               onClick={prev}
               disabled={step === 0}
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-[12px] uppercase tracking-[0.08em] font-bold border border-[#E5E5E5] text-[#6B7280] hover:bg-[#F7F9FC] disabled:opacity-30 transition-base"
+              className={cn(typo.button.md, "inline-flex items-center gap-2 px-5 py-2.5 border border-[#E5E5E5] text-[#6B7280] hover:bg-[#F7F9FC] disabled:opacity-30 transition-base")}
             >
               <ArrowLeft className="h-3.5 w-3.5" /> {t("reg.back")}
             </button>
             {step < STEPS.length - 1 ? (
               <button
                 onClick={next}
-                className="inline-flex items-center gap-2 px-6 py-3 text-[12px] uppercase tracking-[0.08em] font-bold bg-primary text-white hover:bg-primary-dark transition-base"
+                className={cn(typo.button.md, "inline-flex items-center gap-2 px-6 py-3 bg-primary text-white hover:bg-primary-dark transition-base")}
               >
                 {step === 4 ? t("reg.payConfirm") : t("reg.next")} <ArrowRight className="h-3.5 w-3.5" />
               </button>
             ) : (
-              <button className="inline-flex items-center gap-2 px-6 py-3 text-[12px] uppercase tracking-[0.08em] font-bold bg-gold text-[#0F0F0F] hover:bg-gold-light transition-base">
+              <button className={cn(typo.button.md, "inline-flex items-center gap-2 px-6 py-3 bg-gold text-[#0F0F0F] hover:bg-gold-light transition-base")}>
                 {t("reg.download")}
               </button>
             )}
@@ -231,9 +232,7 @@ export function AthleteRegistration() {
 
 function FormSectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-[#0F0F0F] text-[20px] uppercase tracking-[0.04em] mb-2" style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}>
-      {children}
-    </h2>
+    <h2 className={cn(typo.heading.sm, "text-[#0F0F0F] mb-2")}>{children}</h2>
   );
 }
 
@@ -248,9 +247,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
-    <label className="block text-[11px] uppercase tracking-[0.06em] text-[#374151]" style={{ fontFamily: "DM Sans", fontWeight: 600 }}>
-      {children}
-    </label>
+    <label className={cn(typo.label.md, "block text-[#374151]")}>{children}</label>
   );
 }
 
@@ -263,8 +260,7 @@ function TextInput({ className = "", onChange, ...rest }: TextInputProps) {
     <input
       {...rest}
       onChange={(e) => onChange?.(e.target.value)}
-      className={`w-full h-10 px-3.5 border border-[#E5E5E5] bg-white text-[14px] text-[#0F0F0F] focus:outline-none focus:border-primary transition-base ${className}`}
-      style={{ fontFamily: "DM Sans" }}
+      className={cn(typo.body.sm, "w-full h-10 px-3.5 border border-[#E5E5E5] bg-white text-[#0F0F0F] focus:outline-none focus:border-primary transition-base", className)}
       onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 3px rgba(196, 30, 58, 0.1)")}
       onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
     />
@@ -276,8 +272,7 @@ function SelectInput({ value, onChange, options }: { value: string; onChange: (v
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full h-10 px-3.5 border border-[#E5E5E5] bg-white text-[14px] text-[#0F0F0F] focus:outline-none focus:border-primary transition-base cursor-pointer"
-      style={{ fontFamily: "DM Sans" }}
+      className={cn(typo.body.sm, "w-full h-10 px-3.5 border border-[#E5E5E5] bg-white text-[#0F0F0F] focus:outline-none focus:border-primary transition-base cursor-pointer")}
     >
       {options.map((o) => (
         <option key={o.v} value={o.v}>{o.l}</option>
@@ -298,40 +293,38 @@ function MembershipCard({ data }: { data: { fullName: string; belt: BeltColor; a
   return (
     <div className="text-center">
       <CheckCircle2 className="h-14 w-14 text-gold mx-auto mb-3" />
-      <h2 className="text-[#0F0F0F] text-[28px] uppercase" style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.02em" }}>
-        {t("reg.confirm.welcome")}
-      </h2>
-      <p className="text-[#6B7280] mb-8 text-[14px]" style={{ fontFamily: "DM Sans" }}>{t("reg.confirm.cardReady")}</p>
+      <h2 className={cn(typo.heading.lg, "text-[#0F0F0F]")}>{t("reg.confirm.welcome")}</h2>
+      <p className={cn(typo.body.sm, "text-[#6B7280] mb-8")}>{t("reg.confirm.cardReady")}</p>
 
       <div className="mx-auto max-w-md aspect-[1.6/1] relative overflow-hidden border border-gold shadow-2xl shadow-primary/30" style={{ background: "linear-gradient(135deg, #1a1a1a 0%, #2a0a0e 50%, #1a1a1a 100%)" }}>
         <img src={dragon} alt="" className="absolute -right-8 -top-8 h-48 w-48 opacity-15" />
         <div className="absolute inset-0 p-5 flex flex-col text-left">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-gold text-[20px]" style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.05em" }}>BJJLF</div>
-              <div className="text-[9px] uppercase tracking-[0.2em] text-white/60" style={{ fontFamily: "DM Sans" }}>Legends Federation</div>
+              <div className={cn(typo.heading.md, "text-gold tracking-[0.05em]")}>BJJLF</div>
+              <div className={cn(typo.label.sm, "text-white/60 tracking-[0.2em] text-[9px]")}>Legends Federation</div>
             </div>
-            <div className="text-[9px] uppercase tracking-[0.2em] text-white/60" style={{ fontFamily: "DM Sans" }}>{t("reg.athleteId")}</div>
+            <div className={cn(typo.label.sm, "text-white/60 tracking-[0.2em] text-[9px]")}>{t("reg.athleteId")}</div>
           </div>
           <div className="mt-auto">
-            <div className="text-[10px] uppercase tracking-[0.2em] text-white/60" style={{ fontFamily: "DM Sans" }}>{t("reg.member")}</div>
-            <div className="text-white text-[22px] leading-tight" style={{ fontFamily: "Barlow Condensed", fontWeight: 800, letterSpacing: "0.02em" }}>
+            <div className={cn(typo.label.sm, "text-white/60 tracking-[0.2em]")}>{t("reg.member")}</div>
+            <div className={cn(typo.heading.sm, "text-white text-[22px] leading-tight")}>
               {data.fullName || "Your Name"}
             </div>
             <div className="flex items-end justify-between mt-2">
               <div>
-                <div className="text-[9px] uppercase tracking-[0.2em] text-white/60" style={{ fontFamily: "DM Sans" }}>Academy</div>
-                <div className="text-white text-[13px]" style={{ fontFamily: "DM Sans", fontWeight: 600 }}>{data.academy || "Your Academy"}</div>
+                <div className={cn(typo.label.sm, "text-white/60 tracking-[0.2em] text-[9px]")}>Academy</div>
+                <div className={cn(typo.body.sm, "text-white font-semibold")}>{data.academy || "Your Academy"}</div>
               </div>
               <div className="flex items-center gap-2">
                 <div className="text-right">
-                  <div className="text-[9px] uppercase tracking-[0.2em] text-white/60" style={{ fontFamily: "DM Sans" }}>Belt</div>
-                  <div className="text-white text-[13px]" style={{ fontFamily: "DM Sans", fontWeight: 600 }}>{belt?.label}</div>
+                  <div className={cn(typo.label.sm, "text-white/60 tracking-[0.2em] text-[9px]")}>Belt</div>
+                  <div className={cn(typo.body.sm, "text-white font-semibold")}>{belt?.label}</div>
                 </div>
                 <div className="h-8 w-3" style={{ background: belt?.hex }} />
               </div>
             </div>
-            <div className="mt-2 text-[10px] text-white/50" style={{ fontFamily: "ui-monospace, monospace" }}>{memberId}</div>
+            <div className={cn(typo.mono.sm, "mt-2 text-white/50 text-[10px]")}>{memberId}</div>
           </div>
         </div>
       </div>

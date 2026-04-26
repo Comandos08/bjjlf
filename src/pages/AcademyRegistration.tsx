@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, ArrowRight, CheckCircle2, Plus, Trash2, Award } from "lucide-react";
+import { typo } from "@/lib/typography";
+import { cn } from "@/lib/utils";
 
 const STEPS = ["Head Professor", "Academy", "Other Professors", "Payment", "Certificate"];
 
@@ -26,7 +28,7 @@ export function AcademyRegistration() {
         <div className="bg-card border border-border p-6 md:p-10 border-gold-hover">
           {step === 0 && (
             <div className="space-y-5">
-              <h2 className="font-display text-2xl tracking-wider text-gold">Head Professor</h2>
+              <h2 className={cn(typo.heading.md, "text-gold")}>Head Professor</h2>
               <Field label="Full name"><Input value={head.name} onChange={(e) => setHead({ ...head, name: e.target.value })} /></Field>
               <div className="grid sm:grid-cols-2 gap-5">
                 <Field label="Belt grade">
@@ -43,7 +45,7 @@ export function AcademyRegistration() {
 
           {step === 1 && (
             <div className="space-y-5">
-              <h2 className="font-display text-2xl tracking-wider text-gold">Academy data</h2>
+              <h2 className={cn(typo.heading.md, "text-gold")}>Academy data</h2>
               <Field label="Academy name"><Input value={academy.name} onChange={(e) => setAcademy({ ...academy, name: e.target.value })} /></Field>
               <div className="grid sm:grid-cols-2 gap-5">
                 <Field label="Country"><Input value={academy.country} onChange={(e) => setAcademy({ ...academy, country: e.target.value })} /></Field>
@@ -59,7 +61,7 @@ export function AcademyRegistration() {
 
           {step === 2 && (
             <div className="space-y-5">
-              <h2 className="font-display text-2xl tracking-wider text-gold">Additional professors</h2>
+              <h2 className={cn(typo.heading.md, "text-gold")}>Additional professors</h2>
               <p className="text-sm text-muted-foreground">Add other professors that should be linked to this academy.</p>
 
               <div className="space-y-3">
@@ -67,7 +69,7 @@ export function AcademyRegistration() {
                   <div key={idx} className="flex items-center gap-3 p-3 border border-border bg-background">
                     <Award className="h-5 w-5 text-gold" />
                     <div className="flex-1">
-                      <div className="font-heading">{p.name || "Unnamed"}</div>
+                      <div className={cn(typo.heading.sm, "text-base")}>{p.name || "Unnamed"}</div>
                       <div className="text-xs text-muted-foreground">{p.belt}</div>
                     </div>
                     <button onClick={() => setProfs((arr) => arr.filter((_, i) => i !== idx))} className="text-muted-foreground hover:text-primary"><Trash2 className="h-4 w-4" /></button>
@@ -80,11 +82,11 @@ export function AcademyRegistration() {
 
           {step === 3 && (
             <div className="space-y-6">
-              <h2 className="font-display text-2xl tracking-wider text-gold">Payment</h2>
+              <h2 className={cn(typo.heading.md, "text-gold")}>Payment</h2>
               <div className="border border-gold/40 bg-gold/5 p-5 flex items-center justify-between">
                 <div>
-                  <p className="font-heading uppercase tracking-wider text-sm text-gold">Academy Affiliation</p>
-                  <p className="text-2xl font-display tracking-wider">$ 240.00 <span className="text-sm text-muted-foreground">/ year</span></p>
+                  <p className={cn(typo.button.md, "text-gold")}>Academy Affiliation</p>
+                  <p className={typo.heading.md}>$ 240.00 <span className={cn(typo.body.sm, "text-muted-foreground")}>/ year</span></p>
                 </div>
               </div>
               <Field label="Card number"><Input placeholder="1234 5678 9012 3456" /></Field>
@@ -99,12 +101,12 @@ export function AcademyRegistration() {
           {step === 4 && (
             <div className="text-center space-y-5">
               <CheckCircle2 className="h-14 w-14 text-gold mx-auto" />
-              <h2 className="font-display text-3xl tracking-wider">Affiliation Complete</h2>
+              <h2 className={typo.heading.lg}>Affiliation Complete</h2>
               <p className="text-muted-foreground">Your official affiliation certificate is ready.</p>
 
               <div className="mx-auto max-w-xl border-4 border-double border-gold p-8 bg-gradient-to-b from-card to-navbar text-center">
                 <div className="text-[10px] uppercase tracking-[0.4em] text-gold mb-2">Certificate of Affiliation</div>
-                <h3 className="font-display text-3xl tracking-wider mb-1">{academy.name || "Your Academy"}</h3>
+                <h3 className={cn(typo.heading.lg, "mb-1")}>{academy.name || "Your Academy"}</h3>
                 <p className="text-sm text-foreground/60 mb-6">{academy.city}{academy.city && academy.country ? ", " : ""}{academy.country}</p>
                 <p className="text-sm text-foreground/80 max-w-md mx-auto">Officially recognized as an affiliated academy of the Brazilian Jiu-Jitsu Legends Federation.</p>
                 <div className="mt-6 flex justify-between text-xs uppercase tracking-wider text-foreground/60">
@@ -114,7 +116,7 @@ export function AcademyRegistration() {
                   </div>
                   <div className="text-right">
                     <div className="text-gold">Certificate №</div>
-                    <div className="text-foreground font-mono">BJJLF-AC-{new Date().getFullYear()}-{(Math.random() * 999).toFixed(0).padStart(3, "0")}</div>
+                    <div className={cn(typo.mono.sm, "text-foreground")}>BJJLF-AC-{new Date().getFullYear()}-{(Math.random() * 999).toFixed(0).padStart(3, "0")}</div>
                   </div>
                 </div>
               </div>
@@ -124,9 +126,9 @@ export function AcademyRegistration() {
           <div className="flex justify-between mt-10 pt-6 border-t border-border">
             <Button variant="outline" onClick={prev} disabled={step === 0}><ArrowLeft /> Back</Button>
             {step < STEPS.length - 1 ? (
-              <Button variant="primary" onClick={next} className="font-heading uppercase tracking-wider">{step === 3 ? "Pay & Confirm" : "Next"} <ArrowRight /></Button>
+              <Button variant="primary" onClick={next} className={typo.button.md}>{step === 3 ? "Pay & Confirm" : "Next"} <ArrowRight /></Button>
             ) : (
-              <Button variant="gold" className="font-heading uppercase tracking-wider">Download Certificate</Button>
+              <Button variant="gold" className={typo.button.md}>Download Certificate</Button>
             )}
           </div>
         </div>
