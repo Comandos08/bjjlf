@@ -7,14 +7,12 @@ import { NEWS } from "@/data/news";
 import { useI18n, formatDateShort } from "@/lib/i18n";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
-import hero1 from "@/assets/hero-1.jpg";
-import hero2 from "@/assets/hero-2.jpg";
-import hero3 from "@/assets/hero-3.jpg";
+const HERO_IMG = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=1440&h=600&fit=crop&q=80";
 
 const SLIDES = [
-  { image: hero1, titleKey: "slide.1.title", subKey: "slide.1.sub", badge: "BJJLF World Championship 2025" },
-  { image: hero2, titleKey: "slide.2.title", subKey: "slide.2.sub", badge: "No-Gi Pan-American" },
-  { image: hero3, titleKey: "slide.3.title", subKey: "slide.3.sub", badge: "Black Belt Registry" },
+  { image: HERO_IMG, titleKey: "slide.1.title", subKey: "slide.1.sub", badge: "BJJLF World Championship 2025" },
+  { image: HERO_IMG, titleKey: "slide.2.title", subKey: "slide.2.sub", badge: "No-Gi Pan-American" },
+  { image: HERO_IMG, titleKey: "slide.3.title", subKey: "slide.3.sub", badge: "Black Belt Registry" },
 ];
 
 const SLIDE_TEXT: Record<string, { pt: string; en: string }> = {
@@ -345,10 +343,11 @@ function CTASection() {
 
 function YouTubeSection() {
   const { t } = useI18n();
+  const VIDEO_IMG = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=600&h=350&fit=crop&q=80";
   const videos = [
-    { t: "World Championship 2024 — Best Submissions", img: "https://images.unsplash.com/photo-1554482585-c2e0b6c2cf80?auto=format&fit=crop&w=700&q=70" },
-    { t: "Black Belt Promotions Ceremony", img: "https://images.unsplash.com/photo-1517438984742-1262db08379e?w=500&h=280&fit=crop" },
-    { t: "Mestre Roberto — A Life on the Mat", img: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=500&h=280&fit=crop" },
+    { t: "World Championship 2024 — Best Submissions", img: VIDEO_IMG },
+    { t: "Black Belt Promotions Ceremony", img: VIDEO_IMG },
+    { t: "Mestre Roberto — A Life on the Mat", img: VIDEO_IMG },
   ];
   return (
     <section className="py-16 lg:py-20 bg-white">
