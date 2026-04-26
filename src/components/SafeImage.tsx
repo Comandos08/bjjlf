@@ -37,7 +37,7 @@ export function SafeImage({
   onError,
   ...rest
 }: SafeImageProps) {
-  const [errored, setErrored] = useState(false);
+  const [status, setStatus] = useState<"pending" | "loaded" | "error">("pending");
   const idRef = useRef<string | null>(null);
 
   // Resolve the URL through the cache hook. In production this is a no-op;
@@ -59,12 +59,18 @@ export function SafeImage({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src]);
 
+  const errored = status === "error";
+
   return (
     <div
       className={cn(
         "relative h-full w-full overflow-hidden bg-[#1A1A1A]",
         wrapperClassName,
       )}
+      data-testid="safe-image"
+      data-image-source={source}
+      data-image-status={status}
+      data-image-url={typeof src === "string" ? src : undefined}
     >
       {!errored && src ? (
         <img
@@ -72,11 +78,12 @@ export function SafeImage({
           alt={alt}
           loading={loading}
           onLoad={(e) => {
+            setStatus("loaded");
             if (idRef.current) reportImageStatus(idRef.current, "loaded");
             onLoad?.(e);
           }}
           onError={(e) => {
-            setErrored(true);
+            setStatus("error");
             if (idRef.current) reportImageStatus(idRef.current, "error");
             onError?.(e);
           }}
@@ -93,6 +100,7 @@ export function SafeImage({
 function Fallback({ label, hideIcon }: { label?: string; hideIcon?: boolean }) {
   return (
     <div
+      data-testid="safe-image-fallback"
       className="flex h-full w-full flex-col items-center justify-center gap-2 px-3 text-center"
       style={{
         background:
