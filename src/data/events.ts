@@ -7,15 +7,13 @@ export type Event = {
   type: "Gi" | "No-Gi" | "Open";
 };
 
-const cover = (q: string) => `https://images.unsplash.com/${q}?auto=format&fit=crop&w=900&q=70`;
-
 export const EVENTS: Event[] = [
-  { id: "wc25", name: "BJJLF World Championship", date: "2025-08-22", location: "Rio de Janeiro, BR", image: cover("photo-1551698618-1dfe5d97d256"), type: "Gi" },
-  { id: "eu25", name: "European Open", date: "2025-06-14", location: "Lisbon, PT", image: cover("photo-1517649763962-0c623066013b"), type: "Gi" },
-  { id: "ng25", name: "No-Gi Pan-American", date: "2025-05-30", location: "San Diego, US", image: cover("photo-1599050751795-6cdaafbc2319"), type: "No-Gi" },
-  { id: "as25", name: "Asian Continental", date: "2025-07-05", location: "Tokyo, JP", image: cover("photo-1554482585-c2e0b6c2cf80"), type: "Open" },
-  { id: "br25", name: "Brazilian Nationals", date: "2025-09-12", location: "São Paulo, BR", image: cover("photo-1571019613454-1cb2f99b2d8b"), type: "Gi" },
-  { id: "uk25", name: "UK Open", date: "2025-10-18", location: "London, UK", image: cover("photo-1546484959-f9a381d1330d"), type: "No-Gi" },
+  { id: "wc25", name: "BJJLF World Championship", date: "2025-08-22", location: "Rio de Janeiro, BR", image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=400&h=250&fit=crop", type: "Gi" },
+  { id: "eu25", name: "European Open", date: "2025-06-14", location: "Lisbon, PT", image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop", type: "Gi" },
+  { id: "ng25", name: "Americas Open", date: "2025-05-30", location: "San Diego, US", image: "https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=400&h=250&fit=crop", type: "No-Gi" },
+  { id: "as25", name: "Asian Continental", date: "2025-07-05", location: "Tokyo, JP", image: "https://images.unsplash.com/photo-1517438984742-1262db08379e?w=400&h=250&fit=crop", type: "Open" },
+  { id: "br25", name: "Brazilian Nationals", date: "2025-09-12", location: "São Paulo, BR", image: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400&h=250&fit=crop", type: "Gi" },
+  { id: "uk25", name: "UK Open", date: "2025-10-18", location: "London, UK", image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&h=250&fit=crop", type: "No-Gi" },
 ];
 
 export type Ranked = {
