@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TypographyRouteImport } from './routes/typography'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as GraduatesRouteImport } from './routes/graduates'
 import { Route as AboutRouteImport } from './routes/about'
@@ -17,6 +18,11 @@ import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
 import { Route as RegisterAcademyRouteImport } from './routes/register.academy'
 import { Route as GraduatesGraduateIdRouteImport } from './routes/graduates.$graduateId'
 
+const TypographyRoute = TypographyRouteImport.update({
+  id: '/typography',
+  path: '/typography',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
+  '/typography': typeof TypographyRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
+  '/typography': typeof TypographyRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
+  '/typography': typeof TypographyRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/graduates'
     | '/news'
+    | '/typography'
     | '/graduates/$graduateId'
     | '/register/academy'
     | '/register/athlete'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/graduates'
     | '/news'
+    | '/typography'
     | '/graduates/$graduateId'
     | '/register/academy'
     | '/register/athlete'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/graduates'
     | '/news'
+    | '/typography'
     | '/graduates/$graduateId'
     | '/register/academy'
     | '/register/athlete'
@@ -116,12 +128,20 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   GraduatesRoute: typeof GraduatesRouteWithChildren
   NewsRoute: typeof NewsRoute
+  TypographyRoute: typeof TypographyRoute
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/typography': {
+      id: '/typography'
+      path: '/typography'
+      fullPath: '/typography'
+      preLoaderRoute: typeof TypographyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/news': {
       id: '/news'
       path: '/news'
@@ -191,6 +211,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   GraduatesRoute: GraduatesRouteWithChildren,
   NewsRoute: NewsRoute,
+  TypographyRoute: TypographyRoute,
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,
 }
