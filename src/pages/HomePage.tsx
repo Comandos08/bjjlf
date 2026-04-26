@@ -146,9 +146,12 @@ function EventsSection() {
               className="rounded-none bg-white border border-[#E5E5E5] flex flex-col group hover:border-primary hover:shadow-[0_4px_16px_rgba(196,30,58,0.12)]"
               style={{ transition: "all 0.18s ease" }}
             >
-              <div className="bg-[#F7F9FC] h-32 overflow-hidden">
-                <img src={e.image} alt={`${e.name} — Brazilian Jiu-Jitsu event`} loading="lazy" className="h-full w-full object-cover" />
-              </div>
+              <SafeImage
+                src={e.image}
+                alt={`${e.name} — Brazilian Jiu-Jitsu event`}
+                fallbackLabel={e.name}
+                wrapperClassName="h-32 bg-[#F7F9FC]"
+              />
               <div className="p-4 space-y-2.5 flex-1 flex flex-col">
                 <h3 className={cn(typo.heading.sm, "text-[#0F0F0F] text-sm leading-tight")}>{e.name}</h3>
                 <div className={cn(typo.body.xs, "flex items-center gap-1.5 text-[#6B7280]")}>
@@ -187,9 +190,13 @@ function NewsSection() {
         <div className="grid md:grid-cols-3 gap-4">
           {items.map((n) => (
             <Link key={n.id} to="/news" className="group bg-white border border-[#E5E5E5] hover:border-primary transition-base flex flex-col">
-              <div className="relative h-[180px] overflow-hidden bg-[#E5E5E5]">
-                <img src={n.image} alt={n.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-              </div>
+              <SafeImage
+                src={n.image}
+                alt={n.title}
+                fallbackLabel={n.title}
+                wrapperClassName="h-[180px]"
+                className="transition-transform duration-500 group-hover:scale-105"
+              />
               <div className="p-4 flex-1 flex flex-col gap-2">
                 <span className={cn(typo.label.sm, "text-primary")}>{n.category}</span>
                 <h3 className={cn(typo.body.md, "text-[#111] font-semibold leading-[1.35]")}>{n.title}</h3>
