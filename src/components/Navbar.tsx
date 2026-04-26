@@ -78,8 +78,8 @@ export function Navbar() {
                   onMouseLeave={() => setOpenMenu(null)}
                 >
                   <button
-                    className="flex items-center gap-1 px-3 py-2 font-heading text-[12px] uppercase tracking-[0.1em] text-[#CCCCCC] hover:text-white transition-base"
-                    style={{ fontWeight: 700 }}
+                    className="flex items-center gap-1 px-3 py-2 uppercase text-[12px] text-[#CCCCCC] hover:text-white transition-base"
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" }}
                   >
                     {label}
                     <ChevronDown className="h-3 w-3" />
