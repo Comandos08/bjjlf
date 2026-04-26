@@ -7,13 +7,15 @@ export type Event = {
   type: "Gi" | "No-Gi" | "Open";
 };
 
+const EVENT_IMG = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=400&h=250&fit=crop&q=80";
+
 export const EVENTS: Event[] = [
-  { id: "wc25", name: "BJJLF World Championship", date: "2025-08-22", location: "Rio de Janeiro, BR", image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=400&h=250&fit=crop", type: "Gi" },
-  { id: "eu25", name: "European Open", date: "2025-06-14", location: "Lisbon, PT", image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop", type: "Gi" },
-  { id: "ng25", name: "Americas Open", date: "2025-05-30", location: "San Diego, US", image: "https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=400&h=250&fit=crop", type: "No-Gi" },
-  { id: "as25", name: "Asian Continental", date: "2025-07-05", location: "Tokyo, JP", image: "https://images.unsplash.com/photo-1517438984742-1262db08379e?w=400&h=250&fit=crop", type: "Open" },
-  { id: "br25", name: "Brazilian Nationals", date: "2025-09-12", location: "São Paulo, BR", image: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400&h=250&fit=crop", type: "Gi" },
-  { id: "uk25", name: "UK Open", date: "2025-10-18", location: "London, UK", image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&h=250&fit=crop", type: "No-Gi" },
+  { id: "wc25", name: "BJJLF World Championship", date: "2025-08-22", location: "Rio de Janeiro, BR", image: EVENT_IMG, type: "Gi" },
+  { id: "eu25", name: "European Open", date: "2025-06-14", location: "Lisbon, PT", image: EVENT_IMG, type: "Gi" },
+  { id: "ng25", name: "Americas Open", date: "2025-05-30", location: "San Diego, US", image: EVENT_IMG, type: "No-Gi" },
+  { id: "as25", name: "Asian Continental", date: "2025-07-05", location: "Tokyo, JP", image: EVENT_IMG, type: "Open" },
+  { id: "br25", name: "Brazilian Nationals", date: "2025-09-12", location: "São Paulo, BR", image: EVENT_IMG, type: "Gi" },
+  { id: "uk25", name: "UK Open", date: "2025-10-18", location: "London, UK", image: EVENT_IMG, type: "No-Gi" },
 ];
 
 export type Ranked = {
