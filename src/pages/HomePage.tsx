@@ -132,24 +132,23 @@ function LocalSectionHeading({ title, action, dark = true }: { title: React.Reac
 function EventsSection() {
   const { t, lang } = useI18n();
   return (
-    <section className="py-16 lg:py-20 bg-background">
+    <section className="py-16 lg:py-20" style={{ background: "#F7F9FC" }}>
       <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
-        <LocalSectionHeading
-          title={t("home.events.title")}
-          action={
-            <Link to="/about" className={cn(typo.button.md, "text-primary hover:text-primary-dark transition-base inline-flex items-center gap-1")}>
-              {t("home.events.viewAll")} <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          }
-        />
+        <div className="flex items-end justify-between gap-4 mb-8">
+          <h2 className={cn(typo.heading.lg)} style={{ color: "#111827" }}>{t("home.events.title")}</h2>
+          <Link to="/about" className={cn(typo.button.md, "text-primary hover:text-primary-dark transition-base inline-flex items-center gap-1")}>
+            {t("home.events.viewAll")} <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
         <div className="grid gap-3.5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))" }}>
           {EVENTS.slice(0, 6).map((e) => (
             <article
               key={e.id}
-              className="rounded-none bg-white border border-[#E5E5E5] transition-base group hover:border-primary hover:shadow-[0_4px_12px_rgba(196,30,58,0.15)] flex flex-col"
+              className="rounded-none bg-white border border-[#E5E5E5] flex flex-col group hover:border-primary hover:shadow-[0_4px_16px_rgba(196,30,58,0.12)]"
+              style={{ transition: "all 0.18s ease" }}
             >
-              <div className="bg-[#F7F9FC] p-3 h-20 grid place-items-center">
-                <img src={e.image} alt={e.name} loading="lazy" className="h-full w-full object-contain rounded-none" />
+              <div className="bg-[#F7F9FC] h-32 overflow-hidden">
+                <img src={e.image} alt={`${e.name} — Brazilian Jiu-Jitsu event`} loading="lazy" className="h-full w-full object-cover" />
               </div>
               <div className="p-4 space-y-2.5 flex-1 flex flex-col">
                 <h3 className={cn(typo.heading.sm, "text-[#0F0F0F] text-sm leading-tight")}>{e.name}</h3>
