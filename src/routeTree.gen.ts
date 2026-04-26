@@ -9,38 +9,140 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as NewsRouteImport } from './routes/news'
+import { Route as GraduatesRouteImport } from './routes/graduates'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
+import { Route as RegisterAcademyRouteImport } from './routes/register.academy'
+import { Route as GraduatesGraduateIdRouteImport } from './routes/graduates.$graduateId'
 
+const NewsRoute = NewsRouteImport.update({
+  id: '/news',
+  path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GraduatesRoute = GraduatesRouteImport.update({
+  id: '/graduates',
+  path: '/graduates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegisterAthleteRoute = RegisterAthleteRouteImport.update({
+  id: '/register/athlete',
+  path: '/register/athlete',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterAcademyRoute = RegisterAcademyRouteImport.update({
+  id: '/register/academy',
+  path: '/register/academy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GraduatesGraduateIdRoute = GraduatesGraduateIdRouteImport.update({
+  id: '/$graduateId',
+  path: '/$graduateId',
+  getParentRoute: () => GraduatesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/graduates': typeof GraduatesRouteWithChildren
+  '/news': typeof NewsRoute
+  '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
+  '/register/academy': typeof RegisterAcademyRoute
+  '/register/athlete': typeof RegisterAthleteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/graduates': typeof GraduatesRouteWithChildren
+  '/news': typeof NewsRoute
+  '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
+  '/register/academy': typeof RegisterAcademyRoute
+  '/register/athlete': typeof RegisterAthleteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/graduates': typeof GraduatesRouteWithChildren
+  '/news': typeof NewsRoute
+  '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
+  '/register/academy': typeof RegisterAcademyRoute
+  '/register/athlete': typeof RegisterAthleteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/graduates'
+    | '/news'
+    | '/graduates/$graduateId'
+    | '/register/academy'
+    | '/register/athlete'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/graduates'
+    | '/news'
+    | '/graduates/$graduateId'
+    | '/register/academy'
+    | '/register/athlete'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/graduates'
+    | '/news'
+    | '/graduates/$graduateId'
+    | '/register/academy'
+    | '/register/athlete'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  GraduatesRoute: typeof GraduatesRouteWithChildren
+  NewsRoute: typeof NewsRoute
+  RegisterAcademyRoute: typeof RegisterAcademyRoute
+  RegisterAthleteRoute: typeof RegisterAthleteRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/news': {
+      id: '/news'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/graduates': {
+      id: '/graduates'
+      path: '/graduates'
+      fullPath: '/graduates'
+      preLoaderRoute: typeof GraduatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +150,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/register/athlete': {
+      id: '/register/athlete'
+      path: '/register/athlete'
+      fullPath: '/register/athlete'
+      preLoaderRoute: typeof RegisterAthleteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register/academy': {
+      id: '/register/academy'
+      path: '/register/academy'
+      fullPath: '/register/academy'
+      preLoaderRoute: typeof RegisterAcademyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/graduates/$graduateId': {
+      id: '/graduates/$graduateId'
+      path: '/$graduateId'
+      fullPath: '/graduates/$graduateId'
+      preLoaderRoute: typeof GraduatesGraduateIdRouteImport
+      parentRoute: typeof GraduatesRoute
+    }
   }
 }
 
+interface GraduatesRouteChildren {
+  GraduatesGraduateIdRoute: typeof GraduatesGraduateIdRoute
+}
+
+const GraduatesRouteChildren: GraduatesRouteChildren = {
+  GraduatesGraduateIdRoute: GraduatesGraduateIdRoute,
+}
+
+const GraduatesRouteWithChildren = GraduatesRoute._addFileChildren(
+  GraduatesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  GraduatesRoute: GraduatesRouteWithChildren,
+  NewsRoute: NewsRoute,
+  RegisterAcademyRoute: RegisterAcademyRoute,
+  RegisterAthleteRoute: RegisterAthleteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
