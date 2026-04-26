@@ -156,9 +156,9 @@ export function Navbar() {
                 key={item.key}
                 to={item.to ?? "/"}
                 onClick={() => setOpen(false)}
-                className="py-3 font-heading uppercase tracking-[0.1em] text-[12px] text-[#CCCCCC]"
-                style={{ fontWeight: 700 }}
-                activeProps={{ className: "py-3 font-heading uppercase tracking-[0.1em] text-[12px] text-gold" }}
+                className="py-3 uppercase text-[12px] text-[#CCCCCC]"
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" }}
+                activeProps={{ className: "py-3 uppercase text-[12px] text-gold", style: { fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" } }}
                 activeOptions={{ exact: item.to === "/" }}
               >
                 {t(`nav.${item.key}`)}
