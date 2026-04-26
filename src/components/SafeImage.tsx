@@ -1,23 +1,27 @@
-import { useState, type ImgHTMLAttributes } from "react";
+import { useEffect, useRef, useState, type ImgHTMLAttributes } from "react";
 import { ImageOff } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  registerImage,
+  reportImageStatus,
+  unregisterImage,
+} from "@/lib/image-registry";
 
 type SafeImageProps = ImgHTMLAttributes<HTMLImageElement> & {
-  /** Optional label shown inside the fallback (defaults to alt). */
   fallbackLabel?: string;
-  /** Hide the icon inside the fallback (label-only). */
   hideFallbackIcon?: boolean;
-  /** Class applied to the wrapper that hosts both the image and the fallback. */
   wrapperClassName?: string;
+  /** Tag for the dev debug panel (e.g. "hero", "event", "news", "video"). */
+  source?: string;
 };
 
+const isDev = import.meta.env.DEV;
+
 /**
- * <SafeImage /> renders an <img> and, if the request fails (404, network,
- * blocked, etc.), swaps in a styled placeholder using the project's design
- * tokens — never the browser's broken-image icon.
- *
- * The wrapper inherits sizing from `wrapperClassName`. Pass the same
- * width/height classes you would normally apply to the <img>.
+ * <SafeImage /> renders an <img> and, if it fails (404/network/blocked),
+ * swaps in a styled placeholder using the project's design tokens.
+ * In dev, every instance reports its load/error status to the image
+ * registry consumed by the <ImageDebugPanel />.
  */
 export function SafeImage({
   src,
@@ -27,9 +31,26 @@ export function SafeImage({
   fallbackLabel,
   hideFallbackIcon,
   loading = "lazy",
+  source = "other",
+  onLoad,
+  onError,
   ...rest
 }: SafeImageProps) {
   const [errored, setErrored] = useState(false);
+  const idRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!isDev || !src) return;
+    const id = registerImage({
+      url: String(src),
+      label: fallbackLabel ?? alt ?? "",
+      source,
+    });
+    idRef.current = id;
+    return () => unregisterImage(id);
+    // We intentionally only re-register when the URL changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [src]);
 
   return (
     <div
@@ -43,7 +64,15 @@ export function SafeImage({
           src={src}
           alt={alt}
           loading={loading}
-          onError={() => setErrored(true)}
+          onLoad={(e) => {
+            if (idRef.current) reportImageStatus(idRef.current, "loaded");
+            onLoad?.(e);
+          }}
+          onError={(e) => {
+            setErrored(true);
+            if (idRef.current) reportImageStatus(idRef.current, "error");
+            onError?.(e);
+          }}
           className={cn("h-full w-full object-cover", className)}
           {...rest}
         />
