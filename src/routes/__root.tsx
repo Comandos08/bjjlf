@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ImageDebugPanel } from "@/components/ImageDebugPanel";
+import { cleanupStaleCaches } from "@/lib/cache-cleanup";
 import { I18nProvider } from "@/lib/i18n";
 
 function NotFoundComponent() {
@@ -72,6 +74,12 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  // Dev-only: scrub any leftover service workers / cache entries that could
+  // be serving stale (4xx) image responses for URLs we now want to load.
+  useEffect(() => {
+    cleanupStaleCaches();
+  }, []);
+
   return (
     <I18nProvider>
       <div className="min-h-screen flex flex-col bg-background">
