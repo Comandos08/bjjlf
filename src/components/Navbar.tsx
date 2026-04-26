@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, X, Search, ShoppingBag, User, ChevronDown, Globe } from "lucide-react";
+import { Menu, X, ShoppingBag, User, ChevronDown, Globe } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { useI18n, type Lang } from "@/lib/i18n";
