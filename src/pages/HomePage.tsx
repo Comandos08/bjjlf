@@ -7,6 +7,7 @@ import { NEWS } from "@/data/news";
 import { useI18n, formatDateShort } from "@/lib/i18n";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
+import { SafeImage } from "@/components/SafeImage";
 const HERO_IMG = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=1440&h=600&fit=crop&q=80";
 
 const SLIDES = [
