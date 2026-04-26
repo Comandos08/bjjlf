@@ -2,6 +2,7 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/r
 import appCss from "../styles.css?url";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { ImageDebugPanel } from "@/components/ImageDebugPanel";
 import { I18nProvider } from "@/lib/i18n";
 
 function NotFoundComponent() {
@@ -80,6 +81,7 @@ function RootComponent() {
         </main>
         <Footer />
       </div>
+      <ImageDebugPanel />
     </I18nProvider>
   );
 }
