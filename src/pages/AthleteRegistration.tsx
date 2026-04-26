@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BELTS, type BeltColor } from "@/lib/belts";
-import { ArrowLeft, ArrowRight, CheckCircle2, Search, CreditCard, Lock, QrCode } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Search, CreditCard, Lock } from "lucide-react";
 import dragon from "@/assets/dragon-logo.png";
 
 const STEPS = ["Account", "Personal", "Sport", "Guardian", "Payment", "Confirm"];
