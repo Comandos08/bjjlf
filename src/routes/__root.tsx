@@ -41,7 +41,15 @@ export const Route = createRootRoute({
       { name: "twitter:title", content: "BJJLF — Brazilian Jiu-Jitsu Legends Federation" },
       { name: "twitter:description", content: "Official home of BJJLF: rankings, events, athlete & academy registration, and the global black belt registry." },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap",
+      },
+      { rel: "stylesheet", href: appCss },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
