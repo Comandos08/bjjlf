@@ -38,7 +38,7 @@ function HeroSlider() {
     <section className="relative w-full overflow-hidden bg-black" style={{ height: "560px" }}>
       {SLIDES.map((s, idx) => (
         <div key={idx} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: idx === i ? 1 : 0 }}>
-          <SafeImage src={s.image} alt={s.badge} fallbackLabel={s.badge} wrapperClassName="absolute inset-0" />
+          <SafeImage src={s.image} alt={s.badge} fallbackLabel={s.badge} source="hero" wrapperClassName="absolute inset-0" />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3) 100%)" }} />
         </div>
       ))}
@@ -86,7 +86,7 @@ function HeroSlider() {
                   idx === i ? "border-l-[3px] border-gold bg-black/40" : "border-l-[3px] border-transparent hover:bg-black/30",
                 )}
               >
-                <SafeImage src={s.image} alt={s.badge} fallbackLabel={s.badge} hideFallbackIcon wrapperClassName="h-10 w-16 shrink-0" />
+                <SafeImage src={s.image} alt={s.badge} fallbackLabel={s.badge} source="hero-thumb" hideFallbackIcon wrapperClassName="h-10 w-16 shrink-0" />
                 <div>
                   <div className={cn(typo.label.sm, "tracking-[0.08em]", idx === i ? "text-white" : "text-[#888]")}>
                     {s.badge}
@@ -150,6 +150,7 @@ function EventsSection() {
                 src={e.image}
                 alt={`${e.name} — Brazilian Jiu-Jitsu event`}
                 fallbackLabel={e.name}
+                source="event"
                 wrapperClassName="h-32 bg-[#F7F9FC]"
               />
               <div className="p-4 space-y-2.5 flex-1 flex flex-col">
@@ -194,6 +195,7 @@ function NewsSection() {
                 src={n.image}
                 alt={n.title}
                 fallbackLabel={n.title}
+                source="news"
                 wrapperClassName="h-[180px]"
                 className="transition-transform duration-500 group-hover:scale-105"
               />
@@ -373,7 +375,7 @@ function YouTubeSection() {
           {videos.map((v, i) => (
             <a key={i} href="#" className="group bg-white border border-[#E5E5E5] hover:border-primary transition-base">
               <div className="relative aspect-video bg-[#1A1A1A] overflow-hidden">
-                <SafeImage src={v.img} alt={v.t} fallbackLabel={v.t} wrapperClassName="absolute inset-0" className="opacity-70 group-hover:opacity-90 transition-opacity" />
+                <SafeImage src={v.img} alt={v.t} fallbackLabel={v.t} source="video" wrapperClassName="absolute inset-0" className="opacity-70 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute inset-0 grid place-items-center">
                   <span className="h-14 w-14 rounded-full bg-primary grid place-items-center group-hover:scale-110 transition-transform" style={{ borderRadius: "9999px" }}>
                     <Play className="h-6 w-6 text-white ml-0.5" fill="currentColor" />
