@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { typo } from "@/lib/typography";
 
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
@@ -20,20 +21,19 @@ const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 );
 CardHeader.displayName = "CardHeader";
 
+// CardTitle uses the centralized heading token (Barlow Condensed, uppercase,
+// wider tracking) so every card title across the app stays consistent.
 const CardTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("font-semibold leading-none tracking-tight", className)}
-      {...props}
-    />
+    <div ref={ref} className={cn(typo.heading.sm, "leading-none", className)} {...props} />
   ),
 );
 CardTitle.displayName = "CardTitle";
 
+// CardDescription uses the centralized body token (DM Sans, muted).
 const CardDescription = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("text-sm text-muted-foreground", className)} {...props} />
+    <div ref={ref} className={cn(typo.body.sm, "text-muted-foreground", className)} {...props} />
   ),
 );
 CardDescription.displayName = "CardDescription";
