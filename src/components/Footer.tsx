@@ -1,61 +1,97 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Youtube, Twitter } from "lucide-react";
 import { Logo } from "./Logo";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useI18n } from "@/lib/i18n";
 
 export function Footer() {
+  const { t } = useI18n();
+
+  const linkClass = "text-[13px] text-[#999] hover:text-gold transition-base block py-1";
+  const headingClass = "text-gold text-[12px] uppercase tracking-[0.1em] mb-3";
+  const headingStyle = { fontFamily: "Barlow Condensed", fontWeight: 800 };
+
   return (
-    <footer className="bg-navbar border-t border-border mt-20">
-      <div className="container mx-auto px-4 lg:px-6 py-14">
-        <div className="grid gap-10 lg:grid-cols-4">
-          <div className="space-y-4">
+    <footer className="bg-navbar" style={{ borderTop: "3px solid #C41E3A", paddingTop: "48px", paddingBottom: "24px" }}>
+      <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
+        <div className="grid gap-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-[2fr,1fr,1fr,1fr,1.5fr]">
+          {/* Col 1 — Logo + tagline + social */}
+          <div className="col-span-2 lg:col-span-1 space-y-4">
             <Logo />
-            <p className="text-sm text-muted-foreground max-w-xs">
-              Brazilian Jiu-Jitsu Legends Federation — preserving tradition, certifying excellence.
+            <p className="text-[13px] text-[#999] max-w-xs" style={{ fontFamily: "DM Sans" }}>
+              {t("footer.tagline")}
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               {[Facebook, Instagram, Youtube, Twitter].map((Icon, i) => (
-                <a key={i} href="#" className="h-9 w-9 grid place-items-center rounded-full border border-border text-foreground/70 hover:text-gold hover:border-gold transition-colors">
-                  <Icon className="h-4 w-4" />
+                <a
+                  key={i}
+                  href="#"
+                  className="h-8 w-8 grid place-items-center border border-[#333] text-[#999] hover:text-gold hover:border-gold transition-base"
+                >
+                  <Icon className="h-3.5 w-3.5" />
                 </a>
               ))}
             </div>
           </div>
 
+          {/* Col 2 — Rankings */}
           <div>
-            <h4 className="font-display text-lg tracking-wider text-gold mb-4">Federation</h4>
-            <ul className="space-y-2 text-sm text-foreground/70">
-              <li><Link to="/about" className="hover:text-foreground">About BJJLF</Link></li>
-              <li><Link to="/graduates" className="hover:text-foreground">Black Belt Registry</Link></li>
-              <li><Link to="/news" className="hover:text-foreground">News & Updates</Link></li>
+            <h4 className={headingClass} style={headingStyle}>{t("footer.rankings")}</h4>
+            <ul>
+              <li><Link to="/" className={linkClass}>{t("home.ranking.beltBlack")}</Link></li>
+              <li><Link to="/" className={linkClass}>{t("home.ranking.beltBrown")}</Link></li>
+              <li><Link to="/" className={linkClass}>Gi</Link></li>
+              <li><Link to="/" className={linkClass}>No-Gi</Link></li>
             </ul>
           </div>
 
+          {/* Col 3 — Cadastros */}
           <div>
-            <h4 className="font-display text-lg tracking-wider text-gold mb-4">Membership</h4>
-            <ul className="space-y-2 text-sm text-foreground/70">
-              <li><Link to="/register/athlete" className="hover:text-foreground">Register as Athlete</Link></li>
-              <li><Link to="/register/academy" className="hover:text-foreground">Register Academy</Link></li>
+            <h4 className={headingClass} style={headingStyle}>{t("footer.registrations")}</h4>
+            <ul>
+              <li><Link to="/register/athlete" className={linkClass}>{t("home.cta.athleteBtn")}</Link></li>
+              <li><Link to="/register/academy" className={linkClass}>{t("home.cta.academyBtn")}</Link></li>
+              <li><Link to="/graduates" className={linkClass}>{t("grad.title")}</Link></li>
             </ul>
           </div>
 
+          {/* Col 4 — Info */}
           <div>
-            <h4 className="font-display text-lg tracking-wider text-gold mb-4">Newsletter</h4>
-            <p className="text-sm text-foreground/70 mb-3">Get event updates and rankings in your inbox.</p>
-            <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-              <Input type="email" placeholder="your@email.com" className="bg-background" />
-              <Button variant="primary" type="submit">Join</Button>
+            <h4 className={headingClass} style={headingStyle}>{t("footer.info")}</h4>
+            <ul>
+              <li><Link to="/about" className={linkClass}>{t("nav.about")}</Link></li>
+              <li><Link to="/news" className={linkClass}>{t("nav.news")}</Link></li>
+              <li><a href="#" className={linkClass}>{t("nav.rules")}</a></li>
+            </ul>
+          </div>
+
+          {/* Col 5 — Newsletter */}
+          <div className="col-span-2 lg:col-span-1">
+            <h4 className={headingClass} style={headingStyle}>{t("footer.newsletter")}</h4>
+            <p className="text-[13px] text-[#999] mb-3" style={{ fontFamily: "DM Sans" }}>
+              {t("footer.newsletter.desc")}
+            </p>
+            <form className="flex" onSubmit={(e) => e.preventDefault()}>
+              <input
+                type="email"
+                placeholder={t("footer.email.placeholder")}
+                className="flex-1 h-9 px-3 bg-dark-2 border border-[#333] text-white text-[13px] focus:outline-none focus:border-gold transition-base"
+                style={{ fontFamily: "DM Sans" }}
+              />
+              <button
+                type="submit"
+                className="h-9 px-4 bg-primary text-white text-[11px] uppercase tracking-[0.08em] font-bold hover:bg-primary-dark transition-base"
+              >
+                {t("footer.subscribe")}
+              </button>
             </form>
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} BJJLF — Brazilian Jiu-Jitsu Legends Federation. All rights reserved.</p>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-foreground">Privacy</a>
-            <a href="#" className="hover:text-foreground">Terms</a>
-            <a href="#" className="hover:text-foreground">Contact</a>
+        <div className="mt-10 pt-5 border-t border-[#1A1A1A] flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-[12px] text-[#555]" style={{ fontFamily: "DM Sans" }}>{t("footer.copyright")}</p>
+          <div className="flex gap-5 text-[12px]">
+            <a href="#" className="text-[#555] hover:text-gold transition-base">{t("footer.privacy")}</a>
+            <a href="#" className="text-[#555] hover:text-gold transition-base">{t("footer.terms")}</a>
           </div>
         </div>
       </div>
