@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState, type ImgHTMLAttributes } from "react";
+import { useEffect, useRef, useState, type ImgHTMLAttributes } from "react";
 import { ImageOff } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { withImageCache } from "@/lib/image-cache";
+import { useImageCacheUrl } from "@/lib/image-cache";
 import {
   registerImage,
   reportImageStatus,
@@ -40,10 +40,10 @@ export function SafeImage({
   const [errored, setErrored] = useState(false);
   const idRef = useRef<string | null>(null);
 
-  // Resolve the URL through the cache helper. In production this is a no-op;
-  // in dev it appends a per-session bust token so a previously-failed (404)
-  // response can't be served from the browser's HTTP/disk cache.
-  const resolvedSrc = useMemo(() => withImageCache(typeof src === "string" ? src : undefined) ?? src, [src]);
+  // Resolve the URL through the cache hook. In production this is a no-op;
+  // in dev it appends a `?v=<timestamp>` token regenerated **per mount** so a
+  // previously-failed (404) response can't be served from the browser cache.
+  const resolvedSrc = useImageCacheUrl(typeof src === "string" ? src : undefined) ?? src;
 
   useEffect(() => {
     if (!isDev || !src) return;
