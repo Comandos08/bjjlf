@@ -1,13 +1,16 @@
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/Stepper";
-import { Input } from "@/components/ui/input";
-import { Search, MapPin, Award, ArrowRight } from "lucide-react";
+import { Search, MapPin } from "lucide-react";
 import { GRADUATES } from "@/data/graduates";
+import { useI18n } from "@/lib/i18n";
 
 const GRADES = ["All", "1st Degree", "2nd Degree", "3rd Degree", "4th Degree"];
 
+const beltBg = "#0A0A0A";
+
 export function GraduatesPage() {
+  const { t } = useI18n();
   const [q, setQ] = useState("");
   const [grade, setGrade] = useState("All");
   const [country, setCountry] = useState("All");
@@ -24,54 +27,83 @@ export function GraduatesPage() {
   );
 
   return (
-    <div>
-      <PageHero kicker="Black Belt Registry" title="Certified Graduates" desc="The official BJJLF directory of certified black belts. Every entry is verified and traceable to its lineage." />
+    <div className="bg-[#F7F9FC] min-h-screen">
+      <PageHero
+        breadcrumb={[{ label: t("grad.breadcrumb") }]}
+        title={t("grad.title").toUpperCase()}
+        desc={t("grad.subtitle")}
+      />
 
-      <section className="py-10 border-b border-border bg-navbar/40">
-        <div className="container mx-auto px-4 lg:px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <section className="max-w-[1280px] mx-auto px-4 lg:px-6 py-8">
+        <div className="bg-white border border-[#E5E5E5] p-5 grid md:grid-cols-2 lg:grid-cols-4 gap-3">
           <div className="relative lg:col-span-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search by name..." className="pl-9" value={q} onChange={(e) => setQ(e.target.value)} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9CA3AF]" />
+            <input
+              placeholder={t("grad.search")}
+              className="w-full h-10 pl-9 pr-3 border border-[#E5E5E5] bg-white text-[14px] text-[#0F0F0F] focus:outline-none focus:border-primary transition-base"
+              style={{ fontFamily: "DM Sans" }}
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
           </div>
-          <Select label="Belt grade" value={grade} onChange={setGrade} options={GRADES} />
-          <Select label="Country" value={country} onChange={setCountry} options={countries} />
-          <Select label="Academy" value={academy} onChange={setAcademy} options={academies} />
+          <FilterSelect label={t("grad.degree")} value={grade} onChange={setGrade} options={GRADES} />
+          <FilterSelect label={t("grad.country")} value={country} onChange={setCountry} options={countries} />
+          <FilterSelect label={t("grad.academy")} value={academy} onChange={setAcademy} options={academies} />
         </div>
       </section>
 
-      <section className="py-12">
-        <div className="container mx-auto px-4 lg:px-6">
-          <p className="text-sm text-muted-foreground mb-6"><span className="text-gold font-heading">{list.length}</span> graduate{list.length === 1 ? "" : "s"} found</p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {list.map((g) => (
-              <Link key={g.id} to="/graduates/$graduateId" params={{ graduateId: g.id }} className="group block bg-card border-l-4 border border-border hover:border-gold transition-all hover:-translate-y-1" style={{ borderLeftColor: "#0A0A0A" }}>
-                <div className="p-5 flex gap-4">
-                  <img src={g.photo} alt={g.name} loading="lazy" className="h-20 w-20 object-cover border-2 border-gold/40 grayscale group-hover:grayscale-0 transition-all" />
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-display text-xl tracking-wider leading-tight">{g.name}</h3>
-                    <p className="text-xs text-gold uppercase tracking-wider mt-0.5">{g.beltGrade} Black Belt</p>
-                    <div className="text-xs text-foreground/60 mt-2 flex items-center gap-1"><MapPin className="h-3 w-3" />{g.state}, {g.country}</div>
-                    <div className="text-xs text-foreground/60 flex items-center gap-1"><Award className="h-3 w-3" />{g.academy}</div>
-                  </div>
+      <section className="max-w-[1280px] mx-auto px-4 lg:px-6 pb-16">
+        <p className="text-[13px] text-[#6B7280] mb-5" style={{ fontFamily: "DM Sans" }}>
+          <span className="text-primary font-bold">{list.length}</span> {list.length === 1 ? t("grad.foundOne") : t("grad.found")}
+        </p>
+        <div className="grid gap-3.5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}>
+          {list.map((g) => (
+            <Link
+              key={g.id}
+              to="/graduates/$graduateId"
+              params={{ graduateId: g.id }}
+              className="bg-white border border-[#E5E5E5] hover:border-primary transition-base p-4 flex flex-col items-center text-center"
+            >
+              <div className="relative">
+                <div
+                  className="h-[72px] w-[72px] grid place-items-center rounded-full text-white"
+                  style={{ background: beltBg, border: `3px solid ${beltBg}`, borderRadius: "9999px", fontFamily: "Barlow Condensed", fontWeight: 900, fontSize: "20px" }}
+                >
+                  {g.name.split(" ").map((s) => s[0]).slice(0, 2).join("")}
                 </div>
-                <div className="px-5 pb-4 flex justify-between items-center text-xs">
-                  <span className="text-muted-foreground font-mono">{g.certificateNo}</span>
-                  <span className="font-heading uppercase tracking-wider text-primary opacity-0 group-hover:opacity-100 transition-opacity inline-flex items-center gap-1">View <ArrowRight className="h-3 w-3" /></span>
-                </div>
-              </Link>
-            ))}
-          </div>
+              </div>
+              <h3 className="text-[14px] text-[#0F0F0F] mt-3" style={{ fontFamily: "DM Sans", fontWeight: 600 }}>{g.name}</h3>
+              <span
+                className="mt-1.5 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.08em] text-white font-bold"
+                style={{ background: beltBg, borderRadius: "9999px", fontFamily: "Barlow Condensed" }}
+              >
+                {g.beltGrade}
+              </span>
+              <p className="text-[12px] text-[#9CA3AF] mt-2" style={{ fontFamily: "DM Sans" }}>{g.academy}</p>
+              <p className="text-[12px] text-[#6B7280] mt-1 inline-flex items-center gap-1" style={{ fontFamily: "DM Sans" }}>
+                <MapPin className="h-3 w-3" /> {g.state}, {g.country}
+              </p>
+              <span className="mt-3 w-full text-center py-2 text-[11px] uppercase tracking-[0.1em] font-bold border border-primary text-primary hover:bg-primary hover:text-white transition-base">
+                {t("grad.viewProfile")}
+              </span>
+            </Link>
+          ))}
         </div>
       </section>
     </div>
   );
 }
 
-function Select({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: string[] }) {
+function FilterSelect({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: string[] }) {
   return (
     <div>
-      <label className="block text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-1">{label}</label>
-      <select className="h-9 w-full bg-input border border-border px-3 text-sm rounded-md" value={value} onChange={(e) => onChange(e.target.value)}>
+      <label className="block text-[10px] uppercase tracking-[0.1em] text-[#374151] mb-1" style={{ fontFamily: "DM Sans", fontWeight: 600 }}>{label}</label>
+      <select
+        className="h-10 w-full bg-white border border-[#E5E5E5] px-3 text-[14px] text-[#0F0F0F] focus:outline-none focus:border-primary transition-base cursor-pointer"
+        style={{ fontFamily: "DM Sans" }}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      >
         {options.map((o) => <option key={o}>{o}</option>)}
       </select>
     </div>

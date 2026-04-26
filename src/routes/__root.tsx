@@ -2,6 +2,7 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/r
 import appCss from "../styles.css?url";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { I18nProvider } from "@/lib/i18n";
 
 function NotFoundComponent() {
   return (
@@ -15,7 +16,7 @@ function NotFoundComponent() {
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 font-heading uppercase tracking-wider text-primary-foreground hover:bg-primary/90"
+            className="inline-flex items-center justify-center bg-primary px-6 py-3 font-heading uppercase tracking-wider text-primary-foreground hover:bg-primary-dark transition-colors"
           >
             Back to home
           </Link>
@@ -39,8 +40,6 @@ export const Route = createRootRoute({
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "BJJLF — Brazilian Jiu-Jitsu Legends Federation" },
       { name: "twitter:description", content: "Official home of BJJLF: rankings, events, athlete & academy registration, and the global black belt registry." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/89b20644-4f86-4541-b2f3-524af335ef6d/id-preview-770d530f--f9ae5ffa-f92c-4c62-9ef2-d13b373be473.lovable.app-1777242769351.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/89b20644-4f86-4541-b2f3-524af335ef6d/id-preview-770d530f--f9ae5ffa-f92c-4c62-9ef2-d13b373be473.lovable.app-1777242769351.png" },
     ],
     links: [{ rel: "stylesheet", href: appCss }],
   }),
@@ -51,7 +50,7 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="pt-BR" className="dark">
       <head>
         <HeadContent />
       </head>
@@ -65,12 +64,14 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <Navbar />
-      <main className="flex-1">
-        <Outlet />
-      </main>
-      <Footer />
-    </div>
+    <I18nProvider>
+      <div className="min-h-screen flex flex-col bg-background">
+        <Navbar />
+        <main className="flex-1">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+    </I18nProvider>
   );
 }

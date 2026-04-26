@@ -2,15 +2,16 @@
 @source "../src";
 @import "tw-animate-css";
 
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -19,6 +20,7 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-dark: var(--primary-dark);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -31,100 +33,126 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
   --color-gold-foreground: var(--gold-foreground);
   --color-navbar: var(--navbar);
   --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
+  --color-dark: var(--dark);
+  --color-dark-2: var(--dark-2);
+  --color-dark-3: var(--dark-3);
+  --color-muted-text: var(--muted-text);
 
-  --font-display: "Bebas Neue", "Oswald", system-ui, sans-serif;
-  --font-heading: "Oswald", system-ui, sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Barlow Condensed", "Oswald", system-ui, sans-serif;
+  --font-heading: "Barlow Condensed", "Oswald", system-ui, sans-serif;
+  --font-sans: "DM Sans", system-ui, sans-serif;
 }
 
 :root {
-  --radius: 0.5rem;
+  --radius: 0px;
 
-  /* Brand */
-  --background: oklch(0.18 0 0); /* #1A1A1A */
-  --foreground: oklch(0.98 0 0); /* #FFFFFF */
-  --navbar: oklch(0.14 0 0); /* #111111 */
-  --surface: oklch(0.22 0 0); /* slightly lighter card surface */
-  --surface-2: oklch(0.27 0 0);
+  /* BJJLF brand palette — exact hex values */
+  --background: #1A1A1A;
+  --foreground: #FFFFFF;
 
-  --card: oklch(0.22 0 0);
-  --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.18 0 0);
-  --popover-foreground: oklch(0.98 0 0);
+  --primary: #C41E3A;
+  --primary-foreground: #FFFFFF;
+  --primary-dark: #9B1529;
 
-  --primary: oklch(0.55 0.21 22); /* #C41E3A red */
-  --primary-foreground: oklch(0.98 0 0);
+  --gold: #B8960C;
+  --gold-light: #D4AC10;
+  --gold-foreground: #0F0F0F;
 
-  --secondary: oklch(0.27 0 0);
-  --secondary-foreground: oklch(0.98 0 0);
+  --navbar: #0F0F0F;
+  --dark: #1A1A1A;
+  --dark-2: #222222;
+  --dark-3: #2C2C2C;
+  --surface: #F7F9FC;
 
-  --muted: oklch(0.27 0 0);
-  --muted-foreground: oklch(0.7 0 0);
+  --card: #222222;
+  --card-foreground: #FFFFFF;
+  --popover: #0F0F0F;
+  --popover-foreground: #FFFFFF;
 
-  --accent: oklch(0.27 0 0);
-  --accent-foreground: oklch(0.98 0 0);
+  --secondary: #2C2C2C;
+  --secondary-foreground: #FFFFFF;
 
-  --gold: oklch(0.7 0.13 86); /* #B8960C */
-  --gold-foreground: oklch(0.14 0 0);
+  --muted: #2C2C2C;
+  --muted-foreground: #9CA3AF;
+  --muted-text: #6B7280;
 
-  --destructive: oklch(0.55 0.21 22);
-  --destructive-foreground: oklch(0.98 0 0);
+  --accent: #2C2C2C;
+  --accent-foreground: #FFFFFF;
 
-  --border: oklch(0.3 0 0);
-  --input: oklch(0.27 0 0);
-  --ring: oklch(0.55 0.21 22);
+  --destructive: #C41E3A;
+  --destructive-foreground: #FFFFFF;
 
-  --chart-1: oklch(0.55 0.21 22);
-  --chart-2: oklch(0.7 0.13 86);
-  --chart-3: oklch(0.6 0 0);
-  --chart-4: oklch(0.45 0.15 22);
-  --chart-5: oklch(0.85 0.1 86);
+  --border: #2A2A2A;
+  --input: #FFFFFF;
+  --ring: #C41E3A;
 
-  --sidebar: oklch(0.14 0 0);
-  --sidebar-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.55 0.21 22);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent: oklch(0.22 0 0);
-  --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.3 0 0);
-  --sidebar-ring: oklch(0.55 0.21 22);
+  --chart-1: #C41E3A;
+  --chart-2: #B8960C;
+  --chart-3: #6B7280;
+  --chart-4: #9B1529;
+  --chart-5: #D4AC10;
+
+  --sidebar: #0F0F0F;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #C41E3A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #222222;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #2A2A2A;
+  --sidebar-ring: #C41E3A;
+
+  /* Belt colors */
+  --belt-white: #F5F5F5;
+  --belt-blue: #1E5BB8;
+  --belt-purple: #6B2D8C;
+  --belt-brown: #6B4423;
+  --belt-black: #0A0A0A;
 }
 
 .dark {
-  /* Site is always dark — same tokens */
-  --background: oklch(0.18 0 0);
-  --foreground: oklch(0.98 0 0);
+  --background: #1A1A1A;
+  --foreground: #FFFFFF;
 }
 
 @layer base {
   * {
     border-color: var(--color-border);
+    border-radius: 0;
   }
 
   html {
     color-scheme: dark;
+    scroll-behavior: smooth;
   }
 
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-size: 15px;
     -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, h3, h4 {
+  h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+    font-weight: 800;
     letter-spacing: 0.02em;
+    text-transform: uppercase;
   }
+
+  /* Allow rounded utilities to override the global zero */
+  .rounded-full { border-radius: 9999px !important; }
+  .rounded-pill { border-radius: 9999px !important; }
 }
 
 @layer utilities {
-  .font-display { font-family: var(--font-display); }
-  .font-heading { font-family: var(--font-heading); }
+  .font-display { font-family: var(--font-display); font-weight: 800; }
+  .font-heading { font-family: var(--font-display); font-weight: 700; }
+  .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 
   .text-gradient-gold {
     background: linear-gradient(135deg, #B8960C, #E5C547, #B8960C);
@@ -133,24 +161,44 @@
     color: transparent;
   }
 
-  .border-gold-hover {
-    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-    border: 1px solid var(--color-border);
-  }
-  .border-gold-hover:hover {
-    border-color: var(--color-gold);
-    box-shadow: 0 8px 30px -10px color-mix(in oklab, var(--color-gold) 35%, transparent);
-  }
-
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { scrollbar-width: none; }
-}
 
-/* Belt color tokens (used as inline classes via data attributes) */
-:root {
-  --belt-white: #F5F5F5;
-  --belt-blue: #1E5BB8;
-  --belt-purple: #6B2D8C;
-  --belt-brown: #6B4423;
-  --belt-black: #0A0A0A;
+  .transition-base {
+    transition: all 0.18s ease;
+  }
+
+  .focus-ring:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.15);
+  }
+
+  .input-base {
+    border: 1px solid #E5E5E5;
+    background: #FFFFFF;
+    color: #0F0F0F;
+    padding: 10px 14px;
+    font-size: 14px;
+    transition: all 0.18s ease;
+  }
+  .input-base:focus {
+    outline: none;
+    border-color: #C41E3A;
+    box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.1);
+  }
+
+  .label-base {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .btn-uppercase {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+  }
 }
