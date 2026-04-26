@@ -5,9 +5,12 @@ import * as LabelPrimitive from "@radix-ui/react-label";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { typo } from "@/lib/typography";
 
+// Source label typography from the centralized `typo.label.md` token
+// (DM Sans, uppercase, micro tracking, semibold).
 const labelVariants = cva(
-  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+  cn(typo.label.md, "leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"),
 );
 
 const Label = React.forwardRef<
