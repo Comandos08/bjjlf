@@ -1,6 +1,8 @@
 import { Check } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
+import { typo } from "@/lib/typography";
+import { cn } from "@/lib/utils";
 
 export function Stepper({ steps, current }: { steps: string[]; current: number }) {
   return (
@@ -28,10 +30,11 @@ export function Stepper({ steps, current }: { steps: string[]; current: number }
                 {done ? <Check className="h-5 w-5" /> : i + 1}
               </div>
               <span
-                className={`hidden md:inline text-[11px] uppercase tracking-[0.06em] whitespace-nowrap ${
-                  active ? "text-foreground font-bold" : done ? "text-foreground/80" : "text-muted-foreground"
-                }`}
-                style={{ fontFamily: "DM Sans" }}
+                className={cn(
+                  "hidden md:inline whitespace-nowrap",
+                  typo.label.md,
+                  active ? "text-foreground" : done ? "text-foreground/80" : "text-muted-foreground",
+                )}
               >
                 {label}
               </span>
@@ -60,7 +63,7 @@ export function PageHero({ kicker, title, desc, breadcrumb }: { kicker?: string;
       />
       <div className="relative max-w-[1280px] mx-auto px-4 lg:px-6 py-12 lg:py-16">
         {breadcrumb && breadcrumb.length > 0 && (
-          <nav className="flex items-center gap-2 text-[12px] mb-4" style={{ fontFamily: "DM Sans" }}>
+          <nav className={cn(typo.body.xs, "flex items-center gap-2 mb-4")}>
             <Link to="/" className="text-[#999] hover:text-gold transition-base uppercase tracking-[0.06em]">
               {t("nav.home")}
             </Link>
@@ -76,18 +79,9 @@ export function PageHero({ kicker, title, desc, breadcrumb }: { kicker?: string;
             ))}
           </nav>
         )}
-        {kicker && <p className="text-gold font-heading text-[11px] tracking-[0.2em] uppercase mb-3" style={{ fontWeight: 700 }}>{kicker}</p>}
-        <h1
-          className="font-display text-3xl md:text-5xl lg:text-[42px] tracking-wider text-white leading-[1.05]"
-          style={{ fontWeight: 900 }}
-        >
-          {title}
-        </h1>
-        {desc && (
-          <p className="mt-4 max-w-2xl text-[15px] text-foreground/70" style={{ fontFamily: "DM Sans" }}>
-            {desc}
-          </p>
-        )}
+        {kicker && <p className={cn(typo.heading.kicker, "mb-3")}>{kicker}</p>}
+        <h1 className={cn(typo.heading.xl, "text-white")}>{title}</h1>
+        {desc && <p className={cn(typo.body.md, "mt-4 max-w-2xl")}>{desc}</p>}
       </div>
     </section>
   );
