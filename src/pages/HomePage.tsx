@@ -150,6 +150,7 @@ function EventsSection() {
                 src={e.image}
                 alt={`${e.name} — Brazilian Jiu-Jitsu event`}
                 fallbackLabel={e.name}
+                source="event"
                 wrapperClassName="h-32 bg-[#F7F9FC]"
               />
               <div className="p-4 space-y-2.5 flex-1 flex flex-col">
@@ -194,6 +195,7 @@ function NewsSection() {
                 src={n.image}
                 alt={n.title}
                 fallbackLabel={n.title}
+                source="news"
                 wrapperClassName="h-[180px]"
                 className="transition-transform duration-500 group-hover:scale-105"
               />
