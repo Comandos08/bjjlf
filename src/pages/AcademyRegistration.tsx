@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, ArrowRight, CheckCircle2, Plus, Trash2, Award } from "lucide-react";
+import { typo } from "@/lib/typography";
+import { cn } from "@/lib/utils";
 
 const STEPS = ["Head Professor", "Academy", "Other Professors", "Payment", "Certificate"];
 
