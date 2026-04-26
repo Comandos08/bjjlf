@@ -108,9 +108,9 @@ export function Navbar() {
               <Link
                 key={item.key}
                 to={item.to ?? "/"}
-                className="px-3 py-2 font-heading text-[12px] uppercase tracking-[0.1em] text-[#CCCCCC] hover:text-white transition-base"
-                style={{ fontWeight: 700 }}
-                activeProps={{ style: { color: "#FFFFFF", borderBottom: "2px solid #B8960C", fontWeight: 700 } }}
+                className="px-3 py-2 uppercase text-[12px] text-[#CCCCCC] hover:text-white transition-base"
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" }}
+                activeProps={{ style: { color: "#FFFFFF", borderBottom: "2px solid #B8960C", fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" } }}
                 activeOptions={{ exact: item.to === "/" }}
               >
                 {label}
