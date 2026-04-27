@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, X, ShoppingBag, User, ChevronDown, Globe, CreditCard, LogOut, UserCircle, Trophy, LogIn } from "lucide-react";
+import { Menu, X, ShoppingBag, User, ChevronDown, Globe, CreditCard, LogOut, UserCircle, Trophy, LogIn, Building2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { useI18n, type Lang } from "@/lib/i18n";
@@ -255,6 +255,11 @@ function AthleteMenu() {
             label="Minhas Competições"
             onClick={() => { setOpen(false); void navigate({ to: "/my-competitions" }); }}
           />
+          <AthleteMenuItem
+            icon={<Building2 size={14} />}
+            label="Meus Alvarás"
+            onClick={() => { setOpen(false); void navigate({ to: "/my-permits" }); }}
+          />
 
           <div className="border-t border-[#222] my-1" />
           <AthleteMenuItem
@@ -320,6 +325,9 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
       </Link>
       <Link to="/my-competitions" onClick={onNavigate} className="py-2.5 text-sm text-gray-300 flex items-center gap-2" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
         <Trophy size={16} /> Minhas Competições
+      </Link>
+      <Link to="/my-permits" onClick={onNavigate} className="py-2.5 text-sm text-gray-300 flex items-center gap-2" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
+        <Building2 size={16} /> Meus Alvarás
       </Link>
       <button
         onClick={() => { onNavigate(); void signOut(); }}
