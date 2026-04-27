@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Download, ExternalLink, FileText, Loader2, Search, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { ADMIN_PAGE_SIZE, Pagination, useDebounced } from "@/components/admin/Pagination";
 
 export const Route = createFileRoute("/admin/permits")({
   head: () => ({
@@ -75,6 +76,9 @@ function AdminPermitsPage() {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("all");
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounced(query, 300);
+  const [page, setPage] = useState(1);
+  useEffect(() => { setPage(1); }, [debouncedQuery, statusFilter]);
 
   async function load() {
     setLoading(true);
@@ -105,7 +109,7 @@ function AdminPermitsPage() {
   );
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = debouncedQuery.trim().toLowerCase();
     return rows.filter((r) => {
       if (statusFilter === "expiring") {
         if (r.status !== "active") return false;
@@ -115,12 +119,18 @@ function AdminPermitsPage() {
       if (
         q &&
         !r.academy_name.toLowerCase().includes(q) &&
-        !r.email.toLowerCase().includes(q)
+        !r.email.toLowerCase().includes(q) &&
+        !(r.permit_number?.toLowerCase().includes(q) ?? false)
       )
         return false;
       return true;
     });
-  }, [rows, statusFilter, query]);
+  }, [rows, statusFilter, debouncedQuery]);
+
+  const paged = useMemo(
+    () => filtered.slice((page - 1) * ADMIN_PAGE_SIZE, page * ADMIN_PAGE_SIZE),
+    [filtered, page],
+  );
 
   const totalActive = rows.filter((r) => r.status === "active").length;
   const totalPending = rows.filter((r) => r.status === "pending_payment").length;
