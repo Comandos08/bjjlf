@@ -147,11 +147,17 @@ export function NewsPage() {
             <div className="border border-dashed border-gray-300 bg-white rounded-xl p-16 text-center">
               <Newspaper className="mx-auto h-16 w-16 text-gray-300" aria-hidden />
               <h3
-                className="mt-4 text-2xl uppercase tracking-wide text-gray-400"
+                className="mt-4 text-xl uppercase tracking-wide text-gray-400"
                 style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
               >
-                {t("news.cat.all")}
+                Nenhuma notícia publicada ainda
               </h3>
+              <p
+                className="mt-2 max-w-md mx-auto text-sm text-gray-400 leading-[1.6]"
+                style={{ fontFamily: "Barlow", fontWeight: 400 }}
+              >
+                Em breve novidades da federação aparecerão aqui.
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
