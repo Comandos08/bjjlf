@@ -288,7 +288,7 @@ function AdminRegistrationsPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((r) => {
+                {paged.map((r) => {
                   const s = statusBadge(r.status);
                   return (
                     <tr key={r.id} className="border-t border-[#E5E5E5] text-[#1A1A1A] hover:bg-[#F5F5F5]">
