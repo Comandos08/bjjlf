@@ -12,9 +12,17 @@ import { useAthleteAuth } from "@/lib/athlete-auth";
 const MAX_DEGREES = 4;
 
 export function MyCardPage() {
-  const { profile, isLoading, refresh } = useRequireActiveAthlete();
+  const navigate = useNavigate();
+  const { user, profile, isLoading, refresh } = useAthleteAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+
+  // Redirect to login when loading finishes and there's no user.
+  useEffect(() => {
+    if (!isLoading && !user) {
+      void navigate({ to: "/athlete/login" });
+    }
+  }, [isLoading, user, navigate]);
 
   const initials = useMemo(() => {
     if (!profile) return "";
@@ -29,12 +37,38 @@ export function MyCardPage() {
     });
   }, [profile]);
 
-  if (isLoading || !profile) {
+  // Loading: show skeleton card.
+  if (isLoading || (!user && !profile)) {
+    return <CardPageSkeleton />;
+  }
+
+  // Logged in but no profile row.
+  if (user && !profile) {
     return (
-      <div className="bg-gray-50 min-h-screen grid place-items-center">
-        <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+      <div className="bg-gray-50 min-h-screen grid place-items-center px-6">
+        <div className="max-w-md text-center bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+          <AlertCircle className="h-12 w-12 text-[#C8211A] mx-auto mb-4" />
+          <h2 className="text-2xl uppercase text-gray-900 tracking-wide" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
+            Perfil não encontrado
+          </h2>
+          <p className="mt-3 text-sm text-gray-500" style={{ fontFamily: "Barlow" }}>
+            Não encontramos um perfil de atleta vinculado a esta conta. Cadastre-se para emitir sua carteirinha.
+          </p>
+          <Link
+            to="/"
+            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest no-underline"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+          >
+            <ArrowLeft className="h-4 w-4" /> Voltar ao início
+          </Link>
+        </div>
       </div>
     );
+  }
+
+  if (!profile) {
+    // unreachable but keeps TS happy
+    return <CardPageSkeleton />;
   }
 
   const verifyUrl = profile.registration_number
