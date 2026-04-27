@@ -7,6 +7,8 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { useRequireActiveAthlete } from "@/hooks/useRequireActiveAthlete";
+import { formatBeltLine } from "@/lib/belts-ibjjf";
+import { BeltSwatch } from "@/components/BeltSelector";
 
 const CATEGORIES = [
   "Infanto-Juvenil", "Juvenil", "Adulto",
