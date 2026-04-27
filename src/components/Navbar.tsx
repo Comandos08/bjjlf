@@ -85,8 +85,8 @@ export function Navbar() {
                   onMouseLeave={() => setOpenMenu(null)}
                 >
                   <button
-                    className={`flex items-center gap-1 px-3 py-2 uppercase text-[12px] text-[#CCCCCC] hover:text-white transition-base ${item.nowrap ? "whitespace-nowrap" : ""}`}
-                    style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em", ...(item.nowrap ? { whiteSpace: "nowrap" } : {}) }}
+                    className={`flex items-center gap-1 px-3 py-2 text-sm tracking-wide text-gray-300 hover:text-white transition-base ${item.nowrap ? "whitespace-nowrap" : ""}`}
+                    style={{ fontFamily: "Barlow", fontWeight: 500, ...(item.nowrap ? { whiteSpace: "nowrap" } : {}) }}
                   >
                     {label}
                     <ChevronDown className="h-3 w-3" />
@@ -94,14 +94,14 @@ export function Navbar() {
                   {isOpen && (
                     <div
                       className="absolute left-0 top-full bg-navbar border border-[#333] min-w-[200px] py-1"
-                      style={{ borderTop: "2px solid #C41E3A" }}
+                      style={{ borderTop: "2px solid #C8211A" }}
                     >
                       {item.children.map((c) => (
                         <Link
                           key={c.label}
                           to={c.to ?? "/"}
-                          className="block px-4 py-2.5 text-[12px] uppercase tracking-[0.06em] text-[#CCCCCC] hover:bg-dark hover:text-gold transition-base"
-                          style={{ fontFamily: "Barlow Condensed", fontWeight: 600 }}
+                          className="block px-4 py-2.5 text-sm tracking-wide text-gray-300 hover:bg-dark hover:text-white transition-base"
+                          style={{ fontFamily: "Barlow", fontWeight: 500 }}
                         >
                           {c.label}
                         </Link>
@@ -115,9 +115,9 @@ export function Navbar() {
               <Link
                 key={item.key}
                 to={item.to ?? "/"}
-                className={`px-3 py-2 uppercase text-[12px] text-[#CCCCCC] hover:text-white transition-base ${item.nowrap ? "whitespace-nowrap" : ""}`}
-                style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em", ...(item.nowrap ? { whiteSpace: "nowrap" } : {}) }}
-                activeProps={{ style: { color: "#FFFFFF", borderBottom: "2px solid #B8960C", fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" } }}
+                className={`px-3 py-2 text-sm tracking-wide text-gray-300 hover:text-white transition-base ${item.nowrap ? "whitespace-nowrap" : ""}`}
+                style={{ fontFamily: "Barlow", fontWeight: 500, ...(item.nowrap ? { whiteSpace: "nowrap" } : {}) }}
+                activeProps={{ style: { color: "#FFFFFF", borderBottom: "2px solid #C8A84B", fontFamily: "Barlow", fontWeight: 600 } }}
                 activeOptions={{ exact: item.to === "/" }}
               >
                 {label}
@@ -142,8 +142,8 @@ export function Navbar() {
             <User size={18} />
           </button>
           <button
-            className="ml-2 h-9 px-4 bg-primary text-white text-[11px] uppercase tracking-[0.1em] font-bold hover:bg-primary-dark transition-base rounded-none"
-            style={{ borderRadius: 0 }}
+            className="ml-2 h-9 px-4 bg-[#C8211A] hover:bg-[#8B1612] text-white text-xs uppercase tracking-widest transition-base rounded-md"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
           >
             {t("nav.join")}
           </button>
