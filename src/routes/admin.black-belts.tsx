@@ -188,6 +188,16 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
   });
   const photo = watch("photo_url");
   const isActive = watch("is_active");
+  const currentBeltType = watch("belt_type");
+  const allowedDegrees = degreesForBeltType(currentBeltType);
+
+  // Auto-clamp degree when belt_type changes to one with a different range.
+  function handleBeltTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const newType = e.target.value;
+    setValue("belt_type", newType);
+    const allowed = degreesForBeltType(newType);
+    setValue("belt_degree", allowed[0] ?? 0);
+  }
 
   function onSubmit(v: FormValues) {
     upsert.mutate(
