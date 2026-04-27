@@ -27,7 +27,6 @@ import {
 import { EVENTS, type EventTypeBadge } from "@/data/events";
 import { usePersistedEventFilters } from "@/lib/event-filters-storage";
 import {
-  DEFAULT_EVENT_SORT,
   EVENT_SORTS,
   parseEventSort,
   type EventSort,
