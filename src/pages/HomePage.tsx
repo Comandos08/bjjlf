@@ -120,6 +120,7 @@ function HeroSlider() {
             ) : (
               <Link
                 to="/events"
+                search={((prev: unknown) => prev) as never}
                 className="inline-flex items-center justify-center rounded-md bg-white text-black hover:bg-gray-100 px-5 py-2.5 text-sm uppercase tracking-widest no-underline transition-base"
                 style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
               >
@@ -138,6 +139,7 @@ function HeroSlider() {
             ) : (
               <Link
                 to="/events"
+                search={((prev: unknown) => prev) as never}
                 className="inline-flex items-center justify-center rounded-md bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest no-underline transition-base"
                 style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
               >
