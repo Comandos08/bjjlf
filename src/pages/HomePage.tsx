@@ -13,13 +13,21 @@ import heroBlackBeltUrl from "@/assets/hero-3-bjj.jpg";
 import youtubeBlackBeltImg from "@/assets/youtube-black-belt-promotions.jpg";
 import youtubeMestreRobertoImg from "@/assets/youtube-mestre-roberto.jpg";
 
-const SLIDES = [
+const SLIDES: ReadonlyArray<{
+  image: string;
+  thumb: string;
+  titleKey: string;
+  subKey: string;
+  badge: string;
+  event_id?: string;
+}> = [
   {
     image: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=1440&h=600",
     thumb: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=80&h=50",
     titleKey: "slide.1.title",
     subKey: "slide.1.sub",
     badge: "BJJLF World Championship 2025",
+    event_id: "wc25",
   },
   {
     image: "https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=1440&h=600",
@@ -27,6 +35,7 @@ const SLIDES = [
     titleKey: "slide.2.title",
     subKey: "slide.2.sub",
     badge: "No-Gi Pan-American",
+    event_id: "eu25",
   },
   {
     image: heroBlackBeltUrl,
