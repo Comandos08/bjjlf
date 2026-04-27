@@ -4,6 +4,7 @@ import { Loader2, Search, Download, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { EVENTS } from "@/data/events";
 import { toast } from "sonner";
+import { ADMIN_PAGE_SIZE, Pagination, useDebounced } from "@/components/admin/Pagination";
 
 export const Route = createFileRoute("/admin/registrations")({
   head: () => ({
@@ -69,6 +70,10 @@ function AdminRegistrationsPage() {
   const [eventFilter, setEventFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounced(query, 300);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => { setPage(1); }, [debouncedQuery, eventFilter, statusFilter]);
 
   async function load() {
     setLoading(true);
@@ -92,15 +97,27 @@ function AdminRegistrationsPage() {
   }, []);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = debouncedQuery.trim().toLowerCase();
     return rows.filter((r) => {
       if (eventFilter !== "all" && r.event_id !== eventFilter) return false;
       if (statusFilter !== "all" && r.status !== statusFilter) return false;
-      if (q && !r.full_name.toLowerCase().includes(q) && !r.email.toLowerCase().includes(q))
-        return false;
+      if (q) {
+        const evName = eventName(r.event_id).toLowerCase();
+        if (
+          !r.full_name.toLowerCase().includes(q) &&
+          !r.email.toLowerCase().includes(q) &&
+          !evName.includes(q)
+        )
+          return false;
+      }
       return true;
     });
-  }, [rows, eventFilter, statusFilter, query]);
+  }, [rows, eventFilter, statusFilter, debouncedQuery]);
+
+  const paged = useMemo(
+    () => filtered.slice((page - 1) * ADMIN_PAGE_SIZE, page * ADMIN_PAGE_SIZE),
+    [filtered, page],
+  );
 
   const totalConfirmed = filtered.filter((r) => r.status === "confirmed").length;
   const totalRevenue = filtered
