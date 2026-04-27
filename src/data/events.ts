@@ -1,4 +1,4 @@
-export type EventTypeBadge = "GI" | "NO-GI" | "GI & NO-GI" | "KIDS" | "MASTER";
+export type EventTypeBadge = "GI" | "NO-GI" | "GI & NO-GI" | "KIDS" | "MASTER" | "SEMINÁRIO" | "CURSO";
 
 export type Event = {
   id: string;
@@ -278,6 +278,8 @@ export const EVENT_BADGE_STYLES: Record<EventTypeBadge, { bg: string; color: str
   "GI & NO-GI": { bg: "#1A1A1A", color: "#C8A84B" },
   "KIDS": { bg: "#C8211A", color: "#FFFFFF" },
   "MASTER": { bg: "#C8A84B", color: "#1A1A1A" },
+  "SEMINÁRIO": { bg: "#1A1A1A", color: "#FFFFFF" },
+  "CURSO": { bg: "#FFFFFF", color: "#C8211A" },
 };
 
 export type Ranked = {
