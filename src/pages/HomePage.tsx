@@ -210,14 +210,17 @@ function EventsSection() {
         />
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {events.slice(0, 6).map((e) => (
-            <Link
+            <article
               key={e.id}
-              to="/events/$eventId"
-              params={{ eventId: e.id }}
-              search={((prev: unknown) => prev) as never}
-              className="group flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base no-underline overflow-hidden"
+              className="group flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden"
             >
-              <article className="flex flex-col h-full">
+              <Link
+                to="/events/$eventId"
+                params={{ eventId: e.id }}
+                search={((prev: unknown) => prev) as never}
+                className="block no-underline"
+                aria-label={e.name}
+              >
                 <div className="relative">
                   <SafeImage
                     src={e.image}
@@ -228,28 +231,48 @@ function EventsSection() {
                   />
                   <EventBadge badge={e.badge} />
                 </div>
-                <div className="p-5 space-y-3 flex-1 flex flex-col">
+              </Link>
+              <div className="p-5 space-y-3 flex-1 flex flex-col">
+                <Link
+                  to="/events/$eventId"
+                  params={{ eventId: e.id }}
+                  search={((prev: unknown) => prev) as never}
+                  className="no-underline"
+                >
                   <h3
-                    className="text-xl uppercase text-gray-900 leading-tight"
+                    className="text-xl uppercase text-gray-900 leading-tight hover:text-[#C8211A] transition-base"
                     style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
                   >
                     {e.name}
                   </h3>
-                  <div className="flex items-center gap-1.5 text-sm text-gray-500" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
-                    <Calendar className="h-3.5 w-3.5" /> {formatDateShort(e.date, lang)}
-                  </div>
-                  <div className="flex items-center gap-1.5 text-sm text-gray-500" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
-                    <MapPin className="h-3.5 w-3.5" /> {e.location}
-                  </div>
-                  <span
-                    className="mt-auto w-full inline-flex items-center justify-center rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white text-sm uppercase tracking-widest py-3 transition-base"
+                </Link>
+                <div className="flex items-center gap-1.5 text-sm text-gray-500" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
+                  <Calendar className="h-3.5 w-3.5" /> {formatDateShort(e.date, lang)}
+                </div>
+                <div className="flex items-center gap-1.5 text-sm text-gray-500" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
+                  <MapPin className="h-3.5 w-3.5" /> {e.location}
+                </div>
+                <div className="mt-auto flex flex-col gap-2">
+                  <Link
+                    to="/events/$eventId"
+                    params={{ eventId: e.id }}
+                    search={((prev: unknown) => prev) as never}
+                    className="w-full inline-flex items-center justify-center rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white text-sm uppercase tracking-widest py-3 transition-base no-underline"
                     style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
                   >
                     {t("home.events.details")}
-                  </span>
+                  </Link>
+                  <Link
+                    to="/register/event/$eventId"
+                    params={{ eventId: e.id }}
+                    className="w-full inline-flex items-center justify-center rounded-lg border border-[#C8211A] text-[#C8211A] hover:bg-[#C8211A] hover:text-white text-xs uppercase tracking-widest py-2 transition no-underline"
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                  >
+                    Inscrever-se
+                  </Link>
                 </div>
-              </article>
-            </Link>
+              </div>
+            </article>
           ))}
         </div>
       </div>
