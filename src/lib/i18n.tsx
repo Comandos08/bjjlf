@@ -6,7 +6,7 @@ type Dict = Record<string, string>;
 
 const PT: Dict = {
   // Nav
-  "nav.championships": "Campeonatos",
+  "nav.championships": "Eventos",
   "nav.blackbelts": "Faixas Pretas",
   "nav.rankings": "Rankings",
   "nav.academies": "Academias",
