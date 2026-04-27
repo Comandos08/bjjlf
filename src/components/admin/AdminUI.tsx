@@ -27,10 +27,10 @@ export function AdminButton({
   className?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const variants: Record<string, string> = {
-    primary: "bg-[#C8211A] text-[#1A1A1A] hover:bg-[#a01828]",
-    danger: "bg-[#C8211A] text-[#1A1A1A] hover:bg-[#a01828]",
-    outline: "bg-transparent text-[#1A1A1A] border border-[#E5E5E5] hover:border-[#D1D1D1] hover:bg-[#FFFFFF]",
-    ghost: "bg-transparent text-[#666666] hover:text-[#1A1A1A] hover:bg-[#FFFFFF]",
+    primary: "bg-[#C8211A] text-white hover:bg-[#a01828]",
+    danger: "bg-[#C8211A] text-white hover:bg-[#a01828]",
+    outline: "bg-transparent text-[#C8211A] border border-[#C8211A] hover:bg-[#FFF0EF]",
+    ghost: "bg-transparent text-[#666666] hover:text-[#1A1A1A] hover:bg-[#F5F5F5]",
   };
   return (
     <button
@@ -70,7 +70,7 @@ export function AdminToggle({
         onClick={() => onChange(!checked)}
         className={cn(
           "relative inline-flex h-5 w-9 items-center rounded-full transition-colors",
-          checked ? "bg-[#166534]" : "bg-[#E5E5E5]",
+          checked ? "bg-[#3B6D11]" : "bg-[#D1D1D1]",
         )}
       >
         <span
@@ -96,13 +96,13 @@ export function AdminBadge({
   className?: string;
 }) {
   const colors: Record<string, string> = {
-    red: "bg-[#C8211A]/15 text-[#ef4d6c] border-[#C8211A]/40",
-    gold: "bg-[#C8A84B]/15 text-[#E5C547] border-[#C8A84B]/40",
-    green: "bg-[#166534]/20 text-[#4ade80] border-[#166534]/50",
-    blue: "bg-[#1e40af]/20 text-[#60a5fa] border-[#1e40af]/50",
-    orange: "bg-[#9a3412]/20 text-[#fb923c] border-[#9a3412]/50",
-    purple: "bg-[#6b21a8]/20 text-[#c084fc] border-[#6b21a8]/50",
-    gray: "bg-[#E5E5E5] text-[#666666] border-[#E5E5E5]",
+    red: "bg-[#FFF0EF] text-[#C8211A] border-[#F2B7B3]",
+    gold: "bg-[#FBF3D9] text-[#8B6F08] border-[#E5D38B]",
+    green: "bg-[#EAF3DE] text-[#3B6D11] border-[#B8D89F]",
+    blue: "bg-[#E0EDFB] text-[#1E40AF] border-[#A8C9F0]",
+    orange: "bg-[#FDEBD7] text-[#9A3412] border-[#F2C99E]",
+    purple: "bg-[#F1E2FB] text-[#6B21A8] border-[#D5B4F0]",
+    gray: "bg-[#F5F5F5] text-[#666666] border-[#E5E5E5]",
   };
   return (
     <span
@@ -291,7 +291,7 @@ export function AdminTH({ children, className }: { children: ReactNode; classNam
 }
 
 export function AdminTD({ children, className }: { children: ReactNode; className?: string }) {
-  return <td className={cn("px-4 py-3 text-[#1A1A1A] border-t", className)} style={{ borderColor: "#FFFFFF" }}>{children}</td>;
+  return <td className={cn("px-4 py-3 text-[#1A1A1A] border-t", className)} style={{ borderColor: "#F0F0F0" }}>{children}</td>;
 }
 
 export function EmptyState({ message }: { message: string }) {
