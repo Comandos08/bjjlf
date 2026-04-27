@@ -32,6 +32,11 @@ import {
   parseEventSort,
   type EventSort,
 } from "@/lib/event-sort";
+import {
+  DEFAULT_PER_PAGE,
+  parsePage,
+  parsePerPage,
+} from "@/lib/pagination";
 
 const VALID_BADGES: ReadonlyArray<EventTypeBadge> = [
   "GI",
@@ -61,7 +66,13 @@ function parseBadges(input: unknown): EventTypeBadge[] {
   return VALID_BADGES.filter((b) => set.has(b));
 }
 
-type EventsSearch = { badges: EventTypeBadge[]; sort: EventSort; q: string };
+type EventsSearch = {
+  badges: EventTypeBadge[];
+  sort: EventSort;
+  q: string;
+  page: number;
+  perPage: number;
+};
 
 /**
  * Coerce an unknown URL value into a clean search string.
@@ -78,6 +89,8 @@ export const Route = createFileRoute("/events")({
     badges: parseBadges(search.badges),
     sort: parseEventSort(search.sort),
     q: parseQuery(search.q),
+    page: parsePage(search.page),
+    perPage: parsePerPage(search.perPage),
   }),
   head: () => ({
     meta: [
