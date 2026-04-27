@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
@@ -8,6 +8,7 @@ import { EventList } from "@/components/EventList";
 import { EventFilterPanel } from "@/components/EventFilterPanel";
 import { EventBadge } from "@/components/EventBadge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -60,12 +61,23 @@ function parseBadges(input: unknown): EventTypeBadge[] {
   return VALID_BADGES.filter((b) => set.has(b));
 }
 
-type EventsSearch = { badges: EventTypeBadge[]; sort: EventSort };
+type EventsSearch = { badges: EventTypeBadge[]; sort: EventSort; q: string };
+
+/**
+ * Coerce an unknown URL value into a clean search string.
+ * Trims, collapses whitespace, and caps length so a hand-edited URL with
+ * 10k chars can't tank rendering.
+ */
+function parseQuery(input: unknown): string {
+  if (typeof input !== "string") return "";
+  return input.replace(/\s+/g, " ").trim().slice(0, 100);
+}
 
 export const Route = createFileRoute("/events")({
   validateSearch: (search: Record<string, unknown>): EventsSearch => ({
     badges: parseBadges(search.badges),
     sort: parseEventSort(search.sort),
+    q: parseQuery(search.q),
   }),
   head: () => ({
     meta: [
