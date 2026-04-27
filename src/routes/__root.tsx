@@ -1,11 +1,16 @@
 import { useEffect } from "react";
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRouteWithContext, HeadContent, Scripts } from "@tanstack/react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import appCss from "../styles.css?url";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ImageDebugPanel } from "@/components/ImageDebugPanel";
 import { cleanupStaleCaches } from "@/lib/cache-cleanup";
 import { I18nProvider } from "@/lib/i18n";
+
+interface RouterContext {
+  queryClient: QueryClient;
+}
 
 function NotFoundComponent() {
   return (
@@ -29,7 +34,7 @@ function NotFoundComponent() {
   );
 }
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<RouterContext>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -74,6 +79,11 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  // queryClient flows in via router context (set up in src/router.tsx).
+  // QueryClientProvider here makes useQuery/useSuspenseQuery work in every
+  // child route without each route having to grab the client itself.
+  const { queryClient } = Route.useRouteContext();
+
   // Dev-only: scrub any leftover service workers / cache entries that could
   // be serving stale (4xx) image responses for URLs we now want to load.
   useEffect(() => {
@@ -81,15 +91,17 @@ function RootComponent() {
   }, []);
 
   return (
-    <I18nProvider>
-      <div className="min-h-screen flex flex-col bg-background">
-        <Navbar />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
-      <ImageDebugPanel />
-    </I18nProvider>
+    <QueryClientProvider client={queryClient}>
+      <I18nProvider>
+        <div className="min-h-screen flex flex-col bg-background">
+          <Navbar />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <Footer />
+        </div>
+        <ImageDebugPanel />
+      </I18nProvider>
+    </QueryClientProvider>
   );
 }
