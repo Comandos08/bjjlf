@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAthleteAuth } from "@/lib/athlete-auth";
-import { EVENTS } from "@/data/events";
+import { useEvents } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 
 const BELTS = ["Branca", "Azul", "Roxa", "Marrom", "Preta"];
@@ -86,7 +86,8 @@ const EMPTY: FormState = {
 export function EventRegistrationPage() {
   const { eventId } = useParams({ from: "/register/event/$eventId" });
   const { user, profile, isActive } = useAthleteAuth();
-  const event = useMemo(() => EVENTS.find((e) => e.id === eventId), [eventId]);
+  const { data: events = [], isLoading: eventsLoading } = useEvents();
+  const event = useMemo(() => events.find((e) => e.id === eventId), [events, eventId]);
 
   const [form, setForm] = useState<FormState>(EMPTY);
   const [amountCents, setAmountCents] = useState<number>(DEFAULT_AMOUNT_CENTS);
@@ -147,6 +148,13 @@ export function EventRegistrationPage() {
   }, [eventId, form.category, form.modality]);
 
   if (!event) {
+    if (eventsLoading) {
+      return (
+        <div className="bg-gray-50 min-h-screen py-16 flex items-center justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+        </div>
+      );
+    }
     return (
       <div className="bg-gray-50 min-h-screen py-16">
         <div className="max-w-2xl mx-auto px-6 text-center">
