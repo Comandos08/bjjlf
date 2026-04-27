@@ -13,6 +13,8 @@ import { Route as TypographyRouteImport } from './routes/typography'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as MyProfileRouteImport } from './routes/my-profile'
+import { Route as MyCompetitionsRouteImport } from './routes/my-competitions'
 import { Route as MyCardRouteImport } from './routes/my-card'
 import { Route as GraduatesRouteImport } from './routes/graduates'
 import { Route as EventsRouteImport } from './routes/events'
@@ -62,6 +64,16 @@ const RankingsRoute = RankingsRouteImport.update({
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyProfileRoute = MyProfileRouteImport.update({
+  id: '/my-profile',
+  path: '/my-profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyCompetitionsRoute = MyCompetitionsRouteImport.update({
+  id: '/my-competitions',
+  path: '/my-competitions',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MyCardRoute = MyCardRouteImport.update({
@@ -226,6 +238,8 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/my-card': typeof MyCardRoute
+  '/my-competitions': typeof MyCompetitionsRoute
+  '/my-profile': typeof MyProfileRoute
   '/news': typeof NewsRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
@@ -261,6 +275,8 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/my-card': typeof MyCardRoute
+  '/my-competitions': typeof MyCompetitionsRoute
+  '/my-profile': typeof MyProfileRoute
   '/news': typeof NewsRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
@@ -298,6 +314,8 @@ export interface FileRoutesById {
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/my-card': typeof MyCardRoute
+  '/my-competitions': typeof MyCompetitionsRoute
+  '/my-profile': typeof MyProfileRoute
   '/news': typeof NewsRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
@@ -336,6 +354,8 @@ export interface FileRouteTypes {
     | '/events'
     | '/graduates'
     | '/my-card'
+    | '/my-competitions'
+    | '/my-profile'
     | '/news'
     | '/rankings'
     | '/rules'
@@ -371,6 +391,8 @@ export interface FileRouteTypes {
     | '/events'
     | '/graduates'
     | '/my-card'
+    | '/my-competitions'
+    | '/my-profile'
     | '/news'
     | '/rankings'
     | '/rules'
@@ -407,6 +429,8 @@ export interface FileRouteTypes {
     | '/events'
     | '/graduates'
     | '/my-card'
+    | '/my-competitions'
+    | '/my-profile'
     | '/news'
     | '/rankings'
     | '/rules'
@@ -444,6 +468,8 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRouteWithChildren
   GraduatesRoute: typeof GraduatesRouteWithChildren
   MyCardRoute: typeof MyCardRoute
+  MyCompetitionsRoute: typeof MyCompetitionsRoute
+  MyProfileRoute: typeof MyProfileRoute
   NewsRoute: typeof NewsRoute
   RankingsRoute: typeof RankingsRoute
   RulesRoute: typeof RulesRoute
@@ -485,6 +511,20 @@ declare module '@tanstack/react-router' {
       path: '/news'
       fullPath: '/news'
       preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-profile': {
+      id: '/my-profile'
+      path: '/my-profile'
+      fullPath: '/my-profile'
+      preLoaderRoute: typeof MyProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-competitions': {
+      id: '/my-competitions'
+      path: '/my-competitions'
+      fullPath: '/my-competitions'
+      preLoaderRoute: typeof MyCompetitionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/my-card': {
@@ -764,6 +804,8 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRouteWithChildren,
   GraduatesRoute: GraduatesRouteWithChildren,
   MyCardRoute: MyCardRoute,
+  MyCompetitionsRoute: MyCompetitionsRoute,
+  MyProfileRoute: MyProfileRoute,
   NewsRoute: NewsRoute,
   RankingsRoute: RankingsRoute,
   RulesRoute: RulesRoute,
