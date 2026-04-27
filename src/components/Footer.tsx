@@ -22,7 +22,7 @@ export function Footer() {
                 <a
                   key={i}
                   href="#"
-                  className="h-8 w-8 grid place-items-center border border-[#333] text-[#999] hover:text-gold hover:border-gold transition-base"
+                  className="h-8 w-8 grid place-items-center border border-[#333] text-gray-400 hover:text-white hover:border-[#C8A84B] transition-base rounded"
                 >
                   <Icon className="h-3.5 w-3.5" />
                 </a>
