@@ -29,6 +29,10 @@ import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
 import { Route as RegisterAcademyRouteImport } from './routes/register.academy'
 import { Route as GraduatesGraduateIdRouteImport } from './routes/graduates.$graduateId'
 import { Route as EventsEventIdRouteImport } from './routes/events.$eventId'
+import { Route as AthleteSignupRouteImport } from './routes/athlete.signup'
+import { Route as AthleteResetPasswordRouteImport } from './routes/athlete.reset-password'
+import { Route as AthleteLoginRouteImport } from './routes/athlete.login'
+import { Route as AthleteForgotPasswordRouteImport } from './routes/athlete.forgot-password'
 import { Route as AdminYoutubeRouteImport } from './routes/admin.youtube'
 import { Route as AdminSetupRouteImport } from './routes/admin.setup'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
@@ -140,6 +144,26 @@ const EventsEventIdRoute = EventsEventIdRouteImport.update({
   path: '/$eventId',
   getParentRoute: () => EventsRoute,
 } as any)
+const AthleteSignupRoute = AthleteSignupRouteImport.update({
+  id: '/athlete/signup',
+  path: '/athlete/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AthleteResetPasswordRoute = AthleteResetPasswordRouteImport.update({
+  id: '/athlete/reset-password',
+  path: '/athlete/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AthleteLoginRoute = AthleteLoginRouteImport.update({
+  id: '/athlete/login',
+  path: '/athlete/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AthleteForgotPasswordRoute = AthleteForgotPasswordRouteImport.update({
+  id: '/athlete/forgot-password',
+  path: '/athlete/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminYoutubeRoute = AdminYoutubeRouteImport.update({
   id: '/youtube',
   path: '/youtube',
@@ -216,6 +240,10 @@ export interface FileRoutesByFullPath {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
   '/admin/youtube': typeof AdminYoutubeRoute
+  '/athlete/forgot-password': typeof AthleteForgotPasswordRoute
+  '/athlete/login': typeof AthleteLoginRoute
+  '/athlete/reset-password': typeof AthleteResetPasswordRoute
+  '/athlete/signup': typeof AthleteSignupRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
@@ -247,6 +275,10 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
   '/admin/youtube': typeof AdminYoutubeRoute
+  '/athlete/forgot-password': typeof AthleteForgotPasswordRoute
+  '/athlete/login': typeof AthleteLoginRoute
+  '/athlete/reset-password': typeof AthleteResetPasswordRoute
+  '/athlete/signup': typeof AthleteSignupRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
@@ -280,6 +312,10 @@ export interface FileRoutesById {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
   '/admin/youtube': typeof AdminYoutubeRoute
+  '/athlete/forgot-password': typeof AthleteForgotPasswordRoute
+  '/athlete/login': typeof AthleteLoginRoute
+  '/athlete/reset-password': typeof AthleteResetPasswordRoute
+  '/athlete/signup': typeof AthleteSignupRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
@@ -314,6 +350,10 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/setup'
     | '/admin/youtube'
+    | '/athlete/forgot-password'
+    | '/athlete/login'
+    | '/athlete/reset-password'
+    | '/athlete/signup'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
@@ -345,6 +385,10 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/setup'
     | '/admin/youtube'
+    | '/athlete/forgot-password'
+    | '/athlete/login'
+    | '/athlete/reset-password'
+    | '/athlete/signup'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
@@ -377,6 +421,10 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/setup'
     | '/admin/youtube'
+    | '/athlete/forgot-password'
+    | '/athlete/login'
+    | '/athlete/reset-password'
+    | '/athlete/signup'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
@@ -400,6 +448,10 @@ export interface RootRouteChildren {
   RankingsRoute: typeof RankingsRoute
   RulesRoute: typeof RulesRoute
   TypographyRoute: typeof TypographyRoute
+  AthleteForgotPasswordRoute: typeof AthleteForgotPasswordRoute
+  AthleteLoginRoute: typeof AthleteLoginRoute
+  AthleteResetPasswordRoute: typeof AthleteResetPasswordRoute
+  AthleteSignupRoute: typeof AthleteSignupRoute
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
   VerifyAthleteIdRoute: typeof VerifyAthleteIdRoute
@@ -547,6 +599,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsEventIdRouteImport
       parentRoute: typeof EventsRoute
     }
+    '/athlete/signup': {
+      id: '/athlete/signup'
+      path: '/athlete/signup'
+      fullPath: '/athlete/signup'
+      preLoaderRoute: typeof AthleteSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/athlete/reset-password': {
+      id: '/athlete/reset-password'
+      path: '/athlete/reset-password'
+      fullPath: '/athlete/reset-password'
+      preLoaderRoute: typeof AthleteResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/athlete/login': {
+      id: '/athlete/login'
+      path: '/athlete/login'
+      fullPath: '/athlete/login'
+      preLoaderRoute: typeof AthleteLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/athlete/forgot-password': {
+      id: '/athlete/forgot-password'
+      path: '/athlete/forgot-password'
+      fullPath: '/athlete/forgot-password'
+      preLoaderRoute: typeof AthleteForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/youtube': {
       id: '/admin/youtube'
       path: '/youtube'
@@ -688,6 +768,10 @@ const rootRouteChildren: RootRouteChildren = {
   RankingsRoute: RankingsRoute,
   RulesRoute: RulesRoute,
   TypographyRoute: TypographyRoute,
+  AthleteForgotPasswordRoute: AthleteForgotPasswordRoute,
+  AthleteLoginRoute: AthleteLoginRoute,
+  AthleteResetPasswordRoute: AthleteResetPasswordRoute,
+  AthleteSignupRoute: AthleteSignupRoute,
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,
   VerifyAthleteIdRoute: VerifyAthleteIdRoute,
