@@ -8,7 +8,7 @@ import { useI18n, formatDateShort } from "@/lib/i18n";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import { SafeImage } from "@/components/SafeImage";
-import { EVENT_BADGE_STYLES } from "@/data/events";
+import { EventBadge } from "@/components/EventBadge";
 
 const SLIDES = [
   {
@@ -159,7 +159,6 @@ function EventsSection() {
         </div>
         <div className="grid gap-3.5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {EVENTS.slice(0, 6).map((e) => {
-            const badgeStyle = EVENT_BADGE_STYLES[e.badge];
             return (
               <article
                 key={e.id}
@@ -174,20 +173,7 @@ function EventsSection() {
                     source="event"
                     wrapperClassName="h-40 bg-[#F7F9FC]"
                   />
-                  <span
-                    className="absolute top-0 left-0"
-                    style={{
-                      background: badgeStyle.bg,
-                      color: badgeStyle.color,
-                      padding: "8px 12px",
-                      fontSize: "10px",
-                      fontWeight: 700,
-                      letterSpacing: "0.08em",
-                      fontFamily: "Barlow Condensed",
-                    }}
-                  >
-                    {e.badge}
-                  </span>
+                  <EventBadge badge={e.badge} />
                 </div>
                 <div className="p-4 space-y-2.5 flex-1 flex flex-col">
                   <h3 className={cn(typo.heading.sm, "text-[#0F0F0F] text-sm leading-tight")}>{e.name}</h3>
