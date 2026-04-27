@@ -225,7 +225,7 @@ function LangToggle({ lang, onChange }: { lang: Lang; onChange: (l: Lang) => voi
         <Globe size={18} />
         <span
           className="text-[10px] font-bold"
-          style={{ color: "#B8960C" }}
+          style={{ color: "#C8A84B" }}
         >
           {lang.toUpperCase()}
         </span>
@@ -251,7 +251,7 @@ function LangToggle({ lang, onChange }: { lang: Lang; onChange: (l: Lang) => voi
                 }}
                 className="flex items-center gap-2 w-full text-left px-4 py-2.5 text-[12px] hover:bg-dark transition-base"
                 style={{
-                  color: active ? "#B8960C" : "#CCCCCC",
+                  color: active ? "#C8A84B" : "#CCCCCC",
                   fontWeight: active ? 700 : 500,
                 }}
               >
