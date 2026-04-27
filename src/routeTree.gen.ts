@@ -13,9 +13,11 @@ import { Route as TypographyRouteImport } from './routes/typography'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as GraduatesRouteImport } from './routes/graduates'
 import { Route as EventsRouteImport } from './routes/events'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AcademiesRouteImport } from './routes/academies'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
 import { Route as RegisterAcademyRouteImport } from './routes/register.academy'
 import { Route as GraduatesGraduateIdRouteImport } from './routes/graduates.$graduateId'
@@ -43,6 +45,11 @@ const EventsRoute = EventsRouteImport.update({
   path: '/events',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AcademiesRoute = AcademiesRouteImport.update({
   id: '/academies',
   path: '/academies',
@@ -57,6 +64,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const RegisterAthleteRoute = RegisterAthleteRouteImport.update({
   id: '/register/athlete',
@@ -79,20 +91,21 @@ const EventsEventIdRoute = EventsEventIdRouteImport.update({
   getParentRoute: () => EventsRoute,
 } as any)
 const AdminSetupRoute = AdminSetupRouteImport.update({
-  id: '/admin/setup',
-  path: '/admin/setup',
-  getParentRoute: () => rootRouteImport,
+  id: '/setup',
+  path: '/setup',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/admin/login',
-  path: '/admin/login',
-  getParentRoute: () => rootRouteImport,
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/academies': typeof AcademiesRoute
+  '/admin': typeof AdminRouteWithChildren
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
@@ -103,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,12 +132,14 @@ export interface FileRoutesByTo {
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/academies': typeof AcademiesRoute
+  '/admin': typeof AdminRouteWithChildren
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
@@ -134,6 +150,7 @@ export interface FileRoutesById {
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -141,6 +158,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/academies'
+    | '/admin'
     | '/events'
     | '/graduates'
     | '/news'
@@ -151,6 +169,7 @@ export interface FileRouteTypes {
     | '/graduates/$graduateId'
     | '/register/academy'
     | '/register/athlete'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -166,11 +185,13 @@ export interface FileRouteTypes {
     | '/graduates/$graduateId'
     | '/register/academy'
     | '/register/athlete'
+    | '/admin'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/academies'
+    | '/admin'
     | '/events'
     | '/graduates'
     | '/news'
@@ -181,18 +202,18 @@ export interface FileRouteTypes {
     | '/graduates/$graduateId'
     | '/register/academy'
     | '/register/athlete'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AcademiesRoute: typeof AcademiesRoute
+  AdminRoute: typeof AdminRouteWithChildren
   EventsRoute: typeof EventsRouteWithChildren
   GraduatesRoute: typeof GraduatesRouteWithChildren
   NewsRoute: typeof NewsRoute
   TypographyRoute: typeof TypographyRoute
-  AdminLoginRoute: typeof AdminLoginRoute
-  AdminSetupRoute: typeof AdminSetupRoute
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
 }
@@ -227,6 +248,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/academies': {
       id: '/academies'
       path: '/academies'
@@ -247,6 +275,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/register/athlete': {
       id: '/register/athlete'
@@ -278,20 +313,34 @@ declare module '@tanstack/react-router' {
     }
     '/admin/setup': {
       id: '/admin/setup'
-      path: '/admin/setup'
+      path: '/setup'
       fullPath: '/admin/setup'
       preLoaderRoute: typeof AdminSetupRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/login': {
       id: '/admin/login'
-      path: '/admin/login'
+      path: '/login'
       fullPath: '/admin/login'
       preLoaderRoute: typeof AdminLoginRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
   }
 }
+
+interface AdminRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminSetupRoute: typeof AdminSetupRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
+  AdminSetupRoute: AdminSetupRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface EventsRouteChildren {
   EventsEventIdRoute: typeof EventsEventIdRoute
@@ -320,24 +369,14 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AcademiesRoute: AcademiesRoute,
+  AdminRoute: AdminRouteWithChildren,
   EventsRoute: EventsRouteWithChildren,
   GraduatesRoute: GraduatesRouteWithChildren,
   NewsRoute: NewsRoute,
   TypographyRoute: TypographyRoute,
-  AdminLoginRoute: AdminLoginRoute,
-  AdminSetupRoute: AdminSetupRoute,
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
