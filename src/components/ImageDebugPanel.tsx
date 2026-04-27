@@ -130,62 +130,8 @@ function Panel() {
             })}
           </div>
 
-          {/* List */}
-          <div className="flex-1 overflow-auto">
-            {filtered.length === 0 ? (
-              <div className="px-3 py-6 text-center text-[11px]" style={{ color: "#666" }}>
-                No images {filter === "all" ? "registered yet" : `with status “${filter}”`}.
-              </div>
-            ) : (
-              <ul>
-                {filtered.map((e) => (
-                  <li
-                    key={e.id}
-                    className="px-3 py-2"
-                    style={{ borderBottom: "1px solid #1F1F1F" }}
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span
-                        className="truncate text-[11px] uppercase tracking-[0.06em]"
-                        style={{
-                          color: "#FFFFFF",
-                          fontFamily: "Barlow Condensed",
-                          fontWeight: 700,
-                          maxWidth: "70%",
-                        }}
-                        title={e.label}
-                      >
-                        {e.label || "(no label)"}
-                      </span>
-                      <StatusPill status={e.status} ms={e.durationMs} />
-                    </div>
-                    <div className="mt-1 flex items-center gap-2 text-[10px]" style={{ color: "#888" }}>
-                      <span
-                        className="px-1.5 py-0.5"
-                        style={{
-                          background: "#1A1A1A",
-                          border: "1px solid #2A2A2A",
-                          color: "#B8960C",
-                        }}
-                      >
-                        {e.source}
-                      </span>
-                      <a
-                        href={e.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="truncate hover:text-white"
-                        title={e.url}
-                        style={{ color: "#666" }}
-                      >
-                        {shortUrl(e.url)}
-                      </a>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          {/* List — memoized; only re-renders when filtered list reference changes */}
+          <EntryList entries={filtered} filter={filter} />
         </>
       )}
     </div>
