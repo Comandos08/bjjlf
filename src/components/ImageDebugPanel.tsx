@@ -104,29 +104,8 @@ function Panel() {
 
       {open && (
         <>
-          {/* Telemetry strip */}
-          <div
-            className="flex items-center justify-between gap-2 px-3 py-1.5 text-[10px]"
-            style={{ background: "#141414", borderBottom: "1px solid #2A2A2A", color: "#888" }}
-          >
-            <div className="flex items-center gap-2">
-              <span style={{ color: "#B8960C" }}>emits</span>
-              <span style={{ color: "#FFFFFF", fontWeight: 700 }}>{telemetry.emits}</span>
-              <span>·</span>
-              <span>reg {telemetry.registered}</span>
-              <span style={{ color: "#22C55E" }}>ok {telemetry.loaded}</span>
-              <span style={{ color: "#EF4444" }}>err {telemetry.errored}</span>
-              <span>unreg {telemetry.unregistered}</span>
-            </div>
-            <button
-              onClick={resetImageRegistryTelemetry}
-              className="px-1.5 py-0.5 hover:text-white"
-              style={{ border: "1px solid #2A2A2A", color: "#888" }}
-              title="Reset telemetry counters"
-            >
-              reset
-            </button>
-          </div>
+          {/* Telemetry strip — memoized so changes elsewhere don't redraw it */}
+          <TelemetryStrip telemetry={telemetry} onReset={resetImageRegistryTelemetry} />
 
 
           <div className="flex gap-1 px-3 py-2" style={{ borderBottom: "1px solid #2A2A2A" }}>
