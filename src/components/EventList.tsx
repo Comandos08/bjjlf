@@ -46,6 +46,11 @@ export type EventListProps = {
   availableBadges?: ReadonlyArray<EventTypeBadge>;
   /** Optional grid override. Defaults to 1 / 2 / 3 columns. */
   gridClassName?: string;
+  /**
+   * Hide the inline filter row. Use when filters are rendered elsewhere
+   * (e.g. a sidebar or off-canvas drawer) — the count label still shows.
+   */
+  hideFilters?: boolean;
   className?: string;
 };
 
@@ -63,6 +68,7 @@ export function EventList({
   onChange,
   availableBadges,
   gridClassName,
+  hideFilters = false,
   className,
 }: EventListProps) {
   const { t, lang } = useI18n();
@@ -98,45 +104,51 @@ export function EventList({
 
   return (
     <div className={cn("space-y-6", className)} data-testid="event-list">
-      {/* Filter row */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className={cn(typo.label.md, "mr-2 shrink-0")}>
-            {t("events.filter.label")}:
-          </span>
+      {/* Filter row (inline). Hidden when caller renders filters elsewhere. */}
+      {!hideFilters ? (
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className={cn(typo.label.md, "mr-2 shrink-0")}>
+              {t("events.filter.label")}:
+            </span>
 
-          <FilterChip
-            label={t("events.filter.all")}
-            active={selectedBadges.length === 0}
-            onClick={clear}
-          />
+            <FilterChip
+              label={t("events.filter.all")}
+              active={selectedBadges.length === 0}
+              onClick={clear}
+            />
 
-          {chips.map((badge) => {
-            const active = selectedBadges.includes(badge);
-            return (
-              <button
-                key={badge}
-                type="button"
-                onClick={() => toggle(badge)}
-                aria-pressed={active}
-                data-testid="event-filter-chip"
-                data-badge={badge}
-                data-active={active}
-                className={cn(
-                  "transition-base focus-ring rounded-none",
-                  active ? "ring-2 ring-offset-2 ring-offset-background ring-primary" : "opacity-70 hover:opacity-100",
-                )}
-              >
-                {/* Reuse the exact same inline badge as the cards — single
-                    source of truth for GI/NO-GI/GI&NO-GI/KIDS/MASTER colors. */}
-                <EventBadge badge={badge} variant="inline" />
-              </button>
-            );
-          })}
+            {chips.map((badge) => {
+              const active = selectedBadges.includes(badge);
+              return (
+                <button
+                  key={badge}
+                  type="button"
+                  onClick={() => toggle(badge)}
+                  aria-pressed={active}
+                  data-testid="event-filter-chip"
+                  data-badge={badge}
+                  data-active={active}
+                  className={cn(
+                    "transition-base focus-ring rounded-none",
+                    active ? "ring-2 ring-offset-2 ring-offset-background ring-primary" : "opacity-70 hover:opacity-100",
+                  )}
+                >
+                  {/* Reuse the exact same inline badge as the cards — single
+                      source of truth for GI/NO-GI/GI&NO-GI/KIDS/MASTER colors. */}
+                  <EventBadge badge={badge} variant="inline" />
+                </button>
+              );
+            })}
+          </div>
+
+          <span className={cn(typo.label.sm, "shrink-0")}>{countLabel}</span>
         </div>
-
-        <span className={cn(typo.label.sm, "shrink-0")}>{countLabel}</span>
-      </div>
+      ) : (
+        <div className="flex items-center justify-end">
+          <span className={cn(typo.label.sm)}>{countLabel}</span>
+        </div>
+      )}
 
       {/* Empty state */}
       {filtered.length === 0 ? (
