@@ -16,6 +16,7 @@ type NavItem = {
     | "/register/athlete"
     | "/register/academy"
     | "/championships"
+    | "/events"
     | "/rankings"
     | "/black-belts"
     | "/athletes"
@@ -30,7 +31,7 @@ export function Navbar() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   const NAV: NavItem[] = [
-    { key: "championships", to: "/championships" },
+    { key: "championships", to: "/events" },
     { key: "blackbelts", nowrap: true, to: "/black-belts" },
     { key: "rankings", to: "/rankings" },
     {
