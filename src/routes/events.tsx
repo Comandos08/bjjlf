@@ -304,46 +304,78 @@ function EventsListPage() {
               </div>
             ) : null}
 
-            {/* Sort toolbar — visible on every viewport, above the grid */}
+            {/* Search + sort toolbar — visible on every viewport, above the grid.
+                Stacks vertically on mobile so neither control gets squeezed. */}
             <div
-              className="flex items-center justify-end gap-2"
-              data-testid="event-sort-toolbar"
+              className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+              data-testid="event-toolbar"
             >
-              <label
-                htmlFor="event-sort-select"
-                className={cn(typo.label.sm, "shrink-0")}
-              >
-                {t("events.sort.label")}:
-              </label>
-              <Select
-                value={sort}
-                onValueChange={(v) => setSort(v as EventSort)}
-              >
-                <SelectTrigger
-                  id="event-sort-select"
-                  className="w-[180px] rounded-none"
-                  data-testid="event-sort-trigger"
+              <div className="relative flex-1 sm:max-w-sm">
+                <Search
+                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+                  aria-hidden="true"
+                />
+                <Input
+                  type="search"
+                  inputMode="search"
+                  value={queryInput}
+                  onChange={(e) => setQueryInput(e.target.value)}
+                  placeholder={t("events.search.placeholder")}
+                  aria-label={t("events.search.label")}
+                  className="pl-9 pr-9 rounded-none"
+                  data-testid="event-search-input"
+                />
+                {queryInput.length > 0 ? (
+                  <button
+                    type="button"
+                    onClick={clearQuery}
+                    aria-label={t("events.search.clear")}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex h-6 w-6 items-center justify-center text-muted-foreground hover:text-foreground focus-ring rounded-none"
+                    data-testid="event-search-clear"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                ) : null}
+              </div>
+
+              <div className="flex items-center justify-end gap-2">
+                <label
+                  htmlFor="event-sort-select"
+                  className={cn(typo.label.sm, "shrink-0")}
                 >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {EVENT_SORTS.map((s) => (
-                    <SelectItem
-                      key={s}
-                      value={s}
-                      data-testid={`event-sort-option-${s}`}
-                    >
-                      {t(`events.sort.${s}`)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                  {t("events.sort.label")}:
+                </label>
+                <Select
+                  value={sort}
+                  onValueChange={(v) => setSort(v as EventSort)}
+                >
+                  <SelectTrigger
+                    id="event-sort-select"
+                    className="w-[180px] rounded-none"
+                    data-testid="event-sort-trigger"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {EVENT_SORTS.map((s) => (
+                      <SelectItem
+                        key={s}
+                        value={s}
+                        data-testid={`event-sort-option-${s}`}
+                      >
+                        {t(`events.sort.${s}`)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <EventList
               selectedBadges={badges}
               onChange={setBadges}
               sort={sort}
+              query={urlQuery}
               hideFilters
             />
           </div>
