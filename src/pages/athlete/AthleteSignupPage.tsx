@@ -31,7 +31,7 @@ const schema = z
     professor: z.string().trim().max(120).optional().or(z.literal("")),
     belt: z.enum(BELTS),
     degree: z.coerce.number().int().min(0).max(4),
-    country: z.string().trim().max(80).default("Brasil"),
+    country: z.string().trim().min(1, "País obrigatório").max(80),
     category: z.enum(CATEGORIES),
     modality: z.enum(MODALITIES),
   })
