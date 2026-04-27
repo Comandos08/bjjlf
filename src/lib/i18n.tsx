@@ -63,6 +63,22 @@ const PT: Dict = {
   "home.events.register": "Inscreva-se",
   "home.events.details": "Ver Detalhes",
 
+  // Event detail page
+  "event.back": "Voltar",
+  "event.about.kicker": "Sobre o evento",
+  "event.about.title": "Detalhes da competição",
+  "event.about.body": "{name} reúne atletas de elite em {location} para uma das competições oficiais do calendário BJJLF. Categorias por idade, peso e graduação seguem o regulamento oficial da federação.",
+  "event.format.title": "Formato e categoria",
+  "event.format.type": "Modalidade",
+  "event.format.category": "Categoria",
+  "event.format.date": "Data",
+  "event.format.venue": "Local",
+  "event.register.kicker": "Inscrições",
+  "event.register.title": "Garanta sua vaga",
+  "event.register.body": "As inscrições são processadas pela federação e exigem confirmação de graduação. Atletas precisam de cadastro ativo na BJJLF.",
+  "event.register.cta": "Inscrever-se agora",
+  "event.register.deadline": "Data do evento",
+
   // News card categories (uppercase labels)
   "news.cat.tournaments.label": "CAMPEONATOS",
   "news.cat.promotions.label": "GRADUAÇÕES",
@@ -317,6 +333,22 @@ const EN: Dict = {
   "home.youtube.visit": "Visit Channel",
   "home.events.register": "Register Now",
   "home.events.details": "View Details",
+
+  // Event detail page
+  "event.back": "Back",
+  "event.about.kicker": "About the event",
+  "event.about.title": "Competition details",
+  "event.about.body": "{name} brings together elite athletes in {location} for one of the official competitions on the BJJLF calendar. Age, weight, and belt categories follow the federation's official ruleset.",
+  "event.format.title": "Format and category",
+  "event.format.type": "Discipline",
+  "event.format.category": "Category",
+  "event.format.date": "Date",
+  "event.format.venue": "Venue",
+  "event.register.kicker": "Registration",
+  "event.register.title": "Secure your spot",
+  "event.register.body": "Registrations are processed by the federation and require belt verification. Athletes must hold an active BJJLF profile.",
+  "event.register.cta": "Register now",
+  "event.register.deadline": "Event date",
 
   "news.cat.tournaments.label": "TOURNAMENTS",
   "news.cat.promotions.label": "PROMOTIONS",
