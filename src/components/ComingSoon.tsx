@@ -195,18 +195,19 @@ export function ComingSoon({ page }: { page: ComingSoonPage }) {
             />
             <button
               type="submit"
-              className="px-5 text-xs font-bold uppercase tracking-[0.15em] text-white transition-opacity hover:opacity-90"
+              disabled={submitting}
+              className="px-5 text-xs font-bold uppercase tracking-[0.15em] text-white transition-opacity hover:opacity-90 disabled:opacity-60"
               style={{
                 background:
                   "linear-gradient(135deg, #C8211A 0%, #8B1612 100%)",
               }}
             >
-              Avisar
+              {submitting ? "Enviando…" : "Avisar"}
             </button>
           </form>
           {submitted && (
             <p className="mt-3 text-sm font-medium text-green-600">
-              ✓ Pronto! Avisaremos você assim que estiver no ar.
+              ✓ Anotado! Você será o primeiro a saber.
             </p>
           )}
         </div>
