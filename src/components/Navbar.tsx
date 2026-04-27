@@ -167,9 +167,9 @@ export function Navbar() {
                 key={item.key}
                 to={item.to ?? "/"}
                 onClick={() => setOpen(false)}
-                className="py-3 uppercase text-[12px] text-[#CCCCCC] whitespace-nowrap"
-                style={{ fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" }}
-                activeProps={{ className: "py-3 uppercase text-[12px] text-gold whitespace-nowrap", style: { fontFamily: "Barlow Condensed", fontWeight: 900, letterSpacing: "0.08em" } }}
+                className="py-3 text-sm tracking-wide text-gray-300 whitespace-nowrap"
+                style={{ fontFamily: "Barlow", fontWeight: 500 }}
+                activeProps={{ className: "py-3 text-sm tracking-wide text-white whitespace-nowrap", style: { fontFamily: "Barlow", fontWeight: 600 } }}
                 activeOptions={{ exact: item.to === "/" }}
               >
                 {t(`nav.${item.key}`)}
@@ -183,7 +183,7 @@ export function Navbar() {
               <button aria-label="Login" className="text-gray-400 hover:text-white">
                 <User size={18} />
               </button>
-              <button className="ml-auto h-9 px-4 bg-primary text-white text-[11px] uppercase tracking-[0.1em] font-bold rounded-none" style={{ borderRadius: 0 }}>
+              <button className="ml-auto h-9 px-4 bg-[#C8211A] hover:bg-[#8B1612] text-white text-xs uppercase tracking-widest rounded-md" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
                 {t("nav.join")}
               </button>
             </div>
