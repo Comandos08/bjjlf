@@ -7,6 +7,7 @@ import { useAdminAuth } from "@/lib/admin-auth";
 import { cn } from "@/lib/utils";
 import { BeltSelector } from "@/components/BeltSelector";
 import { formatBeltLine, defaultDegreeForBelt, type BeltName } from "@/lib/belts-ibjjf";
+import { ADMIN_PAGE_SIZE, Pagination, useDebounced } from "@/components/admin/Pagination";
 
 export const Route = createFileRoute("/admin/athletes")({
   head: () => ({ meta: [{ title: "Admin — Atletas" }, { name: "robots", content: "noindex, nofollow" }] }),
@@ -34,7 +35,12 @@ function AdminAthletesPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | Row["status"]>("all");
   const [q, setQ] = useState("");
+  const debouncedQ = useDebounced(q, 300);
+  const [page, setPage] = useState(1);
   const [editing, setEditing] = useState<Row | null>(null);
+
+  // Reset to page 1 whenever filters/search change.
+  useEffect(() => { setPage(1); }, [debouncedQ, filter]);
 
   async function load() {
     setLoading(true);
@@ -53,13 +59,18 @@ function AdminAthletesPage() {
     return rows
       .filter((r) => filter === "all" ? true : r.status === filter)
       .filter((r) => {
-        if (!q.trim()) return true;
-        const needle = q.toLowerCase();
+        if (!debouncedQ.trim()) return true;
+        const needle = debouncedQ.toLowerCase();
         return r.full_name.toLowerCase().includes(needle)
           || (r.academy?.toLowerCase().includes(needle) ?? false)
           || (r.registration_number?.toLowerCase().includes(needle) ?? false);
       });
-  }, [rows, filter, q]);
+  }, [rows, filter, debouncedQ]);
+
+  const paged = useMemo(
+    () => filtered.slice((page - 1) * ADMIN_PAGE_SIZE, page * ADMIN_PAGE_SIZE),
+    [filtered, page],
+  );
 
   const pending = rows.filter((r) => r.status === "pending").length;
 
@@ -164,7 +175,7 @@ function AdminAthletesPage() {
               <tr><td colSpan={7} className="text-center py-10"><Loader2 className="h-5 w-5 animate-spin inline-block text-[#999999]" /></td></tr>
             ) : filtered.length === 0 ? (
               <tr><td colSpan={7} className="text-center py-10 text-[#999999]">Nenhum atleta encontrado.</td></tr>
-            ) : filtered.map((r) => (
+            ) : paged.map((r) => (
               <tr key={r.id} className="border-t border-[#E5E5E5]">
                 <td className="px-4 py-3 text-[#1A1A1A]">{r.full_name}</td>
                 <td className="px-4 py-3 text-[#1A1A1A]">{formatBeltLine(r.belt, r.degree) ?? r.belt}</td>
@@ -196,6 +207,14 @@ function AdminAthletesPage() {
           </tbody>
         </table>
       </div>
+
+      <Pagination
+        page={page}
+        perPage={ADMIN_PAGE_SIZE}
+        total={filtered.length}
+        onPageChange={setPage}
+        itemLabel="atletas"
+      />
 
       {editing && (
         <EditModal
