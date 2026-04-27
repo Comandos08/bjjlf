@@ -148,6 +148,13 @@ export function EventRegistrationPage() {
   }, [eventId, form.category, form.modality]);
 
   if (!event) {
+    if (eventsLoading) {
+      return (
+        <div className="bg-gray-50 min-h-screen py-16 flex items-center justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+        </div>
+      );
+    }
     return (
       <div className="bg-gray-50 min-h-screen py-16">
         <div className="max-w-2xl mx-auto px-6 text-center">
