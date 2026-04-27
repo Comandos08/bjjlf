@@ -143,7 +143,13 @@ export function NewsPage() {
       {/* Grid */}
       <section className="bg-gray-50 py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-6">
-          {visible.length === 0 ? (
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <NewsCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : visible.length === 0 ? (
             <div className="bg-white rounded-xl py-16 px-6 text-center flex flex-col items-center justify-center">
               <Newspaper
                 className="text-[#C8211A]"
