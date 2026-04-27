@@ -157,7 +157,7 @@ const schema = z.object({
   certificate_number: z.string().trim().min(1).max(50),
   certified_at: z.string().min(1),
   photo_url: z.string().max(500).optional().or(z.literal("")),
-  bio: z.string().max(2000).optional().or(z.literal("")),
+  bio: z.string().max(1000, "Máximo 1000 caracteres").optional().or(z.literal("")),
   is_active: z.boolean(),
 });
 type FormValues = z.infer<typeof schema>;
@@ -252,7 +252,16 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
         </div>
         <div>
           <label className="admin-label">Biografia (opcional)</label>
-          <textarea className="admin-input w-full" rows={5} {...register("bio")} placeholder="História do mestre, conquistas, linhagem..." />
+          <textarea
+            className="admin-input w-full"
+            rows={5}
+            maxLength={1000}
+            {...register("bio")}
+            placeholder="Conte a história e trajetória deste mestre no Jiu-Jitsu..."
+          />
+          <div className="text-xs text-[#666666] mt-1 text-right" style={{ fontFamily: "Barlow" }}>
+            {(watch("bio")?.length ?? 0)}/1000
+          </div>
         </div>
         <AdminToggle checked={isActive} onChange={(v) => setValue("is_active", v)} label="Ativo" />
         <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#E5E5E5" }}>
