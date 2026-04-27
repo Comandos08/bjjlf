@@ -18,6 +18,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { EVENTS, type EventTypeBadge } from "@/data/events";
+import { usePersistedEventFilters } from "@/lib/event-filters-storage";
 
 const VALID_BADGES: ReadonlyArray<EventTypeBadge> = [
   "GI",
