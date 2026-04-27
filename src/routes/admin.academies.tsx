@@ -89,7 +89,7 @@ function AcademiesAdminPage() {
           </thead>
           <tbody>
             {filtered.map((r) => (
-              <tr key={r.id} className="hover:bg-[#FFFFFF]">
+              <tr key={r.id} className="hover:bg-[#F5F5F5]">
                 <AdminTD>
                   {r.logo_url ? <img src={r.logo_url} alt="" className="h-10 w-10 rounded-full object-cover" />
                     : <div className="h-10 w-10 rounded-full bg-[#E5E5E5] grid place-items-center text-xs font-bold text-[#1A1A1A]">{initials(r.name)}</div>}

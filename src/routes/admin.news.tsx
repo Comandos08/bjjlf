@@ -84,7 +84,7 @@ function NewsAdminPage() {
           </thead>
           <tbody>
             {filtered.map((r) => (
-              <tr key={r.id} className="hover:bg-[#FFFFFF]">
+              <tr key={r.id} className="hover:bg-[#F5F5F5]">
                 <AdminTD>
                   {r.cover_image_url ? <img src={r.cover_image_url} alt="" className="h-10 w-10 object-cover" /> : <div className="h-10 w-10 bg-[#E5E5E5]" />}
                 </AdminTD>

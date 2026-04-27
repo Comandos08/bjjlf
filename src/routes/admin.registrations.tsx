@@ -274,7 +274,7 @@ function AdminRegistrationsPage() {
                 {filtered.map((r) => {
                   const s = statusBadge(r.status);
                   return (
-                    <tr key={r.id} className="border-t border-[#E5E5E5] text-[#1A1A1A] hover:bg-[#FFFFFF]">
+                    <tr key={r.id} className="border-t border-[#E5E5E5] text-[#1A1A1A] hover:bg-[#F5F5F5]">
                       <td className="px-4 py-3 text-[#666666]">{r.registration_number ?? "—"}</td>
                       <td className="px-4 py-3">{r.full_name}</td>
                       <td className="px-4 py-3 text-[#666666]">{r.email}</td>

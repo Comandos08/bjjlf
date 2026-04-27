@@ -94,7 +94,7 @@ function BlackBeltsAdminPage() {
             {filtered.map((r) => {
               const beltType = BELT_TYPES.find((b) => b.value === r.belt_type);
               return (
-                <tr key={r.id} className="hover:bg-[#FFFFFF]">
+                <tr key={r.id} className="hover:bg-[#F5F5F5]">
                   <AdminTD>
                     {r.photo_url ? (
                       <img src={r.photo_url} alt="" className="h-10 w-10 rounded-full object-cover" />

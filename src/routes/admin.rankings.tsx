@@ -114,7 +114,7 @@ function RankingsAdminPage() {
           </thead>
           <tbody>
             {filtered.map((r) => (
-              <tr key={r.id} className="hover:bg-[#FFFFFF]">
+              <tr key={r.id} className="hover:bg-[#F5F5F5]">
                 <AdminTD className="text-[#1A1A1A]">{r.position ?? "—"}</AdminTD>
                 <AdminTD className="text-[#1A1A1A] font-medium">{r.athlete_name}</AdminTD>
                 <AdminTD>{r.academy ?? "—"}</AdminTD>

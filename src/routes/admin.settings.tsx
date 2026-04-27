@@ -73,7 +73,7 @@ function SettingsPage() {
               {users.map((u) => {
                 const isSelf = user?.id === u.id;
                 return (
-                  <tr key={u.id} className="hover:bg-[#FFFFFF]">
+                  <tr key={u.id} className="hover:bg-[#F5F5F5]">
                     <AdminTD className="text-[#1A1A1A] font-medium">{u.full_name ?? "—"}</AdminTD>
                     <AdminTD>{u.email}</AdminTD>
                     <AdminTD><AdminBadge color={ROLE_BADGE[u.role] ?? "gray"}>{u.role}</AdminBadge></AdminTD>

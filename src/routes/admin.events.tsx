@@ -131,7 +131,7 @@ function EventsAdminPage() {
                 const t = TYPE_LABELS[e.event_type] ?? { label: e.event_type.toUpperCase(), color: "gray" as const };
                 const s = STATUS_LABELS[e.status] ?? { label: e.status, color: "gray" as const };
                 return (
-                  <tr key={e.id} className="hover:bg-[#FFFFFF]">
+                  <tr key={e.id} className="hover:bg-[#F5F5F5]">
                     <AdminTD>
                       {e.image_url ? (
                         <img src={e.image_url} alt="" className="h-10 w-10 object-cover" />
