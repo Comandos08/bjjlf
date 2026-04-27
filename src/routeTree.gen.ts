@@ -20,6 +20,8 @@ import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
 import { Route as RegisterAcademyRouteImport } from './routes/register.academy'
 import { Route as GraduatesGraduateIdRouteImport } from './routes/graduates.$graduateId'
 import { Route as EventsEventIdRouteImport } from './routes/events.$eventId'
+import { Route as AdminSetupRouteImport } from './routes/admin.setup'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 
 const TypographyRoute = TypographyRouteImport.update({
   id: '/typography',
@@ -76,6 +78,16 @@ const EventsEventIdRoute = EventsEventIdRouteImport.update({
   path: '/$eventId',
   getParentRoute: () => EventsRoute,
 } as any)
+const AdminSetupRoute = AdminSetupRouteImport.update({
+  id: '/admin/setup',
+  path: '/admin/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -85,6 +97,8 @@ export interface FileRoutesByFullPath {
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
   '/typography': typeof TypographyRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/setup': typeof AdminSetupRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
@@ -98,6 +112,8 @@ export interface FileRoutesByTo {
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
   '/typography': typeof TypographyRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/setup': typeof AdminSetupRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
@@ -112,6 +128,8 @@ export interface FileRoutesById {
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
   '/typography': typeof TypographyRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/setup': typeof AdminSetupRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
@@ -127,6 +145,8 @@ export interface FileRouteTypes {
     | '/graduates'
     | '/news'
     | '/typography'
+    | '/admin/login'
+    | '/admin/setup'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
@@ -140,6 +160,8 @@ export interface FileRouteTypes {
     | '/graduates'
     | '/news'
     | '/typography'
+    | '/admin/login'
+    | '/admin/setup'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
@@ -153,6 +175,8 @@ export interface FileRouteTypes {
     | '/graduates'
     | '/news'
     | '/typography'
+    | '/admin/login'
+    | '/admin/setup'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
@@ -167,6 +191,8 @@ export interface RootRouteChildren {
   GraduatesRoute: typeof GraduatesRouteWithChildren
   NewsRoute: typeof NewsRoute
   TypographyRoute: typeof TypographyRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminSetupRoute: typeof AdminSetupRoute
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
 }
@@ -250,6 +276,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsEventIdRouteImport
       parentRoute: typeof EventsRoute
     }
+    '/admin/setup': {
+      id: '/admin/setup'
+      path: '/admin/setup'
+      fullPath: '/admin/setup'
+      preLoaderRoute: typeof AdminSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -284,9 +324,20 @@ const rootRouteChildren: RootRouteChildren = {
   GraduatesRoute: GraduatesRouteWithChildren,
   NewsRoute: NewsRoute,
   TypographyRoute: TypographyRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminSetupRoute: AdminSetupRoute,
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
