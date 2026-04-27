@@ -347,10 +347,43 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
     : null;
 
   return (
-    <div className="flex flex-col border-t border-[#222] mt-2 pt-2">
-      <p className="px-1 py-2 text-[10px] uppercase tracking-widest text-gray-500" style={{ fontFamily: "Barlow" }}>
-        {profile?.full_name ?? user.email}
-      </p>
+    <div className="flex flex-col border-t border-[#222] mt-2 pt-3">
+      <div className="flex items-center gap-3 px-1 py-2">
+        {profile?.photo_url ? (
+          <img
+            src={profile.photo_url}
+            alt=""
+            className="w-9 h-9 rounded-full object-cover"
+            style={{ border: "2px solid #C8A84B" }}
+          />
+        ) : (
+          <span
+            className="w-9 h-9 rounded-full grid place-items-center text-sm text-white"
+            style={{
+              background: "#C8211A",
+              border: "2px solid #C8A84B",
+              fontFamily: "Barlow Condensed",
+              fontWeight: 700,
+            }}
+          >
+            {initials}
+          </span>
+        )}
+        <div className="min-w-0 flex-1">
+          <p className="text-sm text-white truncate" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
+            {profile?.full_name ?? user.email}
+          </p>
+          {beltLine && (
+            <p
+              className="text-[11px] truncate"
+              style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
+            >
+              {beltLine}
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="border-t border-[#222] my-1" />
       <Link to="/my-card" onClick={onNavigate} className="py-2.5 text-sm text-gray-300 flex items-center gap-2" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
         <CreditCard size={16} /> Minha Carteirinha
       </Link>
@@ -361,12 +394,13 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
         <Trophy size={16} /> Minhas Competições
       </Link>
       <Link to="/my-permits" onClick={onNavigate} className="py-2.5 text-sm text-gray-300 flex items-center gap-2" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
-        <Building2 size={16} /> Meus Alvarás
+        <Building2 size={16} /> Alvará da Academia
       </Link>
+      <div className="border-t border-[#222] my-1" />
       <button
         onClick={() => { onNavigate(); void signOut(); }}
-        className="py-2.5 text-sm text-gray-400 flex items-center gap-2 text-left"
-        style={{ fontFamily: "Barlow", fontWeight: 500 }}
+        className="py-2.5 text-sm flex items-center gap-2 text-left"
+        style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8211A" }}
       >
         <LogOut size={16} /> Sair
       </button>
