@@ -259,7 +259,7 @@ function AdminPermitsPage() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Academia ou email"
+              placeholder="Academia, email ou nº alvará"
               className="w-full bg-[#FFFFFF] border border-[#E5E5E5] text-[#1A1A1A] text-sm rounded pl-9 pr-9 py-2"
             />
             {query && (
@@ -277,7 +277,7 @@ function AdminPermitsPage() {
           className="inline-flex items-center gap-2 bg-[#C8A84B] hover:bg-[#9a7d0a] text-[#1A1A1A] text-sm uppercase tracking-widest rounded px-4 py-2"
           style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
         >
-          <Download className="h-4 w-4" /> Exportar CSV
+          <Download className="h-4 w-4" /> Exportar CSV ({filtered.length})
         </button>
       </div>
 
@@ -306,7 +306,7 @@ function AdminPermitsPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((r) => {
+                {paged.map((r) => {
                   const s = statusBadge(r.status);
                   return (
                     <tr key={r.id} className="border-t border-[#E5E5E5] text-[#1A1A1A] hover:bg-[#F5F5F5]">
