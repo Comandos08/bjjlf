@@ -278,3 +278,20 @@ function NewsCard({
     </Link>
   );
 }
+
+function NewsCardSkeleton() {
+  return (
+    <div className="flex flex-col bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden">
+      <div className="aspect-video bg-[#E5E5E5] animate-pulse" />
+      <div className="flex-1 flex flex-col p-5 gap-2">
+        <div className="h-3 w-20 bg-[#E5E5E5] rounded animate-pulse" />
+        <div className="h-5 w-full bg-[#E5E5E5] rounded animate-pulse" />
+        <div className="h-4 w-5/6 bg-[#E5E5E5] rounded animate-pulse" />
+        <div className="h-4 w-2/3 bg-[#E5E5E5] rounded animate-pulse" />
+        <div className="mt-3 pt-3 border-t border-gray-100">
+          <div className="h-3 w-24 bg-[#E5E5E5] rounded animate-pulse" />
+        </div>
+      </div>
+    </div>
+  );
+}
