@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import type { ImageEntry, ImageRegistryTelemetry } from "@/lib/image-registry";
 import { ChevronDown, ChevronUp, RefreshCw, X, Bug } from "lucide-react";
 import {
@@ -12,10 +12,15 @@ const isDev = import.meta.env.DEV;
 
 /**
  * Floating dev-only panel that lists every <SafeImage> on the page along
- * with its load status. Hidden in production builds.
+ * with its load status. Hidden in production builds and skipped during
+ * SSR (mounts only after hydration on the client).
  */
 export function ImageDebugPanel() {
-  if (!isDev) return null;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!isDev || !mounted) return null;
   return <Panel />;
 }
 
