@@ -10,6 +10,14 @@ import {
   type Event,
   type EventTypeBadge,
 } from "@/data/events";
+
+/** Monochrome filter chip — red active vs gray inactive. */
+const chipBase =
+  "inline-flex items-center rounded-full px-4 py-1.5 text-xs uppercase tracking-widest transition-base focus-ring";
+const chipInactive =
+  "bg-white border border-gray-300 text-gray-600 hover:border-[#C8211A] hover:text-[#C8211A]";
+const chipActive =
+  "bg-[#C8211A] border border-[#C8211A] text-white";
 import { sortEvents, DEFAULT_EVENT_SORT, type EventSort } from "@/lib/event-sort";
 import {
   buildPageList,
