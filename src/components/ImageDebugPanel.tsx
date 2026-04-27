@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
+import type { ImageEntry, ImageRegistryTelemetry } from "@/lib/image-registry";
 import { ChevronDown, ChevronUp, RefreshCw, X, Bug } from "lucide-react";
 import {
   useImageRegistry,
@@ -103,29 +104,8 @@ function Panel() {
 
       {open && (
         <>
-          {/* Telemetry strip */}
-          <div
-            className="flex items-center justify-between gap-2 px-3 py-1.5 text-[10px]"
-            style={{ background: "#141414", borderBottom: "1px solid #2A2A2A", color: "#888" }}
-          >
-            <div className="flex items-center gap-2">
-              <span style={{ color: "#B8960C" }}>emits</span>
-              <span style={{ color: "#FFFFFF", fontWeight: 700 }}>{telemetry.emits}</span>
-              <span>·</span>
-              <span>reg {telemetry.registered}</span>
-              <span style={{ color: "#22C55E" }}>ok {telemetry.loaded}</span>
-              <span style={{ color: "#EF4444" }}>err {telemetry.errored}</span>
-              <span>unreg {telemetry.unregistered}</span>
-            </div>
-            <button
-              onClick={resetImageRegistryTelemetry}
-              className="px-1.5 py-0.5 hover:text-white"
-              style={{ border: "1px solid #2A2A2A", color: "#888" }}
-              title="Reset telemetry counters"
-            >
-              reset
-            </button>
-          </div>
+          {/* Telemetry strip — memoized so changes elsewhere don't redraw it */}
+          <TelemetryStrip telemetry={telemetry} onReset={resetImageRegistryTelemetry} />
 
 
           <div className="flex gap-1 px-3 py-2" style={{ borderBottom: "1px solid #2A2A2A" }}>
@@ -150,62 +130,8 @@ function Panel() {
             })}
           </div>
 
-          {/* List */}
-          <div className="flex-1 overflow-auto">
-            {filtered.length === 0 ? (
-              <div className="px-3 py-6 text-center text-[11px]" style={{ color: "#666" }}>
-                No images {filter === "all" ? "registered yet" : `with status “${filter}”`}.
-              </div>
-            ) : (
-              <ul>
-                {filtered.map((e) => (
-                  <li
-                    key={e.id}
-                    className="px-3 py-2"
-                    style={{ borderBottom: "1px solid #1F1F1F" }}
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span
-                        className="truncate text-[11px] uppercase tracking-[0.06em]"
-                        style={{
-                          color: "#FFFFFF",
-                          fontFamily: "Barlow Condensed",
-                          fontWeight: 700,
-                          maxWidth: "70%",
-                        }}
-                        title={e.label}
-                      >
-                        {e.label || "(no label)"}
-                      </span>
-                      <StatusPill status={e.status} ms={e.durationMs} />
-                    </div>
-                    <div className="mt-1 flex items-center gap-2 text-[10px]" style={{ color: "#888" }}>
-                      <span
-                        className="px-1.5 py-0.5"
-                        style={{
-                          background: "#1A1A1A",
-                          border: "1px solid #2A2A2A",
-                          color: "#B8960C",
-                        }}
-                      >
-                        {e.source}
-                      </span>
-                      <a
-                        href={e.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="truncate hover:text-white"
-                        title={e.url}
-                        style={{ color: "#666" }}
-                      >
-                        {shortUrl(e.url)}
-                      </a>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          {/* List — memoized; only re-renders when filtered list reference changes */}
+          <EntryList entries={filtered} filter={filter} />
         </>
       )}
     </div>
@@ -250,3 +176,129 @@ function shortUrl(url: string) {
     return url.length > 50 ? url.slice(0, 50) + "…" : url;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Memoized sub-components
+//
+// Each leaf is wrapped with `React.memo` so that unrelated state updates
+// in <Panel /> (e.g. a new telemetry emit while viewing the entry list,
+// or a filter change while telemetry stays the same) DO NOT cascade into
+// re-rendering parts of the tree whose props haven't actually changed.
+// ---------------------------------------------------------------------------
+
+const TelemetryStrip = memo(function TelemetryStrip({
+  telemetry,
+  onReset,
+}: {
+  telemetry: ImageRegistryTelemetry;
+  onReset: () => void;
+}) {
+  return (
+    <div
+      data-testid="image-debug-telemetry"
+      className="flex items-center justify-between gap-2 px-3 py-1.5 text-[10px]"
+      style={{ background: "#141414", borderBottom: "1px solid #2A2A2A", color: "#888" }}
+    >
+      <div className="flex items-center gap-2">
+        <span style={{ color: "#B8960C" }}>emits</span>
+        <span style={{ color: "#FFFFFF", fontWeight: 700 }}>{telemetry.emits}</span>
+        <span>·</span>
+        <span>reg {telemetry.registered}</span>
+        <span style={{ color: "#22C55E" }}>ok {telemetry.loaded}</span>
+        <span style={{ color: "#EF4444" }}>err {telemetry.errored}</span>
+        <span>unreg {telemetry.unregistered}</span>
+      </div>
+      <button
+        onClick={onReset}
+        className="px-1.5 py-0.5 hover:text-white"
+        style={{ border: "1px solid #2A2A2A", color: "#888" }}
+        title="Reset telemetry counters"
+      >
+        reset
+      </button>
+    </div>
+  );
+});
+
+const EntryList = memo(function EntryList({
+  entries,
+  filter,
+}: {
+  entries: ImageEntry[];
+  filter: string;
+}) {
+  return (
+    <div data-testid="image-debug-list" className="flex-1 overflow-auto">
+      {entries.length === 0 ? (
+        <div className="px-3 py-6 text-center text-[11px]" style={{ color: "#666" }}>
+          No images {filter === "all" ? "registered yet" : `with status “${filter}”`}.
+        </div>
+      ) : (
+        <ul>
+          {entries.map((e) => (
+            <EntryRow key={e.id} entry={e} />
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+});
+
+const EntryRow = memo(
+  function EntryRow({ entry }: { entry: ImageEntry }) {
+    return (
+      <li
+        data-testid="image-debug-row"
+        data-entry-id={entry.id}
+        className="px-3 py-2"
+        style={{ borderBottom: "1px solid #1F1F1F" }}
+      >
+        <div className="flex items-center justify-between gap-2">
+          <span
+            className="truncate text-[11px] uppercase tracking-[0.06em]"
+            style={{
+              color: "#FFFFFF",
+              fontFamily: "Barlow Condensed",
+              fontWeight: 700,
+              maxWidth: "70%",
+            }}
+            title={entry.label}
+          >
+            {entry.label || "(no label)"}
+          </span>
+          <StatusPill status={entry.status} ms={entry.durationMs} />
+        </div>
+        <div className="mt-1 flex items-center gap-2 text-[10px]" style={{ color: "#888" }}>
+          <span
+            className="px-1.5 py-0.5"
+            style={{
+              background: "#1A1A1A",
+              border: "1px solid #2A2A2A",
+              color: "#B8960C",
+            }}
+          >
+            {entry.source}
+          </span>
+          <a
+            href={entry.url}
+            target="_blank"
+            rel="noreferrer"
+            className="truncate hover:text-white"
+            title={entry.url}
+            style={{ color: "#666" }}
+          >
+            {shortUrl(entry.url)}
+          </a>
+        </div>
+      </li>
+    );
+  },
+  // Custom comparator: rows only need to re-render when an observable
+  // field of the entry actually changed.
+  (prev, next) =>
+    prev.entry.id === next.entry.id &&
+    prev.entry.status === next.entry.status &&
+    prev.entry.durationMs === next.entry.durationMs &&
+    prev.entry.label === next.entry.label &&
+    prev.entry.url === next.entry.url,
+);
