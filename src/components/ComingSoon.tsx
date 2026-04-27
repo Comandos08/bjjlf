@@ -12,7 +12,6 @@ import {
 import { Logo } from "@/components/Logo";
 
 export type ComingSoonPage =
-  | "championships"
   | "rankings"
   | "black-belts"
   | "athletes"
@@ -28,14 +27,6 @@ type Config = {
 };
 
 const CONFIG: Record<ComingSoonPage, Config> = {
-  championships: {
-    title: "CAMPE",
-    highlight: "ONATOS",
-    subtitle: "A nova era dos campeonatos BJJLF está chegando.",
-    icon: Trophy,
-    features: ["Calendário", "Inscrições", "Ao Vivo"],
-    progress: 65,
-  },
   rankings: {
     title: "RANK",
     highlight: "INGS",
