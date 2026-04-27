@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
+import type { ImageEntry, ImageRegistryTelemetry } from "@/lib/image-registry";
 import { ChevronDown, ChevronUp, RefreshCw, X, Bug } from "lucide-react";
 import {
   useImageRegistry,
