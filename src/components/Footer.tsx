@@ -2,8 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Youtube, Twitter } from "lucide-react";
 import { Logo } from "./Logo";
 import { useI18n } from "@/lib/i18n";
-import { typo } from "@/lib/typography";
-import { cn } from "@/lib/utils";
 
 export function Footer() {
   const { t } = useI18n();
