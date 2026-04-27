@@ -34,9 +34,9 @@ export function Footer() {
           <div>
             <h4 className={headingClass}>{t("footer.col.championships")}</h4>
             <ul>
-              <li><Link to="/events" className={linkClass}>{t("footer.col.upcoming")}</Link></li>
-              <li><Link to="/events" className={linkClass}>{t("footer.col.results")}</Link></li>
-              <li><Link to="/events" className={linkClass}>{t("footer.col.calendar")}</Link></li>
+              <li><Link to="/events" search={((prev: unknown) => prev) as never} className={linkClass}>{t("footer.col.upcoming")}</Link></li>
+              <li><Link to="/events" search={((prev: unknown) => prev) as never} className={linkClass}>{t("footer.col.results")}</Link></li>
+              <li><Link to="/events" search={((prev: unknown) => prev) as never} className={linkClass}>{t("footer.col.calendar")}</Link></li>
               <li><Link to="/rankings" className={linkClass}>{t("footer.col.rankings")}</Link></li>
             </ul>
           </div>
