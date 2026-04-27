@@ -135,10 +135,9 @@ export function useToggleEventField() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: { id: string; field: "show_on_home" | "is_featured"; value: boolean }) => {
-      const { error } = await supabase
-        .from("events")
-        .update({ [input.field]: input.value })
-        .eq("id", input.id);
+      const patch: EventUpdate =
+        input.field === "show_on_home" ? { show_on_home: input.value } : { is_featured: input.value };
+      const { error } = await supabase.from("events").update(patch).eq("id", input.id);
       if (error) throw error;
     },
     onSuccess: () => {
