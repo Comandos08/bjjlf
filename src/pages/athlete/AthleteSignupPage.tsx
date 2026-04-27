@@ -7,6 +7,9 @@ import { AlertCircle, ArrowLeft, Loader2, MailCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { AthleteAuthLayout, fieldStyles, btnStyle } from "./AthleteAuthLayout";
+import { BeltSelector } from "@/components/BeltSelector";
+import { BELT_NAMES, defaultDegreeForBelt, degreesForBelt, type BeltName } from "@/lib/belts-ibjjf";
+import { Controller } from "react-hook-form";
 
 function parseSignupError(error: Error): string {
   const msg = error.message.toLowerCase();
