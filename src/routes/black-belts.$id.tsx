@@ -153,7 +153,7 @@ function BlackBeltDetail() {
               <Info label="Data de certificação" value={certifiedFmt} />
             </dl>
 
-            {bb.bio && (
+            {bb.bio?.trim() && (
               <section>
                 <h2
                   className="text-lg uppercase text-gray-900 mb-3"
@@ -162,11 +162,31 @@ function BlackBeltDetail() {
                   Biografia
                 </h2>
                 <div className="h-1 w-12 bg-[#C8211A] rounded mb-4" />
-                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap" style={{ fontFamily: "Barlow" }}>
-                  {bb.bio}
+                <p
+                  className="leading-relaxed whitespace-pre-wrap"
+                  style={{ fontFamily: "Lora, Georgia, serif", fontSize: 16, color: "#444444" }}
+                >
+                  {bb.bio.length > BIO_MAX ? `${bb.bio.slice(0, BIO_MAX)}...` : bb.bio}
                 </p>
               </section>
             )}
+
+            <div className="pt-6 border-t" style={{ borderColor: "#E5E5E5" }}>
+              <Link
+                to="/black-belts"
+                className="inline-flex items-center gap-2 px-5 py-2.5 border-2 rounded-md uppercase transition-colors hover:bg-[#C8211A] hover:text-white"
+                style={{
+                  fontFamily: "Barlow",
+                  fontWeight: 700,
+                  fontSize: 13,
+                  letterSpacing: "0.08em",
+                  borderColor: "#C8211A",
+                  color: "#C8211A",
+                }}
+              >
+                <ArrowLeft className="h-4 w-4" /> Voltar para Faixas Pretas
+              </Link>
+            </div>
           </div>
         </article>
       </div>
