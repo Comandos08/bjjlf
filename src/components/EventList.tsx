@@ -420,13 +420,8 @@ function FilterChip({
       data-testid="event-filter-chip"
       data-badge="ALL"
       data-active={active}
-      className={cn(
-        "inline-flex items-center rounded transition-base focus-ring px-3 py-1.5 text-xs uppercase tracking-widest",
-        active
-          ? "bg-gray-900 text-white"
-          : "bg-gray-100 text-gray-600 hover:bg-gray-200",
-      )}
-      style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+      className={cn(chipBase, active ? chipActive : chipInactive)}
+      style={{ fontFamily: "Barlow", fontWeight: active ? 700 : 600 }}
     >
       {label}
     </button>
