@@ -84,7 +84,7 @@ export function ComingSoon({ page }: { page: ComingSoonPage }) {
   }
 
   return (
-    <section className="relative overflow-hidden bg-white text-[#1a1a1a]">
+    <section className="relative overflow-hidden bg-gray-50 text-[#1a1a1a]">
       {/* Decorative orbs */}
       <div
         aria-hidden
@@ -114,29 +114,30 @@ export function ComingSoon({ page }: { page: ComingSoonPage }) {
         </div>
 
         {/* "EM BREVE" badge */}
-        <span className="mb-6 inline-flex items-center rounded-full border border-red-200 bg-red-50 px-4 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-red-600">
+        <span
+          className="mb-6 inline-flex items-center rounded-full border border-red-200 bg-red-50 px-4 py-1 text-xs uppercase tracking-widest text-red-600"
+          style={{ fontFamily: "Barlow", fontWeight: 700 }}
+        >
           Em breve
         </span>
 
         {/* Title */}
         <h1
-          className="text-6xl font-black leading-[0.95] tracking-tight md:text-7xl"
-          style={{ fontFamily: "Barlow Condensed", color: "#1a1a1a" }}
+          className="text-6xl uppercase leading-[0.95] tracking-tight text-gray-900 md:text-7xl"
+          style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
         >
           {cfg.title}
           <span style={{ color: "#C8A84B" }}>{cfg.highlight}</span>
         </h1>
 
         {/* Divider */}
-        <div
-          className="mx-auto mt-6 h-[3px] w-16"
-          style={{
-            background: "linear-gradient(90deg, #C8211A 0%, #C8A84B 100%)",
-          }}
-        />
+        <div className="mt-3 h-1 w-12 rounded bg-[#C8211A]" />
 
         {/* Subtitle */}
-        <p className="mt-6 max-w-xl text-base text-gray-500 md:text-lg">
+        <p
+          className="mt-6 max-w-xl text-base text-gray-500 md:text-lg"
+          style={{ fontFamily: "Barlow", fontWeight: 400 }}
+        >
           {cfg.subtitle}
         </p>
 
@@ -145,7 +146,8 @@ export function ComingSoon({ page }: { page: ComingSoonPage }) {
           {cfg.features.map((f) => (
             <div
               key={f}
-              className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-700"
+              className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700"
+              style={{ fontFamily: "Barlow", fontWeight: 600 }}
             >
               {f}
             </div>

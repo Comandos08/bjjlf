@@ -266,7 +266,7 @@ function NewsSection() {
   const titleKey = (id: string) => `news.item.${id}.title`;
 
   return (
-    <section className="bg-[#F7F7F7] py-20 md:py-28">
+    <section className="bg-[#F2F2F2] border-t border-gray-200 py-20 md:py-28">
       <div className="max-w-7xl mx-auto px-6">
         <SectionHeader
           title={t("home.news.title")}
@@ -502,7 +502,7 @@ function flagEmoji(code: string) {
 function CTASection() {
   const { t } = useI18n();
   return (
-    <section className="bg-[#F7F7F7] py-20 md:py-28">
+    <section className="bg-[#F2F2F2] border-t border-gray-200 py-20 md:py-28">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-6">
         <Link
           to="/register/athlete"
