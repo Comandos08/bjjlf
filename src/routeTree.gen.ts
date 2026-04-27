@@ -17,6 +17,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
 import { Route as RegisterAcademyRouteImport } from './routes/register.academy'
 import { Route as GraduatesGraduateIdRouteImport } from './routes/graduates.$graduateId'
+import { Route as EventsEventIdRouteImport } from './routes/events.$eventId'
 
 const TypographyRoute = TypographyRouteImport.update({
   id: '/typography',
@@ -58,6 +59,11 @@ const GraduatesGraduateIdRoute = GraduatesGraduateIdRouteImport.update({
   path: '/$graduateId',
   getParentRoute: () => GraduatesRoute,
 } as any)
+const EventsEventIdRoute = EventsEventIdRouteImport.update({
+  id: '/events/$eventId',
+  path: '/events/$eventId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
   '/typography': typeof TypographyRoute
+  '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
   '/typography': typeof TypographyRoute
+  '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
   '/typography': typeof TypographyRoute
+  '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/graduates'
     | '/news'
     | '/typography'
+    | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
     | '/register/athlete'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/graduates'
     | '/news'
     | '/typography'
+    | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
     | '/register/athlete'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/graduates'
     | '/news'
     | '/typography'
+    | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
     | '/register/athlete'
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   GraduatesRoute: typeof GraduatesRouteWithChildren
   NewsRoute: typeof NewsRoute
   TypographyRoute: typeof TypographyRoute
+  EventsEventIdRoute: typeof EventsEventIdRoute
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
 }
@@ -191,6 +204,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GraduatesGraduateIdRouteImport
       parentRoute: typeof GraduatesRoute
     }
+    '/events/$eventId': {
+      id: '/events/$eventId'
+      path: '/events/$eventId'
+      fullPath: '/events/$eventId'
+      preLoaderRoute: typeof EventsEventIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -212,9 +232,19 @@ const rootRouteChildren: RootRouteChildren = {
   GraduatesRoute: GraduatesRouteWithChildren,
   NewsRoute: NewsRoute,
   TypographyRoute: TypographyRoute,
+  EventsEventIdRoute: EventsEventIdRoute,
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
