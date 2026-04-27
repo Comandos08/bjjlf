@@ -13,6 +13,7 @@ import { Route as TypographyRouteImport } from './routes/typography'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as GraduatesRouteImport } from './routes/graduates'
 import { Route as EventsRouteImport } from './routes/events'
+import { Route as AcademiesRouteImport } from './routes/academies'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
@@ -38,6 +39,11 @@ const GraduatesRoute = GraduatesRouteImport.update({
 const EventsRoute = EventsRouteImport.update({
   id: '/events',
   path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcademiesRoute = AcademiesRouteImport.update({
+  id: '/academies',
+  path: '/academies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -74,6 +80,7 @@ const EventsEventIdRoute = EventsEventIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/academies': typeof AcademiesRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/academies': typeof AcademiesRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
@@ -99,6 +107,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/academies': typeof AcademiesRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/academies'
     | '/events'
     | '/graduates'
     | '/news'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/academies'
     | '/events'
     | '/graduates'
     | '/news'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/academies'
     | '/events'
     | '/graduates'
     | '/news'
@@ -150,6 +162,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AcademiesRoute: typeof AcademiesRoute
   EventsRoute: typeof EventsRouteWithChildren
   GraduatesRoute: typeof GraduatesRouteWithChildren
   NewsRoute: typeof NewsRoute
@@ -186,6 +199,13 @@ declare module '@tanstack/react-router' {
       path: '/events'
       fullPath: '/events'
       preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/academies': {
+      id: '/academies'
+      path: '/academies'
+      fullPath: '/academies'
+      preLoaderRoute: typeof AcademiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -259,6 +279,7 @@ const GraduatesRouteWithChildren = GraduatesRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AcademiesRoute: AcademiesRoute,
   EventsRoute: EventsRouteWithChildren,
   GraduatesRoute: GraduatesRouteWithChildren,
   NewsRoute: NewsRoute,
