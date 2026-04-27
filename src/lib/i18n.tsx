@@ -100,6 +100,11 @@ const PT: Dict = {
   "events.search.label": "Buscar eventos",
   "events.search.placeholder": "Buscar por nome ou local…",
   "events.search.clear": "Limpar busca",
+  "events.page.prev": "Anterior",
+  "events.page.next": "Próxima",
+  "events.page.goto": "Ir para a página {n}",
+  "events.page.current": "Página {n} de {total}",
+  "events.page.perPage": "Por página",
 
 
   "news.cat.tournaments.label": "CAMPEONATOS",
@@ -393,6 +398,11 @@ const EN: Dict = {
   "events.search.label": "Search events",
   "events.search.placeholder": "Search by name or location…",
   "events.search.clear": "Clear search",
+  "events.page.prev": "Previous",
+  "events.page.next": "Next",
+  "events.page.goto": "Go to page {n}",
+  "events.page.current": "Page {n} of {total}",
+  "events.page.perPage": "Per page",
 
   "news.cat.tournaments.label": "TOURNAMENTS",
   "news.cat.promotions.label": "PROMOTIONS",

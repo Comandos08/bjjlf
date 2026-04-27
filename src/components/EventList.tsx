@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Link } from "@tanstack/react-router";
-import { Calendar, MapPin, X } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, MapPin, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { typo } from "@/lib/typography";
 import { useI18n, formatDateShort } from "@/lib/i18n";
@@ -12,6 +12,12 @@ import {
   type EventTypeBadge,
 } from "@/data/events";
 import { sortEvents, DEFAULT_EVENT_SORT, type EventSort } from "@/lib/event-sort";
+import {
+  buildPageList,
+  clampPage,
+  DEFAULT_PER_PAGE,
+  pageCount,
+} from "@/lib/pagination";
 
 /**
  * Reusable event list with badge filters.
@@ -63,6 +69,16 @@ export type EventListProps = {
    * params should pass the parsed value here.
    */
   query?: string;
+  /**
+   * 1-indexed current page. When omitted, pagination is disabled and ALL
+   * filtered results render. Callers wiring this to URL search params should
+   * pass `page` + `onPageChange` together.
+   */
+  page?: number;
+  /** Items per page. Defaults to DEFAULT_PER_PAGE. */
+  perPage?: number;
+  /** Called when the user clicks a paginator button. */
+  onPageChange?: (page: number) => void;
   className?: string;
 };
 
@@ -83,9 +99,17 @@ export function EventList({
   hideFilters = false,
   sort = DEFAULT_EVENT_SORT,
   query = "",
+  page,
+  perPage = DEFAULT_PER_PAGE,
+  onPageChange,
   className,
 }: EventListProps) {
   const { t, lang } = useI18n();
+
+  // Pagination is only "active" when the caller wired both the page number
+  // AND the change handler. Otherwise we render every filtered result —
+  // matches the pre-pagination behavior so existing call-sites are unaffected.
+  const paginationEnabled = typeof page === "number" && !!onPageChange;
 
   // Compute which chips to show. Preserves the canonical ALL_BADGES order
   // so the filter row never reshuffles when the dataset changes.
@@ -116,6 +140,23 @@ export function EventList({
     // 3) Sort
     return sortEvents(base, sort);
   }, [events, selectedBadges, sort, query]);
+
+  // Derive pagination geometry. Always-on math (cheap), only used when enabled.
+  const total = filtered.length;
+  const totalPages = pageCount(total, perPage);
+  const safePage = clampPage(page ?? 1, total, perPage);
+  const visible = paginationEnabled
+    ? filtered.slice((safePage - 1) * perPage, safePage * perPage)
+    : filtered;
+
+  // Self-heal the URL when filters shrink the result set below the current
+  // page. Without this, the user lands on a blank "page 5 of 2" view.
+  useEffect(() => {
+    if (!paginationEnabled) return;
+    if (safePage !== page) onPageChange?.(safePage);
+    // We deliberately depend on `total` (not `filtered`) so this runs only
+    // when the result count actually changes — not on every render.
+  }, [paginationEnabled, safePage, page, total, onPageChange]);
 
   const toggle = (badge: EventTypeBadge) => {
     const set = new Set(selectedBadges);
@@ -206,7 +247,7 @@ export function EventList({
             gridClassName ?? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
           )}
         >
-          {filtered.map((e) => (
+          {visible.map((e) => (
             <Link
               key={e.id}
               to="/events/$eventId"
@@ -258,7 +299,113 @@ export function EventList({
           ))}
         </div>
       )}
+
+      {/* Numbered paginator. Hidden when pagination is off OR there's only
+          one page of results — keeps the UI clean for narrow result sets. */}
+      {paginationEnabled && totalPages > 1 ? (
+        <Paginator
+          page={safePage}
+          totalPages={totalPages}
+          onChange={(p) => onPageChange?.(p)}
+          labels={{
+            prev: t("events.page.prev"),
+            next: t("events.page.next"),
+            goto: t("events.page.goto"),
+            current: t("events.page.current")
+              .replace("{n}", String(safePage))
+              .replace("{total}", String(totalPages)),
+          }}
+        />
+      ) : null}
     </div>
+  );
+}
+
+function Paginator({
+  page,
+  totalPages,
+  onChange,
+  labels,
+}: {
+  page: number;
+  totalPages: number;
+  onChange: (page: number) => void;
+  labels: { prev: string; next: string; goto: string; current: string };
+}) {
+  const items = useMemo(() => buildPageList(page, totalPages, 1), [page, totalPages]);
+  const goto = (p: number) => {
+    if (p < 1 || p > totalPages || p === page) return;
+    onChange(p);
+  };
+
+  return (
+    <nav
+      aria-label={labels.current}
+      className="flex flex-wrap items-center justify-center gap-1.5 pt-2"
+      data-testid="event-pagination"
+    >
+      <button
+        type="button"
+        onClick={() => goto(page - 1)}
+        disabled={page <= 1}
+        aria-label={labels.prev}
+        data-testid="event-pagination-prev"
+        className={cn(
+          typo.button.sm,
+          "inline-flex items-center gap-1 px-3 h-9 rounded-none border border-border bg-card hover:border-primary hover:text-primary disabled:opacity-40 disabled:hover:border-border disabled:hover:text-inherit transition-base",
+        )}
+      >
+        <ChevronLeft className="h-3.5 w-3.5" />
+        <span className="hidden sm:inline">{labels.prev}</span>
+      </button>
+
+      {items.map((it, i) =>
+        it === "…" ? (
+          <span
+            key={`gap-${i}`}
+            aria-hidden="true"
+            className="inline-flex items-center justify-center h-9 w-9 text-muted-foreground"
+          >
+            …
+          </span>
+        ) : (
+          <button
+            key={it}
+            type="button"
+            onClick={() => goto(it)}
+            aria-current={it === page ? "page" : undefined}
+            aria-label={labels.goto.replace("{n}", String(it))}
+            data-testid="event-pagination-page"
+            data-page={it}
+            data-active={it === page}
+            className={cn(
+              typo.button.sm,
+              "inline-flex items-center justify-center h-9 min-w-9 px-3 rounded-none border transition-base",
+              it === page
+                ? "bg-primary text-primary-foreground border-primary"
+                : "border-border bg-card hover:border-primary hover:text-primary",
+            )}
+          >
+            {it}
+          </button>
+        ),
+      )}
+
+      <button
+        type="button"
+        onClick={() => goto(page + 1)}
+        disabled={page >= totalPages}
+        aria-label={labels.next}
+        data-testid="event-pagination-next"
+        className={cn(
+          typo.button.sm,
+          "inline-flex items-center gap-1 px-3 h-9 rounded-none border border-border bg-card hover:border-primary hover:text-primary disabled:opacity-40 disabled:hover:border-border disabled:hover:text-inherit transition-base",
+        )}
+      >
+        <span className="hidden sm:inline">{labels.next}</span>
+        <ChevronRight className="h-3.5 w-3.5" />
+      </button>
+    </nav>
   );
 }
 

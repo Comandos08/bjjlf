@@ -32,6 +32,11 @@ import {
   parseEventSort,
   type EventSort,
 } from "@/lib/event-sort";
+import {
+  DEFAULT_PER_PAGE,
+  parsePage,
+  parsePerPage,
+} from "@/lib/pagination";
 
 const VALID_BADGES: ReadonlyArray<EventTypeBadge> = [
   "GI",
@@ -61,7 +66,13 @@ function parseBadges(input: unknown): EventTypeBadge[] {
   return VALID_BADGES.filter((b) => set.has(b));
 }
 
-type EventsSearch = { badges: EventTypeBadge[]; sort: EventSort; q: string };
+type EventsSearch = {
+  badges: EventTypeBadge[];
+  sort: EventSort;
+  q: string;
+  page: number;
+  perPage: number;
+};
 
 /**
  * Coerce an unknown URL value into a clean search string.
@@ -78,6 +89,8 @@ export const Route = createFileRoute("/events")({
     badges: parseBadges(search.badges),
     sort: parseEventSort(search.sort),
     q: parseQuery(search.q),
+    page: parsePage(search.page),
+    perPage: parsePerPage(search.perPage),
   }),
   head: () => ({
     meta: [
@@ -104,6 +117,8 @@ function EventsListPage() {
   const badges: EventTypeBadge[] = search.badges;
   const sort: EventSort = search.sort;
   const urlQuery: string = search.q;
+  const page: number = search.page;
+  const perPage: number = search.perPage;
   const navigate = useNavigate({ from: "/events" });
   const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -125,25 +140,38 @@ function EventsListPage() {
     return VALID_BADGES.filter((b) => present.has(b));
   }, []);
 
+  // Any change to filters/sort/search resets the paginator back to page 1
+  // — otherwise the user gets stranded on a high page that no longer exists
+  // for the new result set. (EventList also self-heals via clampPage as a
+  // safety net for hand-edited URLs.)
   const setBadges = (next: ReadonlyArray<EventTypeBadge>) =>
     navigate({
-      // Preserve sort + q when filters change.
-      search: (prev: EventsSearch) => ({ ...prev, badges: [...next] }),
+      search: (prev: EventsSearch) => ({ ...prev, badges: [...next], page: 1 }),
       replace: true,
     });
 
   const setSort = (next: EventSort) =>
     navigate({
-      // Preserve badges + q when sort changes.
-      search: (prev: EventsSearch) => ({ ...prev, sort: next }),
+      search: (prev: EventsSearch) => ({ ...prev, sort: next, page: 1 }),
       replace: true,
     });
 
   const setQuery = (next: string) =>
     navigate({
-      // Preserve badges + sort when query changes.
-      search: (prev: EventsSearch) => ({ ...prev, q: next }),
+      search: (prev: EventsSearch) => ({ ...prev, q: next, page: 1 }),
       replace: true,
+    });
+
+  const setPage = (next: number) =>
+    navigate({
+      // Page changes preserve everything else AND scroll the user back to the
+      // top of the list — switching pages without scrolling feels broken.
+      search: (prev: EventsSearch) => ({ ...prev, page: next }),
+      replace: false,
+    }).then(() => {
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     });
 
   // Debounce URL writes. We compare against the URL value (not the previous
@@ -376,6 +404,9 @@ function EventsListPage() {
               onChange={setBadges}
               sort={sort}
               query={urlQuery}
+              page={page}
+              perPage={perPage}
+              onPageChange={setPage}
               hideFilters
             />
           </div>
