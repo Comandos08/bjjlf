@@ -13,7 +13,7 @@
  *    To fix that we append a cache-busting query param only in dev.
  */
 
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 
 const isDev = import.meta.env.DEV;
 
@@ -36,22 +36,28 @@ export function withImageCache(url: string | undefined): string | undefined {
 }
 
 /**
- * React hook variant — generates the bust value **once per component mount**
- * (and only when the URL changes), so:
- *
- *   - Each card refreshes its image every time it mounts (e.g. you navigate
- *     away and back, or the component is conditionally remounted).
- *   - Re-renders within the same mount keep the same URL, so React doesn't
- *     thrash the browser into re-downloading on every state change.
+ * React hook variant — generates the bust value **once per component mount on
+ * the client**, after hydration. During SSR and the initial client render we
+ * return the original URL so the markup matches; the cache-buster is then
+ * applied via a post-mount state update (only in dev).
  *
  * Returns the original URL in production.
  */
 export function useImageCacheUrl(url: string | undefined): string | undefined {
-  return useMemo(() => {
-    if (!url) return url;
-    if (!isDev) return url;
-    if (!/^https?:\/\//i.test(url)) return url;
+  const [busted, setBusted] = useState<string | undefined>(url);
+
+  useEffect(() => {
+    if (!isDev || !url) {
+      setBusted(url);
+      return;
+    }
+    if (!/^https?:\/\//i.test(url)) {
+      setBusted(url);
+      return;
+    }
     const sep = url.includes("?") ? "&" : "?";
-    return `${url}${sep}v=${Date.now()}`;
+    setBusted(`${url}${sep}v=${Date.now()}`);
   }, [url]);
+
+  return busted;
 }
