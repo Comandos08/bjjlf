@@ -153,14 +153,10 @@ export function EventList({
                   data-testid="event-filter-chip"
                   data-badge={badge}
                   data-active={active}
-                  className={cn(
-                    "transition-base focus-ring rounded",
-                    active
-                      ? "ring-2 ring-offset-2 ring-offset-white ring-[#C8211A]"
-                      : "opacity-70 hover:opacity-100",
-                  )}
+                  className={cn(chipBase, active ? chipActive : chipInactive)}
+                  style={{ fontFamily: "Barlow", fontWeight: active ? 700 : 600 }}
                 >
-                  <EventBadge badge={badge} variant="inline" />
+                  {badge}
                 </button>
               );
             })}
