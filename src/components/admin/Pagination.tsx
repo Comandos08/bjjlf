@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type Props = {
@@ -43,6 +44,8 @@ export function Pagination({ page, perPage, total, onPageChange, itemLabel = "re
   );
 }
 
+export const ADMIN_PAGE_SIZE = 25;
+
 /** Hook simples de debounce para campos de busca. */
 export function useDebounced<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value);
@@ -52,5 +55,3 @@ export function useDebounced<T>(value: T, delay = 300): T {
   }, [value, delay]);
   return debounced;
 }
-
-import { useEffect, useState } from "react";
