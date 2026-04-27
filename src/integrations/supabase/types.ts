@@ -14,6 +14,111 @@ export type Database = {
   }
   public: {
     Tables: {
+      academy_permits: {
+        Row: {
+          academy_id: string | null
+          academy_name: string
+          address: string | null
+          alert_30_sent: boolean
+          alert_7_sent: boolean
+          amount_cents: number
+          city: string
+          country: string
+          country_flag: string | null
+          created_at: string
+          email: string
+          expires_at: string | null
+          id: string
+          issued_at: string | null
+          paid_at: string | null
+          permit_number: string | null
+          phone: string | null
+          previous_permit_id: string | null
+          renewal_count: number
+          responsible_name: string
+          state: string | null
+          status: string
+          stripe_payment_intent: string | null
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string | null
+          website: string | null
+        }
+        Insert: {
+          academy_id?: string | null
+          academy_name: string
+          address?: string | null
+          alert_30_sent?: boolean
+          alert_7_sent?: boolean
+          amount_cents?: number
+          city: string
+          country?: string
+          country_flag?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string | null
+          id?: string
+          issued_at?: string | null
+          paid_at?: string | null
+          permit_number?: string | null
+          phone?: string | null
+          previous_permit_id?: string | null
+          renewal_count?: number
+          responsible_name: string
+          state?: string | null
+          status?: string
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+          website?: string | null
+        }
+        Update: {
+          academy_id?: string | null
+          academy_name?: string
+          address?: string | null
+          alert_30_sent?: boolean
+          alert_7_sent?: boolean
+          amount_cents?: number
+          city?: string
+          country?: string
+          country_flag?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string | null
+          id?: string
+          issued_at?: string | null
+          paid_at?: string | null
+          permit_number?: string | null
+          phone?: string | null
+          previous_permit_id?: string | null
+          renewal_count?: number
+          responsible_name?: string
+          state?: string | null
+          status?: string
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "academy_permits_academy_id_fkey"
+            columns: ["academy_id"]
+            isOneToOne: false
+            referencedRelation: "affiliated_academies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "academy_permits_previous_permit_id_fkey"
+            columns: ["previous_permit_id"]
+            isOneToOne: false
+            referencedRelation: "academy_permits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       admin_users: {
         Row: {
           created_at: string
@@ -642,9 +747,62 @@ export type Database = {
         Args: { _email: string; _full_name: string; _user_id: string }
         Returns: undefined
       }
+      get_own_permit: {
+        Args: { p_permit_number: string }
+        Returns: {
+          academy_id: string | null
+          academy_name: string
+          address: string | null
+          alert_30_sent: boolean
+          alert_7_sent: boolean
+          amount_cents: number
+          city: string
+          country: string
+          country_flag: string | null
+          created_at: string
+          email: string
+          expires_at: string | null
+          id: string
+          issued_at: string | null
+          paid_at: string | null
+          permit_number: string | null
+          phone: string | null
+          previous_permit_id: string | null
+          renewal_count: number
+          responsible_name: string
+          state: string | null
+          status: string
+          stripe_payment_intent: string | null
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string | null
+          website: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "academy_permits"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       has_admin_role: { Args: { _roles: string[] }; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
       super_admin_exists: { Args: never; Returns: boolean }
+      verify_academy_permit: {
+        Args: { p_permit_number: string }
+        Returns: {
+          academy_name: string
+          city: string
+          country: string
+          country_flag: string
+          expires_at: string
+          issued_at: string
+          permit_number: string
+          renewal_count: number
+          responsible_name: string
+          status: string
+        }[]
+      }
       verify_athlete: {
         Args: { _registration_number: string }
         Returns: {
