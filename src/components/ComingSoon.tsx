@@ -9,6 +9,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export type ComingSoonPage =
   | "rankings"
@@ -29,7 +31,7 @@ const CONFIG: Record<ComingSoonPage, Config> = {
   rankings: {
     title: "RANK",
     highlight: "INGS",
-    subtitle: "O ranking oficial dos atletas BJJLF está em construção.",
+    subtitle: "Os rankings serão publicados após o primeiro campeonato oficial.",
     icon: BarChart3,
     features: ["Por Faixa", "Por Região", "Histórico"],
     progress: 40,
@@ -65,12 +67,39 @@ export function ComingSoon({ page }: { page: ComingSoonPage }) {
   const Icon = cfg.icon;
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!email) return;
-    setSubmitted(true);
-    setEmail("");
+    if (!email || submitting) return;
+    setSubmitting(true);
+    try {
+      // Verifica duplicidade
+      const { data: existing } = await supabase
+        .from("waitlist")
+        .select("id")
+        .eq("email", email.trim().toLowerCase())
+        .eq("source", page)
+        .maybeSingle();
+      if (existing) {
+        toast.success("Você já está na lista!");
+        setSubmitted(true);
+        setEmail("");
+        return;
+      }
+      const { error } = await supabase
+        .from("waitlist")
+        .insert({ email: email.trim().toLowerCase(), source: page });
+      if (error) throw error;
+      setSubmitted(true);
+      setEmail("");
+      toast.success("Anotado! Você será o primeiro a saber.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Erro";
+      toast.error(`Não foi possível registrar: ${msg}`);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
