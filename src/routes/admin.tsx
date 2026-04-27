@@ -5,7 +5,7 @@
  */
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Loader2, LayoutDashboard, Calendar, FileText, Trophy, Youtube, Award, Building2, Image as ImageIcon, Settings, LogOut, Users, ClipboardList } from "lucide-react";
+import { Loader2, LayoutDashboard, Calendar, FileText, Trophy, Youtube, Award, Building2, Image as ImageIcon, Settings, LogOut, Users, ClipboardList, ShieldCheck } from "lucide-react";
 import { useAdminAuth, canAccessSection, type AdminSection } from "@/lib/admin-auth";
 import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
@@ -25,6 +25,7 @@ const NAV: { to: string; label: string; icon: typeof LayoutDashboard; section: A
   { to: "/admin/academies", label: "Academias", icon: Building2, section: "academies" },
   { to: "/admin/athletes", label: "Atletas", icon: Users, section: "academies" },
   { to: "/admin/registrations", label: "Inscrições", icon: ClipboardList, section: "academies" },
+  { to: "/admin/permits", label: "Alvarás", icon: ShieldCheck, section: "academies" },
   { to: "/admin/hero", label: "Hero Slider", icon: ImageIcon, section: "hero" },
   { to: "/admin/settings", label: "Configurações", icon: Settings, section: "settings" },
 ];
