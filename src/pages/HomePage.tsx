@@ -9,6 +9,10 @@ import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import { SafeImage } from "@/components/SafeImage";
 import { EventBadge } from "@/components/EventBadge";
+// FIX C: hero slide 3 ("Black Belt Registry") was previously photo-1599586120429
+// (a tennis-court image). Replaced with a locally-hosted BJJ photo so the CDN
+// can't drift on us again. The two earlier slides keep their existing images.
+import heroBlackBeltUrl from "@/assets/hero-3-bjj.jpg";
 
 const SLIDES = [
   {
@@ -26,8 +30,8 @@ const SLIDES = [
     badge: "No-Gi Pan-American",
   },
   {
-    image: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&w=1440&h=600",
-    thumb: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&w=80&h=50",
+    image: heroBlackBeltUrl,
+    thumb: heroBlackBeltUrl,
     titleKey: "slide.3.title",
     subKey: "slide.3.sub",
     badge: "Black Belt Registry",
@@ -390,12 +394,19 @@ function CTASection() {
   );
 }
 
+// FIX A: YouTube cards 2 ("Black Belt Promotions") and 3 ("Mestre Roberto")
+// were hotlinking Unsplash IDs that the CDN periodically swapped to non-BJJ
+// photos (a photographer / a fitness gym shot). Pin them to local copies so
+// the visual matches the title regardless of what Unsplash decides to serve.
+import youtubeBlackBeltImg from "@/assets/youtube-black-belt-promotions.jpg";
+import youtubeMestreRobertoImg from "@/assets/youtube-mestre-roberto.jpg";
+
 function YouTubeSection() {
   const { t } = useI18n();
   const videos = [
     { t: "World Championship 2024 — Best Submissions", img: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=500&h=280" },
-    { t: "Black Belt Promotions Ceremony", img: "https://images.unsplash.com/photo-1544717305-996b815c338c?auto=format&fit=crop&w=500&h=280" },
-    { t: "Mestre Roberto — A Life on the Mat", img: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=500&h=280" },
+    { t: "Black Belt Promotions Ceremony", img: youtubeBlackBeltImg },
+    { t: "Mestre Roberto — A Life on the Mat", img: youtubeMestreRobertoImg },
   ];
   return (
     <section className="lg:py-20 bg-white" style={{ paddingTop: "80px", paddingBottom: "80px" }}>
