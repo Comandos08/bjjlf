@@ -313,7 +313,7 @@ export function EventRegistrationPage() {
               className="mt-3 text-gray-500"
               style={{ fontFamily: "Barlow", fontWeight: 400 }}
             >
-              Preencha os dados abaixo para se inscrever no campeonato.
+              Preencha os dados abaixo para se inscrever no evento.
             </p>
           </div>
 
@@ -387,31 +387,48 @@ export function EventRegistrationPage() {
               </div>
             </Section>
 
-            <Section title="Categoria">
-              <div className="grid sm:grid-cols-3 gap-4">
-                <Field label="Modalidade" required>
-                  <Select
-                    value={form.modality}
-                    onChange={(v) => setForm({ ...form, modality: v })}
-                    options={MODALITIES}
-                  />
-                </Field>
-                <Field label="Categoria" required>
-                  <Select
-                    value={form.category}
-                    onChange={(v) => setForm({ ...form, category: v })}
-                    options={CATEGORIES}
-                  />
-                </Field>
-                <Field label="Peso" required>
-                  <Select
-                    value={form.weight_class}
-                    onChange={(v) => setForm({ ...form, weight_class: v })}
-                    options={WEIGHTS}
-                  />
-                </Field>
-              </div>
-            </Section>
+            {(() => {
+              const isCompetition =
+                event.badge !== "SEMINÁRIO" && event.badge !== "CURSO";
+              if (!isCompetition) {
+                return (
+                  <Section title="Inscrição">
+                    <p className="text-sm text-gray-600" style={{ fontFamily: "Barlow" }}>
+                      Este evento ({event.badge.toLowerCase()}) não exige
+                      categoria nem peso. Confirme seus dados e prossiga para o
+                      pagamento.
+                    </p>
+                  </Section>
+                );
+              }
+              return (
+                <Section title="Categoria">
+                  <div className="grid sm:grid-cols-3 gap-4">
+                    <Field label="Modalidade" required>
+                      <Select
+                        value={form.modality}
+                        onChange={(v) => setForm({ ...form, modality: v })}
+                        options={MODALITIES}
+                      />
+                    </Field>
+                    <Field label="Categoria" required>
+                      <Select
+                        value={form.category}
+                        onChange={(v) => setForm({ ...form, category: v })}
+                        options={CATEGORIES}
+                      />
+                    </Field>
+                    <Field label="Peso" required>
+                      <Select
+                        value={form.weight_class}
+                        onChange={(v) => setForm({ ...form, weight_class: v })}
+                        options={WEIGHTS}
+                      />
+                    </Field>
+                  </div>
+                </Section>
+              );
+            })()}
 
             <Section title="Resumo">
               <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-2">

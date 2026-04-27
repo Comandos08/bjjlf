@@ -6,7 +6,7 @@ type Dict = Record<string, string>;
 
 const PT: Dict = {
   // Nav
-  "nav.championships": "Campeonatos",
+  "nav.championships": "Eventos",
   "nav.blackbelts": "Faixas Pretas",
   "nav.rankings": "Rankings",
   "nav.academies": "Academias",
@@ -81,7 +81,7 @@ const PT: Dict = {
 
   // Event list page + filters
   "events.page.title": "Calendário de Eventos",
-  "events.page.subtitle": "Próximos campeonatos oficiais da BJJLF",
+  "events.page.subtitle": "Próximos eventos oficiais da BJJLF",
   "events.filter.label": "Filtrar por categoria",
   "events.filter.open": "Filtros",
   "events.filter.applied": "Filtros aplicados",
@@ -107,7 +107,7 @@ const PT: Dict = {
   "events.page.perPage": "Por página",
 
 
-  "news.cat.tournaments.label": "CAMPEONATOS",
+  "news.cat.tournaments.label": "EVENTOS",
   "news.cat.promotions.label": "GRADUAÇÕES",
   "news.cat.athletes.label": "ATLETAS",
   "news.cat.federation.label": "FEDERAÇÃO",
@@ -122,7 +122,7 @@ const PT: Dict = {
 
   // Footer
   "footer.tagline": "Federação Brasileira de Jiu-Jitsu Legends — preservando a tradição, certificando a excelência.",
-  "footer.col.championships": "Campeonatos",
+  "footer.col.championships": "Eventos",
   "footer.col.registrations": "Cadastros",
   "footer.col.info": "Informações",
   "footer.col.upcoming": "Próximos Eventos",
@@ -339,7 +339,7 @@ const PT: Dict = {
 };
 
 const EN: Dict = {
-  "nav.championships": "Championships",
+  "nav.championships": "Events",
   "nav.blackbelts": "Black Belts",
   "nav.rankings": "Rankings",
   "nav.academies": "Academies",
@@ -412,7 +412,7 @@ const EN: Dict = {
 
   // Event list page + filters
   "events.page.title": "Event Calendar",
-  "events.page.subtitle": "Upcoming official BJJLF championships",
+  "events.page.subtitle": "Upcoming official BJJLF events",
   "events.filter.label": "Filter by category",
   "events.filter.open": "Filters",
   "events.filter.applied": "Applied filters",
@@ -450,7 +450,7 @@ const EN: Dict = {
   "news.item.3.title": "EUROPEAN OPEN RETURNS TO LISBON THIS SUMMER",
 
   "footer.tagline": "Brazilian Jiu-Jitsu Legends Federation — preserving tradition, certifying excellence.",
-  "footer.col.championships": "Championships",
+  "footer.col.championships": "Events",
   "footer.col.registrations": "Registrations",
   "footer.col.info": "Information",
   "footer.col.upcoming": "Upcoming Events",

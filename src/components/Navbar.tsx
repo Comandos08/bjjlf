@@ -30,7 +30,6 @@ type NavItem = {
     | "/academies"
     | "/register/athlete"
     | "/register/academy"
-    | "/championships"
     | "/events"
     | "/rankings"
     | "/black-belts"

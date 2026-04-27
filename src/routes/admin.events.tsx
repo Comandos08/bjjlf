@@ -40,12 +40,14 @@ export const Route = createFileRoute("/admin/events")({
   component: EventsAdminPage,
 });
 
-const TYPE_LABELS: Record<string, { label: string; color: "green" | "gold" | "red" | "blue" | "purple" }> = {
+const TYPE_LABELS: Record<string, { label: string; color: "green" | "gold" | "red" | "blue" | "purple" | "gray" }> = {
   gi: { label: "GI", color: "green" },
   no_gi: { label: "NO-GI", color: "gold" },
   gi_no_gi: { label: "GI & NO-GI", color: "red" },
   kids: { label: "KIDS", color: "blue" },
   master: { label: "MASTER", color: "purple" },
+  seminar: { label: "SEMINÁRIO", color: "gray" },
+  course: { label: "CURSO", color: "red" },
 };
 
 const STATUS_LABELS: Record<string, { label: string; color: "blue" | "orange" | "gray" | "red" }> = {
@@ -336,11 +338,13 @@ function EventFormModal({
           <div>
             <label className="admin-label">Tipo</label>
             <select className="admin-input w-full" {...register("event_type")}>
-              <option value="gi">Gi</option>
-              <option value="no_gi">No-Gi</option>
-              <option value="gi_no_gi">Gi &amp; No-Gi</option>
-              <option value="kids">Kids</option>
-              <option value="master">Master</option>
+              <option value="gi">Gi (Campeonato)</option>
+              <option value="no_gi">No-Gi (Campeonato)</option>
+              <option value="gi_no_gi">Gi &amp; No-Gi (Campeonato)</option>
+              <option value="kids">Kids (Campeonato)</option>
+              <option value="master">Master (Campeonato)</option>
+              <option value="seminar">Seminário</option>
+              <option value="course">Curso</option>
             </select>
           </div>
           <div>

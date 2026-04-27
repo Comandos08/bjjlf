@@ -149,7 +149,7 @@ export function MyCompetitionsPage() {
                 className="inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest no-underline"
                 style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
               >
-                Ver campeonatos
+                Ver eventos
               </Link>
             </div>
           ) : (

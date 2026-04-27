@@ -27,7 +27,7 @@ export const Route = createFileRoute("/admin/news")({
 });
 
 const CATEGORIES = [
-  "Campeonatos", "Graduações", "Estilo de Vida", "Resultados", "Entrevistas", "Regras", "Federação",
+  "Eventos", "Graduações", "Estilo de Vida", "Resultados", "Entrevistas", "Regras", "Federação",
 ];
 
 function slugify(s: string) {

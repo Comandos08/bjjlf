@@ -42,6 +42,8 @@ const VALID_BADGES: ReadonlyArray<EventTypeBadge> = [
   "GI & NO-GI",
   "KIDS",
   "MASTER",
+  "SEMINÁRIO",
+  "CURSO",
 ];
 
 function parseBadges(input: unknown): EventTypeBadge[] {
