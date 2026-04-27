@@ -157,7 +157,7 @@ export function EventRegistrationPage() {
             Evento não encontrado
           </h1>
           <Link
-            to="/events"
+            to="/events" search={{}}
             className="mt-4 inline-block text-[#C8211A] hover:underline"
           >
             Voltar aos eventos
@@ -259,7 +259,7 @@ export function EventRegistrationPage() {
 
             <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
-                to="/events"
+                to="/events" search={{}}
                 className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-5 py-2.5 text-sm uppercase tracking-widest text-gray-700 hover:border-gray-900 hover:text-gray-900 transition"
                 style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
               >
