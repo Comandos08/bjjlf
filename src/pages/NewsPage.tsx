@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PageHero } from "@/components/Stepper";
-import { NEWS, type NewsItem } from "@/data/news";
+import { type NewsItem } from "@/data/news";
+import { useNews } from "@/lib/queries";
 import { Calendar, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { typo } from "@/lib/typography";
@@ -34,7 +35,8 @@ export function NewsPage() {
   const [page, setPage] = useState(1);
   const perPage = 6;
 
-  const filtered = cat === "All" ? NEWS : NEWS.filter((n) => n.category === cat);
+  const { data: news = [] } = useNews();
+  const filtered = cat === "All" ? news : news.filter((n) => n.category === cat);
   const featured = filtered.find((n) => n.featured) ?? filtered[0];
   const rest = filtered.filter((n) => n.id !== featured?.id);
   const pages = Math.max(1, Math.ceil(rest.length / perPage));

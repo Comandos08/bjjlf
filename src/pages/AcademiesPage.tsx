@@ -13,11 +13,11 @@ import { useI18n } from "@/lib/i18n";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import {
-  ACADEMIES,
   ACADEMY_BR_STATES,
   ACADEMY_COUNTRIES,
   type Academy,
 } from "@/data/academies";
+import { useAcademies } from "@/lib/queries";
 
 /**
  * /academies — Academias Afiliadas listing page.
@@ -62,10 +62,12 @@ export function AcademiesPage() {
     setSort("recent");
   };
 
+  const { data: academies = [] } = useAcademies();
+
   const filtered = useMemo<Academy[]>(() => {
     const q = query.trim().toLocaleLowerCase();
 
-    let list = ACADEMIES.filter((a) => {
+    let list = academies.filter((a) => {
       // Text search — name OR city, case-insensitive partial match.
       if (q) {
         const haystack = `${a.name} ${a.city}`.toLocaleLowerCase();
@@ -106,7 +108,7 @@ export function AcademiesPage() {
     }
 
     return list;
-  }, [query, country, state, stateEnabled, sort]);
+  }, [academies, query, country, state, stateEnabled, sort]);
 
   const resultsLabel =
     filtered.length === 1
