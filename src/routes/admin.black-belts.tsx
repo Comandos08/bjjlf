@@ -157,6 +157,7 @@ const schema = z.object({
   certificate_number: z.string().trim().min(1).max(50),
   certified_at: z.string().min(1),
   photo_url: z.string().max(500).optional().or(z.literal("")),
+  bio: z.string().max(2000).optional().or(z.literal("")),
   is_active: z.boolean(),
 });
 type FormValues = z.infer<typeof schema>;
@@ -183,6 +184,7 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
       certificate_number: row?.certificate_number ?? suggestCertificateNumber(),
       certified_at: row?.certified_at ?? new Date().toISOString().slice(0, 10),
       photo_url: row?.photo_url ?? "",
+      bio: row?.bio ?? "",
       is_active: row?.is_active ?? true,
     },
   });
@@ -206,6 +208,7 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
         academy: v.academy || null, professor: v.professor || null,
         flag_emoji: v.flag_emoji || null, city: v.city || null,
         photo_url: v.photo_url || null,
+        bio: v.bio || null,
       } },
       { onSuccess: () => { toast.success("Salvo!"); reset(); onClose(); }, onError: (e) => toast.error((e as Error).message) },
     );
@@ -246,6 +249,10 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
           <label className="admin-label">URL da foto</label>
           <input className="admin-input w-full" {...register("photo_url")} />
           {photo && <img src={photo} alt="" className="mt-2 h-16 w-16 rounded-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
+        </div>
+        <div>
+          <label className="admin-label">Biografia (opcional)</label>
+          <textarea className="admin-input w-full" rows={5} {...register("bio")} placeholder="História do mestre, conquistas, linhagem..." />
         </div>
         <AdminToggle checked={isActive} onChange={(v) => setValue("is_active", v)} label="Ativo" />
         <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#E5E5E5" }}>

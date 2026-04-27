@@ -118,9 +118,38 @@ export function MyCompetitionsPage() {
     );
   }
 
+  const totalEvents = items.length;
+  const goldCount = items.filter((c) => c.medal === "gold").length;
+  const silverCount = items.filter((c) => c.medal === "silver").length;
+  const bronzeCount = items.filter((c) => c.medal === "bronze").length;
+
   return (
     <div className="bg-gray-50 min-h-screen py-12">
       <div className="max-w-4xl mx-auto px-6 space-y-12">
+        {/* MEU HISTÓRICO — visão geral */}
+        <section>
+          <header className="mb-6">
+            <h2 className="text-3xl text-gray-900 uppercase font-heading font-bold tracking-wide">
+              Meu Histórico
+            </h2>
+            <div className="h-1 w-12 bg-[#C8211A] rounded mt-3" />
+          </header>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <StatCard label="Eventos" value={totalEvents} accent="text-[#C8211A]" />
+            <StatCard label="🥇 Ouro" value={goldCount} accent="text-yellow-600" />
+            <StatCard label="🥈 Prata" value={silverCount} accent="text-gray-500" />
+            <StatCard label="🥉 Bronze" value={bronzeCount} accent="text-orange-600" />
+          </div>
+          {totalEvents === 0 && (
+            <p
+              className="text-xs text-gray-400 mt-3 text-center"
+              style={{ fontFamily: "Barlow" }}
+            >
+              Suas conquistas aparecerão aqui após sua primeira competição oficial.
+            </p>
+          )}
+        </section>
+
         {/* MINHAS INSCRIÇÕES */}
         <section>
           <header className="mb-6">
@@ -304,6 +333,25 @@ export function MyCompetitionsPage() {
             </ul>
           )}
         </section>
+      </div>
+    </div>
+  );
+}
+
+function StatCard({ label, value, accent }: { label: string; value: number; accent: string }) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl py-5 text-center">
+      <div
+        className={`text-4xl leading-none ${accent}`}
+        style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
+      >
+        {value}
+      </div>
+      <div
+        className="mt-1.5 text-xs uppercase tracking-widest text-gray-500"
+        style={{ fontFamily: "Barlow", fontWeight: 600 }}
+      >
+        {label}
       </div>
     </div>
   );

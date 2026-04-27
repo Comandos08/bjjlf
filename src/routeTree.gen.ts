@@ -36,6 +36,7 @@ import { Route as RegisterAcademyRouteImport } from './routes/register.academy'
 import { Route as MyPermitPermitNumberRouteImport } from './routes/my-permit.$permitNumber'
 import { Route as GraduatesGraduateIdRouteImport } from './routes/graduates.$graduateId'
 import { Route as EventsEventIdRouteImport } from './routes/events.$eventId'
+import { Route as BlackBeltsIdRouteImport } from './routes/black-belts.$id'
 import { Route as AthleteSignupRouteImport } from './routes/athlete.signup'
 import { Route as AthleteResetPasswordRouteImport } from './routes/athlete.reset-password'
 import { Route as AthleteLoginRouteImport } from './routes/athlete.login'
@@ -192,6 +193,11 @@ const EventsEventIdRoute = EventsEventIdRouteImport.update({
   path: '/$eventId',
   getParentRoute: () => EventsRoute,
 } as any)
+const BlackBeltsIdRoute = BlackBeltsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => BlackBeltsRoute,
+} as any)
 const AthleteSignupRoute = AthleteSignupRouteImport.update({
   id: '/athlete/signup',
   path: '/athlete/signup',
@@ -300,7 +306,7 @@ export interface FileRoutesByFullPath {
   '/academies': typeof AcademiesRoute
   '/admin': typeof AdminRouteWithChildren
   '/athletes': typeof AthletesRoute
-  '/black-belts': typeof BlackBeltsRoute
+  '/black-belts': typeof BlackBeltsRouteWithChildren
   '/championships': typeof ChampionshipsRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
@@ -333,6 +339,7 @@ export interface FileRoutesByFullPath {
   '/athlete/login': typeof AthleteLoginRoute
   '/athlete/reset-password': typeof AthleteResetPasswordRoute
   '/athlete/signup': typeof AthleteSignupRoute
+  '/black-belts/$id': typeof BlackBeltsIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/my-permit/$permitNumber': typeof MyPermitPermitNumberRoute
@@ -348,7 +355,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/academies': typeof AcademiesRoute
   '/athletes': typeof AthletesRoute
-  '/black-belts': typeof BlackBeltsRoute
+  '/black-belts': typeof BlackBeltsRouteWithChildren
   '/championships': typeof ChampionshipsRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
@@ -381,6 +388,7 @@ export interface FileRoutesByTo {
   '/athlete/login': typeof AthleteLoginRoute
   '/athlete/reset-password': typeof AthleteResetPasswordRoute
   '/athlete/signup': typeof AthleteSignupRoute
+  '/black-belts/$id': typeof BlackBeltsIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/my-permit/$permitNumber': typeof MyPermitPermitNumberRoute
@@ -398,7 +406,7 @@ export interface FileRoutesById {
   '/academies': typeof AcademiesRoute
   '/admin': typeof AdminRouteWithChildren
   '/athletes': typeof AthletesRoute
-  '/black-belts': typeof BlackBeltsRoute
+  '/black-belts': typeof BlackBeltsRouteWithChildren
   '/championships': typeof ChampionshipsRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
@@ -431,6 +439,7 @@ export interface FileRoutesById {
   '/athlete/login': typeof AthleteLoginRoute
   '/athlete/reset-password': typeof AthleteResetPasswordRoute
   '/athlete/signup': typeof AthleteSignupRoute
+  '/black-belts/$id': typeof BlackBeltsIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/my-permit/$permitNumber': typeof MyPermitPermitNumberRoute
@@ -482,6 +491,7 @@ export interface FileRouteTypes {
     | '/athlete/login'
     | '/athlete/reset-password'
     | '/athlete/signup'
+    | '/black-belts/$id'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/my-permit/$permitNumber'
@@ -530,6 +540,7 @@ export interface FileRouteTypes {
     | '/athlete/login'
     | '/athlete/reset-password'
     | '/athlete/signup'
+    | '/black-belts/$id'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/my-permit/$permitNumber'
@@ -579,6 +590,7 @@ export interface FileRouteTypes {
     | '/athlete/login'
     | '/athlete/reset-password'
     | '/athlete/signup'
+    | '/black-belts/$id'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/my-permit/$permitNumber'
@@ -596,7 +608,7 @@ export interface RootRouteChildren {
   AcademiesRoute: typeof AcademiesRoute
   AdminRoute: typeof AdminRouteWithChildren
   AthletesRoute: typeof AthletesRoute
-  BlackBeltsRoute: typeof BlackBeltsRoute
+  BlackBeltsRoute: typeof BlackBeltsRouteWithChildren
   ChampionshipsRoute: typeof ChampionshipsRoute
   EventsRoute: typeof EventsRouteWithChildren
   GraduatesRoute: typeof GraduatesRouteWithChildren
@@ -815,6 +827,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsEventIdRouteImport
       parentRoute: typeof EventsRoute
     }
+    '/black-belts/$id': {
+      id: '/black-belts/$id'
+      path: '/$id'
+      fullPath: '/black-belts/$id'
+      preLoaderRoute: typeof BlackBeltsIdRouteImport
+      parentRoute: typeof BlackBeltsRoute
+    }
     '/athlete/signup': {
       id: '/athlete/signup'
       path: '/athlete/signup'
@@ -994,6 +1013,18 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface BlackBeltsRouteChildren {
+  BlackBeltsIdRoute: typeof BlackBeltsIdRoute
+}
+
+const BlackBeltsRouteChildren: BlackBeltsRouteChildren = {
+  BlackBeltsIdRoute: BlackBeltsIdRoute,
+}
+
+const BlackBeltsRouteWithChildren = BlackBeltsRoute._addFileChildren(
+  BlackBeltsRouteChildren,
+)
+
 interface EventsRouteChildren {
   EventsEventIdRoute: typeof EventsEventIdRoute
 }
@@ -1023,7 +1054,7 @@ const rootRouteChildren: RootRouteChildren = {
   AcademiesRoute: AcademiesRoute,
   AdminRoute: AdminRouteWithChildren,
   AthletesRoute: AthletesRoute,
-  BlackBeltsRoute: BlackBeltsRoute,
+  BlackBeltsRoute: BlackBeltsRouteWithChildren,
   ChampionshipsRoute: ChampionshipsRoute,
   EventsRoute: EventsRouteWithChildren,
   GraduatesRoute: GraduatesRouteWithChildren,

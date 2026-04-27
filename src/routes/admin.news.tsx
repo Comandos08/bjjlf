@@ -167,11 +167,19 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
     },
   });
   const titlePt = watch("title_pt");
+  const titleEn = watch("title_en");
   const cover = watch("cover_image_url");
   const isPublished = watch("is_published");
   const isFeatured = watch("is_featured");
   const excerptPt = watch("excerpt_pt") ?? "";
   const excerptEn = watch("excerpt_en") ?? "";
+  const bodyPt = watch("body_pt") ?? "";
+  const bodyEn = watch("body_en") ?? "";
+  const author = watch("author") ?? "";
+  const category = watch("category");
+
+  const [tab, setTab] = useState<"edit" | "preview">("edit");
+  const [previewed, setPreviewed] = useState(false);
 
   function onSubmit(v: FormValues) {
     upsert.mutate(
@@ -190,76 +198,127 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
   return (
     <AdminModal open={open} onClose={onClose} title={news ? "Editar Notícia" : "Nova Notícia"} maxWidth={780}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <BilingualTabs
-          pt={
-            <div className="space-y-3">
+        {/* Tabs Editar / Preview */}
+        <div className="flex gap-1 border-b" style={{ borderColor: "#E5E5E5" }}>
+          <button
+            type="button"
+            onClick={() => setTab("edit")}
+            className={`px-4 py-2 text-xs uppercase tracking-widest border-b-2 transition ${
+              tab === "edit"
+                ? "border-[#C8211A] text-[#1A1A1A]"
+                : "border-transparent text-[#999999] hover:text-[#1A1A1A]"
+            }`}
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+          >
+            Editar
+          </button>
+          <button
+            type="button"
+            onClick={() => { setTab("preview"); setPreviewed(true); }}
+            className={`px-4 py-2 text-xs uppercase tracking-widest border-b-2 transition ${
+              tab === "preview"
+                ? "border-[#C8211A] text-[#1A1A1A]"
+                : "border-transparent text-[#999999] hover:text-[#1A1A1A]"
+            }`}
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+          >
+            Preview
+          </button>
+        </div>
+
+        {tab === "edit" ? (
+          <>
+            <BilingualTabs
+              pt={
+                <div className="space-y-3">
+                  <div>
+                    <label className="admin-label">Título (PT)</label>
+                    <input className="admin-input w-full" {...register("title_pt")} onBlur={(e) => { if (!watch("slug")) setValue("slug", slugify(e.target.value)); }} />
+                    {errors.title_pt && <span className="text-xs text-[#C8211A]">{errors.title_pt.message}</span>}
+                  </div>
+                  <div>
+                    <label className="admin-label">Resumo (PT) — {excerptPt.length}/300</label>
+                    <textarea className="admin-input w-full" rows={3} {...register("excerpt_pt")} />
+                  </div>
+                  <div>
+                    <label className="admin-label">Corpo (PT) — Markdown</label>
+                    <textarea className="admin-input w-full" rows={10} {...register("body_pt")} />
+                  </div>
+                </div>
+              }
+              en={
+                <div className="space-y-3">
+                  <div>
+                    <label className="admin-label">Title (EN)</label>
+                    <input className="admin-input w-full" {...register("title_en")} />
+                  </div>
+                  <div>
+                    <label className="admin-label">Excerpt (EN) — {excerptEn.length}/300</label>
+                    <textarea className="admin-input w-full" rows={3} {...register("excerpt_en")} />
+                  </div>
+                  <div>
+                    <label className="admin-label">Body (EN) — Markdown</label>
+                    <textarea className="admin-input w-full" rows={10} {...register("body_en")} />
+                  </div>
+                </div>
+              }
+            />
+
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="admin-label">Título (PT)</label>
-                <input className="admin-input w-full" {...register("title_pt")} onBlur={(e) => { if (!watch("slug")) setValue("slug", slugify(e.target.value)); }} />
-                {errors.title_pt && <span className="text-xs text-[#C8211A]">{errors.title_pt.message}</span>}
+                <label className="admin-label">Slug</label>
+                <input className="admin-input w-full" {...register("slug")} />
               </div>
               <div>
-                <label className="admin-label">Resumo (PT) — {excerptPt.length}/300</label>
-                <textarea className="admin-input w-full" rows={3} {...register("excerpt_pt")} />
-              </div>
-              <div>
-                <label className="admin-label">Corpo (PT) — Markdown</label>
-                <textarea className="admin-input w-full" rows={10} {...register("body_pt")} />
+                <label className="admin-label">Categoria</label>
+                <select className="admin-input w-full" {...register("category")}>
+                  {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                </select>
               </div>
             </div>
-          }
-          en={
-            <div className="space-y-3">
+
+            <div>
+              <label className="admin-label">URL da imagem de capa</label>
+              <input className="admin-input w-full" {...register("cover_image_url")} />
+              {cover && <img src={cover} alt="" className="mt-2 h-28 w-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="admin-label">Title (EN)</label>
-                <input className="admin-input w-full" {...register("title_en")} />
+                <label className="admin-label">Autor</label>
+                <input className="admin-input w-full" {...register("author")} />
               </div>
               <div>
-                <label className="admin-label">Excerpt (EN) — {excerptEn.length}/300</label>
-                <textarea className="admin-input w-full" rows={3} {...register("excerpt_en")} />
-              </div>
-              <div>
-                <label className="admin-label">Body (EN) — Markdown</label>
-                <textarea className="admin-input w-full" rows={10} {...register("body_en")} />
+                <label className="admin-label">Data de publicação</label>
+                <input type="datetime-local" className="admin-input w-full" {...register("published_at")} />
               </div>
             </div>
-          }
-        />
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="admin-label">Slug</label>
-            <input className="admin-input w-full" {...register("slug")} />
-          </div>
-          <div>
-            <label className="admin-label">Categoria</label>
-            <select className="admin-input w-full" {...register("category")}>
-              {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
-          </div>
-        </div>
+            <div className="flex gap-6 pt-2">
+              <AdminToggle checked={isPublished} onChange={(v) => setValue("is_published", v)} label="Publicado" />
+              <AdminToggle checked={isFeatured} onChange={(v) => setValue("is_featured", v)} label="Destaque" />
+            </div>
+          </>
+        ) : (
+          <NewsPreview
+            titlePt={titlePt}
+            titleEn={titleEn}
+            excerptPt={excerptPt}
+            excerptEn={excerptEn}
+            bodyPt={bodyPt}
+            bodyEn={bodyEn}
+            cover={cover ?? ""}
+            author={author ?? ""}
+            category={category}
+          />
+        )}
 
-        <div>
-          <label className="admin-label">URL da imagem de capa</label>
-          <input className="admin-input w-full" {...register("cover_image_url")} />
-          {cover && <img src={cover} alt="" className="mt-2 h-28 w-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="admin-label">Autor</label>
-            <input className="admin-input w-full" {...register("author")} />
+        {!previewed && isPublished && (
+          <div className="bg-amber-50 border border-amber-300 text-amber-900 px-3 py-2 rounded text-xs"
+               style={{ fontFamily: "Barlow", fontWeight: 600 }}>
+            ⚠️ Visualize o preview antes de publicar — clique na aba "Preview" acima.
           </div>
-          <div>
-            <label className="admin-label">Data de publicação</label>
-            <input type="datetime-local" className="admin-input w-full" {...register("published_at")} />
-          </div>
-        </div>
-
-        <div className="flex gap-6 pt-2">
-          <AdminToggle checked={isPublished} onChange={(v) => setValue("is_published", v)} label="Publicado" />
-          <AdminToggle checked={isFeatured} onChange={(v) => setValue("is_featured", v)} label="Destaque" />
-        </div>
+        )}
 
         <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#E5E5E5" }}>
           <AdminButton variant="outline" onClick={onClose} disabled={upsert.isPending}>Cancelar</AdminButton>
@@ -268,5 +327,79 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
         <p className="text-[10px] text-[#D1D1D1]">Slug atual: <span className="text-[#666666]">{titlePt ? slugify(titlePt) : ""}</span></p>
       </form>
     </AdminModal>
+  );
+}
+
+/**
+ * Preview da notícia — replica o layout do site público em PT.
+ */
+function NewsPreview({
+  titlePt, titleEn, excerptPt, excerptEn, bodyPt, bodyEn, cover, author, category,
+}: {
+  titlePt: string; titleEn: string;
+  excerptPt: string; excerptEn: string;
+  bodyPt: string; bodyEn: string;
+  cover: string; author: string; category: string;
+}) {
+  const [lang, setLang] = useState<"pt" | "en">("pt");
+  const title = lang === "pt" ? titlePt : titleEn;
+  const excerpt = lang === "pt" ? excerptPt : excerptEn;
+  const body = lang === "pt" ? bodyPt : bodyEn;
+  return (
+    <div className="border rounded-lg overflow-hidden" style={{ borderColor: "#E5E5E5" }}>
+      <div className="flex gap-1 px-3 py-2 bg-[#F5F5F5] border-b" style={{ borderColor: "#E5E5E5" }}>
+        {(["pt", "en"] as const).map((l) => (
+          <button
+            key={l}
+            type="button"
+            onClick={() => setLang(l)}
+            className={`px-3 py-1 text-xs uppercase rounded ${
+              lang === l ? "bg-[#C8211A] text-white" : "text-[#666666] hover:bg-white"
+            }`}
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+          >
+            {l}
+          </button>
+        ))}
+      </div>
+      <article className="bg-white p-6">
+        {cover && (
+          <img src={cover} alt={title} className="w-full h-48 object-cover rounded mb-4" />
+        )}
+        <span
+          className="text-xs uppercase tracking-widest text-[#C8211A]"
+          style={{ fontFamily: "Barlow", fontWeight: 700 }}
+        >
+          {category}
+        </span>
+        <h1
+          className="mt-2 text-3xl text-gray-900 leading-tight"
+          style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+        >
+          {title || "(sem título)"}
+        </h1>
+        {author && (
+          <p className="text-xs text-gray-500 mt-2" style={{ fontFamily: "Barlow" }}>
+            Por {author}
+          </p>
+        )}
+        {excerpt && (
+          <p
+            className="mt-4 text-base text-gray-700 leading-relaxed border-l-4 pl-4 border-[#C8A84B]"
+            style={{ fontFamily: "Barlow" }}
+          >
+            {excerpt}
+          </p>
+        )}
+        {body && (
+          <div
+            className="mt-5 text-sm text-gray-800 whitespace-pre-wrap leading-relaxed"
+            style={{ fontFamily: "Barlow" }}
+          >
+            {body}
+          </div>
+        )}
+      </article>
+    </div>
   );
 }

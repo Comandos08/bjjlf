@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { useRequireActiveAthlete } from "@/hooks/useRequireActiveAthlete";
 import { formatBeltLine } from "@/lib/belts-ibjjf";
 import { BeltSwatch } from "@/components/BeltSelector";
+import { PhotoCropModal } from "@/components/PhotoCropModal";
 
 const CATEGORIES = [
   "Infanto-Juvenil", "Juvenil", "Adulto",
@@ -49,6 +50,7 @@ export function MyProfilePage() {
   const { profile, user, isLoading, refresh } = useRequireActiveAthlete();
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [pendingPhoto, setPendingPhoto] = useState<File | null>(null);
 
   const profileForm = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
@@ -131,16 +133,20 @@ export function MyProfilePage() {
     toast.success("Senha atualizada.");
   }
 
-  async function handlePhoto(e: React.ChangeEvent<HTMLInputElement>) {
+  function handlePhotoSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (!file || !profile) return;
+    if (file) setPendingPhoto(file);
+    if (fileRef.current) fileRef.current.value = "";
+  }
+
+  async function handleCropConfirm(blob: Blob) {
+    if (!profile) return;
     setUploading(true);
     try {
-      const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
-      const path = `${profile.user_id}/avatar-${Date.now()}.${ext}`;
+      const path = `${profile.user_id}/avatar-${Date.now()}.jpg`;
       const { error: upErr } = await supabase.storage
         .from("athlete-photos")
-        .upload(path, file, { upsert: true, contentType: file.type });
+        .upload(path, blob, { upsert: true, contentType: "image/jpeg" });
       if (upErr) throw upErr;
       const { data: pub } = supabase.storage.from("athlete-photos").getPublicUrl(path);
       const { error: updErr } = await supabase
@@ -150,12 +156,12 @@ export function MyProfilePage() {
       if (updErr) throw updErr;
       await refresh();
       toast.success("Foto atualizada.");
+      setPendingPhoto(null);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Erro";
       toast.error(`Falha ao enviar foto: ${msg}`);
     } finally {
       setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
     }
   }
 
@@ -201,7 +207,7 @@ export function MyProfilePage() {
               >
                 {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Camera className="h-3.5 w-3.5" />}
               </button>
-              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
+              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoSelect} />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -286,6 +292,13 @@ export function MyProfilePage() {
           </dl>
         </Section>
       </div>
+
+      <PhotoCropModal
+        file={pendingPhoto}
+        uploading={uploading}
+        onCancel={() => setPendingPhoto(null)}
+        onConfirm={handleCropConfirm}
+      />
     </div>
   );
 }
