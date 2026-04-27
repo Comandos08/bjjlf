@@ -204,9 +204,12 @@ export function MyProfilePage() {
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
             </div>
             <div>
-              <p className="text-lg text-gray-900" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
-                Faixa {profile.belt} · {profile.degree}º grau
-              </p>
+              <div className="flex items-center gap-2">
+                <BeltSwatch belt={profile.belt} size={18} />
+                <p className="text-lg text-gray-900" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
+                  {formatBeltLine(profile.belt, profile.degree) ?? "Sem faixa"}
+                </p>
+              </div>
               <p className="text-xs text-gray-500 mt-1" style={{ fontFamily: "Barlow" }}>
                 Faixa e grau são alterados pela federação.
               </p>
