@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, X, ShoppingBag, User, ChevronDown, Globe, CreditCard, LogOut, UserCircle, Trophy, LogIn, Building2 } from "lucide-react";
+import { Menu, X, ShoppingBag, ChevronDown, Globe, CreditCard, LogOut, UserCircle, Trophy, LogIn, Building2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { useI18n, type Lang } from "@/lib/i18n";
