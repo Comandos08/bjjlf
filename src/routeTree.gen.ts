@@ -38,6 +38,7 @@ import { Route as AthleteForgotPasswordRouteImport } from './routes/athlete.forg
 import { Route as AdminYoutubeRouteImport } from './routes/admin.youtube'
 import { Route as AdminSetupRouteImport } from './routes/admin.setup'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminRegistrationsRouteImport } from './routes/admin.registrations'
 import { Route as AdminRankingsRouteImport } from './routes/admin.rankings'
 import { Route as AdminNewsRouteImport } from './routes/admin.news'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
@@ -46,6 +47,7 @@ import { Route as AdminEventsRouteImport } from './routes/admin.events'
 import { Route as AdminBlackBeltsRouteImport } from './routes/admin.black-belts'
 import { Route as AdminAthletesRouteImport } from './routes/admin.athletes'
 import { Route as AdminAcademiesRouteImport } from './routes/admin.academies'
+import { Route as RegisterEventEventIdRouteImport } from './routes/register.event.$eventId'
 
 const TypographyRoute = TypographyRouteImport.update({
   id: '/typography',
@@ -192,6 +194,11 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminRegistrationsRoute = AdminRegistrationsRouteImport.update({
+  id: '/registrations',
+  path: '/registrations',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminRankingsRoute = AdminRankingsRouteImport.update({
   id: '/rankings',
   path: '/rankings',
@@ -232,6 +239,11 @@ const AdminAcademiesRoute = AdminAcademiesRouteImport.update({
   path: '/academies',
   getParentRoute: () => AdminRoute,
 } as any)
+const RegisterEventEventIdRoute = RegisterEventEventIdRouteImport.update({
+  id: '/register/event/$eventId',
+  path: '/register/event/$eventId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -258,6 +270,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
   '/admin/rankings': typeof AdminRankingsRoute
+  '/admin/registrations': typeof AdminRegistrationsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
   '/admin/youtube': typeof AdminYoutubeRoute
@@ -271,6 +284,7 @@ export interface FileRoutesByFullPath {
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/register/event/$eventId': typeof RegisterEventEventIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -296,6 +310,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
   '/admin/rankings': typeof AdminRankingsRoute
+  '/admin/registrations': typeof AdminRegistrationsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
   '/admin/youtube': typeof AdminYoutubeRoute
@@ -309,6 +324,7 @@ export interface FileRoutesByTo {
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin': typeof AdminIndexRoute
+  '/register/event/$eventId': typeof RegisterEventEventIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -336,6 +352,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
   '/admin/rankings': typeof AdminRankingsRoute
+  '/admin/registrations': typeof AdminRegistrationsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
   '/admin/youtube': typeof AdminYoutubeRoute
@@ -349,6 +366,7 @@ export interface FileRoutesById {
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/register/event/$eventId': typeof RegisterEventEventIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -377,6 +395,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/news'
     | '/admin/rankings'
+    | '/admin/registrations'
     | '/admin/settings'
     | '/admin/setup'
     | '/admin/youtube'
@@ -390,6 +409,7 @@ export interface FileRouteTypes {
     | '/register/athlete'
     | '/verify/$athleteId'
     | '/admin/'
+    | '/register/event/$eventId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -415,6 +435,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/news'
     | '/admin/rankings'
+    | '/admin/registrations'
     | '/admin/settings'
     | '/admin/setup'
     | '/admin/youtube'
@@ -428,6 +449,7 @@ export interface FileRouteTypes {
     | '/register/athlete'
     | '/verify/$athleteId'
     | '/admin'
+    | '/register/event/$eventId'
   id:
     | '__root__'
     | '/'
@@ -454,6 +476,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/news'
     | '/admin/rankings'
+    | '/admin/registrations'
     | '/admin/settings'
     | '/admin/setup'
     | '/admin/youtube'
@@ -467,6 +490,7 @@ export interface FileRouteTypes {
     | '/register/athlete'
     | '/verify/$athleteId'
     | '/admin/'
+    | '/register/event/$eventId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -493,6 +517,7 @@ export interface RootRouteChildren {
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
   VerifyAthleteIdRoute: typeof VerifyAthleteIdRoute
+  RegisterEventEventIdRoute: typeof RegisterEventEventIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -700,6 +725,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/registrations': {
+      id: '/admin/registrations'
+      path: '/registrations'
+      fullPath: '/admin/registrations'
+      preLoaderRoute: typeof AdminRegistrationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/rankings': {
       id: '/admin/rankings'
       path: '/rankings'
@@ -756,6 +788,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAcademiesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/register/event/$eventId': {
+      id: '/register/event/$eventId'
+      path: '/register/event/$eventId'
+      fullPath: '/register/event/$eventId'
+      preLoaderRoute: typeof RegisterEventEventIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -768,6 +807,7 @@ interface AdminRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminNewsRoute: typeof AdminNewsRoute
   AdminRankingsRoute: typeof AdminRankingsRoute
+  AdminRegistrationsRoute: typeof AdminRegistrationsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSetupRoute: typeof AdminSetupRoute
   AdminYoutubeRoute: typeof AdminYoutubeRoute
@@ -783,6 +823,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminNewsRoute: AdminNewsRoute,
   AdminRankingsRoute: AdminRankingsRoute,
+  AdminRegistrationsRoute: AdminRegistrationsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminSetupRoute: AdminSetupRoute,
   AdminYoutubeRoute: AdminYoutubeRoute,
@@ -838,6 +879,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,
   VerifyAthleteIdRoute: VerifyAthleteIdRoute,
+  RegisterEventEventIdRoute: RegisterEventEventIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

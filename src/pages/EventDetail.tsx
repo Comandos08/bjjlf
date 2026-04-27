@@ -109,13 +109,21 @@ export function EventDetail() {
               <span className={cn(typo.heading.kicker)}>{t("event.register.kicker")}</span>
               <EventBadge badge={e.badge} variant="inline" className="!relative" />
             </div>
-            <h3 className={cn(typo.heading.md)}>{t("event.register.title")}</h3>
-            <p className={cn(typo.body.sm)}>{t("event.register.body")}</p>
+            <h3 className={cn(typo.heading.md)}>Inscreva-se</h3>
+            <p className="text-2xl text-[#C8211A]" style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}>
+              R$ 150,00
+            </p>
+            <ul className="text-sm text-foreground/80 space-y-1.5" style={{ fontFamily: "Barlow" }}>
+              <li>• Medalhas para os 3 primeiros lugares</li>
+              <li>• Certificado digital de participação</li>
+              <li>• Carteirinha BJJLF para novos filiados</li>
+            </ul>
             <Button asChild variant="primary" size="lg" className="w-full">
-              <Link to="/register/athlete">
-                <Users className="h-4 w-4" /> {t("event.register.cta")}
+              <Link to="/register/event/$eventId" params={{ eventId: e.id }}>
+                <Users className="h-4 w-4" /> Inscrever-se Agora
               </Link>
             </Button>
+            <p className="text-xs text-foreground/50 text-center">Vagas limitadas</p>
             <p className={cn(typo.label.sm, "text-center")}>
               {t("event.register.deadline")}: {formatDate(e.date, lang)}
             </p>

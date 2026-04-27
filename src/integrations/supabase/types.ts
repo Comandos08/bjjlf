@@ -262,6 +262,128 @@ export type Database = {
           },
         ]
       }
+      event_prices: {
+        Row: {
+          amount_cents: number
+          category: string
+          created_at: string
+          currency: string
+          early_bird_cents: number | null
+          early_bird_until: string | null
+          event_id: string
+          id: string
+          modality: string
+        }
+        Insert: {
+          amount_cents?: number
+          category: string
+          created_at?: string
+          currency?: string
+          early_bird_cents?: number | null
+          early_bird_until?: string | null
+          event_id: string
+          id?: string
+          modality: string
+        }
+        Update: {
+          amount_cents?: number
+          category?: string
+          created_at?: string
+          currency?: string
+          early_bird_cents?: number | null
+          early_bird_until?: string | null
+          event_id?: string
+          id?: string
+          modality?: string
+        }
+        Relationships: []
+      }
+      event_registrations: {
+        Row: {
+          academy: string | null
+          amount_cents: number
+          athlete_id: string | null
+          belt: string
+          category: string
+          country: string | null
+          created_at: string
+          degree: number
+          email: string
+          event_id: string
+          full_name: string
+          id: string
+          modality: string
+          paid_at: string | null
+          phone: string | null
+          professor: string | null
+          registration_number: string | null
+          status: string
+          stripe_payment_intent: string | null
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string | null
+          weight_class: string
+        }
+        Insert: {
+          academy?: string | null
+          amount_cents?: number
+          athlete_id?: string | null
+          belt: string
+          category: string
+          country?: string | null
+          created_at?: string
+          degree?: number
+          email: string
+          event_id: string
+          full_name: string
+          id?: string
+          modality: string
+          paid_at?: string | null
+          phone?: string | null
+          professor?: string | null
+          registration_number?: string | null
+          status?: string
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+          weight_class: string
+        }
+        Update: {
+          academy?: string | null
+          amount_cents?: number
+          athlete_id?: string | null
+          belt?: string
+          category?: string
+          country?: string | null
+          created_at?: string
+          degree?: number
+          email?: string
+          event_id?: string
+          full_name?: string
+          id?: string
+          modality?: string
+          paid_at?: string | null
+          phone?: string | null
+          professor?: string | null
+          registration_number?: string | null
+          status?: string
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+          weight_class?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_registrations_athlete_id_fkey"
+            columns: ["athlete_id"]
+            isOneToOne: false
+            referencedRelation: "athlete_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       events: {
         Row: {
           city: string
