@@ -9,6 +9,13 @@ import { EventFilterPanel } from "@/components/EventFilterPanel";
 import { EventBadge } from "@/components/EventBadge";
 import { Button } from "@/components/ui/button";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -19,6 +26,12 @@ import {
 } from "@/components/ui/sheet";
 import { EVENTS, type EventTypeBadge } from "@/data/events";
 import { usePersistedEventFilters } from "@/lib/event-filters-storage";
+import {
+  DEFAULT_EVENT_SORT,
+  EVENT_SORTS,
+  parseEventSort,
+  type EventSort,
+} from "@/lib/event-sort";
 
 const VALID_BADGES: ReadonlyArray<EventTypeBadge> = [
   "GI",
@@ -48,11 +61,12 @@ function parseBadges(input: unknown): EventTypeBadge[] {
   return VALID_BADGES.filter((b) => set.has(b));
 }
 
-type EventsSearch = { badges: EventTypeBadge[] };
+type EventsSearch = { badges: EventTypeBadge[]; sort: EventSort };
 
 export const Route = createFileRoute("/events")({
   validateSearch: (search: Record<string, unknown>): EventsSearch => ({
     badges: parseBadges(search.badges),
+    sort: parseEventSort(search.sort),
   }),
   head: () => ({
     meta: [
@@ -77,6 +91,7 @@ function EventsListPage() {
   const { t } = useI18n();
   const search = Route.useSearch();
   const badges: EventTypeBadge[] = search.badges;
+  const sort: EventSort = search.sort;
   const navigate = useNavigate({ from: "/events" });
   const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -92,7 +107,15 @@ function EventsListPage() {
 
   const setBadges = (next: ReadonlyArray<EventTypeBadge>) =>
     navigate({
-      search: () => ({ badges: [...next] }),
+      // Preserve sort when filters change.
+      search: (prev) => ({ ...prev, badges: [...next] }),
+      replace: true,
+    });
+
+  const setSort = (next: EventSort) =>
+    navigate({
+      // Preserve badges when sort changes.
+      search: (prev) => ({ ...prev, sort: next }),
       replace: true,
     });
 
