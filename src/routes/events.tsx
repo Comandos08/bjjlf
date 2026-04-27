@@ -404,6 +404,9 @@ function EventsListPage() {
               onChange={setBadges}
               sort={sort}
               query={urlQuery}
+              page={page}
+              perPage={perPage}
+              onPageChange={setPage}
               hideFilters
             />
           </div>
