@@ -43,7 +43,7 @@ export const EVENTS: Event[] = [
     name: "Asian Continental",
     date: "2025-07-05",
     location: "Tokyo, JP",
-    image: "https://images.unsplash.com/photo-1544717305-996b815c338c?auto=format&fit=crop&w=400&h=250",
+    image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=800",
     type: "Open",
     badge: "GI",
   },
