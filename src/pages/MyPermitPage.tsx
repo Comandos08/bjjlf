@@ -107,6 +107,8 @@ export function MyPermitPage({ permitNumber }: { permitNumber: string }) {
           </div>
         </div>
 
+        <RenewalBanner expiresAt={permit.expires_at} permitNumber={permit.permit_number} />
+
         <AcademyPermitDocument
           academyName={permit.academy_name}
           responsibleName={permit.responsible_name}
@@ -118,6 +120,59 @@ export function MyPermitPage({ permitNumber }: { permitNumber: string }) {
           expiresAt={permit.expires_at}
         />
       </div>
+    </div>
+  );
+}
+
+/**
+ * Banner de aviso de renovação:
+ * - >60d: nada
+ * - 30-60d: âmbar (aviso)
+ * - <30d: vermelho com botão "RENOVAR AGORA"
+ * - vencido: vermelho enfático
+ */
+function RenewalBanner({ expiresAt, permitNumber }: { expiresAt: string | null; permitNumber: string }) {
+  const v = computeValidity(expiresAt);
+  if (v.kind === "none" || v.kind === "ok") return null;
+
+  const formatted = formatValidUntil(expiresAt);
+  const isCritical = v.kind === "critical" || v.kind === "expired";
+  const bg = isCritical
+    ? "bg-red-50 border-red-300 text-red-900"
+    : "bg-amber-50 border-amber-300 text-amber-900";
+  const iconColor = isCritical ? "text-red-600" : "text-amber-600";
+
+  let message = "";
+  if (v.kind === "warning") {
+    message = `Renove seu alvará para manter sua academia ativa. Vence em ${v.daysLeft} dias (${formatted}).`;
+  } else if (v.kind === "critical") {
+    message = `⚠️ Seu alvará vence em ${v.daysLeft} dias (${formatted}). Renove agora para evitar suspensão.`;
+  } else if (v.kind === "expired") {
+    message = `🔴 Seu alvará venceu há ${v.daysOverdue} dias (${formatted}). Renove imediatamente.`;
+  }
+
+  return (
+    <div
+      className={`no-print mb-6 border-2 rounded-xl px-5 py-4 flex flex-wrap items-center gap-4 ${bg} ${
+        isCritical ? "animate-pulse-soft" : ""
+      }`}
+    >
+      <AlertTriangle className={`h-6 w-6 shrink-0 ${iconColor}`} />
+      <div className="flex-1 min-w-[240px]">
+        <div className="text-sm font-semibold" style={{ fontFamily: "Barlow", fontWeight: 700 }}>
+          {message}
+        </div>
+      </div>
+      {isCritical && (
+        <Link
+          to="/register/academy"
+          search={{ renew: permitNumber } as never}
+          className="inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-4 py-2 text-xs uppercase tracking-widest transition shrink-0"
+          style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+        >
+          <RefreshCw className="h-4 w-4" /> Renovar agora
+        </Link>
+      )}
     </div>
   );
 }
