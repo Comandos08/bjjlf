@@ -92,6 +92,11 @@ const PT: Dict = {
   "events.empty.clear": "Limpar filtros",
   "events.count.one": "{n} evento",
   "events.count.many": "{n} eventos",
+  "events.sort.label": "Ordenar por",
+  "events.sort.soonest": "Mais próximos",
+  "events.sort.latest": "Mais distantes",
+  "events.sort.nameAsc": "Nome (A–Z)",
+  "events.sort.nameDesc": "Nome (Z–A)",
 
 
   "news.cat.tournaments.label": "CAMPEONATOS",
@@ -377,6 +382,11 @@ const EN: Dict = {
   "events.empty.clear": "Clear filters",
   "events.count.one": "{n} event",
   "events.count.many": "{n} events",
+  "events.sort.label": "Sort by",
+  "events.sort.soonest": "Soonest first",
+  "events.sort.latest": "Latest first",
+  "events.sort.nameAsc": "Name (A–Z)",
+  "events.sort.nameDesc": "Name (Z–A)",
 
   "news.cat.tournaments.label": "TOURNAMENTS",
   "news.cat.promotions.label": "PROMOTIONS",

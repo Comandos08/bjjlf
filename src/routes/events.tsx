@@ -9,6 +9,13 @@ import { EventFilterPanel } from "@/components/EventFilterPanel";
 import { EventBadge } from "@/components/EventBadge";
 import { Button } from "@/components/ui/button";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -19,6 +26,11 @@ import {
 } from "@/components/ui/sheet";
 import { EVENTS, type EventTypeBadge } from "@/data/events";
 import { usePersistedEventFilters } from "@/lib/event-filters-storage";
+import {
+  EVENT_SORTS,
+  parseEventSort,
+  type EventSort,
+} from "@/lib/event-sort";
 
 const VALID_BADGES: ReadonlyArray<EventTypeBadge> = [
   "GI",
@@ -48,11 +60,12 @@ function parseBadges(input: unknown): EventTypeBadge[] {
   return VALID_BADGES.filter((b) => set.has(b));
 }
 
-type EventsSearch = { badges: EventTypeBadge[] };
+type EventsSearch = { badges: EventTypeBadge[]; sort: EventSort };
 
 export const Route = createFileRoute("/events")({
   validateSearch: (search: Record<string, unknown>): EventsSearch => ({
     badges: parseBadges(search.badges),
+    sort: parseEventSort(search.sort),
   }),
   head: () => ({
     meta: [
@@ -77,6 +90,7 @@ function EventsListPage() {
   const { t } = useI18n();
   const search = Route.useSearch();
   const badges: EventTypeBadge[] = search.badges;
+  const sort: EventSort = search.sort;
   const navigate = useNavigate({ from: "/events" });
   const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -92,7 +106,15 @@ function EventsListPage() {
 
   const setBadges = (next: ReadonlyArray<EventTypeBadge>) =>
     navigate({
-      search: () => ({ badges: [...next] }),
+      // Preserve sort when filters change.
+      search: (prev: EventsSearch) => ({ ...prev, badges: [...next] }),
+      replace: true,
+    });
+
+  const setSort = (next: EventSort) =>
+    navigate({
+      // Preserve badges when sort changes.
+      search: (prev: EventsSearch) => ({ ...prev, sort: next }),
       replace: true,
     });
 
@@ -236,9 +258,46 @@ function EventsListPage() {
               </div>
             ) : null}
 
+            {/* Sort toolbar — visible on every viewport, above the grid */}
+            <div
+              className="flex items-center justify-end gap-2"
+              data-testid="event-sort-toolbar"
+            >
+              <label
+                htmlFor="event-sort-select"
+                className={cn(typo.label.sm, "shrink-0")}
+              >
+                {t("events.sort.label")}:
+              </label>
+              <Select
+                value={sort}
+                onValueChange={(v) => setSort(v as EventSort)}
+              >
+                <SelectTrigger
+                  id="event-sort-select"
+                  className="w-[180px] rounded-none"
+                  data-testid="event-sort-trigger"
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {EVENT_SORTS.map((s) => (
+                    <SelectItem
+                      key={s}
+                      value={s}
+                      data-testid={`event-sort-option-${s}`}
+                    >
+                      {t(`events.sort.${s}`)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <EventList
               selectedBadges={badges}
               onChange={setBadges}
+              sort={sort}
               hideFilters
             />
           </div>
