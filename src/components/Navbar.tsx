@@ -132,8 +132,9 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="xl:hidden border-t border-[#222] bg-navbar">
-          <nav className="container mx-auto flex flex-col px-4 py-3">
+        <div className="xl:hidden border-t border-[#222] bg-navbar overflow-x-hidden">
+          <MobileProfileBlock onNavigate={() => setOpen(false)} />
+          <nav className="container mx-auto flex flex-col px-4 py-3 max-w-full">
             {NAV.map((item) => (
               <Link
                 key={item.key}
