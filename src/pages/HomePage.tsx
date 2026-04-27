@@ -402,7 +402,6 @@ function CTASection() {
 
 function YouTubeSection() {
   const { t } = useI18n();
-  const VIDEO_IMG = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=600&h=350&fit=crop&q=80";
   const videos = [
     { t: "World Championship 2024 — Best Submissions", img: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=500&h=280" },
     { t: "Black Belt Promotions Ceremony", img: "https://images.unsplash.com/photo-1544717305-996b815c338c?auto=format&fit=crop&w=500&h=280" },
