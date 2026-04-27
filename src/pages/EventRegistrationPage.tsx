@@ -23,8 +23,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAthleteAuth } from "@/lib/athlete-auth";
 import { useEvents } from "@/lib/queries";
 import { cn } from "@/lib/utils";
+import { BeltSelector } from "@/components/BeltSelector";
+import { defaultDegreeForBelt, type BeltName } from "@/lib/belts-ibjjf";
 
-const BELTS = ["Branca", "Azul", "Roxa", "Marrom", "Preta"];
 const MODALITIES = ["GI", "NO-GI", "GI & NO-GI"];
 const CATEGORIES = [
   "Infanto-Juvenil",
