@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Menu, X, ShoppingBag, ChevronDown, Globe, CreditCard, LogOut, UserCircle, Trophy, LogIn, Building2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
@@ -162,22 +162,49 @@ export function Navbar() {
 }
 
 function AthleteMenu() {
-  const { user, profile, isActive, signOut } = useAthleteAuth();
+  const { user, profile, isActive, isLoading, signOut } = useAthleteAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
+  // Close on route change (TanStack Router)
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Reset image-error when photo URL changes
+  useEffect(() => {
+    setImgError(false);
+  }, [profile?.photo_url]);
+
+  // Close on outside click + Escape
   useEffect(() => {
     if (!open) return;
     function onClick(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
     document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("keydown", onKey);
+    };
   }, [open]);
 
-  // Not signed in → ONLY show "Entrar". Signup CTAs live on hero/events/academies pages.
-  if (!user) {
+  // Avoid flash: while session is being resolved, render an invisible 36px placeholder.
+  if (isLoading) {
+    return <div aria-hidden className="w-9 h-9" />;
+  }
+
+  // Treat non-active profiles (pending/suspended) as "not logged in" for avatar.
+  const showAvatar = !!user && !!profile && isActive;
+
+  if (!showAvatar) {
     return (
       <Link
         to="/athlete/login"
@@ -191,41 +218,43 @@ function AthleteMenu() {
     );
   }
 
-  const initials = profile?.full_name
-    ? profile.full_name.trim().split(/\s+/).map((p) => p[0]?.toUpperCase() ?? "").slice(0, 2).join("")
-    : (user.email?.[0] ?? "A").toUpperCase();
+  const firstInitial = (profile.full_name?.trim()[0] ?? user.email?.[0] ?? "A").toUpperCase();
 
-  const beltLine = profile
-    ? `Faixa ${profile.belt}${profile.degree > 0 ? ` • ${profile.degree} grau${profile.degree > 1 ? "s" : ""}` : ""}`
-    : null;
+  const beltLine = `Faixa ${profile.belt}${profile.degree > 0 ? ` • ${profile.degree} grau${profile.degree > 1 ? "s" : ""}` : ""}`;
+
+  const hasPhoto = !!profile.photo_url && !imgError;
 
   return (
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center transition-base focus:outline-none focus:ring-2 focus:ring-[#C8A84B]/50 rounded-full"
+        className="flex items-center transition-base focus:outline-none focus:ring-2 focus:ring-[#C8A84B]/50 rounded-full relative w-9 h-9"
         aria-label="Menu do atleta"
         aria-expanded={open}
       >
-        {profile?.photo_url ? (
+        {/* Initial fallback (always rendered, fades in/out) */}
+        <span
+          className="absolute inset-0 w-9 h-9 rounded-full grid place-items-center text-white transition-opacity duration-150"
+          style={{
+            background: "#C8211A",
+            border: "2px solid #C8A84B",
+            fontFamily: "Barlow",
+            fontWeight: 700,
+            fontSize: 16,
+            opacity: hasPhoto ? 0 : 1,
+          }}
+        >
+          {firstInitial}
+        </span>
+        {/* Photo (rendered when URL exists; fades in if loads, falls back on error) */}
+        {profile.photo_url && !imgError && (
           <img
             src={profile.photo_url}
             alt=""
-            className="w-9 h-9 rounded-full object-cover"
-            style={{ border: "2px solid #C8A84B" }}
+            onError={() => setImgError(true)}
+            className="absolute inset-0 w-9 h-9 rounded-full object-cover transition-opacity duration-150"
+            style={{ border: "2px solid #C8A84B", opacity: hasPhoto ? 1 : 0 }}
           />
-        ) : (
-          <span
-            className="w-9 h-9 rounded-full grid place-items-center text-sm text-white"
-            style={{
-              background: "#C8211A",
-              border: "2px solid #C8A84B",
-              fontFamily: "Barlow Condensed",
-              fontWeight: 700,
-            }}
-          >
-            {initials}
-          </span>
         )}
       </button>
 
@@ -239,24 +268,14 @@ function AthleteMenu() {
               className="text-sm text-gray-900 truncate"
               style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
             >
-              {profile?.full_name ?? "Atleta"}
+              {profile.full_name}
             </p>
-            {beltLine && (
-              <p
-                className="text-[11px] mt-0.5 truncate"
-                style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
-              >
-                {beltLine}
-              </p>
-            )}
-            {!isActive && (
-              <span
-                className="inline-block mt-2 text-[9px] uppercase tracking-widest text-yellow-700 bg-yellow-50 border border-yellow-200 px-2 py-0.5 rounded-full"
-                style={{ fontFamily: "Barlow", fontWeight: 700 }}
-              >
-                {profile?.status === "pending" ? "Aguardando aprovação" : "Conta inativa"}
-              </span>
-            )}
+            <p
+              className="text-[11px] mt-0.5 truncate"
+              style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
+            >
+              {beltLine}
+            </p>
           </div>
 
           <AthleteMenuItem
@@ -321,9 +340,18 @@ function AthleteMenuItem({
 }
 
 function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
-  const { user, profile, signOut } = useAthleteAuth();
+  const { user, profile, isActive, isLoading, signOut } = useAthleteAuth();
+  const [imgError, setImgError] = useState(false);
 
-  if (!user) {
+  useEffect(() => {
+    setImgError(false);
+  }, [profile?.photo_url]);
+
+  if (isLoading) return null;
+
+  const showAthlete = !!user && !!profile && isActive;
+
+  if (!showAthlete) {
     return (
       <div className="flex flex-col border-t border-[#222] mt-2 pt-2">
         <Link
@@ -338,49 +366,49 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
     );
   }
 
-  const initials = profile?.full_name
-    ? profile.full_name.trim().split(/\s+/).map((p) => p[0]?.toUpperCase() ?? "").slice(0, 2).join("")
-    : (user.email?.[0] ?? "A").toUpperCase();
+  const firstInitial = (profile.full_name?.trim()[0] ?? user.email?.[0] ?? "A").toUpperCase();
 
-  const beltLine = profile
-    ? `Faixa ${profile.belt}${profile.degree > 0 ? ` • ${profile.degree} grau${profile.degree > 1 ? "s" : ""}` : ""}`
-    : null;
+  const beltLine = `Faixa ${profile.belt}${profile.degree > 0 ? ` • ${profile.degree} grau${profile.degree > 1 ? "s" : ""}` : ""}`;
+
+  const hasPhoto = !!profile.photo_url && !imgError;
 
   return (
     <div className="flex flex-col border-t border-[#222] mt-2 pt-3">
       <div className="flex items-center gap-3 px-1 py-2">
-        {profile?.photo_url ? (
-          <img
-            src={profile.photo_url}
-            alt=""
-            className="w-9 h-9 rounded-full object-cover"
-            style={{ border: "2px solid #C8A84B" }}
-          />
-        ) : (
+        <span className="relative w-9 h-9 block">
           <span
-            className="w-9 h-9 rounded-full grid place-items-center text-sm text-white"
+            className="absolute inset-0 w-9 h-9 rounded-full grid place-items-center text-white transition-opacity duration-150"
             style={{
               background: "#C8211A",
               border: "2px solid #C8A84B",
-              fontFamily: "Barlow Condensed",
+              fontFamily: "Barlow",
               fontWeight: 700,
+              fontSize: 16,
+              opacity: hasPhoto ? 0 : 1,
             }}
           >
-            {initials}
+            {firstInitial}
           </span>
-        )}
+          {profile.photo_url && !imgError && (
+            <img
+              src={profile.photo_url}
+              alt=""
+              onError={() => setImgError(true)}
+              className="absolute inset-0 w-9 h-9 rounded-full object-cover transition-opacity duration-150"
+              style={{ border: "2px solid #C8A84B", opacity: hasPhoto ? 1 : 0 }}
+            />
+          )}
+        </span>
         <div className="min-w-0 flex-1">
           <p className="text-sm text-white truncate" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
-            {profile?.full_name ?? user.email}
+            {profile.full_name}
           </p>
-          {beltLine && (
-            <p
-              className="text-[11px] truncate"
-              style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
-            >
-              {beltLine}
-            </p>
-          )}
+          <p
+            className="text-[11px] truncate"
+            style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
+          >
+            {beltLine}
+          </p>
         </div>
       </div>
       <div className="border-t border-[#222] my-1" />
