@@ -250,6 +250,10 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
           <input className="admin-input w-full" {...register("photo_url")} />
           {photo && <img src={photo} alt="" className="mt-2 h-16 w-16 rounded-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
         </div>
+        <div>
+          <label className="admin-label">Biografia (opcional)</label>
+          <textarea className="admin-input w-full" rows={5} {...register("bio")} placeholder="História do mestre, conquistas, linhagem..." />
+        </div>
         <AdminToggle checked={isActive} onChange={(v) => setValue("is_active", v)} label="Ativo" />
         <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#E5E5E5" }}>
           <AdminButton variant="outline" onClick={onClose}>Cancelar</AdminButton>
