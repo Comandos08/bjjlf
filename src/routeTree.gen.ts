@@ -22,8 +22,16 @@ import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
 import { Route as RegisterAcademyRouteImport } from './routes/register.academy'
 import { Route as GraduatesGraduateIdRouteImport } from './routes/graduates.$graduateId'
 import { Route as EventsEventIdRouteImport } from './routes/events.$eventId'
+import { Route as AdminYoutubeRouteImport } from './routes/admin.youtube'
 import { Route as AdminSetupRouteImport } from './routes/admin.setup'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminRankingsRouteImport } from './routes/admin.rankings'
+import { Route as AdminNewsRouteImport } from './routes/admin.news'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminHeroRouteImport } from './routes/admin.hero'
+import { Route as AdminEventsRouteImport } from './routes/admin.events'
+import { Route as AdminBlackBeltsRouteImport } from './routes/admin.black-belts'
+import { Route as AdminAcademiesRouteImport } from './routes/admin.academies'
 
 const TypographyRoute = TypographyRouteImport.update({
   id: '/typography',
@@ -90,14 +98,54 @@ const EventsEventIdRoute = EventsEventIdRouteImport.update({
   path: '/$eventId',
   getParentRoute: () => EventsRoute,
 } as any)
+const AdminYoutubeRoute = AdminYoutubeRouteImport.update({
+  id: '/youtube',
+  path: '/youtube',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSetupRoute = AdminSetupRouteImport.update({
   id: '/setup',
   path: '/setup',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRankingsRoute = AdminRankingsRouteImport.update({
+  id: '/rankings',
+  path: '/rankings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminNewsRoute = AdminNewsRouteImport.update({
+  id: '/news',
+  path: '/news',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminHeroRoute = AdminHeroRouteImport.update({
+  id: '/hero',
+  path: '/hero',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminEventsRoute = AdminEventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBlackBeltsRoute = AdminBlackBeltsRouteImport.update({
+  id: '/black-belts',
+  path: '/black-belts',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAcademiesRoute = AdminAcademiesRouteImport.update({
+  id: '/academies',
+  path: '/academies',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -110,8 +158,16 @@ export interface FileRoutesByFullPath {
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
   '/typography': typeof TypographyRoute
+  '/admin/academies': typeof AdminAcademiesRoute
+  '/admin/black-belts': typeof AdminBlackBeltsRoute
+  '/admin/events': typeof AdminEventsRoute
+  '/admin/hero': typeof AdminHeroRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
+  '/admin/rankings': typeof AdminRankingsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
+  '/admin/youtube': typeof AdminYoutubeRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
@@ -126,8 +182,16 @@ export interface FileRoutesByTo {
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
   '/typography': typeof TypographyRoute
+  '/admin/academies': typeof AdminAcademiesRoute
+  '/admin/black-belts': typeof AdminBlackBeltsRoute
+  '/admin/events': typeof AdminEventsRoute
+  '/admin/hero': typeof AdminHeroRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
+  '/admin/rankings': typeof AdminRankingsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
+  '/admin/youtube': typeof AdminYoutubeRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
@@ -144,8 +208,16 @@ export interface FileRoutesById {
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
   '/typography': typeof TypographyRoute
+  '/admin/academies': typeof AdminAcademiesRoute
+  '/admin/black-belts': typeof AdminBlackBeltsRoute
+  '/admin/events': typeof AdminEventsRoute
+  '/admin/hero': typeof AdminHeroRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
+  '/admin/rankings': typeof AdminRankingsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
+  '/admin/youtube': typeof AdminYoutubeRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
@@ -163,8 +235,16 @@ export interface FileRouteTypes {
     | '/graduates'
     | '/news'
     | '/typography'
+    | '/admin/academies'
+    | '/admin/black-belts'
+    | '/admin/events'
+    | '/admin/hero'
     | '/admin/login'
+    | '/admin/news'
+    | '/admin/rankings'
+    | '/admin/settings'
     | '/admin/setup'
+    | '/admin/youtube'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
@@ -179,8 +259,16 @@ export interface FileRouteTypes {
     | '/graduates'
     | '/news'
     | '/typography'
+    | '/admin/academies'
+    | '/admin/black-belts'
+    | '/admin/events'
+    | '/admin/hero'
     | '/admin/login'
+    | '/admin/news'
+    | '/admin/rankings'
+    | '/admin/settings'
     | '/admin/setup'
+    | '/admin/youtube'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
@@ -196,8 +284,16 @@ export interface FileRouteTypes {
     | '/graduates'
     | '/news'
     | '/typography'
+    | '/admin/academies'
+    | '/admin/black-belts'
+    | '/admin/events'
+    | '/admin/hero'
     | '/admin/login'
+    | '/admin/news'
+    | '/admin/rankings'
+    | '/admin/settings'
     | '/admin/setup'
+    | '/admin/youtube'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
@@ -311,11 +407,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsEventIdRouteImport
       parentRoute: typeof EventsRoute
     }
+    '/admin/youtube': {
+      id: '/admin/youtube'
+      path: '/youtube'
+      fullPath: '/admin/youtube'
+      preLoaderRoute: typeof AdminYoutubeRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/setup': {
       id: '/admin/setup'
       path: '/setup'
       fullPath: '/admin/setup'
       preLoaderRoute: typeof AdminSetupRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/rankings': {
+      id: '/admin/rankings'
+      path: '/rankings'
+      fullPath: '/admin/rankings'
+      preLoaderRoute: typeof AdminRankingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/news': {
+      id: '/admin/news'
+      path: '/news'
+      fullPath: '/admin/news'
+      preLoaderRoute: typeof AdminNewsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/login': {
@@ -325,18 +449,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/hero': {
+      id: '/admin/hero'
+      path: '/hero'
+      fullPath: '/admin/hero'
+      preLoaderRoute: typeof AdminHeroRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/events': {
+      id: '/admin/events'
+      path: '/events'
+      fullPath: '/admin/events'
+      preLoaderRoute: typeof AdminEventsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/black-belts': {
+      id: '/admin/black-belts'
+      path: '/black-belts'
+      fullPath: '/admin/black-belts'
+      preLoaderRoute: typeof AdminBlackBeltsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/academies': {
+      id: '/admin/academies'
+      path: '/academies'
+      fullPath: '/admin/academies'
+      preLoaderRoute: typeof AdminAcademiesRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminAcademiesRoute: typeof AdminAcademiesRoute
+  AdminBlackBeltsRoute: typeof AdminBlackBeltsRoute
+  AdminEventsRoute: typeof AdminEventsRoute
+  AdminHeroRoute: typeof AdminHeroRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminNewsRoute: typeof AdminNewsRoute
+  AdminRankingsRoute: typeof AdminRankingsRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSetupRoute: typeof AdminSetupRoute
+  AdminYoutubeRoute: typeof AdminYoutubeRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAcademiesRoute: AdminAcademiesRoute,
+  AdminBlackBeltsRoute: AdminBlackBeltsRoute,
+  AdminEventsRoute: AdminEventsRoute,
+  AdminHeroRoute: AdminHeroRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AdminNewsRoute: AdminNewsRoute,
+  AdminRankingsRoute: AdminRankingsRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
   AdminSetupRoute: AdminSetupRoute,
+  AdminYoutubeRoute: AdminYoutubeRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
