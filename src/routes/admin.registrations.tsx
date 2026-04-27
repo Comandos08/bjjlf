@@ -249,7 +249,7 @@ function AdminRegistrationsPage() {
           className="inline-flex items-center gap-2 bg-[#C8A84B] hover:bg-[#9a7d0a] text-[#1A1A1A] text-sm uppercase tracking-widest rounded px-4 py-2"
           style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
         >
-          <Download className="h-4 w-4" /> Exportar CSV
+          <Download className="h-4 w-4" /> Exportar CSV ({filtered.length})
         </button>
       </div>
 
