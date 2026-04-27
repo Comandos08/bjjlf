@@ -22,6 +22,42 @@ const entries = new Map<string, ImageEntry>();
 const listeners = new Set<Listener>();
 let counter = 0;
 
+// ---------------------------------------------------------------------------
+// Lightweight telemetry — counts how often the registry emits and how many
+// images transition into each terminal state. Reset only via
+// `resetImageRegistryTelemetry()` so dev-tools can observe long-running totals.
+// ---------------------------------------------------------------------------
+export type ImageRegistryTelemetry = {
+  emits: number;
+  registered: number;
+  loaded: number;
+  errored: number;
+  unregistered: number;
+  /** ms timestamp of the last emit, or 0 if none yet. */
+  lastEmitAt: number;
+};
+
+let telemetry: ImageRegistryTelemetry = {
+  emits: 0,
+  registered: 0,
+  loaded: 0,
+  errored: 0,
+  unregistered: 0,
+  lastEmitAt: 0,
+};
+
+const telemetryListeners = new Set<Listener>();
+let cachedTelemetry: ImageRegistryTelemetry = telemetry;
+
+function bumpTelemetry(patch: Partial<ImageRegistryTelemetry>) {
+  telemetry = { ...telemetry, ...patch, lastEmitAt: Date.now() };
+  cachedTelemetry = telemetry;
+  for (const l of telemetryListeners) l();
+}
+
+const isDev =
+  typeof import.meta !== "undefined" && (import.meta as ImportMeta).env?.DEV === true;
+
 // Stable empty snapshot. Used by BOTH the server snapshot and the initial
 // client snapshot so that the first client render after hydration matches
 // what was rendered on the server (an empty list). Without this, the
