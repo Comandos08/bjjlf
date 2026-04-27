@@ -8,12 +8,30 @@ import { useI18n, formatDateShort } from "@/lib/i18n";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import { SafeImage } from "@/components/SafeImage";
-const HERO_IMG = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=1440&h=600&fit=crop&q=80";
+import { EVENT_BADGE_STYLES } from "@/data/events";
 
 const SLIDES = [
-  { image: HERO_IMG, titleKey: "slide.1.title", subKey: "slide.1.sub", badge: "BJJLF World Championship 2025" },
-  { image: HERO_IMG, titleKey: "slide.2.title", subKey: "slide.2.sub", badge: "No-Gi Pan-American" },
-  { image: HERO_IMG, titleKey: "slide.3.title", subKey: "slide.3.sub", badge: "Black Belt Registry" },
+  {
+    image: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=1440&h=600",
+    thumb: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=80&h=50",
+    titleKey: "slide.1.title",
+    subKey: "slide.1.sub",
+    badge: "BJJLF World Championship 2025",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=1440&h=600",
+    thumb: "https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=80&h=50",
+    titleKey: "slide.2.title",
+    subKey: "slide.2.sub",
+    badge: "No-Gi Pan-American",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&w=1440&h=600",
+    thumb: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&w=80&h=50",
+    titleKey: "slide.3.title",
+    subKey: "slide.3.sub",
+    badge: "Black Belt Registry",
+  },
 ];
 
 const SLIDE_TEXT: Record<string, { pt: string; en: string }> = {
