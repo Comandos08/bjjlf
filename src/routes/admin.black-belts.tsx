@@ -222,13 +222,13 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
           <div><label className="admin-label">Professor</label><input className="admin-input w-full" {...register("professor")} /></div>
           <div className="grid grid-cols-2 gap-2">
             <div><label className="admin-label">Tipo de faixa</label>
-              <select className="admin-input w-full" {...register("belt_type")}>
+              <select className="admin-input w-full" {...register("belt_type")} onChange={handleBeltTypeChange}>
                 {BELT_TYPES.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
               </select>
             </div>
-            <div><label className="admin-label">Grau</label>
+            <div><label className="admin-label">Dan</label>
               <select className="admin-input w-full" {...register("belt_degree")}>
-                {Array.from({ length: 10 }, (_, i) => <option key={i} value={i}>{i}</option>)}
+                {allowedDegrees.map((d) => <option key={d} value={d}>{d}º Dan</option>)}
               </select>
             </div>
           </div>
