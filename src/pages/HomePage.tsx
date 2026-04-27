@@ -6,6 +6,8 @@ import { useEvents, useNews, useRankings } from "@/lib/queries";
 import { useI18n, formatDateShort } from "@/lib/i18n";
 import { SafeImage } from "@/components/SafeImage";
 import { EventBadge } from "@/components/EventBadge";
+import { HomeStats } from "@/components/HomeStats";
+import { LazyYouTube } from "@/components/LazyYouTube";
 // FIX A + FIX C: pin BJJ images locally so the Unsplash CDN can't swap them
 // for unrelated photos (tennis, gym, photographer) the way it has been doing
 // when the same photo ID is requested at different sizes.
