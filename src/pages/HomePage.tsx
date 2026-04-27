@@ -213,6 +213,10 @@ function EventsSection() {
 function NewsSection() {
   const { t, lang } = useI18n();
   const items = NEWS.slice(0, 3);
+
+  const categoryKey = (c: string) => `news.cat.${c.toLowerCase()}.label`;
+  const titleKey = (id: string) => `news.item.${id}.title`;
+
   return (
     <section className="py-16 lg:py-20 bg-[#F7F9FC]">
       <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
@@ -226,25 +230,33 @@ function NewsSection() {
           }
         />
         <div className="grid md:grid-cols-3 gap-4">
-          {items.map((n) => (
-            <Link key={n.id} to="/news" className="group bg-white border border-[#E5E5E5] hover:border-primary transition-base flex flex-col">
-              <SafeImage
-                src={n.image}
-                alt={n.title}
-                fallbackLabel={n.title}
-                source="news"
-                wrapperClassName="h-[180px]"
-                className="transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="p-4 flex-1 flex flex-col gap-2">
-                <span className={cn(typo.label.sm, "text-primary")}>{n.category}</span>
-                <h3 className={cn(typo.body.md, "text-[#111] font-semibold leading-[1.35]")}>{n.title}</h3>
-                <div className={cn(typo.body.xs, "text-[#9CA3AF] mt-auto")}>
-                  {formatDateShort(n.date, lang)} · 4 min read
+          {items.map((n) => {
+            const translatedCategory = t(categoryKey(n.category));
+            const translatedTitle = t(titleKey(n.id));
+            return (
+              <Link key={n.id} to="/news" className="group bg-white border border-[#E5E5E5] hover:border-primary transition-base flex flex-col">
+                <SafeImage
+                  src={n.image}
+                  alt={translatedTitle === titleKey(n.id) ? n.title : translatedTitle}
+                  fallbackLabel={n.title}
+                  source="news"
+                  wrapperClassName="h-[180px]"
+                  className="transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="p-4 flex-1 flex flex-col gap-2">
+                  <span className={cn(typo.label.sm, "text-primary uppercase")}>
+                    {translatedCategory === categoryKey(n.category) ? n.category.toUpperCase() : translatedCategory}
+                  </span>
+                  <h3 className={cn(typo.body.md, "text-[#111] font-semibold leading-[1.35]")}>
+                    {translatedTitle === titleKey(n.id) ? n.title : translatedTitle}
+                  </h3>
+                  <div className={cn(typo.body.xs, "text-[#9CA3AF] mt-auto")}>
+                    {formatDateShort(n.date, lang)} · 4 {t("home.news.minRead")}
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
