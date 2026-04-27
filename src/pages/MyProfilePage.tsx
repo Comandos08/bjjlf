@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { useRequireActiveAthlete } from "@/hooks/useRequireActiveAthlete";
 import { formatBeltLine } from "@/lib/belts-ibjjf";
 import { BeltSwatch } from "@/components/BeltSelector";
+import { PhotoCropModal } from "@/components/PhotoCropModal";
 
 const CATEGORIES = [
   "Infanto-Juvenil", "Juvenil", "Adulto",
