@@ -167,11 +167,19 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
     },
   });
   const titlePt = watch("title_pt");
+  const titleEn = watch("title_en");
   const cover = watch("cover_image_url");
   const isPublished = watch("is_published");
   const isFeatured = watch("is_featured");
   const excerptPt = watch("excerpt_pt") ?? "";
   const excerptEn = watch("excerpt_en") ?? "";
+  const bodyPt = watch("body_pt") ?? "";
+  const bodyEn = watch("body_en") ?? "";
+  const author = watch("author") ?? "";
+  const category = watch("category");
+
+  const [tab, setTab] = useState<"edit" | "preview">("edit");
+  const [previewed, setPreviewed] = useState(false);
 
   function onSubmit(v: FormValues) {
     upsert.mutate(
