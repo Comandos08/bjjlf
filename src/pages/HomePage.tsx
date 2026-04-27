@@ -157,34 +157,53 @@ function EventsSection() {
             {t("home.events.viewAll")} <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
-        <div className="grid gap-3.5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))" }}>
-          {EVENTS.slice(0, 6).map((e) => (
-            <article
-              key={e.id}
-              className="rounded-none bg-white border border-[#E5E5E5] flex flex-col group hover:border-primary hover:shadow-[0_4px_16px_rgba(196,30,58,0.12)]"
-              style={{ transition: "all 0.18s ease" }}
-            >
-              <SafeImage
-                src={e.image}
-                alt={`${e.name} — Brazilian Jiu-Jitsu event`}
-                fallbackLabel={e.name}
-                source="event"
-                wrapperClassName="h-32 bg-[#F7F9FC]"
-              />
-              <div className="p-4 space-y-2.5 flex-1 flex flex-col">
-                <h3 className={cn(typo.heading.sm, "text-[#0F0F0F] text-sm leading-tight")}>{e.name}</h3>
-                <div className={cn(typo.body.xs, "flex items-center gap-1.5 text-[#6B7280]")}>
-                  <Calendar className="h-3.5 w-3.5" /> {formatDateShort(e.date, lang)}
+        <div className="grid gap-3.5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {EVENTS.slice(0, 6).map((e) => {
+            const badgeStyle = EVENT_BADGE_STYLES[e.badge];
+            return (
+              <article
+                key={e.id}
+                className="rounded-none bg-white border border-[#E5E5E5] flex flex-col group cursor-pointer hover:border-primary hover:shadow-[0_8px_24px_rgba(196,30,58,0.15)] hover:-translate-y-[3px]"
+                style={{ transition: "all 0.18s ease" }}
+              >
+                <div className="relative">
+                  <SafeImage
+                    src={e.image}
+                    alt={`${e.name} — Brazilian Jiu-Jitsu event`}
+                    fallbackLabel={e.name}
+                    source="event"
+                    wrapperClassName="h-40 bg-[#F7F9FC]"
+                  />
+                  <span
+                    className="absolute top-0 left-0"
+                    style={{
+                      background: badgeStyle.bg,
+                      color: badgeStyle.color,
+                      padding: "8px 12px",
+                      fontSize: "10px",
+                      fontWeight: 700,
+                      letterSpacing: "0.08em",
+                      fontFamily: "Barlow Condensed",
+                    }}
+                  >
+                    {e.badge}
+                  </span>
                 </div>
-                <div className={cn(typo.body.xs, "flex items-center gap-1.5 text-[#6B7280]")}>
-                  <MapPin className="h-3.5 w-3.5" /> {e.location}
+                <div className="p-4 space-y-2.5 flex-1 flex flex-col">
+                  <h3 className={cn(typo.heading.sm, "text-[#0F0F0F] text-sm leading-tight")}>{e.name}</h3>
+                  <div className={cn(typo.body.xs, "flex items-center gap-1.5 text-[#6B7280]")}>
+                    <Calendar className="h-3.5 w-3.5" /> {formatDateShort(e.date, lang)}
+                  </div>
+                  <div className={cn(typo.body.xs, "flex items-center gap-1.5 text-[#6B7280]")}>
+                    <MapPin className="h-3.5 w-3.5" /> {e.location}
+                  </div>
+                  <button className={cn(typo.button.sm, "mt-auto w-full h-9 rounded-none bg-primary hover:bg-primary-dark text-white transition-base")}>
+                    {t("home.events.register")}
+                  </button>
                 </div>
-                <button className={cn(typo.button.sm, "mt-auto w-full h-9 rounded-none bg-primary hover:bg-primary-dark text-white transition-base")}>
-                  {t("home.events.register")}
-                </button>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
