@@ -61,7 +61,7 @@ export const EVENTS: Event[] = [
     name: "UK Open",
     date: "2025-10-18",
     location: "London, UK",
-    image: "https://images.unsplash.com/photo-1590556409324-aa1d726e5c3c?auto=format&fit=crop&w=400&h=250",
+    image: "https://images.unsplash.com/photo-1598971639058-fab3c3109a3b?w=800",
     type: "No-Gi",
     badge: "MASTER",
   },
