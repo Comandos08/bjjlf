@@ -332,6 +332,14 @@ function AdminRegistrationsPage() {
           </div>
         )}
       </div>
+
+      <Pagination
+        page={page}
+        perPage={ADMIN_PAGE_SIZE}
+        total={filtered.length}
+        onPageChange={setPage}
+        itemLabel="inscrições"
+      />
     </div>
   );
 }
