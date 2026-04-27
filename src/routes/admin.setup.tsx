@@ -172,7 +172,7 @@ function SetupPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full h-11 text-[#1A1A1A] font-semibold uppercase tracking-wide text-sm flex items-center justify-center gap-2 disabled:opacity-60"
+              className="w-full h-11 text-white font-semibold uppercase tracking-wide text-sm flex items-center justify-center gap-2 disabled:opacity-60"
               style={{ background: "#C8211A", borderRadius: 0 }}
             >
               {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
