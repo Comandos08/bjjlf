@@ -22,13 +22,26 @@ const entries = new Map<string, ImageEntry>();
 const listeners = new Set<Listener>();
 let counter = 0;
 
+// Stable empty snapshot. Used by BOTH the server snapshot and the initial
+// client snapshot so that the first client render after hydration matches
+// what was rendered on the server (an empty list). Without this, the
+// registry would already contain entries from synchronous module-level
+// effects on the client and React would warn about a hydration mismatch.
+const EMPTY_SNAPSHOT: ImageEntry[] = Object.freeze([]) as ImageEntry[];
+
 // Cached snapshot — MUST be a stable reference between emits, otherwise
 // useSyncExternalStore will detect a change on every render and trigger an
-// infinite update loop in the consuming component.
-let cachedSnapshot: ImageEntry[] = [];
-const EMPTY_SNAPSHOT: ImageEntry[] = [];
+// infinite update loop in the consuming component. Starts pointing at the
+// shared EMPTY_SNAPSHOT so SSR and the first client render agree.
+let cachedSnapshot: ImageEntry[] = EMPTY_SNAPSHOT;
 
 function recomputeSnapshot() {
+  if (entries.size === 0) {
+    // Always collapse back to the shared empty reference so consumers
+    // cannot observe two distinct "empty" arrays across renders.
+    cachedSnapshot = EMPTY_SNAPSHOT;
+    return;
+  }
   cachedSnapshot = Array.from(entries.values()).reverse();
 }
 
@@ -51,6 +64,9 @@ function getSnapshot(): ImageEntry[] {
 }
 
 function getServerSnapshot(): ImageEntry[] {
+  // Same stable reference as the initial client snapshot — guarantees the
+  // server-rendered HTML and the first client render produce identical
+  // output, preventing hydration warnings for the debug panel.
   return EMPTY_SNAPSHOT;
 }
 
