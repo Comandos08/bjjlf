@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAthleteAuth } from "@/lib/athlete-auth";
-import { EVENTS } from "@/data/events";
+import { useEvents } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 
 const BELTS = ["Branca", "Azul", "Roxa", "Marrom", "Preta"];
