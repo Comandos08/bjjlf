@@ -57,6 +57,12 @@ export type EventListProps = {
    * to URL search params should pass the parsed value here.
    */
   sort?: EventSort;
+  /**
+   * Free-text filter applied case-insensitively to event name AND location.
+   * Empty/whitespace = no filtering. Callers wiring this to URL search
+   * params should pass the parsed value here.
+   */
+  query?: string;
   className?: string;
 };
 
@@ -76,6 +82,7 @@ export function EventList({
   gridClassName,
   hideFilters = false,
   sort = DEFAULT_EVENT_SORT,
+  query = "",
   className,
 }: EventListProps) {
   const { t, lang } = useI18n();
@@ -89,12 +96,26 @@ export function EventList({
   }, [events, availableBadges]);
 
   const filtered = useMemo(() => {
-    const base =
+    // 1) Badge filter
+    let base =
       selectedBadges.length === 0
         ? events
         : events.filter((e) => new Set(selectedBadges).has(e.badge));
+
+    // 2) Text search — case-insensitive substring on name OR location.
+    //    Locale-lowercased so "São" matches "são" for our PT users.
+    const q = query.trim().toLocaleLowerCase();
+    if (q.length > 0) {
+      base = base.filter(
+        (e) =>
+          e.name.toLocaleLowerCase().includes(q) ||
+          e.location.toLocaleLowerCase().includes(q),
+      );
+    }
+
+    // 3) Sort
     return sortEvents(base, sort);
-  }, [events, selectedBadges, sort]);
+  }, [events, selectedBadges, sort, query]);
 
   const toggle = (badge: EventTypeBadge) => {
     const set = new Set(selectedBadges);
