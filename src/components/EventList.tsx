@@ -11,13 +11,14 @@ import {
   type EventTypeBadge,
 } from "@/data/events";
 
-/** Monochrome filter chip — red active vs gray inactive. */
+/** Sport-style filter chip — design system: only #C8211A. 13px, rounded-[4px]. */
 const chipBase =
-  "inline-flex items-center rounded-full px-4 py-1.5 text-xs uppercase tracking-widest transition-base focus-ring";
+  "inline-flex items-center rounded-[4px] px-4 py-1.5 uppercase tracking-widest transition-base focus-ring";
 const chipInactive =
-  "bg-white border border-gray-300 text-gray-600 hover:border-[#C8211A] hover:text-[#C8211A]";
+  "bg-[#F5F5F5] border border-[#C8211A] text-[#C8211A] hover:bg-[#C8211A]/10";
 const chipActive =
   "bg-[#C8211A] border border-[#C8211A] text-white";
+const chipFontStyle = { fontFamily: "Barlow Condensed", fontSize: "13px" } as const;
 import { sortEvents, DEFAULT_EVENT_SORT, type EventSort } from "@/lib/event-sort";
 import {
   buildPageList,
