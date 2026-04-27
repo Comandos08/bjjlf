@@ -1,8 +1,9 @@
-import { Link } from "@tanstack/react-router";
-import { Menu, X, ShoppingBag, User, ChevronDown, Globe, CreditCard } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Menu, X, ShoppingBag, User, ChevronDown, Globe, CreditCard, LogOut, UserCircle, Trophy, LogIn } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { useI18n, type Lang } from "@/lib/i18n";
+import { useAthleteAuth } from "@/lib/athlete-auth";
 
 type NavItem = {
   key: string;
@@ -29,19 +30,9 @@ export function Navbar() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   const NAV: NavItem[] = [
-    {
-      key: "championships",
-      to: "/championships",
-    },
-    {
-      key: "blackbelts",
-      nowrap: true,
-      to: "/black-belts",
-    },
-    {
-      key: "rankings",
-      to: "/rankings",
-    },
+    { key: "championships", to: "/championships" },
+    { key: "blackbelts", nowrap: true, to: "/black-belts" },
+    { key: "rankings", to: "/rankings" },
     {
       key: "academies",
       children: [
@@ -49,18 +40,9 @@ export function Navbar() {
         { label: t("home.cta.academyBtn"), to: "/register/academy" },
       ],
     },
-    {
-      key: "athletes",
-      to: "/athletes",
-    },
-    {
-      key: "rules",
-      to: "/rules",
-    },
-    {
-      key: "news",
-      to: "/news",
-    },
+    { key: "athletes", to: "/athletes" },
+    { key: "rules", to: "/rules" },
+    { key: "news", to: "/news" },
   ];
 
   return (
@@ -126,34 +108,13 @@ export function Navbar() {
           })}
         </nav>
 
-        {/* RIGHT — Lang + Shop + Login + Join */}
+        {/* RIGHT — Lang + Shop + Athlete area + Join */}
         <div className="hidden md:flex items-center gap-4 shrink-0">
           <LangToggle lang={lang} onChange={setLang} />
-          <button
-            aria-label="Shop"
-            className="text-gray-400 hover:text-white transition-base"
-          >
+          <button aria-label="Shop" className="text-gray-400 hover:text-white transition-base">
             <ShoppingBag size={18} />
           </button>
-          <Link
-            to="/my-card"
-            aria-label="Minha Carteirinha"
-            className="text-gray-400 hover:text-white transition-base"
-          >
-            <CreditCard size={18} />
-          </Link>
-          <button
-            aria-label="Login"
-            className="text-gray-400 hover:text-white transition-base"
-          >
-            <User size={18} />
-          </button>
-          <button
-            className="ml-2 h-9 px-4 bg-[#C8211A] hover:bg-[#8B1612] text-white text-xs uppercase tracking-widest transition-base rounded-md"
-            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-          >
-            {t("nav.join")}
-          </button>
+          <AthleteMenu />
         </div>
 
         {/* Mobile toggle */}
@@ -182,25 +143,192 @@ export function Navbar() {
                 {t(`nav.${item.key}`)}
               </Link>
             ))}
+            <MobileAthleteLinks onNavigate={() => setOpen(false)} />
             <div className="flex items-center gap-3 pt-3 border-t border-[#222] mt-2">
               <LangToggle lang={lang} onChange={setLang} />
               <button aria-label="Shop" className="text-gray-400 hover:text-white">
                 <ShoppingBag size={18} />
-              </button>
-              <Link to="/my-card" aria-label="Minha Carteirinha" onClick={() => setOpen(false)} className="text-gray-400 hover:text-white">
-                <CreditCard size={18} />
-              </Link>
-              <button aria-label="Login" className="text-gray-400 hover:text-white">
-                <User size={18} />
-              </button>
-              <button className="ml-auto h-9 px-4 bg-[#C8211A] hover:bg-[#8B1612] text-white text-xs uppercase tracking-widest rounded-md" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
-                {t("nav.join")}
               </button>
             </div>
           </nav>
         </div>
       )}
     </header>
+  );
+}
+
+function AthleteMenu() {
+  const { user, profile, isActive, signOut } = useAthleteAuth();
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function onClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [open]);
+
+  // Not signed in → show login + join
+  if (!user) {
+    return (
+      <>
+        <Link
+          to="/athlete/login"
+          aria-label="Login"
+          className="text-gray-400 hover:text-white transition-base flex items-center gap-1.5"
+          style={{ fontFamily: "Barlow", fontWeight: 500 }}
+        >
+          <LogIn size={18} />
+          <span className="text-xs uppercase tracking-widest hidden lg:inline">Entrar</span>
+        </Link>
+        <Link
+          to="/athlete/signup"
+          className="ml-2 h-9 px-4 bg-[#C8211A] hover:bg-[#8B1612] text-white text-xs uppercase tracking-widest transition-base rounded-md flex items-center"
+          style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+        >
+          Cadastrar
+        </Link>
+      </>
+    );
+  }
+
+  const initials = profile?.full_name
+    ? profile.full_name.trim().split(/\s+/).map((p) => p[0]?.toUpperCase() ?? "").slice(0, 2).join("")
+    : (user.email?.[0] ?? "A").toUpperCase();
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-2 text-gray-300 hover:text-white transition-base"
+        aria-label="Menu do atleta"
+        aria-expanded={open}
+      >
+        {profile?.photo_url ? (
+          <img src={profile.photo_url} alt="" className="w-8 h-8 rounded-full object-cover border border-[#C8A84B]" />
+        ) : (
+          <span
+            className="w-8 h-8 rounded-full bg-[#C8211A]/10 text-[#C8A84B] grid place-items-center text-xs"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700, border: "1px solid #C8A84B" }}
+          >
+            {initials}
+          </span>
+        )}
+        <ChevronDown size={14} className="hidden lg:inline" />
+      </button>
+
+      {open && (
+        <div
+          className="absolute right-0 top-full mt-1 min-w-[240px] py-1 z-50 bg-navbar"
+          style={{ border: "1px solid #333", borderTop: "2px solid #C8211A" }}
+        >
+          <div className="px-4 py-3 border-b border-[#222]">
+            <p className="text-sm text-white truncate" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
+              {profile?.full_name ?? "Atleta"}
+            </p>
+            <p className="text-[10px] text-gray-400 mt-0.5 truncate" style={{ fontFamily: "Barlow" }}>
+              {user.email}
+            </p>
+            {!isActive && (
+              <span className="inline-block mt-2 text-[9px] uppercase tracking-widest text-yellow-400 border border-yellow-500/40 px-2 py-0.5 rounded-full">
+                {profile?.status === "pending" ? "Aguardando aprovação" : "Conta inativa"}
+              </span>
+            )}
+          </div>
+
+          <AthleteMenuItem
+            icon={<CreditCard size={14} />}
+            label="Minha Carteirinha"
+            onClick={() => { setOpen(false); void navigate({ to: "/my-card" }); }}
+          />
+          <AthleteMenuItem
+            icon={<UserCircle size={14} />}
+            label="Meu Perfil"
+            onClick={() => { setOpen(false); void navigate({ to: "/my-profile" }); }}
+          />
+          <AthleteMenuItem
+            icon={<Trophy size={14} />}
+            label="Minhas Competições"
+            onClick={() => { setOpen(false); void navigate({ to: "/my-competitions" }); }}
+          />
+
+          <div className="border-t border-[#222] my-1" />
+          <AthleteMenuItem
+            icon={<LogOut size={14} />}
+            label="Sair"
+            onClick={() => { setOpen(false); void signOut(); }}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AthleteMenuItem({ icon, label, onClick }: { icon: React.ReactNode; label: string; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex items-center gap-2.5 w-full text-left px-4 py-2.5 text-sm text-gray-300 hover:bg-dark hover:text-white transition-base"
+      style={{ fontFamily: "Barlow", fontWeight: 500 }}
+    >
+      <span className="text-gray-400">{icon}</span>
+      {label}
+    </button>
+  );
+}
+
+function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
+  const { user, profile, signOut } = useAthleteAuth();
+
+  if (!user) {
+    return (
+      <div className="flex flex-col border-t border-[#222] mt-2 pt-2">
+        <Link
+          to="/athlete/login"
+          onClick={onNavigate}
+          className="py-3 text-sm text-gray-300 flex items-center gap-2"
+          style={{ fontFamily: "Barlow", fontWeight: 500 }}
+        >
+          <LogIn size={16} /> Entrar
+        </Link>
+        <Link
+          to="/athlete/signup"
+          onClick={onNavigate}
+          className="py-3 text-sm text-[#C8A84B] flex items-center gap-2"
+          style={{ fontFamily: "Barlow", fontWeight: 600 }}
+        >
+          <User size={16} /> Cadastrar como atleta
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col border-t border-[#222] mt-2 pt-2">
+      <p className="px-1 py-2 text-[10px] uppercase tracking-widest text-gray-500" style={{ fontFamily: "Barlow" }}>
+        {profile?.full_name ?? user.email}
+      </p>
+      <Link to="/my-card" onClick={onNavigate} className="py-2.5 text-sm text-gray-300 flex items-center gap-2" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
+        <CreditCard size={16} /> Minha Carteirinha
+      </Link>
+      <Link to="/my-profile" onClick={onNavigate} className="py-2.5 text-sm text-gray-300 flex items-center gap-2" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
+        <UserCircle size={16} /> Meu Perfil
+      </Link>
+      <Link to="/my-competitions" onClick={onNavigate} className="py-2.5 text-sm text-gray-300 flex items-center gap-2" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
+        <Trophy size={16} /> Minhas Competições
+      </Link>
+      <button
+        onClick={() => { onNavigate(); void signOut(); }}
+        className="py-2.5 text-sm text-gray-400 flex items-center gap-2 text-left"
+        style={{ fontFamily: "Barlow", fontWeight: 500 }}
+      >
+        <LogOut size={16} /> Sair
+      </button>
+    </div>
   );
 }
 
@@ -233,37 +361,23 @@ function LangToggle({ lang, onChange }: { lang: Lang; onChange: (l: Lang) => voi
         aria-expanded={open}
       >
         <Globe size={18} />
-        <span
-          className="text-[10px] font-bold"
-          style={{ color: "#C8A84B" }}
-        >
+        <span className="text-[10px] font-bold" style={{ color: "#C8A84B" }}>
           {lang.toUpperCase()}
         </span>
       </button>
       {open && (
         <div
           className="absolute right-0 top-full mt-1 min-w-[180px] py-1 z-50"
-          style={{
-            background: "#1A1A1A",
-            border: "1px solid #333",
-            borderTop: "2px solid #C8211A",
-            borderRadius: 0,
-          }}
+          style={{ background: "#1A1A1A", border: "1px solid #333", borderTop: "2px solid #C8211A", borderRadius: 0 }}
         >
           {options.map((o) => {
             const active = lang === o.code;
             return (
               <button
                 key={o.code}
-                onClick={() => {
-                  onChange(o.code);
-                  setOpen(false);
-                }}
+                onClick={() => { onChange(o.code); setOpen(false); }}
                 className="flex items-center gap-2 w-full text-left px-4 py-2.5 text-[12px] hover:bg-dark transition-base"
-                style={{
-                  color: active ? "#C8A84B" : "#CCCCCC",
-                  fontWeight: active ? 700 : 500,
-                }}
+                style={{ color: active ? "#C8A84B" : "#CCCCCC", fontWeight: active ? 700 : 500 }}
               >
                 <span>{o.flag}</span>
                 <span>{o.label}</span>
