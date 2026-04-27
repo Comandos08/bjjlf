@@ -13,6 +13,7 @@ import { Route as TypographyRouteImport } from './routes/typography'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as MyCardRouteImport } from './routes/my-card'
 import { Route as GraduatesRouteImport } from './routes/graduates'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ChampionshipsRouteImport } from './routes/championships'
@@ -23,6 +24,7 @@ import { Route as AcademiesRouteImport } from './routes/academies'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as VerifyAthleteIdRouteImport } from './routes/verify.$athleteId'
 import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
 import { Route as RegisterAcademyRouteImport } from './routes/register.academy'
 import { Route as GraduatesGraduateIdRouteImport } from './routes/graduates.$graduateId'
@@ -56,6 +58,11 @@ const RankingsRoute = RankingsRouteImport.update({
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyCardRoute = MyCardRouteImport.update({
+  id: '/my-card',
+  path: '/my-card',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GraduatesRoute = GraduatesRouteImport.update({
@@ -107,6 +114,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const VerifyAthleteIdRoute = VerifyAthleteIdRouteImport.update({
+  id: '/verify/$athleteId',
+  path: '/verify/$athleteId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterAthleteRoute = RegisterAthleteRouteImport.update({
   id: '/register/athlete',
@@ -189,6 +201,7 @@ export interface FileRoutesByFullPath {
   '/championships': typeof ChampionshipsRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
+  '/my-card': typeof MyCardRoute
   '/news': typeof NewsRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
@@ -207,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
+  '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -218,6 +232,7 @@ export interface FileRoutesByTo {
   '/championships': typeof ChampionshipsRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
+  '/my-card': typeof MyCardRoute
   '/news': typeof NewsRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
@@ -236,6 +251,7 @@ export interface FileRoutesByTo {
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
+  '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -249,6 +265,7 @@ export interface FileRoutesById {
   '/championships': typeof ChampionshipsRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
+  '/my-card': typeof MyCardRoute
   '/news': typeof NewsRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
@@ -267,6 +284,7 @@ export interface FileRoutesById {
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
+  '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -281,6 +299,7 @@ export interface FileRouteTypes {
     | '/championships'
     | '/events'
     | '/graduates'
+    | '/my-card'
     | '/news'
     | '/rankings'
     | '/rules'
@@ -299,6 +318,7 @@ export interface FileRouteTypes {
     | '/graduates/$graduateId'
     | '/register/academy'
     | '/register/athlete'
+    | '/verify/$athleteId'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -310,6 +330,7 @@ export interface FileRouteTypes {
     | '/championships'
     | '/events'
     | '/graduates'
+    | '/my-card'
     | '/news'
     | '/rankings'
     | '/rules'
@@ -328,6 +349,7 @@ export interface FileRouteTypes {
     | '/graduates/$graduateId'
     | '/register/academy'
     | '/register/athlete'
+    | '/verify/$athleteId'
     | '/admin'
   id:
     | '__root__'
@@ -340,6 +362,7 @@ export interface FileRouteTypes {
     | '/championships'
     | '/events'
     | '/graduates'
+    | '/my-card'
     | '/news'
     | '/rankings'
     | '/rules'
@@ -358,6 +381,7 @@ export interface FileRouteTypes {
     | '/graduates/$graduateId'
     | '/register/academy'
     | '/register/athlete'
+    | '/verify/$athleteId'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -371,12 +395,14 @@ export interface RootRouteChildren {
   ChampionshipsRoute: typeof ChampionshipsRoute
   EventsRoute: typeof EventsRouteWithChildren
   GraduatesRoute: typeof GraduatesRouteWithChildren
+  MyCardRoute: typeof MyCardRoute
   NewsRoute: typeof NewsRoute
   RankingsRoute: typeof RankingsRoute
   RulesRoute: typeof RulesRoute
   TypographyRoute: typeof TypographyRoute
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
+  VerifyAthleteIdRoute: typeof VerifyAthleteIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -407,6 +433,13 @@ declare module '@tanstack/react-router' {
       path: '/news'
       fullPath: '/news'
       preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-card': {
+      id: '/my-card'
+      path: '/my-card'
+      fullPath: '/my-card'
+      preLoaderRoute: typeof MyCardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/graduates': {
@@ -478,6 +511,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/verify/$athleteId': {
+      id: '/verify/$athleteId'
+      path: '/verify/$athleteId'
+      fullPath: '/verify/$athleteId'
+      preLoaderRoute: typeof VerifyAthleteIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/register/athlete': {
       id: '/register/athlete'
@@ -643,12 +683,14 @@ const rootRouteChildren: RootRouteChildren = {
   ChampionshipsRoute: ChampionshipsRoute,
   EventsRoute: EventsRouteWithChildren,
   GraduatesRoute: GraduatesRouteWithChildren,
+  MyCardRoute: MyCardRoute,
   NewsRoute: NewsRoute,
   RankingsRoute: RankingsRoute,
   RulesRoute: RulesRoute,
   TypographyRoute: TypographyRoute,
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,
+  VerifyAthleteIdRoute: VerifyAthleteIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
