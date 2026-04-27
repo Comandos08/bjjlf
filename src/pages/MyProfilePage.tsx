@@ -292,6 +292,13 @@ export function MyProfilePage() {
           </dl>
         </Section>
       </div>
+
+      <PhotoCropModal
+        file={pendingPhoto}
+        uploading={uploading}
+        onCancel={() => setPendingPhoto(null)}
+        onConfirm={handleCropConfirm}
+      />
     </div>
   );
 }
