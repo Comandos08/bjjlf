@@ -44,7 +44,7 @@ export function AcademiesPage() {
     setSort("recent");
   };
 
-  const { data: academies = [] } = useAcademies();
+  const { data: academies = [], isLoading } = useAcademies();
 
   const filtered = useMemo<Academy[]>(() => {
     const q = query.trim().toLocaleLowerCase();
@@ -252,7 +252,13 @@ export function AcademiesPage() {
             </Link>
           </div>
 
-          {filtered.length === 0 ? (
+          {isLoading ? (
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <AcademyCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="bg-white border border-dashed border-gray-300 rounded-xl p-16 text-center">
               <Search className="mx-auto h-16 w-16 text-gray-200" aria-hidden />
               <h3
