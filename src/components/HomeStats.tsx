@@ -24,35 +24,56 @@ export function HomeStats() {
 
   useEffect(() => {
     let cancelled = false;
-    void (async () => {
-      const [athletesRes, academiesRes, permitsRes, eventsRes] = await Promise.all([
-        supabase
-          .from("athlete_profiles")
-          .select("id", { count: "exact", head: true })
-          .eq("status", "active"),
-        supabase
-          .from("affiliated_academies")
-          .select("id", { count: "exact", head: true })
-          .eq("is_active", true),
-        supabase
-          .from("academy_permits")
-          .select("id", { count: "exact", head: true })
-          .eq("status", "active"),
-        supabase.from("events").select("id", { count: "exact", head: true }),
-      ]);
+    const timeout = setTimeout(() => {
       if (cancelled) return;
-      const academiesTotal =
-        academiesRes.error && permitsRes.error
-          ? null
-          : (academiesRes.count ?? 0) + (permitsRes.count ?? 0);
-      setStats({
-        athletes: athletesRes.error ? null : (athletesRes.count ?? 0),
-        academies: academiesTotal,
-        events: eventsRes.error ? null : (eventsRes.count ?? 0),
-      });
+      console.error("[HomeStats] Timeout (8s) — ocultando cards");
+      setStats({ athletes: null, academies: null, events: null });
+    }, 8000);
+
+    void (async () => {
+      try {
+        const [athletesRes, academiesRes, permitsRes, eventsRes] = await Promise.all([
+          supabase
+            .from("athlete_profiles")
+            .select("id", { count: "exact", head: true })
+            .eq("status", "active"),
+          supabase
+            .from("affiliated_academies")
+            .select("id", { count: "exact", head: true })
+            .eq("is_active", true),
+          supabase
+            .from("academy_permits")
+            .select("id", { count: "exact", head: true })
+            .eq("status", "active"),
+          supabase.from("events").select("id", { count: "exact", head: true }),
+        ]);
+        if (cancelled) return;
+        clearTimeout(timeout);
+
+        if (athletesRes.error) console.error("[HomeStats] athletes:", athletesRes.error);
+        if (academiesRes.error) console.error("[HomeStats] academies:", academiesRes.error);
+        if (permitsRes.error) console.error("[HomeStats] permits:", permitsRes.error);
+        if (eventsRes.error) console.error("[HomeStats] events:", eventsRes.error);
+
+        const academiesTotal =
+          academiesRes.error && permitsRes.error
+            ? null
+            : (academiesRes.count ?? 0) + (permitsRes.count ?? 0);
+        setStats({
+          athletes: athletesRes.error ? null : (athletesRes.count ?? 0),
+          academies: academiesTotal,
+          events: eventsRes.error ? null : (eventsRes.count ?? 0),
+        });
+      } catch (err) {
+        if (cancelled) return;
+        clearTimeout(timeout);
+        console.error("[HomeStats] Falha geral:", err);
+        setStats({ athletes: null, academies: null, events: null });
+      }
     })();
     return () => {
       cancelled = true;
+      clearTimeout(timeout);
     };
   }, []);
 

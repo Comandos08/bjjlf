@@ -2,6 +2,20 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
+const SITE_URL = "https://bjjlf.lovable.app";
+const FALLBACK_OG_IMAGE = `${SITE_URL}/og-default.png`;
+const BIO_MAX = 1000;
+
+function beltLabel(t: string): string {
+  const map: Record<string, string> = {
+    preta: "Preta",
+    coral: "Coral",
+    vermelha: "Vermelha",
+    vermelha_branca: "Vermelha e Branca",
+  };
+  return map[t] ?? t;
+}
+
 type BlackBelt = {
   id: string;
   athlete_name: string;
@@ -30,26 +44,36 @@ export const Route = createFileRoute("/black-belts/$id")({
     if (!data) throw notFound();
     return data as BlackBelt;
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     const bb = loaderData as BlackBelt | undefined;
     if (!bb) {
       return { meta: [{ title: "Faixa Preta — BJJLF" }] };
     }
     const title = `${bb.athlete_name} — Faixa Preta BJJLF`;
-    const desc = bb.bio?.slice(0, 160) ?? `${bb.athlete_name}, ${bb.belt_degree}º Dan${bb.academy ? ` · ${bb.academy}` : ""}.`;
-    const meta: Array<{ title?: string; name?: string; property?: string; content?: string }> = [
-      { title },
-      { name: "description", content: desc },
-      { property: "og:title", content: title },
-      { property: "og:description", content: desc },
-      { property: "og:type", content: "profile" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ];
-    if (bb.photo_url) {
-      meta.push({ property: "og:image", content: bb.photo_url });
-      meta.push({ name: "twitter:image", content: bb.photo_url });
-    }
-    return { meta };
+    const bio = bb.bio?.trim();
+    const desc = bio
+      ? bio.length > 160
+        ? `${bio.slice(0, 157)}...`
+        : bio
+      : `Conheça ${bb.athlete_name}, ${beltLabel(bb.belt_type)}${bb.belt_degree > 0 ? ` ${bb.belt_degree}º Dan` : ""} da Brazilian Jiu-Jitsu Legends Federation.`;
+    const url = `${SITE_URL}/black-belts/${params.id}`;
+    const image = bb.photo_url ?? FALLBACK_OG_IMAGE;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:type", content: "profile" },
+        { property: "og:url", content: url },
+        { property: "og:image", content: image },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: desc },
+        { name: "twitter:image", content: image },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
   },
   errorComponent: ({ error }) => (
     <div className="min-h-screen grid place-items-center bg-gray-50">
@@ -129,7 +153,7 @@ function BlackBeltDetail() {
               <Info label="Data de certificação" value={certifiedFmt} />
             </dl>
 
-            {bb.bio && (
+            {bb.bio?.trim() && (
               <section>
                 <h2
                   className="text-lg uppercase text-gray-900 mb-3"
@@ -138,11 +162,31 @@ function BlackBeltDetail() {
                   Biografia
                 </h2>
                 <div className="h-1 w-12 bg-[#C8211A] rounded mb-4" />
-                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap" style={{ fontFamily: "Barlow" }}>
-                  {bb.bio}
+                <p
+                  className="leading-relaxed whitespace-pre-wrap"
+                  style={{ fontFamily: "Lora, Georgia, serif", fontSize: 16, color: "#444444" }}
+                >
+                  {bb.bio.length > BIO_MAX ? `${bb.bio.slice(0, BIO_MAX)}...` : bb.bio}
                 </p>
               </section>
             )}
+
+            <div className="pt-6 border-t" style={{ borderColor: "#E5E5E5" }}>
+              <Link
+                to="/black-belts"
+                className="inline-flex items-center gap-2 px-5 py-2.5 border-2 rounded-md uppercase transition-colors hover:bg-[#C8211A] hover:text-white"
+                style={{
+                  fontFamily: "Barlow",
+                  fontWeight: 700,
+                  fontSize: 13,
+                  letterSpacing: "0.08em",
+                  borderColor: "#C8211A",
+                  color: "#C8211A",
+                }}
+              >
+                <ArrowLeft className="h-4 w-4" /> Voltar para Faixas Pretas
+              </Link>
+            </div>
           </div>
         </article>
       </div>

@@ -259,9 +259,18 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
             {...register("bio")}
             placeholder="Conte a história e trajetória deste mestre no Jiu-Jitsu..."
           />
-          <div className="text-xs text-[#666666] mt-1 text-right" style={{ fontFamily: "Barlow" }}>
-            {(watch("bio")?.length ?? 0)}/1000
-          </div>
+          {(() => {
+            const len = watch("bio")?.length ?? 0;
+            const color = len > 950 ? "#C8211A" : len >= 800 ? "#BA7517" : "#999999";
+            return (
+              <div
+                className="text-xs mt-1 text-right"
+                style={{ fontFamily: "Barlow", color }}
+              >
+                {len} / 1000 caracteres
+              </div>
+            );
+          })()}
         </div>
         <AdminToggle checked={isActive} onChange={(v) => setValue("is_active", v)} label="Ativo" />
         <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#E5E5E5" }}>
