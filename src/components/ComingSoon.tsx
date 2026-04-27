@@ -1,7 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import {
-  Trophy,
   BarChart3,
   Award,
   User,
