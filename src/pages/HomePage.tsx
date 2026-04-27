@@ -711,6 +711,7 @@ export function HomePage() {
   return (
     <div>
       <HeroSlider />
+      <HomeStats />
       <EventsSection />
       <NewsSection />
       <RankingSection />
