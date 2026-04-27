@@ -208,6 +208,7 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
         academy: v.academy || null, professor: v.professor || null,
         flag_emoji: v.flag_emoji || null, city: v.city || null,
         photo_url: v.photo_url || null,
+        bio: v.bio || null,
       } },
       { onSuccess: () => { toast.success("Salvo!"); reset(); onClose(); }, onError: (e) => toast.error((e as Error).message) },
     );
