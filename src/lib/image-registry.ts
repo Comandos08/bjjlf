@@ -27,7 +27,7 @@ let counter = 0;
 // what was rendered on the server (an empty list). Without this, the
 // registry would already contain entries from synchronous module-level
 // effects on the client and React would warn about a hydration mismatch.
-const EMPTY_SNAPSHOT: ImageEntry[] = Object.freeze([]) as ImageEntry[];
+const EMPTY_SNAPSHOT: ImageEntry[] = Object.freeze([] as ImageEntry[]) as ImageEntry[];
 
 // Cached snapshot — MUST be a stable reference between emits, otherwise
 // useSyncExternalStore will detect a change on every render and trigger an
