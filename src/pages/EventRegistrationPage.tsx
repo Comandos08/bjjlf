@@ -360,24 +360,17 @@ export function EventRegistrationPage() {
             </Section>
 
             <Section title="Dados Esportivos">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Field label="Faixa" required>
-                  <Select
-                    value={form.belt}
-                    onChange={(v) => setForm({ ...form, belt: v })}
-                    options={BELTS}
-                  />
-                </Field>
-                <Field label="Grau" required>
-                  <Select
-                    value={String(form.degree)}
-                    onChange={(v) =>
-                      setForm({ ...form, degree: Number.parseInt(v, 10) })
-                    }
-                    options={["0", "1", "2", "3", "4"]}
-                  />
-                </Field>
-              </div>
+              <BeltSelector
+                belt={form.belt}
+                degree={form.degree}
+                onBeltChange={(b: BeltName) =>
+                  setForm({ ...form, belt: b, degree: defaultDegreeForBelt(b) })
+                }
+                onDegreeChange={(d) => setForm({ ...form, degree: d })}
+                className="grid sm:grid-cols-2 gap-4"
+                selectClassName="h-11 w-full px-3 border border-gray-300 rounded-lg bg-white text-sm text-gray-900 focus:outline-none focus:border-[#C8211A] focus:ring-1 focus:ring-[#C8211A]"
+                labelClassName="block text-xs uppercase tracking-wider text-gray-500 mb-1.5"
+              />
               <div className="grid sm:grid-cols-2 gap-4">
                 <Field label="Academia">
                   <Input
