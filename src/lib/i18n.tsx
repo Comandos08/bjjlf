@@ -79,7 +79,18 @@ const PT: Dict = {
   "event.register.cta": "Inscrever-se agora",
   "event.register.deadline": "Data do evento",
 
-  // News card categories (uppercase labels)
+  // Event list page + filters
+  "events.page.title": "Calendário de Eventos",
+  "events.page.subtitle": "Próximos campeonatos oficiais da BJJLF",
+  "events.filter.label": "Filtrar por categoria",
+  "events.filter.all": "TODOS",
+  "events.empty.title": "Nenhum evento encontrado",
+  "events.empty.body": "Nenhum evento corresponde aos filtros selecionados. Limpe os filtros para ver todos os eventos.",
+  "events.empty.clear": "Limpar filtros",
+  "events.count.one": "{n} evento",
+  "events.count.many": "{n} eventos",
+
+
   "news.cat.tournaments.label": "CAMPEONATOS",
   "news.cat.promotions.label": "GRADUAÇÕES",
   "news.cat.athletes.label": "ATLETAS",
