@@ -44,6 +44,7 @@ export type AthleteProfile = {
   registration_number: string | null;
   created_at: string;
   approved_at: string | null;
+  first_login_completed: boolean;
 };
 
 type AthleteAuthValue = {
@@ -61,7 +62,7 @@ async function fetchProfile(userId: string): Promise<AthleteProfile | null> {
   const { data, error } = await supabase
     .from("athlete_profiles")
     .select(
-      "id, user_id, full_name, belt, degree, academy, professor, country, country_flag, category, modality, photo_url, status, valid_until, registration_number, created_at, approved_at",
+      "id, user_id, full_name, belt, degree, academy, professor, country, country_flag, category, modality, photo_url, status, valid_until, registration_number, created_at, approved_at, first_login_completed",
     )
     .eq("user_id", userId)
     .maybeSingle();

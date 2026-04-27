@@ -217,6 +217,7 @@ export type Database = {
           country_flag: string | null
           created_at: string
           degree: number
+          first_login_completed: boolean
           full_name: string
           id: string
           modality: string | null
@@ -237,6 +238,7 @@ export type Database = {
           country_flag?: string | null
           created_at?: string
           degree?: number
+          first_login_completed?: boolean
           full_name: string
           id?: string
           modality?: string | null
@@ -257,6 +259,7 @@ export type Database = {
           country_flag?: string | null
           created_at?: string
           degree?: number
+          first_login_completed?: boolean
           full_name?: string
           id?: string
           modality?: string | null

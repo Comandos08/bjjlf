@@ -77,6 +77,24 @@ function AdminAthletesPage() {
       .eq("id", r.id);
     if (error) return toast.error(error.message);
     toast.success(`${r.full_name} aprovado.`);
+
+    // Fire-and-forget approval email. Failure here does NOT block the approval.
+    try {
+      const { data, error: fnErr } = await supabase.functions.invoke(
+        "send-athlete-approval-email",
+        { body: { athleteId: r.id } },
+      );
+      if (fnErr) {
+        console.warn("approval email failed:", fnErr);
+        toast.warning("Aprovado, mas o envio do email falhou.");
+      } else if (data?.skipped) {
+        toast.info("Aprovado. Email não enviado (provedor de email não configurado).");
+      } else {
+        toast.success("Email de aprovação enviado.");
+      }
+    } catch (e) {
+      console.warn("approval email error:", e);
+    }
     void load();
   }
 

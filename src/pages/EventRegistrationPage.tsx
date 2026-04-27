@@ -241,11 +241,11 @@ export function EventRegistrationPage() {
               Inscrição Recebida!
             </h1>
             <p
-              className="mt-2 text-gray-500 max-w-md mx-auto"
-              style={{ fontFamily: "Barlow", fontWeight: 400 }}
+              className="mt-2 text-gray-700 max-w-md mx-auto"
+              style={{ fontFamily: "Barlow", fontWeight: 500 }}
             >
-              Sua inscrição foi registrada com sucesso. Em breve você receberá
-              as instruções de pagamento por email.
+              Sua inscrição foi registrada com sucesso. Para confirmar o
+              pagamento, entre em contato com a federação.
             </p>
 
             <div className="mt-6 bg-gray-50 border border-gray-200 rounded-xl p-5 text-left">
@@ -265,6 +265,17 @@ export function EventRegistrationPage() {
             >
               Aguardando Pagamento
             </span>
+
+            <div
+              className="mt-5 mx-auto max-w-md rounded-lg border border-yellow-200 bg-yellow-50/60 px-4 py-3 text-left text-sm text-yellow-900"
+              style={{ fontFamily: "Barlow" }}
+            >
+              <strong className="block mb-1" style={{ fontWeight: 700 }}>
+                Próximo passo:
+              </strong>
+              Entre em contato com a federação para confirmar o pagamento e
+              garantir sua vaga. Acompanhe o status em "Minhas Inscrições".
+            </div>
 
             <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
