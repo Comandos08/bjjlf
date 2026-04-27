@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as TypographyRouteImport } from './routes/typography'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as RankingsRouteImport } from './routes/rankings'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as MyProfileRouteImport } from './routes/my-profile'
 import { Route as MyPermitsRouteImport } from './routes/my-permits'
@@ -65,6 +67,11 @@ const TypographyRoute = TypographyRouteImport.update({
   path: '/typography',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RulesRoute = RulesRouteImport.update({
   id: '/rules',
   path: '/rules',
@@ -73,6 +80,11 @@ const RulesRoute = RulesRouteImport.update({
 const RankingsRoute = RankingsRouteImport.update({
   id: '/rankings',
   path: '/rankings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsRoute = NewsRouteImport.update({
@@ -297,8 +309,10 @@ export interface FileRoutesByFullPath {
   '/my-permits': typeof MyPermitsRoute
   '/my-profile': typeof MyProfileRoute
   '/news': typeof NewsRoute
+  '/privacy': typeof PrivacyRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
+  '/terms': typeof TermsRoute
   '/typography': typeof TypographyRoute
   '/welcome': typeof WelcomeRoute
   '/academy/permit': typeof AcademyPermitRoute
@@ -343,8 +357,10 @@ export interface FileRoutesByTo {
   '/my-permits': typeof MyPermitsRoute
   '/my-profile': typeof MyProfileRoute
   '/news': typeof NewsRoute
+  '/privacy': typeof PrivacyRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
+  '/terms': typeof TermsRoute
   '/typography': typeof TypographyRoute
   '/welcome': typeof WelcomeRoute
   '/academy/permit': typeof AcademyPermitRoute
@@ -391,8 +407,10 @@ export interface FileRoutesById {
   '/my-permits': typeof MyPermitsRoute
   '/my-profile': typeof MyProfileRoute
   '/news': typeof NewsRoute
+  '/privacy': typeof PrivacyRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
+  '/terms': typeof TermsRoute
   '/typography': typeof TypographyRoute
   '/welcome': typeof WelcomeRoute
   '/academy/permit': typeof AcademyPermitRoute
@@ -440,8 +458,10 @@ export interface FileRouteTypes {
     | '/my-permits'
     | '/my-profile'
     | '/news'
+    | '/privacy'
     | '/rankings'
     | '/rules'
+    | '/terms'
     | '/typography'
     | '/welcome'
     | '/academy/permit'
@@ -486,8 +506,10 @@ export interface FileRouteTypes {
     | '/my-permits'
     | '/my-profile'
     | '/news'
+    | '/privacy'
     | '/rankings'
     | '/rules'
+    | '/terms'
     | '/typography'
     | '/welcome'
     | '/academy/permit'
@@ -533,8 +555,10 @@ export interface FileRouteTypes {
     | '/my-permits'
     | '/my-profile'
     | '/news'
+    | '/privacy'
     | '/rankings'
     | '/rules'
+    | '/terms'
     | '/typography'
     | '/welcome'
     | '/academy/permit'
@@ -581,8 +605,10 @@ export interface RootRouteChildren {
   MyPermitsRoute: typeof MyPermitsRoute
   MyProfileRoute: typeof MyProfileRoute
   NewsRoute: typeof NewsRoute
+  PrivacyRoute: typeof PrivacyRoute
   RankingsRoute: typeof RankingsRoute
   RulesRoute: typeof RulesRoute
+  TermsRoute: typeof TermsRoute
   TypographyRoute: typeof TypographyRoute
   WelcomeRoute: typeof WelcomeRoute
   AcademyPermitRoute: typeof AcademyPermitRoute
@@ -614,6 +640,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TypographyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/rules': {
       id: '/rules'
       path: '/rules'
@@ -626,6 +659,13 @@ declare module '@tanstack/react-router' {
       path: '/rankings'
       fullPath: '/rankings'
       preLoaderRoute: typeof RankingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news': {
@@ -992,8 +1032,10 @@ const rootRouteChildren: RootRouteChildren = {
   MyPermitsRoute: MyPermitsRoute,
   MyProfileRoute: MyProfileRoute,
   NewsRoute: NewsRoute,
+  PrivacyRoute: PrivacyRoute,
   RankingsRoute: RankingsRoute,
   RulesRoute: RulesRoute,
+  TermsRoute: TermsRoute,
   TypographyRoute: TypographyRoute,
   WelcomeRoute: WelcomeRoute,
   AcademyPermitRoute: AcademyPermitRoute,
@@ -1011,12 +1053,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
