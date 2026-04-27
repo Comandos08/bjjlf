@@ -34,7 +34,7 @@ export function NewsPage() {
   const [page, setPage] = useState(1);
   const perPage = 6;
 
-  const { data: news = [] } = useNews();
+  const { data: news = [], isLoading } = useNews();
   const filtered = cat === "All" ? news : news.filter((n) => n.category === cat);
   const featured = filtered.find((n) => n.featured) ?? filtered[0];
   const rest = filtered.filter((n) => n.id !== featured?.id);
@@ -143,20 +143,30 @@ export function NewsPage() {
       {/* Grid */}
       <section className="bg-gray-50 py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-6">
-          {visible.length === 0 ? (
-            <div className="border border-dashed border-gray-300 bg-white rounded-xl p-16 text-center">
-              <Newspaper className="mx-auto h-16 w-16 text-gray-300" aria-hidden />
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <NewsCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : visible.length === 0 ? (
+            <div className="bg-white rounded-xl py-16 px-6 text-center flex flex-col items-center justify-center">
+              <Newspaper
+                className="text-[#C8211A]"
+                style={{ width: 64, height: 64 }}
+                aria-hidden
+              />
               <h3
-                className="mt-4 text-xl uppercase tracking-wide text-gray-400"
-                style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                className="mt-5 text-[#1A1A1A]"
+                style={{ fontFamily: "Bebas Neue, Barlow Condensed, sans-serif", fontSize: "24px", letterSpacing: "0.04em" }}
               >
-                Nenhuma notícia publicada ainda
+                Nenhuma notícia disponível
               </h3>
               <p
-                className="mt-2 max-w-md mx-auto text-sm text-gray-400 leading-[1.6]"
-                style={{ fontFamily: "Barlow", fontWeight: 400 }}
+                className="mt-2 max-w-md mx-auto text-[#666666]"
+                style={{ fontFamily: "Barlow", fontSize: "14px", fontWeight: 400, lineHeight: 1.6 }}
               >
-                Em breve novidades da federação aparecerão aqui.
+                Em breve novidades da federação por aqui.
               </p>
             </div>
           ) : (
@@ -266,5 +276,22 @@ function NewsCard({
         </div>
       </div>
     </Link>
+  );
+}
+
+function NewsCardSkeleton() {
+  return (
+    <div className="flex flex-col bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden">
+      <div className="aspect-video bg-[#E5E5E5] animate-pulse" />
+      <div className="flex-1 flex flex-col p-5 gap-2">
+        <div className="h-3 w-20 bg-[#E5E5E5] rounded animate-pulse" />
+        <div className="h-5 w-full bg-[#E5E5E5] rounded animate-pulse" />
+        <div className="h-4 w-5/6 bg-[#E5E5E5] rounded animate-pulse" />
+        <div className="h-4 w-2/3 bg-[#E5E5E5] rounded animate-pulse" />
+        <div className="mt-3 pt-3 border-t border-gray-100">
+          <div className="h-3 w-24 bg-[#E5E5E5] rounded animate-pulse" />
+        </div>
+      </div>
+    </div>
   );
 }
