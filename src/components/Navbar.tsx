@@ -137,7 +137,8 @@ export function Navbar() {
             <User size={18} />
           </button>
           <button
-            className="ml-2 h-9 px-4 bg-primary text-white text-[11px] uppercase tracking-[0.1em] font-bold hover:bg-primary-dark transition-base"
+            className="ml-2 h-9 px-4 bg-primary text-white text-[11px] uppercase tracking-[0.1em] font-bold hover:bg-primary-dark transition-base rounded-none"
+            style={{ borderRadius: 0 }}
           >
             {t("nav.join")}
           </button>
@@ -177,7 +178,7 @@ export function Navbar() {
               <button aria-label="Login" className="text-gray-400 hover:text-white">
                 <User size={18} />
               </button>
-              <button className="ml-auto h-9 px-4 bg-primary text-white text-[11px] uppercase tracking-[0.1em] font-bold">
+              <button className="ml-auto h-9 px-4 bg-primary text-white text-[11px] uppercase tracking-[0.1em] font-bold rounded-none" style={{ borderRadius: 0 }}>
                 {t("nav.join")}
               </button>
             </div>

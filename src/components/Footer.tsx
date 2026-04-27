@@ -32,34 +32,36 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Col 2 — Rankings */}
+          {/* Col 2 — Campeonatos */}
           <div>
-            <h4 className={headingClass}>{t("footer.rankings")}</h4>
+            <h4 className={headingClass}>{t("footer.col.championships")}</h4>
             <ul>
-              <li><Link to="/" className={linkClass}>{t("home.ranking.beltBlack")}</Link></li>
-              <li><Link to="/" className={linkClass}>{t("home.ranking.beltBrown")}</Link></li>
-              <li><Link to="/" className={linkClass}>Gi</Link></li>
-              <li><Link to="/" className={linkClass}>No-Gi</Link></li>
+              <li><Link to="/" className={linkClass}>{t("footer.col.upcoming")}</Link></li>
+              <li><Link to="/" className={linkClass}>{t("footer.col.results")}</Link></li>
+              <li><Link to="/" className={linkClass}>{t("footer.col.calendar")}</Link></li>
+              <li><Link to="/" className={linkClass}>{t("footer.col.rankings")}</Link></li>
             </ul>
           </div>
 
           {/* Col 3 — Cadastros */}
           <div>
-            <h4 className={headingClass}>{t("footer.registrations")}</h4>
+            <h4 className={headingClass}>{t("footer.col.registrations")}</h4>
             <ul>
-              <li><Link to="/register/athlete" className={linkClass}>{t("home.cta.athleteBtn")}</Link></li>
-              <li><Link to="/register/academy" className={linkClass}>{t("home.cta.academyBtn")}</Link></li>
-              <li><Link to="/graduates" className={linkClass}>{t("grad.title")}</Link></li>
+              <li><Link to="/register/athlete" className={linkClass}>{t("footer.col.registerAthlete")}</Link></li>
+              <li><Link to="/register/academy" className={linkClass}>{t("footer.col.affiliateAcademy")}</Link></li>
+              <li><Link to="/graduates" className={linkClass}>{t("footer.col.certifiedBlackBelts")}</Link></li>
+              <li><a href="#" className={linkClass}>{t("footer.col.rules")}</a></li>
             </ul>
           </div>
 
-          {/* Col 4 — Info */}
+          {/* Col 4 — Informações */}
           <div>
-            <h4 className={headingClass}>{t("footer.info")}</h4>
+            <h4 className={headingClass}>{t("footer.col.info")}</h4>
             <ul>
-              <li><Link to="/about" className={linkClass}>{t("nav.about")}</Link></li>
-              <li><Link to="/news" className={linkClass}>{t("nav.news")}</Link></li>
-              <li><a href="#" className={linkClass}>{t("nav.rules")}</a></li>
+              <li><Link to="/about" className={linkClass}>{t("footer.col.about")}</Link></li>
+              <li><Link to="/news" className={linkClass}>{t("footer.col.news")}</Link></li>
+              <li><a href="#" className={linkClass}>{t("footer.col.contact")}</a></li>
+              <li><a href="#" className={linkClass}>{t("footer.col.privacy")}</a></li>
             </ul>
           </div>
 

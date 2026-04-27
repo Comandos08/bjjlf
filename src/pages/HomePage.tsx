@@ -8,12 +8,30 @@ import { useI18n, formatDateShort } from "@/lib/i18n";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import { SafeImage } from "@/components/SafeImage";
-const HERO_IMG = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=1440&h=600&fit=crop&q=80";
+import { EVENT_BADGE_STYLES } from "@/data/events";
 
 const SLIDES = [
-  { image: HERO_IMG, titleKey: "slide.1.title", subKey: "slide.1.sub", badge: "BJJLF World Championship 2025" },
-  { image: HERO_IMG, titleKey: "slide.2.title", subKey: "slide.2.sub", badge: "No-Gi Pan-American" },
-  { image: HERO_IMG, titleKey: "slide.3.title", subKey: "slide.3.sub", badge: "Black Belt Registry" },
+  {
+    image: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=1440&h=600",
+    thumb: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=80&h=50",
+    titleKey: "slide.1.title",
+    subKey: "slide.1.sub",
+    badge: "BJJLF World Championship 2025",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=1440&h=600",
+    thumb: "https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=80&h=50",
+    titleKey: "slide.2.title",
+    subKey: "slide.2.sub",
+    badge: "No-Gi Pan-American",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&w=1440&h=600",
+    thumb: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&w=80&h=50",
+    titleKey: "slide.3.title",
+    subKey: "slide.3.sub",
+    badge: "Black Belt Registry",
+  },
 ];
 
 const SLIDE_TEXT: Record<string, { pt: string; en: string }> = {
@@ -86,7 +104,7 @@ function HeroSlider() {
                   idx === i ? "border-l-[3px] border-gold bg-black/40" : "border-l-[3px] border-transparent hover:bg-black/30",
                 )}
               >
-                <SafeImage src={s.image} alt={s.badge} fallbackLabel={s.badge} source="hero-thumb" hideFallbackIcon wrapperClassName="h-10 w-16 shrink-0" />
+                <SafeImage src={s.thumb} alt={s.badge} fallbackLabel={s.badge} source="hero-thumb" hideFallbackIcon wrapperClassName="h-10 w-16 shrink-0" />
                 <div>
                   <div className={cn(typo.label.sm, "tracking-[0.08em]", idx === i ? "text-white" : "text-[#888]")}>
                     {s.badge}
@@ -139,34 +157,53 @@ function EventsSection() {
             {t("home.events.viewAll")} <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
-        <div className="grid gap-3.5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))" }}>
-          {EVENTS.slice(0, 6).map((e) => (
-            <article
-              key={e.id}
-              className="rounded-none bg-white border border-[#E5E5E5] flex flex-col group hover:border-primary hover:shadow-[0_4px_16px_rgba(196,30,58,0.12)]"
-              style={{ transition: "all 0.18s ease" }}
-            >
-              <SafeImage
-                src={e.image}
-                alt={`${e.name} — Brazilian Jiu-Jitsu event`}
-                fallbackLabel={e.name}
-                source="event"
-                wrapperClassName="h-32 bg-[#F7F9FC]"
-              />
-              <div className="p-4 space-y-2.5 flex-1 flex flex-col">
-                <h3 className={cn(typo.heading.sm, "text-[#0F0F0F] text-sm leading-tight")}>{e.name}</h3>
-                <div className={cn(typo.body.xs, "flex items-center gap-1.5 text-[#6B7280]")}>
-                  <Calendar className="h-3.5 w-3.5" /> {formatDateShort(e.date, lang)}
+        <div className="grid gap-3.5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {EVENTS.slice(0, 6).map((e) => {
+            const badgeStyle = EVENT_BADGE_STYLES[e.badge];
+            return (
+              <article
+                key={e.id}
+                className="rounded-none bg-white border border-[#E5E5E5] flex flex-col group cursor-pointer hover:border-primary hover:shadow-[0_8px_24px_rgba(196,30,58,0.15)] hover:-translate-y-[3px]"
+                style={{ transition: "all 0.18s ease" }}
+              >
+                <div className="relative">
+                  <SafeImage
+                    src={e.image}
+                    alt={`${e.name} — Brazilian Jiu-Jitsu event`}
+                    fallbackLabel={e.name}
+                    source="event"
+                    wrapperClassName="h-40 bg-[#F7F9FC]"
+                  />
+                  <span
+                    className="absolute top-0 left-0"
+                    style={{
+                      background: badgeStyle.bg,
+                      color: badgeStyle.color,
+                      padding: "8px 12px",
+                      fontSize: "10px",
+                      fontWeight: 700,
+                      letterSpacing: "0.08em",
+                      fontFamily: "Barlow Condensed",
+                    }}
+                  >
+                    {e.badge}
+                  </span>
                 </div>
-                <div className={cn(typo.body.xs, "flex items-center gap-1.5 text-[#6B7280]")}>
-                  <MapPin className="h-3.5 w-3.5" /> {e.location}
+                <div className="p-4 space-y-2.5 flex-1 flex flex-col">
+                  <h3 className={cn(typo.heading.sm, "text-[#0F0F0F] text-sm leading-tight")}>{e.name}</h3>
+                  <div className={cn(typo.body.xs, "flex items-center gap-1.5 text-[#6B7280]")}>
+                    <Calendar className="h-3.5 w-3.5" /> {formatDateShort(e.date, lang)}
+                  </div>
+                  <div className={cn(typo.body.xs, "flex items-center gap-1.5 text-[#6B7280]")}>
+                    <MapPin className="h-3.5 w-3.5" /> {e.location}
+                  </div>
+                  <button className={cn(typo.button.sm, "mt-auto w-full h-9 rounded-none bg-primary hover:bg-primary-dark text-white transition-base")}>
+                    {t("home.events.register")}
+                  </button>
                 </div>
-                <button className={cn(typo.button.sm, "mt-auto w-full h-9 rounded-none bg-primary hover:bg-primary-dark text-white transition-base")}>
-                  {t("home.events.register")}
-                </button>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -176,6 +213,10 @@ function EventsSection() {
 function NewsSection() {
   const { t, lang } = useI18n();
   const items = NEWS.slice(0, 3);
+
+  const categoryKey = (c: string) => `news.cat.${c.toLowerCase()}.label`;
+  const titleKey = (id: string) => `news.item.${id}.title`;
+
   return (
     <section className="py-16 lg:py-20 bg-[#F7F9FC]">
       <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
@@ -189,25 +230,33 @@ function NewsSection() {
           }
         />
         <div className="grid md:grid-cols-3 gap-4">
-          {items.map((n) => (
-            <Link key={n.id} to="/news" className="group bg-white border border-[#E5E5E5] hover:border-primary transition-base flex flex-col">
-              <SafeImage
-                src={n.image}
-                alt={n.title}
-                fallbackLabel={n.title}
-                source="news"
-                wrapperClassName="h-[180px]"
-                className="transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="p-4 flex-1 flex flex-col gap-2">
-                <span className={cn(typo.label.sm, "text-primary")}>{n.category}</span>
-                <h3 className={cn(typo.body.md, "text-[#111] font-semibold leading-[1.35]")}>{n.title}</h3>
-                <div className={cn(typo.body.xs, "text-[#9CA3AF] mt-auto")}>
-                  {formatDateShort(n.date, lang)} · 4 min read
+          {items.map((n) => {
+            const translatedCategory = t(categoryKey(n.category));
+            const translatedTitle = t(titleKey(n.id));
+            return (
+              <Link key={n.id} to="/news" className="group bg-white border border-[#E5E5E5] hover:border-primary transition-base flex flex-col">
+                <SafeImage
+                  src={n.image}
+                  alt={translatedTitle === titleKey(n.id) ? n.title : translatedTitle}
+                  fallbackLabel={n.title}
+                  source="news"
+                  wrapperClassName="h-[180px]"
+                  className="transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="p-4 flex-1 flex flex-col gap-2">
+                  <span className={cn(typo.label.sm, "text-primary uppercase")}>
+                    {translatedCategory === categoryKey(n.category) ? n.category.toUpperCase() : translatedCategory}
+                  </span>
+                  <h3 className={cn(typo.body.md, "text-[#111] font-semibold leading-[1.35]")}>
+                    {translatedTitle === titleKey(n.id) ? n.title : translatedTitle}
+                  </h3>
+                  <div className={cn(typo.body.xs, "text-[#9CA3AF] mt-auto")}>
+                    {formatDateShort(n.date, lang)} · 4 {t("home.news.minRead")}
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -233,9 +282,9 @@ function RankingSection() {
         <LocalSectionHeading title={t("home.ranking.title")} />
 
         <div className="flex flex-wrap gap-6 mb-6 border-b border-[#2A2A2A] pb-4">
-          <FilterGroup label="Gender" options={[{ v: "male", l: t("home.ranking.male") }, { v: "female", l: t("home.ranking.female") }]} value={gender} onChange={(v) => setGender(v as "male" | "female")} />
-          <FilterGroup label="Belt" options={[{ v: "black", l: t("home.ranking.beltBlack") }, { v: "brown", l: t("home.ranking.beltBrown") }, { v: "purple", l: t("home.ranking.beltPurple") }, { v: "blue", l: t("home.ranking.beltBlue") }, { v: "white", l: t("home.ranking.beltWhite") }]} value={belt} onChange={(v) => setBelt(v as typeof belt)} />
-          <FilterGroup label="Category" options={[{ v: "adult", l: t("home.ranking.adult") }, { v: "master", l: t("home.ranking.master") }, { v: "juvenile", l: t("home.ranking.juvenile") }]} value={category} onChange={(v) => setCategory(v as typeof category)} />
+          <FilterGroup label={t("home.ranking.gender")} options={[{ v: "male", l: t("home.ranking.male") }, { v: "female", l: t("home.ranking.female") }]} value={gender} onChange={(v) => setGender(v as "male" | "female")} />
+          <FilterGroup label={t("home.ranking.belt")} options={[{ v: "black", l: t("home.ranking.beltBlack") }, { v: "brown", l: t("home.ranking.beltBrown") }, { v: "purple", l: t("home.ranking.beltPurple") }, { v: "blue", l: t("home.ranking.beltBlue") }, { v: "white", l: t("home.ranking.beltWhite") }]} value={belt} onChange={(v) => setBelt(v as typeof belt)} />
+          <FilterGroup label={t("home.ranking.category")} options={[{ v: "adult", l: t("home.ranking.adult") }, { v: "master", l: t("home.ranking.master") }, { v: "juvenile", l: t("home.ranking.juvenile") }]} value={category} onChange={(v) => setCategory(v as typeof category)} />
         </div>
 
         <div className="grid md:grid-cols-2 gap-4">
@@ -353,14 +402,13 @@ function CTASection() {
 
 function YouTubeSection() {
   const { t } = useI18n();
-  const VIDEO_IMG = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=600&h=350&fit=crop&q=80";
   const videos = [
-    { t: "World Championship 2024 — Best Submissions", img: VIDEO_IMG },
-    { t: "Black Belt Promotions Ceremony", img: VIDEO_IMG },
-    { t: "Mestre Roberto — A Life on the Mat", img: VIDEO_IMG },
+    { t: "World Championship 2024 — Best Submissions", img: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=500&h=280" },
+    { t: "Black Belt Promotions Ceremony", img: "https://images.unsplash.com/photo-1544717305-996b815c338c?auto=format&fit=crop&w=500&h=280" },
+    { t: "Mestre Roberto — A Life on the Mat", img: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=500&h=280" },
   ];
   return (
-    <section className="py-16 lg:py-20 bg-white">
+    <section className="lg:py-20 bg-white" style={{ paddingTop: "80px", paddingBottom: "80px" }}>
       <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
         <LocalSectionHeading
           dark={false}

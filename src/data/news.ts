@@ -9,8 +9,8 @@ export type NewsItem = {
   featured?: boolean;
 };
 
-const NEWS_IMG = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=600&h=350&fit=crop&q=80";
-const cover = (_q: string) => NEWS_IMG;
+const NEWS_IMG_FALLBACK = "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=600&h=350";
+const cover = (_q: string) => NEWS_IMG_FALLBACK;
 
 export const NEWS: NewsItem[] = [
   {
@@ -18,7 +18,7 @@ export const NEWS: NewsItem[] = [
     title: "BJJLF World Championship 2025 — Registration Opens",
     excerpt: "Athletes from over 60 countries will battle for the most prestigious title in modern jiu-jitsu. Early registration begins this Friday.",
     category: "Tournaments",
-    image: NEWS_IMG,
+    image: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=600&h=350",
     date: "2025-04-10",
     author: "BJJLF Editorial",
     featured: true,
@@ -28,7 +28,7 @@ export const NEWS: NewsItem[] = [
     title: "Carlos Mendes Promoted to 3rd Degree Black Belt",
     excerpt: "Celebrating two decades on the mat, Mestre Mendes receives his third stripe in front of his students in Rio.",
     category: "Promotions",
-    image: NEWS_IMG,
+    image: "https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=600&h=350",
     date: "2025-04-02",
     author: "Bruno Aragão",
   },
@@ -37,7 +37,7 @@ export const NEWS: NewsItem[] = [
     title: "European Open Returns to Lisbon This Summer",
     excerpt: "After a record-breaking edition in Madrid, the BJJLF European Open will be hosted at MEO Arena.",
     category: "Tournaments",
-    image: NEWS_IMG,
+    image: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&w=600&h=350",
     date: "2025-03-28",
     author: "Maria Lopes",
   },

@@ -1,3 +1,5 @@
+export type EventTypeBadge = "GI" | "NO-GI" | "GI & NO-GI" | "KIDS" | "MASTER";
+
 export type Event = {
   id: string;
   name: string;
@@ -5,18 +7,73 @@ export type Event = {
   location: string;
   image: string;
   type: "Gi" | "No-Gi" | "Open";
+  badge: EventTypeBadge;
 };
 
-const EVENT_IMG = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=400&h=250&fit=crop&q=80";
-
 export const EVENTS: Event[] = [
-  { id: "wc25", name: "BJJLF World Championship", date: "2025-08-22", location: "Rio de Janeiro, BR", image: EVENT_IMG, type: "Gi" },
-  { id: "eu25", name: "European Open", date: "2025-06-14", location: "Lisbon, PT", image: EVENT_IMG, type: "Gi" },
-  { id: "ng25", name: "Americas Open", date: "2025-05-30", location: "San Diego, US", image: EVENT_IMG, type: "No-Gi" },
-  { id: "as25", name: "Asian Continental", date: "2025-07-05", location: "Tokyo, JP", image: EVENT_IMG, type: "Open" },
-  { id: "br25", name: "Brazilian Nationals", date: "2025-09-12", location: "São Paulo, BR", image: EVENT_IMG, type: "Gi" },
-  { id: "uk25", name: "UK Open", date: "2025-10-18", location: "London, UK", image: EVENT_IMG, type: "No-Gi" },
+  {
+    id: "wc25",
+    name: "BJJLF World Championship",
+    date: "2025-08-22",
+    location: "Rio de Janeiro, BR",
+    image: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=400&h=250",
+    type: "Gi",
+    badge: "GI & NO-GI",
+  },
+  {
+    id: "eu25",
+    name: "European Open",
+    date: "2025-06-14",
+    location: "Lisbon, PT",
+    image: "https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=400&h=250",
+    type: "Gi",
+    badge: "GI",
+  },
+  {
+    id: "ng25",
+    name: "Americas Open",
+    date: "2025-05-30",
+    location: "San Diego, US",
+    image: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&w=400&h=250",
+    type: "No-Gi",
+    badge: "NO-GI",
+  },
+  {
+    id: "as25",
+    name: "Asian Continental",
+    date: "2025-07-05",
+    location: "Tokyo, JP",
+    image: "https://images.unsplash.com/photo-1544717305-996b815c338c?auto=format&fit=crop&w=400&h=250",
+    type: "Open",
+    badge: "GI",
+  },
+  {
+    id: "br25",
+    name: "Brazilian Nationals",
+    date: "2025-09-12",
+    location: "São Paulo, BR",
+    image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=400&h=250",
+    type: "Gi",
+    badge: "GI & NO-GI",
+  },
+  {
+    id: "uk25",
+    name: "UK Open",
+    date: "2025-10-18",
+    location: "London, UK",
+    image: "https://images.unsplash.com/photo-1590556409324-aa1d726e5c3c?auto=format&fit=crop&w=400&h=250",
+    type: "No-Gi",
+    badge: "MASTER",
+  },
 ];
+
+export const EVENT_BADGE_STYLES: Record<EventTypeBadge, { bg: string; color: string }> = {
+  "GI": { bg: "#1A6B1A", color: "#FFFFFF" },
+  "NO-GI": { bg: "#B8960C", color: "#111111" },
+  "GI & NO-GI": { bg: "#C41E3A", color: "#FFFFFF" },
+  "KIDS": { bg: "#1565C0", color: "#FFFFFF" },
+  "MASTER": { bg: "#6A0DAD", color: "#FFFFFF" },
+};
 
 export type Ranked = {
   rank: number;
