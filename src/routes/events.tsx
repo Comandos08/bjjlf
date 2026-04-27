@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
@@ -8,6 +8,7 @@ import { EventList } from "@/components/EventList";
 import { EventFilterPanel } from "@/components/EventFilterPanel";
 import { EventBadge } from "@/components/EventBadge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -60,12 +61,23 @@ function parseBadges(input: unknown): EventTypeBadge[] {
   return VALID_BADGES.filter((b) => set.has(b));
 }
 
-type EventsSearch = { badges: EventTypeBadge[]; sort: EventSort };
+type EventsSearch = { badges: EventTypeBadge[]; sort: EventSort; q: string };
+
+/**
+ * Coerce an unknown URL value into a clean search string.
+ * Trims, collapses whitespace, and caps length so a hand-edited URL with
+ * 10k chars can't tank rendering.
+ */
+function parseQuery(input: unknown): string {
+  if (typeof input !== "string") return "";
+  return input.replace(/\s+/g, " ").trim().slice(0, 100);
+}
 
 export const Route = createFileRoute("/events")({
   validateSearch: (search: Record<string, unknown>): EventsSearch => ({
     badges: parseBadges(search.badges),
     sort: parseEventSort(search.sort),
+    q: parseQuery(search.q),
   }),
   head: () => ({
     meta: [
@@ -91,8 +103,17 @@ function EventsListPage() {
   const search = Route.useSearch();
   const badges: EventTypeBadge[] = search.badges;
   const sort: EventSort = search.sort;
+  const urlQuery: string = search.q;
   const navigate = useNavigate({ from: "/events" });
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  // Local input state — typed keystrokes update immediately for responsiveness.
+  // The URL is then synced on a 200ms debounce so we don't spam history with
+  // a navigation per character. URL → input syncs on back/forward navigation.
+  const [queryInput, setQueryInput] = useState(urlQuery);
+  useEffect(() => {
+    setQueryInput(urlQuery);
+  }, [urlQuery]);
 
   // Restore filters from localStorage on first visit and persist on change.
   // URL is the source of truth during a session; storage seeds the next visit.
@@ -106,17 +127,37 @@ function EventsListPage() {
 
   const setBadges = (next: ReadonlyArray<EventTypeBadge>) =>
     navigate({
-      // Preserve sort when filters change.
+      // Preserve sort + q when filters change.
       search: (prev: EventsSearch) => ({ ...prev, badges: [...next] }),
       replace: true,
     });
 
   const setSort = (next: EventSort) =>
     navigate({
-      // Preserve badges when sort changes.
+      // Preserve badges + q when sort changes.
       search: (prev: EventsSearch) => ({ ...prev, sort: next }),
       replace: true,
     });
+
+  const setQuery = (next: string) =>
+    navigate({
+      // Preserve badges + sort when query changes.
+      search: (prev: EventsSearch) => ({ ...prev, q: next }),
+      replace: true,
+    });
+
+  // Debounce URL writes. We compare against the URL value (not the previous
+  // local value) so that programmatic clears (e.g. the X button calling
+  // setQueryInput('') AND setQuery('') in the same tick) don't double-fire.
+  useEffect(() => {
+    const next = queryInput.trim();
+    if (next === urlQuery) return;
+    const id = window.setTimeout(() => setQuery(next), 200);
+    return () => window.clearTimeout(id);
+    // setQuery is stable enough — re-creating it per render is fine since
+    // the effect cleanup cancels any in-flight timer.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryInput, urlQuery]);
 
   const toggle = (badge: EventTypeBadge) => {
     const set = new Set(badges);
@@ -126,6 +167,11 @@ function EventsListPage() {
   };
 
   const clear = () => setBadges([]);
+
+  const clearQuery = () => {
+    setQueryInput("");
+    setQuery("");
+  };
 
   return (
     <div className="bg-[#F7F9FC] min-h-screen">
@@ -258,46 +304,78 @@ function EventsListPage() {
               </div>
             ) : null}
 
-            {/* Sort toolbar — visible on every viewport, above the grid */}
+            {/* Search + sort toolbar — visible on every viewport, above the grid.
+                Stacks vertically on mobile so neither control gets squeezed. */}
             <div
-              className="flex items-center justify-end gap-2"
-              data-testid="event-sort-toolbar"
+              className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+              data-testid="event-toolbar"
             >
-              <label
-                htmlFor="event-sort-select"
-                className={cn(typo.label.sm, "shrink-0")}
-              >
-                {t("events.sort.label")}:
-              </label>
-              <Select
-                value={sort}
-                onValueChange={(v) => setSort(v as EventSort)}
-              >
-                <SelectTrigger
-                  id="event-sort-select"
-                  className="w-[180px] rounded-none"
-                  data-testid="event-sort-trigger"
+              <div className="relative flex-1 sm:max-w-sm">
+                <Search
+                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+                  aria-hidden="true"
+                />
+                <Input
+                  type="search"
+                  inputMode="search"
+                  value={queryInput}
+                  onChange={(e) => setQueryInput(e.target.value)}
+                  placeholder={t("events.search.placeholder")}
+                  aria-label={t("events.search.label")}
+                  className="pl-9 pr-9 rounded-none"
+                  data-testid="event-search-input"
+                />
+                {queryInput.length > 0 ? (
+                  <button
+                    type="button"
+                    onClick={clearQuery}
+                    aria-label={t("events.search.clear")}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex h-6 w-6 items-center justify-center text-muted-foreground hover:text-foreground focus-ring rounded-none"
+                    data-testid="event-search-clear"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                ) : null}
+              </div>
+
+              <div className="flex items-center justify-end gap-2">
+                <label
+                  htmlFor="event-sort-select"
+                  className={cn(typo.label.sm, "shrink-0")}
                 >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {EVENT_SORTS.map((s) => (
-                    <SelectItem
-                      key={s}
-                      value={s}
-                      data-testid={`event-sort-option-${s}`}
-                    >
-                      {t(`events.sort.${s}`)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                  {t("events.sort.label")}:
+                </label>
+                <Select
+                  value={sort}
+                  onValueChange={(v) => setSort(v as EventSort)}
+                >
+                  <SelectTrigger
+                    id="event-sort-select"
+                    className="w-[180px] rounded-none"
+                    data-testid="event-sort-trigger"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {EVENT_SORTS.map((s) => (
+                      <SelectItem
+                        key={s}
+                        value={s}
+                        data-testid={`event-sort-option-${s}`}
+                      >
+                        {t(`events.sort.${s}`)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <EventList
               selectedBadges={badges}
               onChange={setBadges}
               sort={sort}
+              query={urlQuery}
               hideFilters
             />
           </div>
