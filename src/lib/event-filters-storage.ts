@@ -88,7 +88,9 @@ export function usePersistedEventFilters() {
     if (stored.length === 0) return;
 
     navigate({
-      search: () => ({ badges: stored }),
+      // Reducer must return the FULL search shape declared by validateSearch
+      // on /events. Preserve everything except `badges` from prev.
+      search: (prev) => ({ ...prev, badges: stored }),
       replace: true,
     });
     // We intentionally don't depend on `badges` here — we only want to run
