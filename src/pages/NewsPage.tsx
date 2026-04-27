@@ -34,7 +34,7 @@ export function NewsPage() {
   const [page, setPage] = useState(1);
   const perPage = 6;
 
-  const { data: news = [] } = useNews();
+  const { data: news = [], isLoading } = useNews();
   const filtered = cat === "All" ? news : news.filter((n) => n.category === cat);
   const featured = filtered.find((n) => n.featured) ?? filtered[0];
   const rest = filtered.filter((n) => n.id !== featured?.id);
