@@ -236,7 +236,7 @@ function LangToggle({ lang, onChange }: { lang: Lang; onChange: (l: Lang) => voi
           style={{
             background: "#1A1A1A",
             border: "1px solid #333",
-            borderTop: "2px solid #C41E3A",
+            borderTop: "2px solid #C8211A",
             borderRadius: 0,
           }}
         >
