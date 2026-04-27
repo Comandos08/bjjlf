@@ -404,12 +404,12 @@ function YouTubeSection() {
   const { t } = useI18n();
   const VIDEO_IMG = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=600&h=350&fit=crop&q=80";
   const videos = [
-    { t: "World Championship 2024 — Best Submissions", img: VIDEO_IMG },
-    { t: "Black Belt Promotions Ceremony", img: VIDEO_IMG },
-    { t: "Mestre Roberto — A Life on the Mat", img: VIDEO_IMG },
+    { t: "World Championship 2024 — Best Submissions", img: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=500&h=280" },
+    { t: "Black Belt Promotions Ceremony", img: "https://images.unsplash.com/photo-1544717305-996b815c338c?auto=format&fit=crop&w=500&h=280" },
+    { t: "Mestre Roberto — A Life on the Mat", img: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=500&h=280" },
   ];
   return (
-    <section className="py-16 lg:py-20 bg-white">
+    <section className="lg:py-20 bg-white" style={{ paddingTop: "80px", paddingBottom: "80px" }}>
       <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
         <LocalSectionHeading
           dark={false}
