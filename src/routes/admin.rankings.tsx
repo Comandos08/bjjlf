@@ -94,9 +94,9 @@ function RankingsAdminPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#888]" /></div>
+        <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#666666]" /></div>
       ) : filtered.length === 0 ? (
-        <div className="border" style={{ background: "#161616", borderColor: "#222" }}><EmptyState message="Nenhum ranking." /></div>
+        <div className="border" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}><EmptyState message="Nenhum ranking." /></div>
       ) : (
         <AdminTableShell>
           <thead>
@@ -114,9 +114,9 @@ function RankingsAdminPage() {
           </thead>
           <tbody>
             {filtered.map((r) => (
-              <tr key={r.id} className="hover:bg-[#1A1A1A]">
-                <AdminTD className="text-white">{r.position ?? "—"}</AdminTD>
-                <AdminTD className="text-white font-medium">{r.athlete_name}</AdminTD>
+              <tr key={r.id} className="hover:bg-[#FFFFFF]">
+                <AdminTD className="text-[#1A1A1A]">{r.position ?? "—"}</AdminTD>
+                <AdminTD className="text-[#1A1A1A] font-medium">{r.athlete_name}</AdminTD>
                 <AdminTD>{r.academy ?? "—"}</AdminTD>
                 <AdminTD>{r.flag_emoji} {r.country_code}</AdminTD>
                 <AdminTD>{r.points}</AdminTD>
@@ -129,8 +129,8 @@ function RankingsAdminPage() {
                 <AdminTD className="text-right">
                   {writable && (
                     <div className="inline-flex gap-1">
-                      <button onClick={() => setEditing(r)} className="text-[#B8960C] p-1.5"><Pencil size={14} /></button>
-                      <button onClick={() => setConfirmDelete(r)} className="text-[#C41E3A] p-1.5"><Trash2 size={14} /></button>
+                      <button onClick={() => setEditing(r)} className="text-[#C8A84B] p-1.5"><Pencil size={14} /></button>
+                      <button onClick={() => setConfirmDelete(r)} className="text-[#C8211A] p-1.5"><Trash2 size={14} /></button>
                     </div>
                   )}
                 </AdminTD>
@@ -225,7 +225,7 @@ function RankingFormModal({ open, row, onClose }: { open: boolean; row: RankingR
           <div><label className="admin-label">Temporada</label><input className="admin-input w-full" {...register("season")} /></div>
         </div>
         <AdminToggle checked={isActive} onChange={(v) => setValue("is_active", v)} label="Ativo" />
-        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#222" }}>
+        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#E5E5E5" }}>
           <AdminButton variant="outline" onClick={onClose}>Cancelar</AdminButton>
           <AdminButton type="submit" disabled={upsert.isPending}>{upsert.isPending && <Loader2 size={14} className="animate-spin" />} Salvar</AdminButton>
         </div>

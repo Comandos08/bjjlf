@@ -60,14 +60,14 @@ function NewsAdminPage() {
       actions={writable && <AdminButton onClick={() => setCreating(true)}><Plus size={16} /> Nova Notícia</AdminButton>}
     >
       <div className="relative">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#666]" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]" />
         <input className="admin-input w-full pl-9" placeholder="Buscar..." value={search} onChange={(e) => setSearch(e.target.value)} />
       </div>
 
       {isLoading ? (
-        <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#888]" /></div>
+        <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#666666]" /></div>
       ) : filtered.length === 0 ? (
-        <div className="border" style={{ background: "#161616", borderColor: "#222" }}><EmptyState message="Nenhuma notícia." /></div>
+        <div className="border" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}><EmptyState message="Nenhuma notícia." /></div>
       ) : (
         <AdminTableShell>
           <thead>
@@ -84,11 +84,11 @@ function NewsAdminPage() {
           </thead>
           <tbody>
             {filtered.map((r) => (
-              <tr key={r.id} className="hover:bg-[#1A1A1A]">
+              <tr key={r.id} className="hover:bg-[#FFFFFF]">
                 <AdminTD>
-                  {r.cover_image_url ? <img src={r.cover_image_url} alt="" className="h-10 w-10 object-cover" /> : <div className="h-10 w-10 bg-[#222]" />}
+                  {r.cover_image_url ? <img src={r.cover_image_url} alt="" className="h-10 w-10 object-cover" /> : <div className="h-10 w-10 bg-[#E5E5E5]" />}
                 </AdminTD>
-                <AdminTD className="text-white font-medium">{r.title_pt}</AdminTD>
+                <AdminTD className="text-[#1A1A1A] font-medium">{r.title_pt}</AdminTD>
                 <AdminTD><AdminBadge color="gold">{r.category}</AdminBadge></AdminTD>
                 <AdminTD>{r.author ?? "—"}</AdminTD>
                 <AdminTD>{new Date(r.created_at).toLocaleDateString("pt-BR")}</AdminTD>
@@ -103,8 +103,8 @@ function NewsAdminPage() {
                 <AdminTD className="text-right">
                   {writable && (
                     <div className="inline-flex gap-1">
-                      <button onClick={() => setEditing(r)} className="text-[#B8960C] p-1.5"><Pencil size={14} /></button>
-                      <button onClick={() => setConfirmDelete(r)} className="text-[#C41E3A] p-1.5"><Trash2 size={14} /></button>
+                      <button onClick={() => setEditing(r)} className="text-[#C8A84B] p-1.5"><Pencil size={14} /></button>
+                      <button onClick={() => setConfirmDelete(r)} className="text-[#C8211A] p-1.5"><Trash2 size={14} /></button>
                     </div>
                   )}
                 </AdminTD>
@@ -196,7 +196,7 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
               <div>
                 <label className="admin-label">Título (PT)</label>
                 <input className="admin-input w-full" {...register("title_pt")} onBlur={(e) => { if (!watch("slug")) setValue("slug", slugify(e.target.value)); }} />
-                {errors.title_pt && <span className="text-xs text-[#C41E3A]">{errors.title_pt.message}</span>}
+                {errors.title_pt && <span className="text-xs text-[#C8211A]">{errors.title_pt.message}</span>}
               </div>
               <div>
                 <label className="admin-label">Resumo (PT) — {excerptPt.length}/300</label>
@@ -242,7 +242,7 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
         <div>
           <label className="admin-label">URL da imagem de capa</label>
           <input className="admin-input w-full" {...register("cover_image_url")} />
-          {cover && <img src={cover} alt="" className="mt-2 h-28 w-full object-cover border" style={{ borderColor: "#222" }} />}
+          {cover && <img src={cover} alt="" className="mt-2 h-28 w-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -261,11 +261,11 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
           <AdminToggle checked={isFeatured} onChange={(v) => setValue("is_featured", v)} label="Destaque" />
         </div>
 
-        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#222" }}>
+        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#E5E5E5" }}>
           <AdminButton variant="outline" onClick={onClose} disabled={upsert.isPending}>Cancelar</AdminButton>
           <AdminButton type="submit" disabled={upsert.isPending}>{upsert.isPending && <Loader2 size={14} className="animate-spin" />} Salvar</AdminButton>
         </div>
-        <p className="text-[10px] text-[#555]">Slug atual: <span className="text-[#888]">{titlePt ? slugify(titlePt) : ""}</span></p>
+        <p className="text-[10px] text-[#D1D1D1]">Slug atual: <span className="text-[#666666]">{titlePt ? slugify(titlePt) : ""}</span></p>
       </form>
     </AdminModal>
   );

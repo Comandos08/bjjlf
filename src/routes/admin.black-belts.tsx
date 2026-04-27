@@ -71,9 +71,9 @@ function BlackBeltsAdminPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#888]" /></div>
+        <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#666666]" /></div>
       ) : filtered.length === 0 ? (
-        <div className="border" style={{ background: "#161616", borderColor: "#222" }}><EmptyState message="Nenhuma faixa preta." /></div>
+        <div className="border" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}><EmptyState message="Nenhuma faixa preta." /></div>
       ) : (
         <AdminTableShell>
           <thead>
@@ -94,15 +94,15 @@ function BlackBeltsAdminPage() {
             {filtered.map((r) => {
               const beltType = BELT_TYPES.find((b) => b.value === r.belt_type);
               return (
-                <tr key={r.id} className="hover:bg-[#1A1A1A]">
+                <tr key={r.id} className="hover:bg-[#FFFFFF]">
                   <AdminTD>
                     {r.photo_url ? (
                       <img src={r.photo_url} alt="" className="h-10 w-10 rounded-full object-cover" />
                     ) : (
-                      <div className="h-10 w-10 rounded-full bg-[#333] grid place-items-center text-xs font-bold text-white">{initials(r.athlete_name)}</div>
+                      <div className="h-10 w-10 rounded-full bg-[#E5E5E5] grid place-items-center text-xs font-bold text-[#1A1A1A]">{initials(r.athlete_name)}</div>
                     )}
                   </AdminTD>
-                  <AdminTD className="text-white font-medium">{r.athlete_name}</AdminTD>
+                  <AdminTD className="text-[#1A1A1A] font-medium">{r.athlete_name}</AdminTD>
                   <AdminTD><AdminBadge color={beltType?.color ?? "gray"}>{beltType?.label ?? r.belt_type} {r.belt_degree > 0 ? `· ${r.belt_degree}°` : ""}</AdminBadge></AdminTD>
                   <AdminTD>{r.academy ?? "—"}</AdminTD>
                   <AdminTD>{r.professor ?? "—"}</AdminTD>
@@ -116,8 +116,8 @@ function BlackBeltsAdminPage() {
                   <AdminTD className="text-right">
                     {writable && (
                       <div className="inline-flex gap-1">
-                        <button onClick={() => setEditing(r)} className="text-[#B8960C] p-1.5"><Pencil size={14} /></button>
-                        <button onClick={() => setConfirmDelete(r)} className="text-[#C41E3A] p-1.5"><Trash2 size={14} /></button>
+                        <button onClick={() => setEditing(r)} className="text-[#C8A84B] p-1.5"><Pencil size={14} /></button>
+                        <button onClick={() => setConfirmDelete(r)} className="text-[#C8211A] p-1.5"><Trash2 size={14} /></button>
                       </div>
                     )}
                   </AdminTD>
@@ -231,10 +231,10 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
         <div>
           <label className="admin-label">URL da foto</label>
           <input className="admin-input w-full" {...register("photo_url")} />
-          {photo && <img src={photo} alt="" className="mt-2 h-16 w-16 rounded-full object-cover border" style={{ borderColor: "#222" }} />}
+          {photo && <img src={photo} alt="" className="mt-2 h-16 w-16 rounded-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
         </div>
         <AdminToggle checked={isActive} onChange={(v) => setValue("is_active", v)} label="Ativo" />
-        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#222" }}>
+        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#E5E5E5" }}>
           <AdminButton variant="outline" onClick={onClose}>Cancelar</AdminButton>
           <AdminButton type="submit" disabled={upsert.isPending}>{upsert.isPending && <Loader2 size={14} className="animate-spin" />} Salvar</AdminButton>
         </div>

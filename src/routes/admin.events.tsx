@@ -93,7 +93,7 @@ function EventsAdminPage() {
       }
     >
       <div className="relative">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#666]" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]" />
         <input
           className="admin-input w-full pl-9"
           placeholder="Buscar eventos..."
@@ -106,9 +106,9 @@ function EventsAdminPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#888]" /></div>
+        <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#666666]" /></div>
       ) : filtered.length === 0 ? (
-        <div className="border" style={{ background: "#161616", borderColor: "#222" }}>
+        <div className="border" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}>
           <EmptyState message="Nenhum evento encontrado." />
         </div>
       ) : (
@@ -131,15 +131,15 @@ function EventsAdminPage() {
                 const t = TYPE_LABELS[e.event_type] ?? { label: e.event_type.toUpperCase(), color: "gray" as const };
                 const s = STATUS_LABELS[e.status] ?? { label: e.status, color: "gray" as const };
                 return (
-                  <tr key={e.id} className="hover:bg-[#1A1A1A]">
+                  <tr key={e.id} className="hover:bg-[#FFFFFF]">
                     <AdminTD>
                       {e.image_url ? (
                         <img src={e.image_url} alt="" className="h-10 w-10 object-cover" />
                       ) : (
-                        <div className="h-10 w-10 bg-[#222]" />
+                        <div className="h-10 w-10 bg-[#E5E5E5]" />
                       )}
                     </AdminTD>
-                    <AdminTD className="text-white font-medium">{e.name_pt}</AdminTD>
+                    <AdminTD className="text-[#1A1A1A] font-medium">{e.name_pt}</AdminTD>
                     <AdminTD>{new Date(e.event_date).toLocaleDateString("pt-BR")}</AdminTD>
                     <AdminTD>{e.city}, {e.country_code}</AdminTD>
                     <AdminTD><AdminBadge color={t.color}>{t.label}</AdminBadge></AdminTD>
@@ -159,10 +159,10 @@ function EventsAdminPage() {
                     <AdminTD className="text-right">
                       {writable && (
                         <div className="inline-flex gap-1">
-                          <button onClick={() => setEditing(e)} className="text-[#B8960C] hover:bg-[#1f1a08] p-1.5" aria-label="Editar">
+                          <button onClick={() => setEditing(e)} className="text-[#C8A84B] hover:bg-[#1f1a08] p-1.5" aria-label="Editar">
                             <Pencil size={14} />
                           </button>
-                          <button onClick={() => setConfirmDelete(e)} className="text-[#C41E3A] hover:bg-[#1f0a0e] p-1.5" aria-label="Excluir">
+                          <button onClick={() => setConfirmDelete(e)} className="text-[#C8211A] hover:bg-[#1f0a0e] p-1.5" aria-label="Excluir">
                             <Trash2 size={14} />
                           </button>
                         </div>
@@ -175,7 +175,7 @@ function EventsAdminPage() {
           </AdminTableShell>
 
           {pageCount > 1 && (
-            <div className="flex items-center justify-between text-xs text-[#666]">
+            <div className="flex items-center justify-between text-xs text-[#999999]">
               <span>{filtered.length} eventos · página {page} de {pageCount}</span>
               <div className="flex gap-1">
                 <AdminButton variant="outline" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>Anterior</AdminButton>
@@ -294,14 +294,14 @@ function EventFormModal({
             <div>
               <label className="admin-label">Nome (PT)</label>
               <input className="admin-input w-full" {...register("name_pt")} />
-              {errors.name_pt && <span className="text-xs text-[#C41E3A]">{errors.name_pt.message}</span>}
+              {errors.name_pt && <span className="text-xs text-[#C8211A]">{errors.name_pt.message}</span>}
             </div>
           }
           en={
             <div>
               <label className="admin-label">Nome (EN)</label>
               <input className="admin-input w-full" {...register("name_en")} />
-              {errors.name_en && <span className="text-xs text-[#C41E3A]">{errors.name_en.message}</span>}
+              {errors.name_en && <span className="text-xs text-[#C8211A]">{errors.name_en.message}</span>}
             </div>
           }
         />
@@ -358,7 +358,7 @@ function EventFormModal({
           <label className="admin-label">URL da imagem</label>
           <input className="admin-input w-full" {...register("image_url")} placeholder="https://..." />
           {imageUrl && (
-            <img src={imageUrl} alt="" className="mt-2 h-20 w-full object-cover border" style={{ borderColor: "#222" }} />
+            <img src={imageUrl} alt="" className="mt-2 h-20 w-full object-cover border" style={{ borderColor: "#E5E5E5" }} />
           )}
         </div>
 
@@ -372,7 +372,7 @@ function EventFormModal({
           <AdminToggle checked={isFeatured} onChange={(v) => setValue("is_featured", v)} label="Destaque" />
         </div>
 
-        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#222" }}>
+        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#E5E5E5" }}>
           <AdminButton variant="outline" onClick={onClose} disabled={upsert.isPending}>Cancelar</AdminButton>
           <AdminButton type="submit" disabled={upsert.isPending}>
             {upsert.isPending && <Loader2 size={14} className="animate-spin" />} Salvar

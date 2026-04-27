@@ -27,10 +27,10 @@ export function AdminButton({
   className?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const variants: Record<string, string> = {
-    primary: "bg-[#C41E3A] text-white hover:bg-[#a8152e]",
-    danger: "bg-[#C41E3A] text-white hover:bg-[#a8152e]",
-    outline: "bg-transparent text-white border border-[#333] hover:border-[#555] hover:bg-[#1a1a1a]",
-    ghost: "bg-transparent text-[#888] hover:text-white hover:bg-[#1a1a1a]",
+    primary: "bg-[#C8211A] text-[#1A1A1A] hover:bg-[#a01828]",
+    danger: "bg-[#C8211A] text-[#1A1A1A] hover:bg-[#a01828]",
+    outline: "bg-transparent text-[#1A1A1A] border border-[#E5E5E5] hover:border-[#D1D1D1] hover:bg-[#FFFFFF]",
+    ghost: "bg-transparent text-[#666666] hover:text-[#1A1A1A] hover:bg-[#FFFFFF]",
   };
   return (
     <button
@@ -70,17 +70,17 @@ export function AdminToggle({
         onClick={() => onChange(!checked)}
         className={cn(
           "relative inline-flex h-5 w-9 items-center rounded-full transition-colors",
-          checked ? "bg-[#166534]" : "bg-[#333]",
+          checked ? "bg-[#166534]" : "bg-[#E5E5E5]",
         )}
       >
         <span
           className={cn(
-            "inline-block h-4 w-4 transform rounded-full bg-white transition-transform",
+            "inline-block h-4 w-4 transform rounded-full bg-[#FFFFFF] transition-transform",
             checked ? "translate-x-[18px]" : "translate-x-[2px]",
           )}
         />
       </button>
-      {label && <span className="text-sm text-[#CCC]">{label}</span>}
+      {label && <span className="text-sm text-[#1A1A1A]">{label}</span>}
     </label>
   );
 }
@@ -96,13 +96,13 @@ export function AdminBadge({
   className?: string;
 }) {
   const colors: Record<string, string> = {
-    red: "bg-[#C41E3A]/15 text-[#ef4d6c] border-[#C41E3A]/40",
-    gold: "bg-[#B8960C]/15 text-[#E5C547] border-[#B8960C]/40",
+    red: "bg-[#C8211A]/15 text-[#ef4d6c] border-[#C8211A]/40",
+    gold: "bg-[#C8A84B]/15 text-[#E5C547] border-[#C8A84B]/40",
     green: "bg-[#166534]/20 text-[#4ade80] border-[#166534]/50",
     blue: "bg-[#1e40af]/20 text-[#60a5fa] border-[#1e40af]/50",
     orange: "bg-[#9a3412]/20 text-[#fb923c] border-[#9a3412]/50",
     purple: "bg-[#6b21a8]/20 text-[#c084fc] border-[#6b21a8]/50",
-    gray: "bg-[#222] text-[#999] border-[#333]",
+    gray: "bg-[#E5E5E5] text-[#666666] border-[#E5E5E5]",
   };
   return (
     <span
@@ -141,14 +141,14 @@ export function AdminModal({
     >
       <div
         className="w-full max-h-[90vh] overflow-auto border"
-        style={{ background: "#111111", borderColor: "#222", maxWidth }}
+        style={{ background: "#FFFFFF", borderColor: "#E5E5E5", maxWidth }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: "#222" }}>
-          <h2 className="text-white font-bold uppercase text-lg" style={{ fontFamily: "Barlow Condensed" }}>
+        <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: "#E5E5E5" }}>
+          <h2 className="text-[#1A1A1A] font-bold uppercase text-lg" style={{ fontFamily: "Barlow Condensed" }}>
             {title}
           </h2>
-          <button onClick={onClose} className="text-[#888] hover:text-white" aria-label="Fechar">
+          <button onClick={onClose} className="text-[#666666] hover:text-[#1A1A1A]" aria-label="Fechar">
             <X size={18} />
           </button>
         </div>
@@ -185,16 +185,16 @@ export function AdminConfirm({
     >
       <div
         className="w-full max-w-[420px] border"
-        style={{ background: "#111111", borderColor: "#222" }}
+        style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="px-6 py-4 border-b" style={{ borderColor: "#222" }}>
-          <h2 className="text-white font-bold uppercase text-base" style={{ fontFamily: "Barlow Condensed" }}>
+        <div className="px-6 py-4 border-b" style={{ borderColor: "#E5E5E5" }}>
+          <h2 className="text-[#1A1A1A] font-bold uppercase text-base" style={{ fontFamily: "Barlow Condensed" }}>
             {title}
           </h2>
         </div>
         <div className="p-6">
-          <p className="text-[#CCC] text-sm">{message}</p>
+          <p className="text-[#1A1A1A] text-sm">{message}</p>
         </div>
         <div className="px-6 pb-6 flex gap-3 justify-end">
           <AdminButton variant="outline" onClick={onCancel} disabled={loading}>
@@ -220,7 +220,7 @@ export function BilingualTabs({
   const [tab, setTab] = useState<"pt" | "en">("pt");
   return (
     <div>
-      <div className="flex border-b mb-3" style={{ borderColor: "#222" }}>
+      <div className="flex border-b mb-3" style={{ borderColor: "#E5E5E5" }}>
         {(["pt", "en"] as const).map((t) => (
           <button
             key={t}
@@ -229,8 +229,8 @@ export function BilingualTabs({
             className={cn(
               "px-4 py-2 text-xs font-semibold uppercase tracking-wider border-b-2 -mb-px transition-colors",
               tab === t
-                ? "text-white border-[#C41E3A]"
-                : "text-[#666] border-transparent hover:text-[#999]",
+                ? "text-[#1A1A1A] border-[#C8211A]"
+                : "text-[#999999] border-transparent hover:text-[#666666]",
             )}
           >
             {t === "pt" ? "🇧🇷 PT" : "🇺🇸 EN"}
@@ -258,7 +258,7 @@ export function AdminSection({
       {(title || actions) && (
         <div className="flex items-center justify-between">
           {title ? (
-            <h2 className="text-white font-bold uppercase text-xl" style={{ fontFamily: "Barlow Condensed" }}>
+            <h2 className="text-[#1A1A1A] font-bold uppercase text-xl" style={{ fontFamily: "Barlow Condensed" }}>
               {title}
             </h2>
           ) : <span />}
@@ -273,7 +273,7 @@ export function AdminSection({
 /* ---------- Table primitives ---------- */
 export function AdminTableShell({ children }: { children: ReactNode }) {
   return (
-    <div className="border overflow-hidden" style={{ background: "#161616", borderColor: "#222" }}>
+    <div className="border overflow-hidden" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}>
       <table className="w-full text-sm">{children}</table>
     </div>
   );
@@ -282,8 +282,8 @@ export function AdminTableShell({ children }: { children: ReactNode }) {
 export function AdminTH({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <th
-      className={cn("text-left text-[11px] font-semibold uppercase tracking-wider text-[#666] px-4 py-3", className)}
-      style={{ background: "#0A0A0A" }}
+      className={cn("text-left text-[11px] font-semibold uppercase tracking-wider text-[#999999] px-4 py-3", className)}
+      style={{ background: "#F8F8F8" }}
     >
       {children}
     </th>
@@ -291,9 +291,9 @@ export function AdminTH({ children, className }: { children: ReactNode; classNam
 }
 
 export function AdminTD({ children, className }: { children: ReactNode; className?: string }) {
-  return <td className={cn("px-4 py-3 text-[#CCC] border-t", className)} style={{ borderColor: "#1A1A1A" }}>{children}</td>;
+  return <td className={cn("px-4 py-3 text-[#1A1A1A] border-t", className)} style={{ borderColor: "#FFFFFF" }}>{children}</td>;
 }
 
 export function EmptyState({ message }: { message: string }) {
-  return <div className="p-12 text-center text-[#666] text-sm">{message}</div>;
+  return <div className="p-12 text-center text-[#999999] text-sm">{message}</div>;
 }

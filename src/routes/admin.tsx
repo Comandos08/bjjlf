@@ -57,8 +57,8 @@ function AdminLayout() {
 
   if (isLoading || !user || !role) {
     return (
-      <div className="min-h-screen grid place-items-center" style={{ background: "#0A0A0A" }}>
-        <Loader2 className="h-6 w-6 animate-spin text-white" />
+      <div className="min-h-screen grid place-items-center" style={{ background: "#F8F8F8" }}>
+        <Loader2 className="h-6 w-6 animate-spin text-[#1A1A1A]" />
       </div>
     );
   }
@@ -71,16 +71,16 @@ function AdminLayout() {
   const breadcrumb = current.to === "/admin" ? "Home" : `Home > ${current.label}`;
 
   return (
-    <div className="min-h-screen flex" style={{ background: "#0A0A0A" }}>
+    <div className="min-h-screen flex" style={{ background: "#F8F8F8" }}>
       {/* Sidebar */}
-      <aside className="w-[240px] flex flex-col border-r" style={{ background: "#111111", borderColor: "#222" }}>
-        <div className="px-5 py-5 border-b flex items-center gap-2.5" style={{ borderColor: "#222" }}>
-          <div className="h-9 w-9 rounded-full grid place-items-center" style={{ background: "#C41E3A" }}>
-            <span className="text-white font-bold text-sm" style={{ fontFamily: "Barlow Condensed" }}>B</span>
+      <aside className="w-[240px] flex flex-col border-r" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}>
+        <div className="px-5 py-5 border-b flex items-center gap-2.5" style={{ borderColor: "#E5E5E5" }}>
+          <div className="h-9 w-9 rounded-full grid place-items-center" style={{ background: "#C8211A" }}>
+            <span className="text-[#1A1A1A] font-bold text-sm" style={{ fontFamily: "Barlow Condensed" }}>B</span>
           </div>
           <div className="leading-none">
-            <div className="text-[#C41E3A] font-bold text-base" style={{ fontFamily: "Barlow Condensed" }}>BJJLF</div>
-            <div className="text-[11px] mt-0.5" style={{ color: "#B8960C", letterSpacing: "0.1em" }}>ADMIN</div>
+            <div className="text-[#C8211A] font-bold text-base" style={{ fontFamily: "Barlow Condensed" }}>BJJLF</div>
+            <div className="text-[11px] mt-0.5" style={{ color: "#C8A84B", letterSpacing: "0.1em" }}>ADMIN</div>
           </div>
         </div>
 
@@ -95,10 +95,10 @@ function AdminLayout() {
                 className={cn(
                   "flex items-center gap-3 px-5 py-2.5 text-sm transition-colors border-l-[3px]",
                   active
-                    ? "text-white border-l-[#B8960C]"
-                    : "text-[#777] hover:text-[#CCC] border-l-transparent",
+                    ? "text-[#1A1A1A] border-l-[#C8A84B]"
+                    : "text-[#666666] hover:text-[#1A1A1A] border-l-transparent",
                 )}
-                style={active ? { background: "#C41E3A" } : undefined}
+                style={active ? { background: "#C8211A" } : undefined}
               >
                 <Icon size={18} />
                 <span>{n.label}</span>
@@ -107,17 +107,17 @@ function AdminLayout() {
           })}
         </nav>
 
-        <div className="border-t p-4 flex items-center gap-3" style={{ borderColor: "#222" }}>
-          <div className="h-8 w-8 rounded-full grid place-items-center text-white text-xs font-bold" style={{ background: "#333" }}>
+        <div className="border-t p-4 flex items-center gap-3" style={{ borderColor: "#E5E5E5" }}>
+          <div className="h-8 w-8 rounded-full grid place-items-center text-[#1A1A1A] text-xs font-bold" style={{ background: "#E5E5E5" }}>
             {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-[11px] text-[#888] truncate">{user.email}</div>
-            <div className="text-[10px] text-[#555] uppercase">{role}</div>
+            <div className="text-[11px] text-[#666666] truncate">{user.email}</div>
+            <div className="text-[10px] text-[#D1D1D1] uppercase">{role}</div>
           </div>
           <button
             onClick={() => void signOut()}
-            className="text-[#777] hover:text-white p-1.5"
+            className="text-[#666666] hover:text-[#1A1A1A] p-1.5"
             aria-label="Sair"
           >
             <LogOut size={16} />
@@ -127,11 +127,11 @@ function AdminLayout() {
 
       {/* Right side */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-[60px] border-b flex items-center justify-between px-8" style={{ background: "#111111", borderColor: "#222" }}>
-          <h1 className="text-white text-[20px] font-bold uppercase" style={{ fontFamily: "Barlow Condensed" }}>
+        <header className="h-[60px] border-b flex items-center justify-between px-8" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}>
+          <h1 className="text-[#1A1A1A] text-[20px] font-bold uppercase" style={{ fontFamily: "Barlow Condensed" }}>
             {current.label}
           </h1>
-          <div className="text-[13px] text-[#666]">{breadcrumb}</div>
+          <div className="text-[13px] text-[#999999]">{breadcrumb}</div>
         </header>
         <main className="flex-1 overflow-auto p-8">
           <Outlet />
