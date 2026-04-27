@@ -62,11 +62,14 @@ const accountSchema = z
 const profileSchema = z.object({
   academy: z.string().trim().min(2, "Academia deve ter no mínimo 2 caracteres").max(120),
   professor: z.string().trim().max(120).optional().or(z.literal("")),
-  belt: z.enum(BELTS),
-  degree: z.coerce.number().int().min(0).max(4),
+  belt: z.string().refine((b) => (BELT_NAMES as string[]).includes(b), "Faixa inválida"),
+  degree: z.coerce.number().int().min(0).max(10),
   country: z.string().trim().min(1, "País obrigatório").max(80),
   category: z.enum(CATEGORIES),
   modality: z.enum(MODALITIES),
+}).refine((d) => degreesForBelt(d.belt).includes(d.degree), {
+  message: "Grau inválido para esta faixa",
+  path: ["degree"],
 });
 
 type AccountForm = z.infer<typeof accountSchema>;
