@@ -184,6 +184,7 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
       certificate_number: row?.certificate_number ?? suggestCertificateNumber(),
       certified_at: row?.certified_at ?? new Date().toISOString().slice(0, 10),
       photo_url: row?.photo_url ?? "",
+      bio: row?.bio ?? "",
       is_active: row?.is_active ?? true,
     },
   });
