@@ -176,6 +176,20 @@ function HeroSlider() {
         </div>
       </div>
 
+      {/* Dots indicators (acima da barra de thumbs) */}
+      <div className="absolute bottom-[88px] left-0 right-0 z-20 flex justify-center gap-2">
+        {SLIDES.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => setI(idx)}
+            aria-label={`Ir para slide ${idx + 1}`}
+            className={`h-2.5 rounded-full transition-all ${
+              idx === i ? "w-8 bg-[#C8211A]" : "w-2.5 bg-white/50 hover:bg-white/80"
+            }`}
+          />
+        ))}
+      </div>
+
       <div className="absolute bottom-0 left-0 right-0 z-10" style={{ background: "rgba(0,0,0,0.4)" }}>
         <div className="max-w-7xl mx-auto px-4 lg:px-12 py-3 flex items-center gap-3">
           <div className="flex gap-2 flex-1 overflow-x-auto scrollbar-hide">
