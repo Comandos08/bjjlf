@@ -247,7 +247,7 @@ export function EventList({
             gridClassName ?? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
           )}
         >
-          {filtered.map((e) => (
+          {visible.map((e) => (
             <Link
               key={e.id}
               to="/events/$eventId"
@@ -299,7 +299,113 @@ export function EventList({
           ))}
         </div>
       )}
+
+      {/* Numbered paginator. Hidden when pagination is off OR there's only
+          one page of results — keeps the UI clean for narrow result sets. */}
+      {paginationEnabled && totalPages > 1 ? (
+        <Paginator
+          page={safePage}
+          totalPages={totalPages}
+          onChange={(p) => onPageChange?.(p)}
+          labels={{
+            prev: t("events.page.prev"),
+            next: t("events.page.next"),
+            goto: t("events.page.goto"),
+            current: t("events.page.current")
+              .replace("{n}", String(safePage))
+              .replace("{total}", String(totalPages)),
+          }}
+        />
+      ) : null}
     </div>
+  );
+}
+
+function Paginator({
+  page,
+  totalPages,
+  onChange,
+  labels,
+}: {
+  page: number;
+  totalPages: number;
+  onChange: (page: number) => void;
+  labels: { prev: string; next: string; goto: string; current: string };
+}) {
+  const items = useMemo(() => buildPageList(page, totalPages, 1), [page, totalPages]);
+  const goto = (p: number) => {
+    if (p < 1 || p > totalPages || p === page) return;
+    onChange(p);
+  };
+
+  return (
+    <nav
+      aria-label={labels.current}
+      className="flex flex-wrap items-center justify-center gap-1.5 pt-2"
+      data-testid="event-pagination"
+    >
+      <button
+        type="button"
+        onClick={() => goto(page - 1)}
+        disabled={page <= 1}
+        aria-label={labels.prev}
+        data-testid="event-pagination-prev"
+        className={cn(
+          typo.button.sm,
+          "inline-flex items-center gap-1 px-3 h-9 rounded-none border border-border bg-card hover:border-primary hover:text-primary disabled:opacity-40 disabled:hover:border-border disabled:hover:text-inherit transition-base",
+        )}
+      >
+        <ChevronLeft className="h-3.5 w-3.5" />
+        <span className="hidden sm:inline">{labels.prev}</span>
+      </button>
+
+      {items.map((it, i) =>
+        it === "…" ? (
+          <span
+            key={`gap-${i}`}
+            aria-hidden="true"
+            className="inline-flex items-center justify-center h-9 w-9 text-muted-foreground"
+          >
+            …
+          </span>
+        ) : (
+          <button
+            key={it}
+            type="button"
+            onClick={() => goto(it)}
+            aria-current={it === page ? "page" : undefined}
+            aria-label={labels.goto.replace("{n}", String(it))}
+            data-testid="event-pagination-page"
+            data-page={it}
+            data-active={it === page}
+            className={cn(
+              typo.button.sm,
+              "inline-flex items-center justify-center h-9 min-w-9 px-3 rounded-none border transition-base",
+              it === page
+                ? "bg-primary text-primary-foreground border-primary"
+                : "border-border bg-card hover:border-primary hover:text-primary",
+            )}
+          >
+            {it}
+          </button>
+        ),
+      )}
+
+      <button
+        type="button"
+        onClick={() => goto(page + 1)}
+        disabled={page >= totalPages}
+        aria-label={labels.next}
+        data-testid="event-pagination-next"
+        className={cn(
+          typo.button.sm,
+          "inline-flex items-center gap-1 px-3 h-9 rounded-none border border-border bg-card hover:border-primary hover:text-primary disabled:opacity-40 disabled:hover:border-border disabled:hover:text-inherit transition-base",
+        )}
+      >
+        <span className="hidden sm:inline">{labels.next}</span>
+        <ChevronRight className="h-3.5 w-3.5" />
+      </button>
+    </nav>
   );
 }
 
