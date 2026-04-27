@@ -259,9 +259,46 @@ function EventsListPage() {
               </div>
             ) : null}
 
+            {/* Sort toolbar — visible on every viewport, above the grid */}
+            <div
+              className="flex items-center justify-end gap-2"
+              data-testid="event-sort-toolbar"
+            >
+              <label
+                htmlFor="event-sort-select"
+                className={cn(typo.label.sm, "shrink-0")}
+              >
+                {t("events.sort.label")}:
+              </label>
+              <Select
+                value={sort}
+                onValueChange={(v) => setSort(v as EventSort)}
+              >
+                <SelectTrigger
+                  id="event-sort-select"
+                  className="w-[180px] rounded-none"
+                  data-testid="event-sort-trigger"
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {EVENT_SORTS.map((s) => (
+                    <SelectItem
+                      key={s}
+                      value={s}
+                      data-testid={`event-sort-option-${s}`}
+                    >
+                      {t(`events.sort.${s}`)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <EventList
               selectedBadges={badges}
               onChange={setBadges}
+              sort={sort}
               hideFilters
             />
           </div>
