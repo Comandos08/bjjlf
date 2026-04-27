@@ -1,12 +1,11 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { Calendar, ChevronLeft, ChevronRight, ArrowRight, Newspaper } from "lucide-react";
 import { PageHero } from "@/components/Stepper";
 import { type NewsItem } from "@/data/news";
 import { useNews } from "@/lib/queries";
-import { Calendar, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { typo } from "@/lib/typography";
-import { cn } from "@/lib/utils";
 import { useI18n, formatDateShort, type Lang } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 const CATEGORIES = ["All", "Tournaments", "Promotions", "Athletes", "Federation"] as const;
 
@@ -43,72 +42,163 @@ export function NewsPage() {
   const visible = rest.slice((page - 1) * perPage, page * perPage);
 
   return (
-    <div>
-      <PageHero kicker={t("news.kicker")} title={t("news.title")} desc={t("news.subtitle")} />
+    <div className="bg-white min-h-screen">
+      <PageHero
+        kicker={t("news.kicker")}
+        title={t("news.title")}
+        desc={t("news.subtitle")}
+        breadcrumb={[
+          { label: t("nav.news") },
+        ]}
+      />
 
+      {/* Sticky white category filter bar */}
+      <div
+        className="sticky z-40 bg-white border-b border-gray-200"
+        style={{ top: "64px" }}
+      >
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap gap-x-6 gap-y-2 items-center">
+          {CATEGORIES.map((c) => {
+            const active = cat === c;
+            return (
+              <button
+                key={c}
+                onClick={() => {
+                  setCat(c);
+                  setPage(1);
+                }}
+                className={cn(
+                  "py-1 text-sm uppercase tracking-widest transition-base border-b-2",
+                  active
+                    ? "text-[#C8211A] border-[#C8211A]"
+                    : "text-gray-400 border-transparent hover:text-gray-900",
+                )}
+                style={{ fontFamily: "Barlow", fontWeight: 600 }}
+              >
+                {translateCategory(c)}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Featured */}
       {featured && (
-        <section className="py-12">
-          <div className="container mx-auto px-4 lg:px-6">
-            <article className="grid lg:grid-cols-2 gap-8 items-stretch bg-card border border-border overflow-hidden border-gold-hover">
-              <div className="relative aspect-[16/10] lg:aspect-auto overflow-hidden">
-                <img src={featured.image} alt={translateTitle(featured)} className="h-full w-full object-cover" loading="lazy" />
+        <section className="bg-white py-12 md:py-16">
+          <div className="max-w-7xl mx-auto px-6">
+            <article className="grid lg:grid-cols-[3fr,2fr] gap-0 items-stretch bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden">
+              <div className="relative aspect-[16/10] lg:aspect-auto overflow-hidden bg-gray-100">
+                <img
+                  src={featured.image}
+                  alt={translateTitle(featured)}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
+                />
               </div>
-              <div className="p-8 lg:p-12 flex flex-col justify-center">
-                <span className={cn(typo.label.sm, "self-start bg-primary text-primary-foreground px-3 py-1 mb-4")}>
-                  {t("news.featured")} · {translateCategory(featured.category)}
-                </span>
-                <h2 className={cn(typo.heading.lg, "mb-4")}>{translateTitle(featured)}</h2>
-                <p className={cn(typo.body.md, "mb-5")}>{featured.excerpt}</p>
-                <div className={cn(typo.label.sm, "mb-6 flex items-center gap-2")}>
-                  <Calendar className="h-3 w-3 text-gold" /> {formatDateShort(featured.date, lang)} · {featured.author}
+              <div className="p-8 lg:p-10 flex flex-col justify-center">
+                <div className="flex flex-wrap items-center gap-2 mb-4">
+                  <span
+                    className="bg-[#C8211A] text-white px-2 py-0.5 rounded text-xs uppercase tracking-widest"
+                    style={{ fontFamily: "Barlow", fontWeight: 700 }}
+                  >
+                    {t("news.featured")}
+                  </span>
+                  <span
+                    className="text-xs uppercase tracking-widest text-[#C8211A]"
+                    style={{ fontFamily: "Barlow", fontWeight: 700 }}
+                  >
+                    {translateCategory(featured.category)}
+                  </span>
                 </div>
-                <Button variant="primary" className={cn(typo.button.md, "self-start")}>
-                  {t("news.readStory")} <ArrowRight />
-                </Button>
+                <h2
+                  className="mb-4 text-2xl md:text-3xl text-gray-900 leading-tight"
+                  style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                >
+                  {translateTitle(featured)}
+                </h2>
+                <p
+                  className="mb-5 text-base text-gray-600 leading-[1.7]"
+                  style={{ fontFamily: "Barlow", fontWeight: 400 }}
+                >
+                  {featured.excerpt}
+                </p>
+                <div
+                  className="mb-6 flex items-center gap-2 text-sm text-gray-500"
+                  style={{ fontFamily: "Barlow", fontWeight: 400 }}
+                >
+                  <Calendar className="h-3.5 w-3.5 text-[#C8A84B]" /> {formatDateShort(featured.date, lang)} · {featured.author}
+                </div>
+                <span
+                  className="self-start inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest transition-base"
+                  style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                >
+                  {t("news.readStory")} <ArrowRight className="h-3.5 w-3.5" />
+                </span>
               </div>
             </article>
           </div>
         </section>
       )}
 
-      <section className="py-8">
-        <div className="container mx-auto px-4 lg:px-6">
-          <div className="flex flex-wrap gap-2 mb-8">
-            {CATEGORIES.map((c) => (
-              <button
-                key={c}
-                onClick={() => { setCat(c); setPage(1); }}
-                className={cn(
-                  typo.button.sm,
-                  "px-4 py-2 border transition-colors",
-                  cat === c ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground/70 hover:border-gold hover:text-foreground",
-                )}
+      {/* Grid */}
+      <section className="bg-gray-50 py-12 md:py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          {visible.length === 0 ? (
+            <div className="border border-dashed border-gray-300 bg-white rounded-xl p-16 text-center">
+              <Newspaper className="mx-auto h-16 w-16 text-gray-300" aria-hidden />
+              <h3
+                className="mt-4 text-2xl uppercase tracking-wide text-gray-400"
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
               >
-                {translateCategory(c)}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {visible.map((n) => (
-              <NewsCard
-                key={n.id}
-                n={n}
-                lang={lang}
-                t={t}
-                title={translateTitle(n)}
-                categoryLabel={translateCategory(n.category)}
-              />
-            ))}
-          </div>
+                {t("news.cat.all")}
+              </h3>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {visible.map((n) => (
+                <NewsCard
+                  key={n.id}
+                  n={n}
+                  lang={lang}
+                  t={t}
+                  title={translateTitle(n)}
+                  categoryLabel={translateCategory(n.category)}
+                />
+              ))}
+            </div>
+          )}
 
           {pages > 1 && (
             <div className="flex justify-center items-center gap-2 mt-12">
-              <button disabled={page === 1} onClick={() => setPage((p) => p - 1)} className="h-10 w-10 grid place-items-center border border-border disabled:opacity-30 hover:border-gold"><ChevronLeft className="h-4 w-4" /></button>
+              <button
+                disabled={page === 1}
+                onClick={() => setPage((p) => p - 1)}
+                className="h-10 w-10 grid place-items-center rounded-md border border-gray-200 bg-white text-gray-700 hover:border-[#C8211A] hover:text-[#C8211A] disabled:opacity-30 disabled:hover:border-gray-200 disabled:hover:text-gray-700 transition-base"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
               {Array.from({ length: pages }, (_, i) => i + 1).map((p) => (
-                <button key={p} onClick={() => setPage(p)} className={cn(typo.button.md, "h-10 w-10", p === page ? "bg-primary text-primary-foreground" : "border border-border hover:border-gold")}>{p}</button>
+                <button
+                  key={p}
+                  onClick={() => setPage(p)}
+                  className={cn(
+                    "h-10 w-10 rounded-md text-sm transition-base",
+                    p === page
+                      ? "bg-[#C8211A] text-white border border-[#C8211A]"
+                      : "border border-gray-200 bg-white text-gray-700 hover:border-[#C8211A] hover:text-[#C8211A]",
+                  )}
+                  style={{ fontFamily: "Barlow", fontWeight: 600 }}
+                >
+                  {p}
+                </button>
               ))}
-              <button disabled={page === pages} onClick={() => setPage((p) => p + 1)} className="h-10 w-10 grid place-items-center border border-border disabled:opacity-30 hover:border-gold"><ChevronRight className="h-4 w-4" /></button>
+              <button
+                disabled={page === pages}
+                onClick={() => setPage((p) => p + 1)}
+                className="h-10 w-10 grid place-items-center rounded-md border border-gray-200 bg-white text-gray-700 hover:border-[#C8211A] hover:text-[#C8211A] disabled:opacity-30 disabled:hover:border-gray-200 disabled:hover:text-gray-700 transition-base"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
             </div>
           )}
         </div>
@@ -131,17 +221,44 @@ function NewsCard({
   categoryLabel: string;
 }) {
   return (
-    <article className="bg-card border border-border overflow-hidden border-gold-hover group flex flex-col">
-      <div className="relative aspect-[16/10] overflow-hidden">
-        <img src={n.image} alt={title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-        <span className={cn(typo.label.sm, "absolute top-3 left-3 bg-gold text-gold-foreground px-2 py-0.5")}>{categoryLabel}</span>
+    <Link
+      to="/news"
+      className="group flex flex-col bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden cursor-pointer"
+    >
+      <div className="relative aspect-video overflow-hidden bg-gray-100">
+        <img
+          src={n.image}
+          alt={title}
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
       </div>
-      <div className="p-5 flex-1 flex flex-col gap-3">
-        <span className={typo.label.sm}>{formatDateShort(n.date, lang)} · {n.author} · 4 {t("home.news.minRead")}</span>
-        <h3 className={cn(typo.heading.sm, "group-hover:text-gold transition-colors")}>{title}</h3>
-        <p className={cn(typo.body.sm, "line-clamp-3")}>{n.excerpt}</p>
-        <span className={cn(typo.button.md, "mt-auto inline-flex items-center gap-1 text-primary")}>{t("news.read")} <ArrowRight className="h-4 w-4" /></span>
+      <div className="flex-1 flex flex-col">
+        <span
+          className="px-5 mt-4 text-xs uppercase tracking-widest text-[#C8211A]"
+          style={{ fontFamily: "Barlow", fontWeight: 700 }}
+        >
+          {categoryLabel}
+        </span>
+        <h3
+          className="px-5 mt-1 text-xl text-gray-900 leading-tight"
+          style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+        >
+          {title}
+        </h3>
+        <p
+          className="px-5 mt-2 text-sm text-gray-500 line-clamp-2 leading-[1.6]"
+          style={{ fontFamily: "Barlow", fontWeight: 400 }}
+        >
+          {n.excerpt}
+        </p>
+        <div
+          className="mt-3 mx-5 mb-5 pt-3 border-t border-gray-100 text-xs text-gray-400"
+          style={{ fontFamily: "Barlow", fontWeight: 400 }}
+        >
+          {formatDateShort(n.date, lang)} · 4 {t("home.news.minRead")}
+        </div>
       </div>
-    </article>
+    </Link>
   );
 }
