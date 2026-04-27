@@ -55,6 +55,8 @@ const ALL_BADGES: ReadonlyArray<EventTypeBadge> = [
   "GI & NO-GI",
   "KIDS",
   "MASTER",
+  "SEMINÁRIO",
+  "CURSO",
 ];
 
 export function EventList({
