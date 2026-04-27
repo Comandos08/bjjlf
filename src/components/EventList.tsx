@@ -99,9 +99,17 @@ export function EventList({
   hideFilters = false,
   sort = DEFAULT_EVENT_SORT,
   query = "",
+  page,
+  perPage = DEFAULT_PER_PAGE,
+  onPageChange,
   className,
 }: EventListProps) {
   const { t, lang } = useI18n();
+
+  // Pagination is only "active" when the caller wired both the page number
+  // AND the change handler. Otherwise we render every filtered result —
+  // matches the pre-pagination behavior so existing call-sites are unaffected.
+  const paginationEnabled = typeof page === "number" && !!onPageChange;
 
   // Compute which chips to show. Preserves the canonical ALL_BADGES order
   // so the filter row never reshuffles when the dataset changes.
@@ -132,6 +140,23 @@ export function EventList({
     // 3) Sort
     return sortEvents(base, sort);
   }, [events, selectedBadges, sort, query]);
+
+  // Derive pagination geometry. Always-on math (cheap), only used when enabled.
+  const total = filtered.length;
+  const totalPages = pageCount(total, perPage);
+  const safePage = clampPage(page ?? 1, total, perPage);
+  const visible = paginationEnabled
+    ? filtered.slice((safePage - 1) * perPage, safePage * perPage)
+    : filtered;
+
+  // Self-heal the URL when filters shrink the result set below the current
+  // page. Without this, the user lands on a blank "page 5 of 2" view.
+  useEffect(() => {
+    if (!paginationEnabled) return;
+    if (safePage !== page) onPageChange?.(safePage);
+    // We deliberately depend on `total` (not `filtered`) so this runs only
+    // when the result count actually changes — not on every render.
+  }, [paginationEnabled, safePage, page, total, onPageChange]);
 
   const toggle = (badge: EventTypeBadge) => {
     const set = new Set(selectedBadges);
