@@ -44,26 +44,36 @@ export const Route = createFileRoute("/black-belts/$id")({
     if (!data) throw notFound();
     return data as BlackBelt;
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     const bb = loaderData as BlackBelt | undefined;
     if (!bb) {
       return { meta: [{ title: "Faixa Preta — BJJLF" }] };
     }
     const title = `${bb.athlete_name} — Faixa Preta BJJLF`;
-    const desc = bb.bio?.slice(0, 160) ?? `${bb.athlete_name}, ${bb.belt_degree}º Dan${bb.academy ? ` · ${bb.academy}` : ""}.`;
-    const meta: Array<{ title?: string; name?: string; property?: string; content?: string }> = [
-      { title },
-      { name: "description", content: desc },
-      { property: "og:title", content: title },
-      { property: "og:description", content: desc },
-      { property: "og:type", content: "profile" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ];
-    if (bb.photo_url) {
-      meta.push({ property: "og:image", content: bb.photo_url });
-      meta.push({ name: "twitter:image", content: bb.photo_url });
-    }
-    return { meta };
+    const bio = bb.bio?.trim();
+    const desc = bio
+      ? bio.length > 160
+        ? `${bio.slice(0, 157)}...`
+        : bio
+      : `Conheça ${bb.athlete_name}, ${beltLabel(bb.belt_type)}${bb.belt_degree > 0 ? ` ${bb.belt_degree}º Dan` : ""} da Brazilian Jiu-Jitsu Legends Federation.`;
+    const url = `${SITE_URL}/black-belts/${params.id}`;
+    const image = bb.photo_url ?? FALLBACK_OG_IMAGE;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:type", content: "profile" },
+        { property: "og:url", content: url },
+        { property: "og:image", content: image },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: desc },
+        { name: "twitter:image", content: image },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
   },
   errorComponent: ({ error }) => (
     <div className="min-h-screen grid place-items-center bg-gray-50">
