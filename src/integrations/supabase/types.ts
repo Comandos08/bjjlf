@@ -406,7 +406,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      bootstrap_first_admin: {
+        Args: { _email: string; _full_name: string; _user_id: string }
+        Returns: undefined
+      }
+      has_admin_role: { Args: { _roles: string[] }; Returns: boolean }
+      is_admin: { Args: never; Returns: boolean }
+      super_admin_exists: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
