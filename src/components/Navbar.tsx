@@ -147,31 +147,40 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="xl:hidden border-t border-[#222] bg-navbar overflow-x-hidden">
-          <MobileProfileBlock onNavigate={() => setOpen(false)} />
-          <nav className="container mx-auto flex flex-col px-4 py-3 max-w-full">
-            {NAV.map((item) => (
-              <Link
-                key={item.key}
-                to={item.to ?? "/"}
-                onClick={() => setOpen(false)}
-                className="py-3 text-sm tracking-wide text-gray-300 whitespace-nowrap"
-                style={{ fontFamily: "Barlow", fontWeight: 500 }}
-                activeProps={{ className: "py-3 text-sm tracking-wide text-white whitespace-nowrap", style: { fontFamily: "Barlow", fontWeight: 600 } }}
-                activeOptions={{ exact: item.to === "/" }}
-              >
-                {t(`nav.${item.key}`)}
-              </Link>
-            ))}
-            <MobileAthleteLinks onNavigate={() => setOpen(false)} />
-            <div className="flex items-center gap-3 pt-3 border-t border-[#222] mt-2">
-              <LangToggle lang={lang} onChange={setLang} />
-              <button aria-label="Shop" className="text-gray-400 hover:text-white">
-                <ShoppingBag size={18} />
-              </button>
-            </div>
-          </nav>
-        </div>
+        <>
+          {/* Dim overlay — tap to close */}
+          <button
+            type="button"
+            aria-label="Fechar menu"
+            onClick={() => setOpen(false)}
+            className="xl:hidden fixed inset-0 top-16 z-40 bg-black/40"
+          />
+          <div className="xl:hidden relative z-50 border-t border-[#222] bg-navbar overflow-x-hidden max-w-full">
+            <MobileProfileBlock />
+            <nav className="container mx-auto flex flex-col px-4 py-3 max-w-full overflow-x-hidden">
+              {NAV.map((item) => (
+                <Link
+                  key={item.key}
+                  to={item.to ?? "/"}
+                  onClick={() => setOpen(false)}
+                  className="py-3 text-sm tracking-wide text-gray-300 truncate"
+                  style={{ fontFamily: "Barlow", fontWeight: 500 }}
+                  activeProps={{ className: "py-3 text-sm tracking-wide text-white truncate", style: { fontFamily: "Barlow", fontWeight: 600 } }}
+                  activeOptions={{ exact: item.to === "/" }}
+                >
+                  {t(`nav.${item.key}`)}
+                </Link>
+              ))}
+              <MobileAthleteLinks onNavigate={() => setOpen(false)} />
+              <div className="flex items-center gap-3 pt-3 border-t border-[#222] mt-2">
+                <LangToggle lang={lang} onChange={setLang} />
+                <button aria-label="Shop" className="text-gray-400 hover:text-white">
+                  <ShoppingBag size={18} />
+                </button>
+              </div>
+            </nav>
+          </div>
+        </>
       )}
     </header>
   );
