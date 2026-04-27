@@ -35,6 +35,7 @@ export function AthleteLoginPage() {
   const navigate = useNavigate();
   const { user, profile, isLoading, signOut } = useAthleteAuth();
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // If already logged in and active → redirect.
   useEffect(() => {
@@ -49,6 +50,7 @@ export function AthleteLoginPage() {
 
   async function onSubmit(values: FormValues) {
     setSubmitting(true);
+    setSubmitError(null);
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email: values.email,
@@ -58,8 +60,8 @@ export function AthleteLoginPage() {
       // The auth listener in athlete-auth will fetch the profile shortly;
       // the useEffect above (or the status banners below) will react.
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Erro desconhecido.";
-      toast.error(`Falha no login: ${msg}`);
+      const err = e instanceof Error ? e : new Error("Erro desconhecido.");
+      setSubmitError(parseLoginError(err));
     } finally {
       setSubmitting(false);
     }
