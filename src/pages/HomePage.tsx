@@ -282,9 +282,9 @@ function RankingSection() {
         <LocalSectionHeading title={t("home.ranking.title")} />
 
         <div className="flex flex-wrap gap-6 mb-6 border-b border-[#2A2A2A] pb-4">
-          <FilterGroup label="Gender" options={[{ v: "male", l: t("home.ranking.male") }, { v: "female", l: t("home.ranking.female") }]} value={gender} onChange={(v) => setGender(v as "male" | "female")} />
-          <FilterGroup label="Belt" options={[{ v: "black", l: t("home.ranking.beltBlack") }, { v: "brown", l: t("home.ranking.beltBrown") }, { v: "purple", l: t("home.ranking.beltPurple") }, { v: "blue", l: t("home.ranking.beltBlue") }, { v: "white", l: t("home.ranking.beltWhite") }]} value={belt} onChange={(v) => setBelt(v as typeof belt)} />
-          <FilterGroup label="Category" options={[{ v: "adult", l: t("home.ranking.adult") }, { v: "master", l: t("home.ranking.master") }, { v: "juvenile", l: t("home.ranking.juvenile") }]} value={category} onChange={(v) => setCategory(v as typeof category)} />
+          <FilterGroup label={t("home.ranking.gender")} options={[{ v: "male", l: t("home.ranking.male") }, { v: "female", l: t("home.ranking.female") }]} value={gender} onChange={(v) => setGender(v as "male" | "female")} />
+          <FilterGroup label={t("home.ranking.belt")} options={[{ v: "black", l: t("home.ranking.beltBlack") }, { v: "brown", l: t("home.ranking.beltBrown") }, { v: "purple", l: t("home.ranking.beltPurple") }, { v: "blue", l: t("home.ranking.beltBlue") }, { v: "white", l: t("home.ranking.beltWhite") }]} value={belt} onChange={(v) => setBelt(v as typeof belt)} />
+          <FilterGroup label={t("home.ranking.category")} options={[{ v: "adult", l: t("home.ranking.adult") }, { v: "master", l: t("home.ranking.master") }, { v: "juvenile", l: t("home.ranking.juvenile") }]} value={category} onChange={(v) => setCategory(v as typeof category)} />
         </div>
 
         <div className="grid md:grid-cols-2 gap-4">
