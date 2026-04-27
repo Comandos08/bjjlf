@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Outlet, Link, createRootRouteWithContext, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRouteWithContext, HeadContent, Scripts, useRouterState } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import appCss from "../styles.css?url";
 import { Navbar } from "@/components/Navbar";
@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { ImageDebugPanel } from "@/components/ImageDebugPanel";
 import { cleanupStaleCaches } from "@/lib/cache-cleanup";
 import { I18nProvider } from "@/lib/i18n";
+import { AdminAuthProvider } from "@/lib/admin-auth";
 
 interface RouterContext {
   queryClient: QueryClient;
@@ -83,6 +84,9 @@ function RootComponent() {
   // QueryClientProvider here makes useQuery/useSuspenseQuery work in every
   // child route without each route having to grab the client itself.
   const { queryClient } = Route.useRouteContext();
+  // Hide the public Navbar/Footer on every /admin/* route — admin has its own chrome.
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isAdmin = pathname.startsWith("/admin");
 
   // Dev-only: scrub any leftover service workers / cache entries that could
   // be serving stale (4xx) image responses for URLs we now want to load.
@@ -93,14 +97,20 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
-        <div className="min-h-screen flex flex-col bg-background">
-          <Navbar />
-          <main className="flex-1">
+        <AdminAuthProvider>
+          {isAdmin ? (
             <Outlet />
-          </main>
-          <Footer />
-        </div>
-        <ImageDebugPanel />
+          ) : (
+            <div className="min-h-screen flex flex-col bg-background">
+              <Navbar />
+              <main className="flex-1">
+                <Outlet />
+              </main>
+              <Footer />
+            </div>
+          )}
+          {!isAdmin && <ImageDebugPanel />}
+        </AdminAuthProvider>
       </I18nProvider>
     </QueryClientProvider>
   );
