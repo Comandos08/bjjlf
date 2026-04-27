@@ -472,3 +472,24 @@ function AcademyCard({ academy: a }: { academy: Academy }) {
     </article>
   );
 }
+
+function AcademyCardSkeleton() {
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col">
+      <div className="h-1.5 bg-[#E5E5E5]" />
+      <div className="p-6 flex flex-col flex-1 gap-3">
+        <div className="flex items-center justify-between">
+          <div className="h-16 w-16 rounded-full bg-[#E5E5E5] animate-pulse" />
+          <div className="h-5 w-20 bg-[#E5E5E5] rounded-full animate-pulse" />
+        </div>
+        <div className="h-6 w-3/4 bg-[#E5E5E5] rounded animate-pulse mt-2" />
+        <div className="h-4 w-1/2 bg-[#E5E5E5] rounded animate-pulse" />
+        <div className="border-t border-gray-100 my-2" />
+        <div className="h-4 w-full bg-[#E5E5E5] rounded animate-pulse" />
+        <div className="h-4 w-5/6 bg-[#E5E5E5] rounded animate-pulse" />
+        <div className="h-4 w-2/3 bg-[#E5E5E5] rounded animate-pulse" />
+        <div className="mt-4 h-11 w-full bg-[#E5E5E5] rounded-lg animate-pulse" />
+      </div>
+    </div>
+  );
+}
