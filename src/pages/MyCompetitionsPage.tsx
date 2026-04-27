@@ -96,8 +96,24 @@ export function MyCompetitionsPage() {
 
   if (authLoading || !profile) {
     return (
-      <div className="bg-gray-50 min-h-screen grid place-items-center">
-        <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+      <div className="bg-gray-50 min-h-screen py-12">
+        <div className="max-w-4xl mx-auto px-6 space-y-12">
+          {[0, 1].map((k) => (
+            <section key={k}>
+              <div className="h-8 w-56 bg-gray-200 rounded animate-pulse" />
+              <div className="h-1 w-12 bg-gray-200 rounded mt-3" />
+              <ul className="mt-6 space-y-3">
+                {[0, 1, 2].map((i) => (
+                  <li key={i} className="bg-white border border-gray-200 rounded-xl p-5">
+                    <div className="h-5 w-2/3 bg-gray-200 rounded animate-pulse" />
+                    <div className="h-3 w-1/3 bg-gray-100 rounded animate-pulse mt-2" />
+                    <div className="h-3 w-1/2 bg-gray-100 rounded animate-pulse mt-2" />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
       </div>
     );
   }

@@ -10,6 +10,14 @@ import {
   type Event,
   type EventTypeBadge,
 } from "@/data/events";
+
+/** Monochrome filter chip — red active vs gray inactive. */
+const chipBase =
+  "inline-flex items-center rounded-full px-4 py-1.5 text-xs uppercase tracking-widest transition-base focus-ring";
+const chipInactive =
+  "bg-white border border-gray-300 text-gray-600 hover:border-[#C8211A] hover:text-[#C8211A]";
+const chipActive =
+  "bg-[#C8211A] border border-[#C8211A] text-white";
 import { sortEvents, DEFAULT_EVENT_SORT, type EventSort } from "@/lib/event-sort";
 import {
   buildPageList,
@@ -145,14 +153,10 @@ export function EventList({
                   data-testid="event-filter-chip"
                   data-badge={badge}
                   data-active={active}
-                  className={cn(
-                    "transition-base focus-ring rounded",
-                    active
-                      ? "ring-2 ring-offset-2 ring-offset-white ring-[#C8211A]"
-                      : "opacity-70 hover:opacity-100",
-                  )}
+                  className={cn(chipBase, active ? chipActive : chipInactive)}
+                  style={{ fontFamily: "Barlow", fontWeight: active ? 700 : 600 }}
                 >
-                  <EventBadge badge={badge} variant="inline" />
+                  {badge}
                 </button>
               );
             })}
@@ -416,13 +420,8 @@ function FilterChip({
       data-testid="event-filter-chip"
       data-badge="ALL"
       data-active={active}
-      className={cn(
-        "inline-flex items-center rounded transition-base focus-ring px-3 py-1.5 text-xs uppercase tracking-widest",
-        active
-          ? "bg-gray-900 text-white"
-          : "bg-gray-100 text-gray-600 hover:bg-gray-200",
-      )}
-      style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+      className={cn(chipBase, active ? chipActive : chipInactive)}
+      style={{ fontFamily: "Barlow", fontWeight: active ? 700 : 600 }}
     >
       {label}
     </button>

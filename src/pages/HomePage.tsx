@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, Calendar, MapPin, Play, ArrowRight, Users, Building2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import { useEvents, useNews, useRankings } from "@/lib/queries";
 import { useI18n, formatDateShort } from "@/lib/i18n";
 import { SafeImage } from "@/components/SafeImage";
@@ -13,13 +13,21 @@ import heroBlackBeltUrl from "@/assets/hero-3-bjj.jpg";
 import youtubeBlackBeltImg from "@/assets/youtube-black-belt-promotions.jpg";
 import youtubeMestreRobertoImg from "@/assets/youtube-mestre-roberto.jpg";
 
-const SLIDES = [
+const SLIDES: ReadonlyArray<{
+  image: string;
+  thumb: string;
+  titleKey: string;
+  subKey: string;
+  badge: string;
+  event_id?: string;
+}> = [
   {
     image: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=1440&h=600",
     thumb: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=80&h=50",
     titleKey: "slide.1.title",
     subKey: "slide.1.sub",
     badge: "BJJLF World Championship 2025",
+    event_id: "wc25",
   },
   {
     image: "https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=1440&h=600",
@@ -27,6 +35,7 @@ const SLIDES = [
     titleKey: "slide.2.title",
     subKey: "slide.2.sub",
     badge: "No-Gi Pan-American",
+    event_id: "eu25",
   },
   {
     image: heroBlackBeltUrl,
@@ -98,8 +107,45 @@ function HeroSlider() {
           </div>
 
           <div className="mt-7 flex flex-wrap gap-3">
-            <Button variant="primary" size="default">{t("hero.cta.learnMore")}</Button>
-            <Button variant="outline" size="default">{t("hero.cta.register")}</Button>
+            {slide.event_id ? (
+              <Link
+                to="/events/$eventId"
+                params={{ eventId: slide.event_id }}
+                search={((prev: unknown) => prev) as never}
+                className="inline-flex items-center justify-center rounded-md bg-white text-black hover:bg-gray-100 px-5 py-2.5 text-sm uppercase tracking-widest no-underline transition-base"
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+              >
+                {t("hero.cta.learnMore")}
+              </Link>
+            ) : (
+              <Link
+                to="/events"
+                search={((prev: unknown) => prev) as never}
+                className="inline-flex items-center justify-center rounded-md bg-white text-black hover:bg-gray-100 px-5 py-2.5 text-sm uppercase tracking-widest no-underline transition-base"
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+              >
+                {t("hero.cta.learnMore")}
+              </Link>
+            )}
+            {slide.event_id ? (
+              <Link
+                to="/register/event/$eventId"
+                params={{ eventId: slide.event_id }}
+                className="inline-flex items-center justify-center rounded-md bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest no-underline transition-base"
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+              >
+                {t("hero.cta.register")}
+              </Link>
+            ) : (
+              <Link
+                to="/events"
+                search={((prev: unknown) => prev) as never}
+                className="inline-flex items-center justify-center rounded-md bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest no-underline transition-base"
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+              >
+                {t("hero.cta.register")}
+              </Link>
+            )}
           </div>
         </div>
       </div>

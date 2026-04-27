@@ -1,19 +1,28 @@
-import { useMemo, useRef, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Loader2, AlertCircle, ArrowLeft } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import dragon from "@/assets/dragon-logo.png";
 import { cn } from "@/lib/utils";
 import { typo } from "@/lib/typography";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { useRequireActiveAthlete } from "@/hooks/useRequireActiveAthlete";
+import { useAthleteAuth } from "@/lib/athlete-auth";
 
 const MAX_DEGREES = 4;
 
 export function MyCardPage() {
-  const { profile, isLoading, refresh } = useRequireActiveAthlete();
+  const navigate = useNavigate();
+  const { user, profile, isLoading, refresh } = useAthleteAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+
+  // Redirect to login when loading finishes and there's no user.
+  useEffect(() => {
+    if (!isLoading && !user) {
+      void navigate({ to: "/athlete/login" });
+    }
+  }, [isLoading, user, navigate]);
 
   const initials = useMemo(() => {
     if (!profile) return "";
@@ -28,12 +37,38 @@ export function MyCardPage() {
     });
   }, [profile]);
 
-  if (isLoading || !profile) {
+  // Loading: show skeleton card.
+  if (isLoading || (!user && !profile)) {
+    return <CardPageSkeleton />;
+  }
+
+  // Logged in but no profile row.
+  if (user && !profile) {
     return (
-      <div className="bg-gray-50 min-h-screen grid place-items-center">
-        <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+      <div className="bg-gray-50 min-h-screen grid place-items-center px-6">
+        <div className="max-w-md text-center bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+          <AlertCircle className="h-12 w-12 text-[#C8211A] mx-auto mb-4" />
+          <h2 className="text-2xl uppercase text-gray-900 tracking-wide" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
+            Perfil não encontrado
+          </h2>
+          <p className="mt-3 text-sm text-gray-500" style={{ fontFamily: "Barlow" }}>
+            Não encontramos um perfil de atleta vinculado a esta conta. Cadastre-se para emitir sua carteirinha.
+          </p>
+          <Link
+            to="/"
+            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest no-underline"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+          >
+            <ArrowLeft className="h-4 w-4" /> Voltar ao início
+          </Link>
+        </div>
       </div>
     );
+  }
+
+  if (!profile) {
+    // unreachable but keeps TS happy
+    return <CardPageSkeleton />;
   }
 
   const verifyUrl = profile.registration_number
@@ -194,6 +229,35 @@ function DegreeDots({ filled, max }: { filled: number; max: number }) {
           />
         );
       })}
+    </div>
+  );
+}
+
+function CardPageSkeleton() {
+  return (
+    <div className="bg-gray-50 min-h-screen py-12">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-10">
+          <div className="h-8 w-56 bg-gray-200 rounded animate-pulse mx-auto" />
+          <div className="h-1 w-12 bg-gray-200 rounded mt-3 mx-auto" />
+          <div className="h-3 w-72 bg-gray-200 rounded mt-3 mx-auto animate-pulse" />
+        </div>
+        <div className="flex flex-col items-center">
+          <div className="w-[300px] bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+            <div className="h-16 bg-gray-200 rounded-t-2xl animate-pulse" />
+            <div className="px-5 pt-5 pb-4 flex flex-col items-center gap-3">
+              <div className="w-24 h-24 rounded-full bg-gray-200 animate-pulse" />
+              <div className="h-6 w-48 bg-gray-200 rounded animate-pulse" />
+              <div className="h-4 w-24 bg-gray-200 rounded animate-pulse" />
+            </div>
+            <div className="h-32 bg-gray-100 rounded-xl mx-4 mt-2 animate-pulse" />
+            <div className="h-16 bg-gray-100 rounded mx-4 mt-4 mb-5 animate-pulse" />
+          </div>
+          <div className="mt-6 inline-flex items-center gap-2 text-xs text-gray-400">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" /> Carregando carteirinha…
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

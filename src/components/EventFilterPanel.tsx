@@ -1,8 +1,14 @@
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
-import { EventBadge } from "@/components/EventBadge";
 import { type EventTypeBadge } from "@/data/events";
+
+const chipBase =
+  "inline-flex items-center justify-center rounded-full px-4 py-1.5 text-xs uppercase tracking-widest transition-base focus-ring";
+const chipInactive =
+  "bg-white border border-gray-300 text-gray-600 hover:border-[#C8211A] hover:text-[#C8211A]";
+const chipActive =
+  "bg-[#C8211A] border border-[#C8211A] text-white";
 
 /**
  * Reusable filter panel for events. Light theme.
@@ -74,18 +80,13 @@ export function EventFilterPanel({
               data-badge={badge}
               data-active={active}
               className={cn(
-                "transition-base focus-ring rounded",
-                isVertical && "w-full text-left",
-                active
-                  ? "ring-2 ring-offset-2 ring-offset-white ring-[#C8211A]"
-                  : "opacity-70 hover:opacity-100",
+                chipBase,
+                active ? chipActive : chipInactive,
+                isVertical && "w-full",
               )}
+              style={{ fontFamily: "Barlow", fontWeight: active ? 700 : 600 }}
             >
-              <EventBadge
-                badge={badge}
-                variant="inline"
-                className={cn(isVertical && "w-full justify-center")}
-              />
+              {badge}
             </button>
           );
         })}
