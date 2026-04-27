@@ -34,7 +34,7 @@ export const EVENTS: Event[] = [
     name: "Americas Open",
     date: "2025-05-30",
     location: "San Diego, US",
-    image: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&w=400&h=250",
+    image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=800",
     type: "No-Gi",
     badge: "NO-GI",
   },
