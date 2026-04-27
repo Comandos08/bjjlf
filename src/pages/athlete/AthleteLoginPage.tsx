@@ -70,20 +70,7 @@ export function AthleteLoginPage() {
   // Logged in but not active → show status screens.
   if (!isLoading && user && profile && profile.status !== "active") {
     if (profile.status === "pending") {
-      return (
-        <AthleteAuthLayout title="Cadastro em análise">
-          <div className="text-center py-2">
-            <Clock className="h-14 w-14 text-yellow-500 mx-auto mb-3" />
-            <p className="text-sm text-gray-600" style={{ fontFamily: "Barlow" }}>
-              Seu cadastro está sendo analisado pela federação. Você receberá um
-              email quando for aprovado.
-            </p>
-            <button onClick={() => void signOut()} className="mt-6 text-sm text-[#C8211A] hover:underline" style={{ fontFamily: "Barlow", fontWeight: 600 }}>
-              Sair
-            </button>
-          </div>
-        </AthleteAuthLayout>
-      );
+      return <PendingStatusScreen email={user.email ?? ""} confirmed={!!user.email_confirmed_at} signOut={signOut} />;
     }
     return (
       <AthleteAuthLayout title="Conta suspensa">
