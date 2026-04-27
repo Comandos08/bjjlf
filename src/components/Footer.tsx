@@ -1,7 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Instagram, Youtube, Twitter } from "lucide-react";
+import { Facebook, Instagram, Youtube, Twitter, Mail, MessageCircle } from "lucide-react";
 import { Logo } from "./Logo";
 import { useI18n } from "@/lib/i18n";
+
+const CONTACT_EMAIL = "contato@bjjlf.com.br";
+const WHATSAPP_NUMBER = "5511999990000"; // formato internacional E.164 sem '+'
 
 export function Footer() {
   const { t } = useI18n();
@@ -22,11 +25,21 @@ export function Footer() {
                 <a
                   key={i}
                   href="#"
+                  aria-label="Rede social"
                   className="h-8 w-8 grid place-items-center border border-[#333] text-gray-400 hover:text-white hover:border-[#C8A84B] transition-base rounded"
                 >
                   <Icon className="h-3.5 w-3.5" />
                 </a>
               ))}
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+                className="h-8 w-8 grid place-items-center border border-[#333] text-gray-400 hover:text-white hover:border-[#25D366] transition-base rounded"
+              >
+                <MessageCircle className="h-3.5 w-3.5" />
+              </a>
             </div>
           </div>
 
@@ -60,8 +73,13 @@ export function Footer() {
             <ul>
               <li><Link to="/about" className={linkClass}>{t("footer.col.about")}</Link></li>
               <li><Link to="/news" className={linkClass}>{t("footer.col.news")}</Link></li>
-              <li><a href="#" className={linkClass}>{t("footer.col.contact")}</a></li>
-              <li><a href="#" className={linkClass}>{t("footer.col.privacy")}</a></li>
+              <li>
+                <a href={`mailto:${CONTACT_EMAIL}`} className={linkClass}>
+                  <span className="inline-flex items-center gap-1.5"><Mail className="h-3.5 w-3.5" /> {CONTACT_EMAIL}</span>
+                </a>
+              </li>
+              <li><Link to="/privacy" className={linkClass}>{t("footer.col.privacy")}</Link></li>
+              <li><Link to="/terms" className={linkClass}>{t("footer.terms")}</Link></li>
             </ul>
           </div>
 
@@ -85,8 +103,9 @@ export function Footer() {
         <div className="mt-10 pt-5 border-t border-[#2A2A2A] flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-sans text-xs text-gray-500">{t("footer.copyright")}</p>
           <div className="flex gap-5">
-            <a href="#" className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.privacy")}</a>
-            <a href="#" className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.terms")}</a>
+            <Link to="/privacy" className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.privacy")}</Link>
+            <Link to="/terms" className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.terms")}</Link>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.col.contact")}</a>
           </div>
         </div>
       </div>
