@@ -252,10 +252,8 @@ export function EventList({
               key={e.id}
               to="/events/$eventId"
               params={{ eventId: e.id }}
-              // /events parent declares validateSearch; the detail page
-              // doesn't use list filters. `true` tells TanStack to keep
-              // existing search params unchanged.
-              search={true}
+              // Preserve parent /events search params when navigating to detail.
+              search={(prev) => prev}
               data-testid="event-list-card"
               data-badge={e.badge}
               className="rounded-none bg-white border border-[#E5E5E5] flex flex-col group cursor-pointer hover:border-primary hover:shadow-[0_8px_24px_rgba(196,30,58,0.15)] hover:-translate-y-[3px] no-underline"

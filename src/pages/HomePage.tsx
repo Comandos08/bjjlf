@@ -170,9 +170,8 @@ function EventsSection() {
                 key={e.id}
                 to="/events/$eventId"
                 params={{ eventId: e.id }}
-                // /events parent declares validateSearch; detail page
-                // ignores list filters. `true` keeps existing search.
-                search={true}
+                // Preserve parent /events search params (none in this context).
+                search={(prev) => prev}
                 className="rounded-none bg-white border border-[#E5E5E5] flex flex-col group cursor-pointer hover:border-primary hover:shadow-[0_8px_24px_rgba(196,30,58,0.15)] hover:-translate-y-[3px] no-underline"
                 style={{ transition: "all 0.18s ease" }}
               >
