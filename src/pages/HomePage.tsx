@@ -60,20 +60,44 @@ const SLIDE_TEXT: Record<string, { pt: string; en: string }> = {
 function HeroSlider() {
   const { lang, t } = useI18n();
   const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
   useEffect(() => {
+    if (paused) return;
     const id = setInterval(() => setI((p) => (p + 1) % SLIDES.length), 6000);
     return () => clearInterval(id);
-  }, []);
+  }, [paused]);
   const slide = SLIDES[i];
 
   return (
-    <section className="relative w-full overflow-hidden bg-black" style={{ height: "560px" }}>
+    <section
+      className="relative w-full overflow-hidden bg-black group/hero"
+      style={{ height: "560px" }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       {SLIDES.map((s, idx) => (
         <div key={idx} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: idx === i ? 1 : 0 }}>
           <SafeImage src={s.image} alt={s.badge} fallbackLabel={s.badge} source="hero" wrapperClassName="absolute inset-0" />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3) 100%)" }} />
         </div>
       ))}
+
+      {/* Setas laterais (visíveis no hover desktop, sempre no mobile) */}
+      <button
+        onClick={() => setI((p) => (p - 1 + SLIDES.length) % SLIDES.length)}
+        className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-11 w-11 grid place-items-center rounded-full bg-black/50 text-white border border-white/30 hover:bg-[#C8211A] hover:border-[#C8211A] transition md:opacity-0 md:group-hover/hero:opacity-100"
+        aria-label="Anterior"
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+      <button
+        onClick={() => setI((p) => (p + 1) % SLIDES.length)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-11 w-11 grid place-items-center rounded-full bg-black/50 text-white border border-white/30 hover:bg-[#C8211A] hover:border-[#C8211A] transition md:opacity-0 md:group-hover/hero:opacity-100"
+        aria-label="Próxima"
+      >
+        <ChevronRight className="h-5 w-5" />
+      </button>
+
 
       <div className="relative z-10 max-w-7xl mx-auto h-full px-4 lg:px-12 flex items-center pb-32">
         <div className="max-w-2xl">
