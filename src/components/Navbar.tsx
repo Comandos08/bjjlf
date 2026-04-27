@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, X, ShoppingBag, User, ChevronDown, Globe } from "lucide-react";
+import { Menu, X, ShoppingBag, User, ChevronDown, Globe, CreditCard } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { useI18n, type Lang } from "@/lib/i18n";
@@ -135,6 +135,13 @@ export function Navbar() {
           >
             <ShoppingBag size={18} />
           </button>
+          <Link
+            to="/my-card"
+            aria-label="Minha Carteirinha"
+            className="text-gray-400 hover:text-white transition-base"
+          >
+            <CreditCard size={18} />
+          </Link>
           <button
             aria-label="Login"
             className="text-gray-400 hover:text-white transition-base"
@@ -180,6 +187,9 @@ export function Navbar() {
               <button aria-label="Shop" className="text-gray-400 hover:text-white">
                 <ShoppingBag size={18} />
               </button>
+              <Link to="/my-card" aria-label="Minha Carteirinha" onClick={() => setOpen(false)} className="text-gray-400 hover:text-white">
+                <CreditCard size={18} />
+              </Link>
               <button aria-label="Login" className="text-gray-400 hover:text-white">
                 <User size={18} />
               </button>
