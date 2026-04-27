@@ -313,7 +313,7 @@ export function EventRegistrationPage() {
               className="mt-3 text-gray-500"
               style={{ fontFamily: "Barlow", fontWeight: 400 }}
             >
-              Preencha os dados abaixo para se inscrever no campeonato.
+              Preencha os dados abaixo para se inscrever no evento.
             </p>
           </div>
 
