@@ -14,6 +14,7 @@ import { Route as RulesRouteImport } from './routes/rules'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as MyProfileRouteImport } from './routes/my-profile'
+import { Route as MyPermitsRouteImport } from './routes/my-permits'
 import { Route as MyCompetitionsRouteImport } from './routes/my-competitions'
 import { Route as MyCardRouteImport } from './routes/my-card'
 import { Route as GraduatesRouteImport } from './routes/graduates'
@@ -29,6 +30,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as VerifyAthleteIdRouteImport } from './routes/verify.$athleteId'
 import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
 import { Route as RegisterAcademyRouteImport } from './routes/register.academy'
+import { Route as MyPermitPermitNumberRouteImport } from './routes/my-permit.$permitNumber'
 import { Route as GraduatesGraduateIdRouteImport } from './routes/graduates.$graduateId'
 import { Route as EventsEventIdRouteImport } from './routes/events.$eventId'
 import { Route as AthleteSignupRouteImport } from './routes/athlete.signup'
@@ -40,6 +42,7 @@ import { Route as AdminSetupRouteImport } from './routes/admin.setup'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminRegistrationsRouteImport } from './routes/admin.registrations'
 import { Route as AdminRankingsRouteImport } from './routes/admin.rankings'
+import { Route as AdminPermitsRouteImport } from './routes/admin.permits'
 import { Route as AdminNewsRouteImport } from './routes/admin.news'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminHeroRouteImport } from './routes/admin.hero'
@@ -47,6 +50,8 @@ import { Route as AdminEventsRouteImport } from './routes/admin.events'
 import { Route as AdminBlackBeltsRouteImport } from './routes/admin.black-belts'
 import { Route as AdminAthletesRouteImport } from './routes/admin.athletes'
 import { Route as AdminAcademiesRouteImport } from './routes/admin.academies'
+import { Route as AcademyPermitRouteImport } from './routes/academy.permit'
+import { Route as VerifyAcademyPermitNumberRouteImport } from './routes/verify.academy.$permitNumber'
 import { Route as RegisterEventEventIdRouteImport } from './routes/register.event.$eventId'
 
 const TypographyRoute = TypographyRouteImport.update({
@@ -72,6 +77,11 @@ const NewsRoute = NewsRouteImport.update({
 const MyProfileRoute = MyProfileRouteImport.update({
   id: '/my-profile',
   path: '/my-profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyPermitsRoute = MyPermitsRouteImport.update({
+  id: '/my-permits',
+  path: '/my-permits',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MyCompetitionsRoute = MyCompetitionsRouteImport.update({
@@ -149,6 +159,11 @@ const RegisterAcademyRoute = RegisterAcademyRouteImport.update({
   path: '/register/academy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MyPermitPermitNumberRoute = MyPermitPermitNumberRouteImport.update({
+  id: '/my-permit/$permitNumber',
+  path: '/my-permit/$permitNumber',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GraduatesGraduateIdRoute = GraduatesGraduateIdRouteImport.update({
   id: '/$graduateId',
   path: '/$graduateId',
@@ -204,6 +219,11 @@ const AdminRankingsRoute = AdminRankingsRouteImport.update({
   path: '/rankings',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminPermitsRoute = AdminPermitsRouteImport.update({
+  id: '/permits',
+  path: '/permits',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminNewsRoute = AdminNewsRouteImport.update({
   id: '/news',
   path: '/news',
@@ -239,6 +259,17 @@ const AdminAcademiesRoute = AdminAcademiesRouteImport.update({
   path: '/academies',
   getParentRoute: () => AdminRoute,
 } as any)
+const AcademyPermitRoute = AcademyPermitRouteImport.update({
+  id: '/academy/permit',
+  path: '/academy/permit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyAcademyPermitNumberRoute =
+  VerifyAcademyPermitNumberRouteImport.update({
+    id: '/verify/academy/$permitNumber',
+    path: '/verify/academy/$permitNumber',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const RegisterEventEventIdRoute = RegisterEventEventIdRouteImport.update({
   id: '/register/event/$eventId',
   path: '/register/event/$eventId',
@@ -257,11 +288,13 @@ export interface FileRoutesByFullPath {
   '/graduates': typeof GraduatesRouteWithChildren
   '/my-card': typeof MyCardRoute
   '/my-competitions': typeof MyCompetitionsRoute
+  '/my-permits': typeof MyPermitsRoute
   '/my-profile': typeof MyProfileRoute
   '/news': typeof NewsRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
+  '/academy/permit': typeof AcademyPermitRoute
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/athletes': typeof AdminAthletesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
@@ -269,6 +302,7 @@ export interface FileRoutesByFullPath {
   '/admin/hero': typeof AdminHeroRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
+  '/admin/permits': typeof AdminPermitsRoute
   '/admin/rankings': typeof AdminRankingsRoute
   '/admin/registrations': typeof AdminRegistrationsRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -280,11 +314,13 @@ export interface FileRoutesByFullPath {
   '/athlete/signup': typeof AthleteSignupRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
+  '/my-permit/$permitNumber': typeof MyPermitPermitNumberRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin/': typeof AdminIndexRoute
   '/register/event/$eventId': typeof RegisterEventEventIdRoute
+  '/verify/academy/$permitNumber': typeof VerifyAcademyPermitNumberRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -297,11 +333,13 @@ export interface FileRoutesByTo {
   '/graduates': typeof GraduatesRouteWithChildren
   '/my-card': typeof MyCardRoute
   '/my-competitions': typeof MyCompetitionsRoute
+  '/my-permits': typeof MyPermitsRoute
   '/my-profile': typeof MyProfileRoute
   '/news': typeof NewsRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
+  '/academy/permit': typeof AcademyPermitRoute
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/athletes': typeof AdminAthletesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
@@ -309,6 +347,7 @@ export interface FileRoutesByTo {
   '/admin/hero': typeof AdminHeroRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
+  '/admin/permits': typeof AdminPermitsRoute
   '/admin/rankings': typeof AdminRankingsRoute
   '/admin/registrations': typeof AdminRegistrationsRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -320,11 +359,13 @@ export interface FileRoutesByTo {
   '/athlete/signup': typeof AthleteSignupRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
+  '/my-permit/$permitNumber': typeof MyPermitPermitNumberRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin': typeof AdminIndexRoute
   '/register/event/$eventId': typeof RegisterEventEventIdRoute
+  '/verify/academy/$permitNumber': typeof VerifyAcademyPermitNumberRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -339,11 +380,13 @@ export interface FileRoutesById {
   '/graduates': typeof GraduatesRouteWithChildren
   '/my-card': typeof MyCardRoute
   '/my-competitions': typeof MyCompetitionsRoute
+  '/my-permits': typeof MyPermitsRoute
   '/my-profile': typeof MyProfileRoute
   '/news': typeof NewsRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
+  '/academy/permit': typeof AcademyPermitRoute
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/athletes': typeof AdminAthletesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
@@ -351,6 +394,7 @@ export interface FileRoutesById {
   '/admin/hero': typeof AdminHeroRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
+  '/admin/permits': typeof AdminPermitsRoute
   '/admin/rankings': typeof AdminRankingsRoute
   '/admin/registrations': typeof AdminRegistrationsRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -362,11 +406,13 @@ export interface FileRoutesById {
   '/athlete/signup': typeof AthleteSignupRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
+  '/my-permit/$permitNumber': typeof MyPermitPermitNumberRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin/': typeof AdminIndexRoute
   '/register/event/$eventId': typeof RegisterEventEventIdRoute
+  '/verify/academy/$permitNumber': typeof VerifyAcademyPermitNumberRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -382,11 +428,13 @@ export interface FileRouteTypes {
     | '/graduates'
     | '/my-card'
     | '/my-competitions'
+    | '/my-permits'
     | '/my-profile'
     | '/news'
     | '/rankings'
     | '/rules'
     | '/typography'
+    | '/academy/permit'
     | '/admin/academies'
     | '/admin/athletes'
     | '/admin/black-belts'
@@ -394,6 +442,7 @@ export interface FileRouteTypes {
     | '/admin/hero'
     | '/admin/login'
     | '/admin/news'
+    | '/admin/permits'
     | '/admin/rankings'
     | '/admin/registrations'
     | '/admin/settings'
@@ -405,11 +454,13 @@ export interface FileRouteTypes {
     | '/athlete/signup'
     | '/events/$eventId'
     | '/graduates/$graduateId'
+    | '/my-permit/$permitNumber'
     | '/register/academy'
     | '/register/athlete'
     | '/verify/$athleteId'
     | '/admin/'
     | '/register/event/$eventId'
+    | '/verify/academy/$permitNumber'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -422,11 +473,13 @@ export interface FileRouteTypes {
     | '/graduates'
     | '/my-card'
     | '/my-competitions'
+    | '/my-permits'
     | '/my-profile'
     | '/news'
     | '/rankings'
     | '/rules'
     | '/typography'
+    | '/academy/permit'
     | '/admin/academies'
     | '/admin/athletes'
     | '/admin/black-belts'
@@ -434,6 +487,7 @@ export interface FileRouteTypes {
     | '/admin/hero'
     | '/admin/login'
     | '/admin/news'
+    | '/admin/permits'
     | '/admin/rankings'
     | '/admin/registrations'
     | '/admin/settings'
@@ -445,11 +499,13 @@ export interface FileRouteTypes {
     | '/athlete/signup'
     | '/events/$eventId'
     | '/graduates/$graduateId'
+    | '/my-permit/$permitNumber'
     | '/register/academy'
     | '/register/athlete'
     | '/verify/$athleteId'
     | '/admin'
     | '/register/event/$eventId'
+    | '/verify/academy/$permitNumber'
   id:
     | '__root__'
     | '/'
@@ -463,11 +519,13 @@ export interface FileRouteTypes {
     | '/graduates'
     | '/my-card'
     | '/my-competitions'
+    | '/my-permits'
     | '/my-profile'
     | '/news'
     | '/rankings'
     | '/rules'
     | '/typography'
+    | '/academy/permit'
     | '/admin/academies'
     | '/admin/athletes'
     | '/admin/black-belts'
@@ -475,6 +533,7 @@ export interface FileRouteTypes {
     | '/admin/hero'
     | '/admin/login'
     | '/admin/news'
+    | '/admin/permits'
     | '/admin/rankings'
     | '/admin/registrations'
     | '/admin/settings'
@@ -486,11 +545,13 @@ export interface FileRouteTypes {
     | '/athlete/signup'
     | '/events/$eventId'
     | '/graduates/$graduateId'
+    | '/my-permit/$permitNumber'
     | '/register/academy'
     | '/register/athlete'
     | '/verify/$athleteId'
     | '/admin/'
     | '/register/event/$eventId'
+    | '/verify/academy/$permitNumber'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -505,19 +566,23 @@ export interface RootRouteChildren {
   GraduatesRoute: typeof GraduatesRouteWithChildren
   MyCardRoute: typeof MyCardRoute
   MyCompetitionsRoute: typeof MyCompetitionsRoute
+  MyPermitsRoute: typeof MyPermitsRoute
   MyProfileRoute: typeof MyProfileRoute
   NewsRoute: typeof NewsRoute
   RankingsRoute: typeof RankingsRoute
   RulesRoute: typeof RulesRoute
   TypographyRoute: typeof TypographyRoute
+  AcademyPermitRoute: typeof AcademyPermitRoute
   AthleteForgotPasswordRoute: typeof AthleteForgotPasswordRoute
   AthleteLoginRoute: typeof AthleteLoginRoute
   AthleteResetPasswordRoute: typeof AthleteResetPasswordRoute
   AthleteSignupRoute: typeof AthleteSignupRoute
+  MyPermitPermitNumberRoute: typeof MyPermitPermitNumberRoute
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
   VerifyAthleteIdRoute: typeof VerifyAthleteIdRoute
   RegisterEventEventIdRoute: typeof RegisterEventEventIdRoute
+  VerifyAcademyPermitNumberRoute: typeof VerifyAcademyPermitNumberRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -555,6 +620,13 @@ declare module '@tanstack/react-router' {
       path: '/my-profile'
       fullPath: '/my-profile'
       preLoaderRoute: typeof MyProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-permits': {
+      id: '/my-permits'
+      path: '/my-permits'
+      fullPath: '/my-permits'
+      preLoaderRoute: typeof MyPermitsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/my-competitions': {
@@ -662,6 +734,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterAcademyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/my-permit/$permitNumber': {
+      id: '/my-permit/$permitNumber'
+      path: '/my-permit/$permitNumber'
+      fullPath: '/my-permit/$permitNumber'
+      preLoaderRoute: typeof MyPermitPermitNumberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/graduates/$graduateId': {
       id: '/graduates/$graduateId'
       path: '/$graduateId'
@@ -739,6 +818,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRankingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/permits': {
+      id: '/admin/permits'
+      path: '/permits'
+      fullPath: '/admin/permits'
+      preLoaderRoute: typeof AdminPermitsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/news': {
       id: '/admin/news'
       path: '/news'
@@ -788,6 +874,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAcademiesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/academy/permit': {
+      id: '/academy/permit'
+      path: '/academy/permit'
+      fullPath: '/academy/permit'
+      preLoaderRoute: typeof AcademyPermitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify/academy/$permitNumber': {
+      id: '/verify/academy/$permitNumber'
+      path: '/verify/academy/$permitNumber'
+      fullPath: '/verify/academy/$permitNumber'
+      preLoaderRoute: typeof VerifyAcademyPermitNumberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register/event/$eventId': {
       id: '/register/event/$eventId'
       path: '/register/event/$eventId'
@@ -806,6 +906,7 @@ interface AdminRouteChildren {
   AdminHeroRoute: typeof AdminHeroRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminNewsRoute: typeof AdminNewsRoute
+  AdminPermitsRoute: typeof AdminPermitsRoute
   AdminRankingsRoute: typeof AdminRankingsRoute
   AdminRegistrationsRoute: typeof AdminRegistrationsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
@@ -822,6 +923,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminHeroRoute: AdminHeroRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminNewsRoute: AdminNewsRoute,
+  AdminPermitsRoute: AdminPermitsRoute,
   AdminRankingsRoute: AdminRankingsRoute,
   AdminRegistrationsRoute: AdminRegistrationsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
@@ -867,19 +969,23 @@ const rootRouteChildren: RootRouteChildren = {
   GraduatesRoute: GraduatesRouteWithChildren,
   MyCardRoute: MyCardRoute,
   MyCompetitionsRoute: MyCompetitionsRoute,
+  MyPermitsRoute: MyPermitsRoute,
   MyProfileRoute: MyProfileRoute,
   NewsRoute: NewsRoute,
   RankingsRoute: RankingsRoute,
   RulesRoute: RulesRoute,
   TypographyRoute: TypographyRoute,
+  AcademyPermitRoute: AcademyPermitRoute,
   AthleteForgotPasswordRoute: AthleteForgotPasswordRoute,
   AthleteLoginRoute: AthleteLoginRoute,
   AthleteResetPasswordRoute: AthleteResetPasswordRoute,
   AthleteSignupRoute: AthleteSignupRoute,
+  MyPermitPermitNumberRoute: MyPermitPermitNumberRoute,
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,
   VerifyAthleteIdRoute: VerifyAthleteIdRoute,
   RegisterEventEventIdRoute: RegisterEventEventIdRoute,
+  VerifyAcademyPermitNumberRoute: VerifyAcademyPermitNumberRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
