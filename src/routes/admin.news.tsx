@@ -307,8 +307,8 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
             excerptEn={excerptEn}
             bodyPt={bodyPt}
             bodyEn={bodyEn}
-            cover={cover}
-            author={author}
+            cover={cover ?? ""}
+            author={author ?? ""}
             category={category}
           />
         )}
