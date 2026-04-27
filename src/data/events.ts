@@ -52,7 +52,7 @@ export const EVENTS: Event[] = [
     name: "Brazilian Nationals",
     date: "2025-09-12",
     location: "São Paulo, BR",
-    image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=400&h=250",
+    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800",
     type: "Gi",
     badge: "GI & NO-GI",
   },
