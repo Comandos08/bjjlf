@@ -143,23 +143,27 @@ export function MyProfilePage() {
     if (!profile) return;
     setUploading(true);
     try {
-      const path = `${profile.user_id}/avatar-${Date.now()}.jpg`;
+      // Caminho fixo evita acúmulo de fotos antigas no bucket
+      const path = `${profile.user_id}/avatar.jpg`;
       const { error: upErr } = await supabase.storage
         .from("athlete-photos")
         .upload(path, blob, { upsert: true, contentType: "image/jpeg" });
       if (upErr) throw upErr;
       const { data: pub } = supabase.storage.from("athlete-photos").getPublicUrl(path);
+      // Cache-bust para forçar o browser a baixar a versão nova imediatamente
+      const bustedUrl = `${pub.publicUrl}?t=${Date.now()}`;
       const { error: updErr } = await supabase
         .from("athlete_profiles")
-        .update({ photo_url: pub.publicUrl })
+        .update({ photo_url: bustedUrl })
         .eq("id", profile.id);
       if (updErr) throw updErr;
+      // Refresh ANTES do toast — garante que a foto nova já está visível
       await refresh();
-      toast.success("Foto atualizada.");
       setPendingPhoto(null);
+      toast.success("Foto atualizada com sucesso!");
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Erro";
-      toast.error(`Falha ao enviar foto: ${msg}`);
+      console.error("[photo upload]", err);
+      toast.error("Erro ao salvar foto. Tente novamente.");
     } finally {
       setUploading(false);
     }
