@@ -22,6 +22,42 @@ const entries = new Map<string, ImageEntry>();
 const listeners = new Set<Listener>();
 let counter = 0;
 
+// ---------------------------------------------------------------------------
+// Lightweight telemetry — counts how often the registry emits and how many
+// images transition into each terminal state. Reset only via
+// `resetImageRegistryTelemetry()` so dev-tools can observe long-running totals.
+// ---------------------------------------------------------------------------
+export type ImageRegistryTelemetry = {
+  emits: number;
+  registered: number;
+  loaded: number;
+  errored: number;
+  unregistered: number;
+  /** ms timestamp of the last emit, or 0 if none yet. */
+  lastEmitAt: number;
+};
+
+let telemetry: ImageRegistryTelemetry = {
+  emits: 0,
+  registered: 0,
+  loaded: 0,
+  errored: 0,
+  unregistered: 0,
+  lastEmitAt: 0,
+};
+
+const telemetryListeners = new Set<Listener>();
+let cachedTelemetry: ImageRegistryTelemetry = telemetry;
+
+function bumpTelemetry(patch: Partial<ImageRegistryTelemetry>) {
+  telemetry = { ...telemetry, ...patch, lastEmitAt: Date.now() };
+  cachedTelemetry = telemetry;
+  for (const l of telemetryListeners) l();
+}
+
+const isDev =
+  typeof import.meta !== "undefined" && (import.meta as ImportMeta).env?.DEV === true;
+
 // Stable empty snapshot. Used by BOTH the server snapshot and the initial
 // client snapshot so that the first client render after hydration matches
 // what was rendered on the server (an empty list). Without this, the
@@ -47,6 +83,16 @@ function recomputeSnapshot() {
 
 function emit() {
   recomputeSnapshot();
+  bumpTelemetry({ emits: telemetry.emits + 1 });
+  if (isDev) {
+    // Cheap dev breadcrumb. Grouped under a single label so it's easy to
+    // filter in the browser console: filter by "[img-registry]".
+    // eslint-disable-next-line no-console
+    console.debug(
+      `[img-registry] emit #${telemetry.emits} — entries=${entries.size} ` +
+        `(reg=${telemetry.registered} ok=${telemetry.loaded} err=${telemetry.errored} unreg=${telemetry.unregistered})`,
+    );
+  }
   for (const l of listeners) l();
 }
 
@@ -81,6 +127,7 @@ export function registerImage(input: { url: string; label: string; source: strin
     status: "pending",
     registeredAt: Date.now(),
   });
+  bumpTelemetry({ registered: telemetry.registered + 1 });
   emit();
   return id;
 }
@@ -93,11 +140,26 @@ export function reportImageStatus(id: string, status: "loaded" | "error") {
     status,
     durationMs: Date.now() - prev.registeredAt,
   });
+  if (status === "loaded") {
+    bumpTelemetry({ loaded: telemetry.loaded + 1 });
+  } else {
+    bumpTelemetry({ errored: telemetry.errored + 1 });
+    if (isDev) {
+      // Surface failed images at warn level so they're easy to spot.
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[img-registry] image ERROR — source=${prev.source} label="${prev.label}" url=${prev.url}`,
+      );
+    }
+  }
   emit();
 }
 
 export function unregisterImage(id: string) {
-  if (entries.delete(id)) emit();
+  if (entries.delete(id)) {
+    bumpTelemetry({ unregistered: telemetry.unregistered + 1 });
+    emit();
+  }
 }
 
 export function clearImageRegistry() {
@@ -108,4 +170,58 @@ export function clearImageRegistry() {
 /** Hook used by the debug panel — reactive snapshot of the registry. */
 export function useImageRegistry(): ImageEntry[] {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
+// ---------------------------------------------------------------------------
+// Telemetry public API
+// ---------------------------------------------------------------------------
+
+function subscribeTelemetry(l: Listener) {
+  telemetryListeners.add(l);
+  return () => {
+    telemetryListeners.delete(l);
+  };
+}
+
+function getTelemetrySnapshot(): ImageRegistryTelemetry {
+  return cachedTelemetry;
+}
+
+function getTelemetryServerSnapshot(): ImageRegistryTelemetry {
+  return telemetry;
+}
+
+/** Reactive telemetry hook — re-renders when counters change. */
+export function useImageRegistryTelemetry(): ImageRegistryTelemetry {
+  return useSyncExternalStore(
+    subscribeTelemetry,
+    getTelemetrySnapshot,
+    getTelemetryServerSnapshot,
+  );
+}
+
+/** Non-reactive accessor — useful for tests, console, or one-off reads. */
+export function getImageRegistryTelemetry(): ImageRegistryTelemetry {
+  return cachedTelemetry;
+}
+
+/** Resets all counters back to zero. Does not touch the entries map. */
+export function resetImageRegistryTelemetry() {
+  telemetry = {
+    emits: 0,
+    registered: 0,
+    loaded: 0,
+    errored: 0,
+    unregistered: 0,
+    lastEmitAt: 0,
+  };
+  cachedTelemetry = telemetry;
+  for (const l of telemetryListeners) l();
+}
+
+// Expose telemetry on `window` in dev so you can poke at it from the console:
+//   __imageRegistryTelemetry()
+if (isDev && typeof window !== "undefined") {
+  (window as unknown as { __imageRegistryTelemetry?: () => ImageRegistryTelemetry })
+    .__imageRegistryTelemetry = getImageRegistryTelemetry;
 }
