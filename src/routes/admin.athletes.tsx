@@ -225,18 +225,19 @@ function EditModal({ row, onClose, onSaved }: { row: Row; onClose: () => void; o
           Editar faixa/grau
         </h3>
         <p className="text-sm text-[#666666] mb-4">{row.full_name}</p>
-        <label className="block mb-3">
-          <span className="block text-xs uppercase tracking-wider text-[#666666] mb-1.5">Faixa</span>
-          <select value={belt} onChange={(e) => setBelt(e.target.value)} className="admin-input w-full">
-            {BELTS.map((b) => <option key={b}>{b}</option>)}
-          </select>
-        </label>
-        <label className="block mb-5">
-          <span className="block text-xs uppercase tracking-wider text-[#666666] mb-1.5">Grau</span>
-          <select value={degree} onChange={(e) => setDegree(Number(e.target.value))} className="admin-input w-full">
-            {[0, 1, 2, 3, 4].map((d) => <option key={d} value={d}>{d}</option>)}
-          </select>
-        </label>
+        <div className="mb-5">
+          <BeltSelector
+            belt={belt}
+            degree={degree}
+            onBeltChange={(b: BeltName) => {
+              setBelt(b);
+              setDegree(defaultDegreeForBelt(b));
+            }}
+            onDegreeChange={(d) => setDegree(d)}
+            selectClassName="admin-input w-full"
+            labelClassName="block text-xs uppercase tracking-wider text-[#666666] mb-1.5"
+          />
+        </div>
         <div className="flex justify-end gap-2">
           <button onClick={onClose} className="px-3 py-2 text-sm text-[#666666] hover:text-[#1A1A1A]">Cancelar</button>
           <button onClick={() => void save()} disabled={saving} className="px-4 py-2 bg-[#C8211A] text-white text-sm uppercase tracking-wider disabled:opacity-60">
