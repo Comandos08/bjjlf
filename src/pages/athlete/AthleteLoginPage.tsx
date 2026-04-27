@@ -3,11 +3,27 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, Clock, ShieldAlert } from "lucide-react";
-import { toast } from "sonner";
+import { AlertCircle, Loader2, Clock, ShieldAlert } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAthleteAuth } from "@/lib/athlete-auth";
 import { AthleteAuthLayout, fieldStyles, btnStyle } from "./AthleteAuthLayout";
+
+function parseLoginError(error: Error): string {
+  const msg = error.message.toLowerCase();
+  if (msg.includes("email not confirmed")) {
+    return "Confirme seu email antes de fazer login. Verifique sua caixa de entrada.";
+  }
+  if (msg.includes("invalid login") || msg.includes("invalid credentials")) {
+    return "Email ou senha incorretos. Verifique os dados.";
+  }
+  if (msg.includes("too many") || msg.includes("rate limit")) {
+    return "Muitas tentativas. Aguarde alguns minutos.";
+  }
+  if (msg.includes("network") || msg.includes("fetch")) {
+    return "Erro de conexão. Verifique sua internet.";
+  }
+  return "Erro ao fazer login. Tente novamente.";
+}
 
 const schema = z.object({
   email: z.string().trim().email("Email inválido").max(255),
@@ -19,6 +35,7 @@ export function AthleteLoginPage() {
   const navigate = useNavigate();
   const { user, profile, isLoading, signOut } = useAthleteAuth();
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // If already logged in and active → redirect.
   useEffect(() => {
@@ -33,6 +50,7 @@ export function AthleteLoginPage() {
 
   async function onSubmit(values: FormValues) {
     setSubmitting(true);
+    setSubmitError(null);
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email: values.email,
@@ -42,8 +60,8 @@ export function AthleteLoginPage() {
       // The auth listener in athlete-auth will fetch the profile shortly;
       // the useEffect above (or the status banners below) will react.
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Erro desconhecido.";
-      toast.error(`Falha no login: ${msg}`);
+      const err = e instanceof Error ? e : new Error("Erro desconhecido.");
+      setSubmitError(parseLoginError(err));
     } finally {
       setSubmitting(false);
     }
@@ -126,6 +144,20 @@ export function AthleteLoginPage() {
             Esqueci minha senha
           </Link>
         </div>
+        {submitError && (
+          <div
+            role="alert"
+            className="flex items-start gap-2 bg-red-50 border border-red-200 rounded-lg px-4 py-3"
+          >
+            <AlertCircle className="text-red-500 w-4 h-4 mt-0.5 shrink-0" />
+            <p
+              className="text-sm text-red-700"
+              style={{ fontFamily: "Barlow", fontWeight: 500 }}
+            >
+              {submitError}
+            </p>
+          </div>
+        )}
         <button type="submit" disabled={submitting} className={fieldStyles.primaryBtn} style={btnStyle}>
           {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
           Entrar

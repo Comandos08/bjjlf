@@ -3,10 +3,33 @@ import { Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, MailCheck } from "lucide-react";
-import { toast } from "sonner";
+import { AlertCircle, Loader2, MailCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { AthleteAuthLayout, fieldStyles, btnStyle } from "./AthleteAuthLayout";
+
+function parseSignupError(error: Error): string {
+  const msg = error.message.toLowerCase();
+  if (
+    msg.includes("user already registered") ||
+    msg.includes("email already") ||
+    msg.includes("already been registered")
+  ) {
+    return "Este email já está cadastrado. Tente fazer login ou use outro email.";
+  }
+  if (msg.includes("invalid email")) {
+    return "Email inválido. Verifique o endereço digitado.";
+  }
+  if (msg.includes("password") && msg.includes("short")) {
+    return "Senha muito curta. Use no mínimo 8 caracteres.";
+  }
+  if (msg.includes("rate limit") || msg.includes("too many")) {
+    return "Muitas tentativas. Aguarde alguns minutos e tente novamente.";
+  }
+  if (msg.includes("network") || msg.includes("fetch")) {
+    return "Erro de conexão. Verifique sua internet e tente novamente.";
+  }
+  return "Erro ao criar conta. Verifique os dados e tente novamente.";
+}
 
 const BELTS = ["Branca", "Azul", "Roxa", "Marrom", "Preta", "Coral", "Vermelha"] as const;
 const DEGREES = [0, 1, 2, 3, 4] as const;
@@ -23,11 +46,20 @@ const MODALITIES = ["GI", "NO-GI", "GI & NO-GI"] as const;
 
 const schema = z
   .object({
-    full_name: z.string().trim().min(3, "Nome obrigatório").max(120),
-    email: z.string().trim().email("Email inválido").max(255),
-    password: z.string().min(8, "Mínimo 8 caracteres").max(128),
-    confirm_password: z.string().min(8).max(128),
-    academy: z.string().trim().max(120).optional().or(z.literal("")),
+    full_name: z.string().trim().min(3, "Nome deve ter no mínimo 3 caracteres").max(120),
+    email: z
+      .string()
+      .trim()
+      .min(1, "Email obrigatório")
+      .email("Email inválido")
+      .max(255),
+    password: z.string().min(8, "Senha deve ter no mínimo 8 caracteres").max(128),
+    confirm_password: z.string().min(8, "Confirme a senha").max(128),
+    academy: z
+      .string()
+      .trim()
+      .min(2, "Academia deve ter no mínimo 2 caracteres")
+      .max(120),
     professor: z.string().trim().max(120).optional().or(z.literal("")),
     belt: z.enum(BELTS),
     degree: z.coerce.number().int().min(0).max(4),
@@ -36,16 +68,16 @@ const schema = z
     modality: z.enum(MODALITIES),
   })
   .refine((d) => d.password === d.confirm_password, {
-    message: "As senhas não coincidem",
+    message: "As senhas não coincidem. Digite a mesma senha nos dois campos.",
     path: ["confirm_password"],
   });
 
 type FormValues = z.infer<typeof schema>;
 
 export function AthleteSignupPage() {
-  
   const [submitting, setSubmitting] = useState(false);
   const [sentEmail, setSentEmail] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -60,6 +92,7 @@ export function AthleteSignupPage() {
 
   async function onSubmit(values: FormValues) {
     setSubmitting(true);
+    setSubmitError(null);
     try {
       const redirectTo = `${window.location.origin}/athlete/login`;
       const { data, error } = await supabase.auth.signUp({
@@ -87,8 +120,8 @@ export function AthleteSignupPage() {
 
       setSentEmail(values.email);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Erro desconhecido.";
-      toast.error(`Falha no cadastro: ${msg}`);
+      const err = e instanceof Error ? e : new Error("Erro desconhecido.");
+      setSubmitError(parseSignupError(err));
     } finally {
       setSubmitting(false);
     }
@@ -177,6 +210,21 @@ export function AthleteSignupPage() {
             {MODALITIES.map((m) => <option key={m} value={m}>{m}</option>)}
           </select>
         </Field>
+
+        {submitError && (
+          <div
+            role="alert"
+            className="flex items-start gap-2 bg-red-50 border border-red-200 rounded-lg px-4 py-3"
+          >
+            <AlertCircle className="text-red-500 w-4 h-4 mt-0.5 shrink-0" />
+            <p
+              className="text-sm text-red-700"
+              style={{ fontFamily: "Barlow", fontWeight: 500 }}
+            >
+              {submitError}
+            </p>
+          </div>
+        )}
 
         <button type="submit" disabled={submitting} className={fieldStyles.primaryBtn} style={btnStyle}>
           {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
