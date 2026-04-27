@@ -98,9 +98,12 @@ export function Navbar() {
               <Link
                 key={item.key}
                 to={item.to ?? "/"}
-                className={`px-3 py-2 text-sm tracking-wide text-gray-300 hover:text-white transition-base ${item.nowrap ? "whitespace-nowrap" : ""}`}
+                className={`px-3 py-2 text-sm tracking-wide text-gray-300 hover:text-white transition-base border-b-2 border-transparent ${item.nowrap ? "whitespace-nowrap" : ""}`}
                 style={{ fontFamily: "Barlow", fontWeight: 500, ...(item.nowrap ? { whiteSpace: "nowrap" } : {}) }}
-                activeProps={{ style: { color: "#FFFFFF", borderBottom: "2px solid #C8A84B", fontFamily: "Barlow", fontWeight: 600 } }}
+                activeProps={{
+                  className: `px-3 py-2 text-sm tracking-wide text-white border-b-2 border-[#C8A84B] ${item.nowrap ? "whitespace-nowrap" : ""}`,
+                  style: { fontFamily: "Barlow", fontWeight: 600, ...(item.nowrap ? { whiteSpace: "nowrap" } : {}) },
+                }}
                 activeOptions={{ exact: item.to === "/" }}
               >
                 {label}
