@@ -206,7 +206,7 @@ function EventsListPage() {
                 <span className={cn(typo.label.sm, "mr-1")}>
                   {t("events.filter.applied")}:
                 </span>
-                {badges.map((b) => (
+                {badges.map((b: EventTypeBadge) => (
                   <button
                     key={b}
                     type="button"
