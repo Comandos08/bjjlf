@@ -4,11 +4,12 @@ import { useI18n } from "@/lib/i18n";
 import { type EventTypeBadge } from "@/data/events";
 
 const chipBase =
-  "inline-flex items-center justify-center rounded-full px-4 py-1.5 text-xs uppercase tracking-widest transition-base focus-ring";
+  "inline-flex items-center justify-center rounded-[4px] px-4 py-1.5 uppercase tracking-widest transition-base focus-ring font-bold";
 const chipInactive =
-  "bg-white border border-gray-300 text-gray-600 hover:border-[#C8211A] hover:text-[#C8211A]";
+  "bg-[#F5F5F5] border border-[#C8211A] text-[#C8211A] hover:bg-[#C8211A]/10";
 const chipActive =
   "bg-[#C8211A] border border-[#C8211A] text-white";
+const chipFontStyle = { fontFamily: "Barlow Condensed", fontSize: "13px" } as const;
 
 /**
  * Reusable filter panel for events. Light theme.
@@ -84,7 +85,7 @@ export function EventFilterPanel({
                 active ? chipActive : chipInactive,
                 isVertical && "w-full",
               )}
-              style={{ fontFamily: "Barlow", fontWeight: active ? 700 : 600 }}
+              style={chipFontStyle}
             >
               {badge}
             </button>
