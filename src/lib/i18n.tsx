@@ -79,7 +79,18 @@ const PT: Dict = {
   "event.register.cta": "Inscrever-se agora",
   "event.register.deadline": "Data do evento",
 
-  // News card categories (uppercase labels)
+  // Event list page + filters
+  "events.page.title": "Calendário de Eventos",
+  "events.page.subtitle": "Próximos campeonatos oficiais da BJJLF",
+  "events.filter.label": "Filtrar por categoria",
+  "events.filter.all": "TODOS",
+  "events.empty.title": "Nenhum evento encontrado",
+  "events.empty.body": "Nenhum evento corresponde aos filtros selecionados. Limpe os filtros para ver todos os eventos.",
+  "events.empty.clear": "Limpar filtros",
+  "events.count.one": "{n} evento",
+  "events.count.many": "{n} eventos",
+
+
   "news.cat.tournaments.label": "CAMPEONATOS",
   "news.cat.promotions.label": "GRADUAÇÕES",
   "news.cat.athletes.label": "ATLETAS",
@@ -349,6 +360,17 @@ const EN: Dict = {
   "event.register.body": "Registrations are processed by the federation and require belt verification. Athletes must hold an active BJJLF profile.",
   "event.register.cta": "Register now",
   "event.register.deadline": "Event date",
+
+  // Event list page + filters
+  "events.page.title": "Event Calendar",
+  "events.page.subtitle": "Upcoming official BJJLF championships",
+  "events.filter.label": "Filter by category",
+  "events.filter.all": "ALL",
+  "events.empty.title": "No events found",
+  "events.empty.body": "No events match the selected filters. Clear the filters to see all events.",
+  "events.empty.clear": "Clear filters",
+  "events.count.one": "{n} event",
+  "events.count.many": "{n} events",
 
   "news.cat.tournaments.label": "TOURNAMENTS",
   "news.cat.promotions.label": "PROMOTIONS",
