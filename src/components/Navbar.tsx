@@ -340,9 +340,18 @@ function AthleteMenuItem({
 }
 
 function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
-  const { user, profile, signOut } = useAthleteAuth();
+  const { user, profile, isActive, isLoading, signOut } = useAthleteAuth();
+  const [imgError, setImgError] = useState(false);
 
-  if (!user) {
+  useEffect(() => {
+    setImgError(false);
+  }, [profile?.photo_url]);
+
+  if (isLoading) return null;
+
+  const showAthlete = !!user && !!profile && isActive;
+
+  if (!showAthlete) {
     return (
       <div className="flex flex-col border-t border-[#222] mt-2 pt-2">
         <Link
@@ -357,49 +366,49 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
     );
   }
 
-  const initials = profile?.full_name
-    ? profile.full_name.trim().split(/\s+/).map((p) => p[0]?.toUpperCase() ?? "").slice(0, 2).join("")
-    : (user.email?.[0] ?? "A").toUpperCase();
+  const firstInitial = (profile.full_name?.trim()[0] ?? user.email?.[0] ?? "A").toUpperCase();
 
-  const beltLine = profile
-    ? `Faixa ${profile.belt}${profile.degree > 0 ? ` • ${profile.degree} grau${profile.degree > 1 ? "s" : ""}` : ""}`
-    : null;
+  const beltLine = `Faixa ${profile.belt}${profile.degree > 0 ? ` • ${profile.degree} grau${profile.degree > 1 ? "s" : ""}` : ""}`;
+
+  const hasPhoto = !!profile.photo_url && !imgError;
 
   return (
     <div className="flex flex-col border-t border-[#222] mt-2 pt-3">
       <div className="flex items-center gap-3 px-1 py-2">
-        {profile?.photo_url ? (
-          <img
-            src={profile.photo_url}
-            alt=""
-            className="w-9 h-9 rounded-full object-cover"
-            style={{ border: "2px solid #C8A84B" }}
-          />
-        ) : (
+        <span className="relative w-9 h-9 block">
           <span
-            className="w-9 h-9 rounded-full grid place-items-center text-sm text-white"
+            className="absolute inset-0 w-9 h-9 rounded-full grid place-items-center text-white transition-opacity duration-150"
             style={{
               background: "#C8211A",
               border: "2px solid #C8A84B",
-              fontFamily: "Barlow Condensed",
+              fontFamily: "Barlow",
               fontWeight: 700,
+              fontSize: 16,
+              opacity: hasPhoto ? 0 : 1,
             }}
           >
-            {initials}
+            {firstInitial}
           </span>
-        )}
+          {profile.photo_url && !imgError && (
+            <img
+              src={profile.photo_url}
+              alt=""
+              onError={() => setImgError(true)}
+              className="absolute inset-0 w-9 h-9 rounded-full object-cover transition-opacity duration-150"
+              style={{ border: "2px solid #C8A84B", opacity: hasPhoto ? 1 : 0 }}
+            />
+          )}
+        </span>
         <div className="min-w-0 flex-1">
           <p className="text-sm text-white truncate" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
-            {profile?.full_name ?? user.email}
+            {profile.full_name}
           </p>
-          {beltLine && (
-            <p
-              className="text-[11px] truncate"
-              style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
-            >
-              {beltLine}
-            </p>
-          )}
+          <p
+            className="text-[11px] truncate"
+            style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
+          >
+            {beltLine}
+          </p>
         </div>
       </div>
       <div className="border-t border-[#222] my-1" />
