@@ -18,6 +18,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { EVENTS, type EventTypeBadge } from "@/data/events";
+import { usePersistedEventFilters } from "@/lib/event-filters-storage";
 
 const VALID_BADGES: ReadonlyArray<EventTypeBadge> = [
   "GI",
@@ -78,6 +79,10 @@ function EventsListPage() {
   const badges: EventTypeBadge[] = search.badges;
   const navigate = useNavigate({ from: "/events" });
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  // Restore filters from localStorage on first visit and persist on change.
+  // URL is the source of truth during a session; storage seeds the next visit.
+  usePersistedEventFilters();
 
   // Only show chips for badges that actually exist in the data.
   const available = useMemo<ReadonlyArray<EventTypeBadge>>(() => {
