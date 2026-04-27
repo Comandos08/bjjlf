@@ -1,0 +1,141 @@
+/**
+ * Admin layout route. All /admin/* routes (except /admin/setup and /admin/login)
+ * render inside this. Guards: redirect to /admin/login if not signed in or not
+ * an active admin.
+ */
+import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { Loader2, LayoutDashboard, Calendar, FileText, Trophy, Youtube, Award, Building2, Image as ImageIcon, Settings, LogOut } from "lucide-react";
+import { useAdminAuth, canAccessSection, type AdminSection } from "@/lib/admin-auth";
+import { Toaster } from "sonner";
+import { cn } from "@/lib/utils";
+
+export const Route = createFileRoute("/admin")({
+  head: () => ({ meta: [{ title: "BJJLF Admin" }, { name: "robots", content: "noindex, nofollow" }] }),
+  component: AdminLayout,
+});
+
+const NAV: { to: string; label: string; icon: typeof LayoutDashboard; section: AdminSection }[] = [
+  { to: "/admin", label: "Dashboard", icon: LayoutDashboard, section: "dashboard" },
+  { to: "/admin/events", label: "Eventos", icon: Calendar, section: "events" },
+  { to: "/admin/news", label: "Notícias", icon: FileText, section: "news" },
+  { to: "/admin/rankings", label: "Rankings", icon: Trophy, section: "rankings" },
+  { to: "/admin/youtube", label: "YouTube", icon: Youtube, section: "youtube" },
+  { to: "/admin/black-belts", label: "Faixas Pretas", icon: Award, section: "black-belts" },
+  { to: "/admin/academies", label: "Academias", icon: Building2, section: "academies" },
+  { to: "/admin/hero", label: "Hero Slider", icon: ImageIcon, section: "hero" },
+  { to: "/admin/settings", label: "Configurações", icon: Settings, section: "settings" },
+];
+
+function AdminLayout() {
+  const navigate = useNavigate();
+  const { user, role, isLoading, fullName, signOut } = useAdminAuth();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  // /admin/setup and /admin/login have their own full-screen layouts.
+  const isPublicAdminRoute = pathname === "/admin/setup" || pathname === "/admin/login";
+
+  useEffect(() => {
+    if (isPublicAdminRoute) return;
+    if (isLoading) return;
+    if (!user || !role) {
+      void navigate({ to: "/admin/login" });
+    }
+  }, [isLoading, user, role, isPublicAdminRoute, navigate]);
+
+  if (isPublicAdminRoute) {
+    return (
+      <>
+        <Outlet />
+        <Toaster position="top-right" richColors />
+      </>
+    );
+  }
+
+  if (isLoading || !user || !role) {
+    return (
+      <div className="min-h-screen grid place-items-center" style={{ background: "#0A0A0A" }}>
+        <Loader2 className="h-6 w-6 animate-spin text-white" />
+      </div>
+    );
+  }
+
+  const initials = (fullName ?? user.email ?? "AD")
+    .split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? "").join("") || "AD";
+
+  // Find the title for the current section.
+  const current = NAV.find((n) => n.to === pathname) ?? NAV[0];
+  const breadcrumb = current.to === "/admin" ? "Home" : `Home > ${current.label}`;
+
+  return (
+    <div className="min-h-screen flex" style={{ background: "#0A0A0A" }}>
+      {/* Sidebar */}
+      <aside className="w-[240px] flex flex-col border-r" style={{ background: "#111111", borderColor: "#222" }}>
+        <div className="px-5 py-5 border-b flex items-center gap-2.5" style={{ borderColor: "#222" }}>
+          <div className="h-9 w-9 rounded-full grid place-items-center" style={{ background: "#C41E3A" }}>
+            <span className="text-white font-bold text-sm" style={{ fontFamily: "Barlow Condensed" }}>B</span>
+          </div>
+          <div className="leading-none">
+            <div className="text-[#C41E3A] font-bold text-base" style={{ fontFamily: "Barlow Condensed" }}>BJJLF</div>
+            <div className="text-[11px] mt-0.5" style={{ color: "#B8960C", letterSpacing: "0.1em" }}>ADMIN</div>
+          </div>
+        </div>
+
+        <nav className="flex-1 py-3">
+          {NAV.filter((n) => canAccessSection(role, n.section)).map((n) => {
+            const active = pathname === n.to;
+            const Icon = n.icon;
+            return (
+              <Link
+                key={n.to}
+                to={n.to as "/admin"}
+                className={cn(
+                  "flex items-center gap-3 px-5 py-2.5 text-sm transition-colors border-l-[3px]",
+                  active
+                    ? "text-white border-l-[#B8960C]"
+                    : "text-[#777] hover:text-[#CCC] border-l-transparent",
+                )}
+                style={active ? { background: "#C41E3A" } : undefined}
+              >
+                <Icon size={18} />
+                <span>{n.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="border-t p-4 flex items-center gap-3" style={{ borderColor: "#222" }}>
+          <div className="h-8 w-8 rounded-full grid place-items-center text-white text-xs font-bold" style={{ background: "#333" }}>
+            {initials}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-[11px] text-[#888] truncate">{user.email}</div>
+            <div className="text-[10px] text-[#555] uppercase">{role}</div>
+          </div>
+          <button
+            onClick={() => void signOut()}
+            className="text-[#777] hover:text-white p-1.5"
+            aria-label="Sair"
+          >
+            <LogOut size={16} />
+          </button>
+        </div>
+      </aside>
+
+      {/* Right side */}
+      <div className="flex-1 flex flex-col min-w-0">
+        <header className="h-[60px] border-b flex items-center justify-between px-8" style={{ background: "#111111", borderColor: "#222" }}>
+          <h1 className="text-white text-[20px] font-bold uppercase" style={{ fontFamily: "Barlow Condensed" }}>
+            {current.label}
+          </h1>
+          <div className="text-[13px] text-[#666]">{breadcrumb}</div>
+        </header>
+        <main className="flex-1 overflow-auto p-8">
+          <Outlet />
+        </main>
+      </div>
+
+      <Toaster position="top-right" richColors />
+    </div>
+  );
+}
