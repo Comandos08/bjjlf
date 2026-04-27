@@ -1,20 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, Loader2, XCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 import dragon from "@/assets/dragon-logo.png";
 import { cn } from "@/lib/utils";
 import { typo } from "@/lib/typography";
+import { supabase } from "@/integrations/supabase/client";
 
-// Mock verification database — UI-only.
-const MOCK_DB: Record<
-  string,
-  { full_name: string; belt: string; academy: string; valid_until: string }
-> = {
-  "04872": {
-    full_name: "João da Silva",
-    belt: "Roxa — 2º Grau",
-    academy: "Gracie Legacy — Rio",
-    valid_until: "2025-12-31",
-  },
+type VerifyResult = {
+  full_name: string;
+  belt: string;
+  degree: number;
+  academy: string | null;
+  status: string;
+  valid_until: string | null;
+  registration_number: string;
 };
 
 export const Route = createFileRoute("/verify/$athleteId")({
@@ -32,20 +31,33 @@ export const Route = createFileRoute("/verify/$athleteId")({
 
 function VerifyAthletePage() {
   const { athleteId } = Route.useParams();
-  const profile = MOCK_DB[athleteId.replace(/^BJJLF-\d{4}-/, "").padStart(5, "0").replace(/^0+/, "") ] || MOCK_DB[athleteId];
-  const found = Boolean(profile);
+  const [profile, setProfile] = useState<VerifyResult | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const validUntilFormatted = profile
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      setLoading(true);
+      const { data } = await supabase.rpc("verify_athlete", {
+        _registration_number: athleteId,
+      });
+      if (cancelled) return;
+      const row = Array.isArray(data) && data.length > 0 ? (data[0] as VerifyResult) : null;
+      setProfile(row);
+      setLoading(false);
+    })();
+    return () => { cancelled = true; };
+  }, [athleteId]);
+
+  const found = Boolean(profile);
+  const validUntilFormatted = profile?.valid_until
     ? new Date(profile.valid_until).toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
+        day: "2-digit", month: "2-digit", year: "numeric",
       })
-    : "";
+    : "—";
 
   return (
     <div className="min-h-screen bg-white py-16 px-6 flex flex-col items-center">
-      {/* Logo */}
       <Link to="/" className="flex items-center gap-2 mb-10">
         <img src={dragon} alt="BJJLF" className="h-10 w-10 object-contain" />
         <span
@@ -67,7 +79,12 @@ function VerifyAthletePage() {
         />
 
         <div className="p-8 text-center">
-          {found ? (
+          {loading ? (
+            <div className="grid place-items-center py-10">
+              <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+              <p className={cn(typo.body.sm, "mt-3")}>Verificando atleta…</p>
+            </div>
+          ) : found && profile ? (
             <>
               <CheckCircle className="h-14 w-14 text-green-600 mx-auto mb-3" />
               <h1
@@ -79,11 +96,18 @@ function VerifyAthletePage() {
               <p className={cn(typo.body.sm, "mt-1")}>Carteirinha oficial BJJLF</p>
 
               <div className="mt-6 text-left bg-gray-50 rounded-xl border border-gray-100 px-5 py-4 space-y-3">
-                <Row label="Nome" value={profile!.full_name} />
-                <Row label="Faixa" value={profile!.belt} />
-                <Row label="Academia" value={profile!.academy} />
-                <Row label="Validade" value={validUntilFormatted} valueClass="text-green-700 font-medium" />
-                <Row label="ID" value={`BJJLF-2025-${athleteId.padStart(5, "0").slice(-5)}`} />
+                <Row label="Nome" value={profile.full_name} />
+                <Row
+                  label="Faixa"
+                  value={`${profile.belt}${profile.degree ? ` — ${profile.degree}º grau` : ""}`}
+                />
+                <Row label="Academia" value={profile.academy ?? "—"} />
+                <Row
+                  label="Validade"
+                  value={validUntilFormatted}
+                  valueClass="text-green-700 font-medium"
+                />
+                <Row label="ID" value={profile.registration_number} />
               </div>
             </>
           ) : (
