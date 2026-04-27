@@ -48,27 +48,118 @@ export function useDashboardCounts() {
   return useQuery({
     queryKey: ["admin", "dashboard", "counts"],
     queryFn: async () => {
-      const [events, news, academies, blackBelts] = await Promise.all([
+      const now = new Date();
+      const in30 = new Date(now); in30.setDate(now.getDate() + 30);
+      const todayISO = now.toISOString().slice(0, 10);
+      const in30ISO = in30.toISOString().slice(0, 10);
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+      const [
+        events, news, academies, blackBelts,
+        athletesActive, athletesPending, athletesSuspended,
+        permitsActive, permitsExpiring, permitsExpired,
+        regsPending, regsConfirmed, regsCancelled,
+        eventsNext30, monthRegs, monthPermits,
+      ] = await Promise.all([
         supabase.from("events").select("*", { count: "exact", head: true }),
-        supabase
-          .from("news")
-          .select("*", { count: "exact", head: true })
-          .eq("is_published", true),
-        supabase
-          .from("affiliated_academies")
-          .select("*", { count: "exact", head: true })
-          .eq("is_active", true),
-        supabase
-          .from("certified_black_belts")
-          .select("*", { count: "exact", head: true })
-          .eq("is_active", true),
+        supabase.from("news").select("*", { count: "exact", head: true }).eq("is_published", true),
+        supabase.from("affiliated_academies").select("*", { count: "exact", head: true }).eq("is_active", true),
+        supabase.from("certified_black_belts").select("*", { count: "exact", head: true }).eq("is_active", true),
+        supabase.from("athlete_profiles").select("*", { count: "exact", head: true }).eq("status", "active"),
+        supabase.from("athlete_profiles").select("*", { count: "exact", head: true }).eq("status", "pending"),
+        supabase.from("athlete_profiles").select("*", { count: "exact", head: true }).eq("status", "suspended"),
+        supabase.from("academy_permits").select("*", { count: "exact", head: true }).eq("status", "active"),
+        supabase.from("academy_permits").select("*", { count: "exact", head: true }).eq("status", "active").gte("expires_at", todayISO).lte("expires_at", in30ISO),
+        supabase.from("academy_permits").select("*", { count: "exact", head: true }).lt("expires_at", todayISO),
+        supabase.from("event_registrations").select("*", { count: "exact", head: true }).eq("status", "pending_payment").gte("created_at", monthStart),
+        supabase.from("event_registrations").select("*", { count: "exact", head: true }).eq("status", "confirmed").gte("created_at", monthStart),
+        supabase.from("event_registrations").select("*", { count: "exact", head: true }).eq("status", "cancelled").gte("created_at", monthStart),
+        supabase.from("events").select("*", { count: "exact", head: true }).gte("event_date", todayISO).lte("event_date", in30ISO),
+        supabase.from("event_registrations").select("amount_cents").eq("status", "confirmed").gte("created_at", monthStart),
+        supabase.from("academy_permits").select("amount_cents").eq("status", "active").gte("paid_at", monthStart),
       ]);
+
+      const monthRevenue =
+        (monthRegs.data ?? []).reduce((s, r) => s + (r.amount_cents ?? 0), 0) +
+        (monthPermits.data ?? []).reduce((s, r) => s + (r.amount_cents ?? 0), 0);
+
       return {
         events: events.count ?? 0,
         news: news.count ?? 0,
         academies: academies.count ?? 0,
         blackBelts: blackBelts.count ?? 0,
+        athletesActive: athletesActive.count ?? 0,
+        athletesPending: athletesPending.count ?? 0,
+        athletesSuspended: athletesSuspended.count ?? 0,
+        permitsActive: permitsActive.count ?? 0,
+        permitsExpiring: permitsExpiring.count ?? 0,
+        permitsExpired: permitsExpired.count ?? 0,
+        regsPending: regsPending.count ?? 0,
+        regsConfirmed: regsConfirmed.count ?? 0,
+        regsCancelled: regsCancelled.count ?? 0,
+        eventsNext30: eventsNext30.count ?? 0,
+        monthRevenue,
       };
+    },
+  });
+}
+
+export function usePendingAthletes(limit = 5) {
+  return useQuery({
+    queryKey: ["admin", "dashboard", "pending-athletes", limit],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("athlete_profiles")
+        .select("id, full_name, belt, degree, academy, created_at")
+        .eq("status", "pending")
+        .order("created_at", { ascending: true })
+        .limit(limit);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}
+
+export function useExpiringPermits(limit = 5) {
+  return useQuery({
+    queryKey: ["admin", "dashboard", "expiring-permits", limit],
+    queryFn: async () => {
+      const today = new Date().toISOString().slice(0, 10);
+      const in30 = new Date(); in30.setDate(in30.getDate() + 30);
+      const { data, error } = await supabase
+        .from("academy_permits")
+        .select("id, academy_name, expires_at, permit_number")
+        .eq("status", "active")
+        .gte("expires_at", today)
+        .lte("expires_at", in30.toISOString().slice(0, 10))
+        .order("expires_at", { ascending: true })
+        .limit(limit);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}
+
+export function useApproveAthlete() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const validUntil = new Date();
+      validUntil.setFullYear(validUntil.getFullYear() + 1);
+      const { error } = await supabase
+        .from("athlete_profiles")
+        .update({
+          status: "active",
+          approved_at: new Date().toISOString(),
+          valid_until: validUntil.toISOString().slice(0, 10),
+        })
+        .eq("id", id);
+      if (error) throw error;
+      // Fire-and-forget approval email
+      try { await supabase.functions.invoke("send-athlete-approval-email", { body: { athleteId: id } }); } catch (_e) { /* noop */ }
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "dashboard"] });
     },
   });
 }
