@@ -207,7 +207,7 @@ export function MyProfilePage() {
               >
                 {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Camera className="h-3.5 w-3.5" />}
               </button>
-              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
+              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoSelect} />
             </div>
             <div>
               <div className="flex items-center gap-2">
