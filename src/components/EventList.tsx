@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Link } from "@tanstack/react-router";
-import { Calendar, MapPin, X } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, MapPin, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { typo } from "@/lib/typography";
 import { useI18n, formatDateShort } from "@/lib/i18n";
@@ -12,6 +12,12 @@ import {
   type EventTypeBadge,
 } from "@/data/events";
 import { sortEvents, DEFAULT_EVENT_SORT, type EventSort } from "@/lib/event-sort";
+import {
+  buildPageList,
+  clampPage,
+  DEFAULT_PER_PAGE,
+  pageCount,
+} from "@/lib/pagination";
 
 /**
  * Reusable event list with badge filters.
@@ -63,6 +69,16 @@ export type EventListProps = {
    * params should pass the parsed value here.
    */
   query?: string;
+  /**
+   * 1-indexed current page. When omitted, pagination is disabled and ALL
+   * filtered results render. Callers wiring this to URL search params should
+   * pass `page` + `onPageChange` together.
+   */
+  page?: number;
+  /** Items per page. Defaults to DEFAULT_PER_PAGE. */
+  perPage?: number;
+  /** Called when the user clicks a paginator button. */
+  onPageChange?: (page: number) => void;
   className?: string;
 };
 
