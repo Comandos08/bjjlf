@@ -337,3 +337,22 @@ export function MyCompetitionsPage() {
     </div>
   );
 }
+
+function StatCard({ label, value, accent }: { label: string; value: number; accent: string }) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl py-5 text-center">
+      <div
+        className={`text-4xl leading-none ${accent}`}
+        style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
+      >
+        {value}
+      </div>
+      <div
+        className="mt-1.5 text-xs uppercase tracking-widest text-gray-500"
+        style={{ fontFamily: "Barlow", fontWeight: 600 }}
+      >
+        {label}
+      </div>
+    </div>
+  );
+}
