@@ -3,7 +3,22 @@ import { Menu, X, ShoppingBag, ChevronDown, Globe, CreditCard, LogOut, UserCircl
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { useI18n, type Lang } from "@/lib/i18n";
-import { useAthleteAuth } from "@/lib/athlete-auth";
+import { useAthleteAuth, type AthleteProfile } from "@/lib/athlete-auth";
+
+/**
+ * Build belt line. Returns null when there's nothing meaningful to show,
+ * so the caller can hide the row entirely.
+ *   - no belt → null
+ *   - belt only (degree 0/null) → "Faixa {belt}"
+ *   - belt + degree → "Faixa {belt} • {n} grau(s)"
+ */
+function formatBeltLine(profile: Pick<AthleteProfile, "belt" | "degree"> | null | undefined): string | null {
+  const belt = profile?.belt?.trim();
+  if (!belt) return null;
+  const degree = typeof profile?.degree === "number" ? profile.degree : 0;
+  if (!degree || degree <= 0) return `Faixa ${belt}`;
+  return `Faixa ${belt} • ${degree} grau${degree > 1 ? "s" : ""}`;
+}
 
 type NavItem = {
   key: string;
@@ -132,31 +147,40 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="xl:hidden border-t border-[#222] bg-navbar overflow-x-hidden">
-          <MobileProfileBlock onNavigate={() => setOpen(false)} />
-          <nav className="container mx-auto flex flex-col px-4 py-3 max-w-full">
-            {NAV.map((item) => (
-              <Link
-                key={item.key}
-                to={item.to ?? "/"}
-                onClick={() => setOpen(false)}
-                className="py-3 text-sm tracking-wide text-gray-300 whitespace-nowrap"
-                style={{ fontFamily: "Barlow", fontWeight: 500 }}
-                activeProps={{ className: "py-3 text-sm tracking-wide text-white whitespace-nowrap", style: { fontFamily: "Barlow", fontWeight: 600 } }}
-                activeOptions={{ exact: item.to === "/" }}
-              >
-                {t(`nav.${item.key}`)}
-              </Link>
-            ))}
-            <MobileAthleteLinks onNavigate={() => setOpen(false)} />
-            <div className="flex items-center gap-3 pt-3 border-t border-[#222] mt-2">
-              <LangToggle lang={lang} onChange={setLang} />
-              <button aria-label="Shop" className="text-gray-400 hover:text-white">
-                <ShoppingBag size={18} />
-              </button>
-            </div>
-          </nav>
-        </div>
+        <>
+          {/* Dim overlay — tap to close */}
+          <button
+            type="button"
+            aria-label="Fechar menu"
+            onClick={() => setOpen(false)}
+            className="xl:hidden fixed inset-0 top-16 z-40 bg-black/40"
+          />
+          <div className="xl:hidden relative z-50 border-t border-[#222] bg-navbar overflow-x-hidden max-w-full">
+            <MobileProfileBlock />
+            <nav className="container mx-auto flex flex-col px-4 py-3 max-w-full overflow-x-hidden">
+              {NAV.map((item) => (
+                <Link
+                  key={item.key}
+                  to={item.to ?? "/"}
+                  onClick={() => setOpen(false)}
+                  className="py-3 text-sm tracking-wide text-gray-300 truncate"
+                  style={{ fontFamily: "Barlow", fontWeight: 500 }}
+                  activeProps={{ className: "py-3 text-sm tracking-wide text-white truncate", style: { fontFamily: "Barlow", fontWeight: 600 } }}
+                  activeOptions={{ exact: item.to === "/" }}
+                >
+                  {t(`nav.${item.key}`)}
+                </Link>
+              ))}
+              <MobileAthleteLinks onNavigate={() => setOpen(false)} />
+              <div className="flex items-center gap-3 pt-3 border-t border-[#222] mt-2">
+                <LangToggle lang={lang} onChange={setLang} />
+                <button aria-label="Shop" className="text-gray-400 hover:text-white">
+                  <ShoppingBag size={18} />
+                </button>
+              </div>
+            </nav>
+          </div>
+        </>
       )}
     </header>
   );
@@ -221,7 +245,7 @@ function AthleteMenu() {
 
   const firstInitial = (profile.full_name?.trim()[0] ?? user.email?.[0] ?? "A").toUpperCase();
 
-  const beltLine = `Faixa ${profile.belt}${profile.degree > 0 ? ` • ${profile.degree} grau${profile.degree > 1 ? "s" : ""}` : ""}`;
+  const beltLine = formatBeltLine(profile);
 
   const hasPhoto = !!profile.photo_url && !imgError;
 
@@ -271,12 +295,14 @@ function AthleteMenu() {
             >
               {profile.full_name}
             </p>
-            <p
-              className="text-[11px] mt-0.5 truncate"
-              style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
-            >
-              {beltLine}
-            </p>
+            {beltLine && (
+              <p
+                className="text-[11px] mt-0.5 truncate"
+                style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
+              >
+                {beltLine}
+              </p>
+            )}
           </div>
 
           <AthleteMenuItem
@@ -340,7 +366,7 @@ function AthleteMenuItem({
   );
 }
 
-function MobileProfileBlock({ onNavigate }: { onNavigate: () => void }) {
+function MobileProfileBlock() {
   const { user, profile, isActive, isLoading } = useAthleteAuth();
   const [imgError, setImgError] = useState(false);
 
@@ -352,15 +378,13 @@ function MobileProfileBlock({ onNavigate }: { onNavigate: () => void }) {
   const showAthlete = !!user && !!profile && isActive;
   if (!showAthlete) return null;
 
-  void onNavigate;
-
   const firstInitial = (profile.full_name?.trim()[0] ?? user.email?.[0] ?? "A").toUpperCase();
-  const beltLine = `Faixa ${profile.belt}${profile.degree > 0 ? ` • ${profile.degree} grau${profile.degree > 1 ? "s" : ""}` : ""}`;
+  const beltLine = formatBeltLine(profile);
   const hasPhoto = !!profile.photo_url && !imgError;
 
   return (
-    <div className="bg-white">
-      <div className="container mx-auto px-4 py-3 flex items-center gap-3 max-w-full">
+    <div className="shadow-sm" style={{ background: "#FAFAFA", borderBottom: "1px solid #C8A84B" }}>
+      <div className="container mx-auto px-5 py-4 flex items-center gap-3 max-w-full overflow-hidden">
         <span className="relative w-12 h-12 block shrink-0">
           <span
             className="absolute inset-0 w-12 h-12 rounded-full grid place-items-center text-white transition-opacity duration-150"
@@ -369,7 +393,7 @@ function MobileProfileBlock({ onNavigate }: { onNavigate: () => void }) {
               border: "2px solid #C8A84B",
               fontFamily: "Barlow",
               fontWeight: 700,
-              fontSize: 20,
+              fontSize: 18,
               opacity: hasPhoto ? 0 : 1,
             }}
           >
@@ -392,15 +416,16 @@ function MobileProfileBlock({ onNavigate }: { onNavigate: () => void }) {
           >
             {profile.full_name}
           </p>
-          <p
-            className="truncate mt-0.5"
-            style={{ fontFamily: "Barlow", fontWeight: 600, fontSize: 13, color: "#C8A84B" }}
-          >
-            {beltLine}
-          </p>
+          {beltLine && (
+            <p
+              className="truncate mt-0.5"
+              style={{ fontFamily: "Barlow", fontWeight: 600, fontSize: 13, color: "#C8A84B" }}
+            >
+              {beltLine}
+            </p>
+          )}
         </div>
       </div>
-      <div style={{ height: 1, background: "#C8A84B", opacity: 0.6 }} />
     </div>
   );
 }
@@ -412,19 +437,22 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
   const showAthlete = !!user && !!profile && isActive;
   if (!showAthlete) return null;
 
+  const linkClass = "py-2.5 text-sm text-gray-300 flex items-center gap-2 truncate";
+  const linkStyle = { fontFamily: "Barlow", fontWeight: 500 } as const;
+
   return (
     <div className="flex flex-col border-t border-[#222] mt-2 pt-2">
-      <Link to="/my-card" onClick={onNavigate} className="py-2.5 text-sm text-gray-300 flex items-center gap-2" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
-        <CreditCard size={16} /> Minha Carteirinha
+      <Link to="/my-card" onClick={onNavigate} className={linkClass} style={linkStyle}>
+        <CreditCard size={16} className="shrink-0" /> <span className="truncate">Minha Carteirinha</span>
       </Link>
-      <Link to="/my-profile" onClick={onNavigate} className="py-2.5 text-sm text-gray-300 flex items-center gap-2" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
-        <UserCircle size={16} /> Meu Perfil
+      <Link to="/my-profile" onClick={onNavigate} className={linkClass} style={linkStyle}>
+        <UserCircle size={16} className="shrink-0" /> <span className="truncate">Meu Perfil</span>
       </Link>
-      <Link to="/my-competitions" onClick={onNavigate} className="py-2.5 text-sm text-gray-300 flex items-center gap-2" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
-        <Trophy size={16} /> Minhas Competições
+      <Link to="/my-competitions" onClick={onNavigate} className={linkClass} style={linkStyle}>
+        <Trophy size={16} className="shrink-0" /> <span className="truncate">Minhas Competições</span>
       </Link>
-      <Link to="/my-permits" onClick={onNavigate} className="py-2.5 text-sm text-gray-300 flex items-center gap-2" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
-        <Building2 size={16} /> Alvará da Academia
+      <Link to="/my-permits" onClick={onNavigate} className={linkClass} style={linkStyle}>
+        <Building2 size={16} className="shrink-0" /> <span className="truncate">Alvará da Academia</span>
       </Link>
       <div className="border-t border-[#222] my-1" />
       <button
@@ -432,7 +460,7 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
         className="py-2.5 text-sm flex items-center gap-2 text-left"
         style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8211A" }}
       >
-        <LogOut size={16} /> Sair
+        <LogOut size={16} className="shrink-0" /> Sair
       </button>
     </div>
   );
