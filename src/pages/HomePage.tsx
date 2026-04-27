@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Calendar, MapPin, Play, ArrowRight, Users, Building2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Calendar, MapPin, ArrowRight, Users, Building2 } from "lucide-react";
 
 import { useEvents, useNews, useRankings } from "@/lib/queries";
 import { useI18n, formatDateShort } from "@/lib/i18n";
 import { SafeImage } from "@/components/SafeImage";
 import { EventBadge } from "@/components/EventBadge";
+import { HomeStats } from "@/components/HomeStats";
+import { LazyYouTube } from "@/components/LazyYouTube";
 // FIX A + FIX C: pin BJJ images locally so the Unsplash CDN can't swap them
 // for unrelated photos (tennis, gym, photographer) the way it has been doing
 // when the same photo ID is requested at different sizes.
@@ -58,20 +60,44 @@ const SLIDE_TEXT: Record<string, { pt: string; en: string }> = {
 function HeroSlider() {
   const { lang, t } = useI18n();
   const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
   useEffect(() => {
+    if (paused) return;
     const id = setInterval(() => setI((p) => (p + 1) % SLIDES.length), 6000);
     return () => clearInterval(id);
-  }, []);
+  }, [paused]);
   const slide = SLIDES[i];
 
   return (
-    <section className="relative w-full overflow-hidden bg-black" style={{ height: "560px" }}>
+    <section
+      className="relative w-full overflow-hidden bg-black group/hero"
+      style={{ height: "560px" }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       {SLIDES.map((s, idx) => (
         <div key={idx} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: idx === i ? 1 : 0 }}>
           <SafeImage src={s.image} alt={s.badge} fallbackLabel={s.badge} source="hero" wrapperClassName="absolute inset-0" />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3) 100%)" }} />
         </div>
       ))}
+
+      {/* Setas laterais (visíveis no hover desktop, sempre no mobile) */}
+      <button
+        onClick={() => setI((p) => (p - 1 + SLIDES.length) % SLIDES.length)}
+        className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-11 w-11 grid place-items-center rounded-full bg-black/50 text-white border border-white/30 hover:bg-[#C8211A] hover:border-[#C8211A] transition md:opacity-0 md:group-hover/hero:opacity-100"
+        aria-label="Anterior"
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+      <button
+        onClick={() => setI((p) => (p + 1) % SLIDES.length)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-11 w-11 grid place-items-center rounded-full bg-black/50 text-white border border-white/30 hover:bg-[#C8211A] hover:border-[#C8211A] transition md:opacity-0 md:group-hover/hero:opacity-100"
+        aria-label="Próxima"
+      >
+        <ChevronRight className="h-5 w-5" />
+      </button>
+
 
       <div className="relative z-10 max-w-7xl mx-auto h-full px-4 lg:px-12 flex items-center pb-32">
         <div className="max-w-2xl">
@@ -148,6 +174,20 @@ function HeroSlider() {
             )}
           </div>
         </div>
+      </div>
+
+      {/* Dots indicators (acima da barra de thumbs) */}
+      <div className="absolute bottom-[88px] left-0 right-0 z-20 flex justify-center gap-2">
+        {SLIDES.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => setI(idx)}
+            aria-label={`Ir para slide ${idx + 1}`}
+            className={`h-2.5 rounded-full transition-all ${
+              idx === i ? "w-8 bg-[#C8211A]" : "w-2.5 bg-white/50 hover:bg-white/80"
+            }`}
+          />
+        ))}
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 z-10" style={{ background: "rgba(0,0,0,0.4)" }}>
@@ -629,32 +669,27 @@ function CTASection() {
 
 function YouTubeSection() {
   const { t } = useI18n();
+  // videoId reais do YouTube — substituir conforme canal oficial
   const videos = [
-    { t: "World Championship 2024 — Best Submissions", img: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=500&h=280" },
-    { t: "Black Belt Promotions Ceremony", img: youtubeBlackBeltImg },
-    { t: "Mestre Roberto — A Life on the Mat", img: youtubeMestreRobertoImg },
+    { id: "dQw4w9WgXcQ", t: "World Championship 2024 — Best Submissions", img: undefined as string | undefined },
+    { id: "9bZkp7q19f0", t: "Black Belt Promotions Ceremony", img: youtubeBlackBeltImg },
+    { id: "kJQP7kiw5Fk", t: "Mestre Roberto — A Life on the Mat", img: youtubeMestreRobertoImg },
   ];
   return (
     <section className="bg-white py-20 md:py-28">
       <div className="max-w-7xl mx-auto px-6">
         <SectionHeader
           title={t("home.youtube.title")}
-          action={{ label: t("home.youtube.visit"), href: "#" }}
+          action={{ label: t("home.youtube.visit"), href: "https://www.youtube.com/" }}
         />
         <div className="grid md:grid-cols-3 gap-6">
-          {videos.map((v, i) => (
-            <a
-              key={i}
-              href="#"
-              className="group flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden"
+          {videos.map((v) => (
+            <div
+              key={v.id}
+              className="flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden"
             >
               <div className="relative aspect-video bg-gray-900 overflow-hidden">
-                <SafeImage src={v.img} alt={v.t} fallbackLabel={v.t} source="video" wrapperClassName="absolute inset-0" className="opacity-80 group-hover:opacity-100 transition-opacity" />
-                <div className="absolute inset-0 grid place-items-center">
-                  <span className="h-14 w-14 rounded-full bg-[#C8211A] grid place-items-center group-hover:scale-110 transition-transform" style={{ borderRadius: "9999px" }}>
-                    <Play className="h-6 w-6 text-white ml-0.5" fill="currentColor" />
-                  </span>
-                </div>
+                <LazyYouTube videoId={v.id} title={v.t} fallbackImage={v.img} />
               </div>
               <div className="p-5">
                 <h4
@@ -664,7 +699,7 @@ function YouTubeSection() {
                   {v.t}
                 </h4>
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </div>
@@ -676,6 +711,7 @@ export function HomePage() {
   return (
     <div>
       <HeroSlider />
+      <HomeStats />
       <EventsSection />
       <NewsSection />
       <RankingSection />

@@ -278,6 +278,7 @@ export type Database = {
           athlete_name: string
           belt_degree: number
           belt_type: string
+          bio: string | null
           certificate_number: string
           certified_at: string
           city: string | null
@@ -294,6 +295,7 @@ export type Database = {
           athlete_name: string
           belt_degree?: number
           belt_type: string
+          bio?: string | null
           certificate_number: string
           certified_at: string
           city?: string | null
@@ -310,6 +312,7 @@ export type Database = {
           athlete_name?: string
           belt_degree?: number
           belt_type?: string
+          bio?: string | null
           certificate_number?: string
           certified_at?: string
           city?: string | null

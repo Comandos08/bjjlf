@@ -1,0 +1,1 @@
+ALTER TABLE public.certified_black_belts ADD COLUMN IF NOT EXISTS bio text;
