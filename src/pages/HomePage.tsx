@@ -9,10 +9,12 @@ import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import { SafeImage } from "@/components/SafeImage";
 import { EventBadge } from "@/components/EventBadge";
-// FIX C: hero slide 3 ("Black Belt Registry") was previously photo-1599586120429
-// (a tennis-court image). Replaced with a locally-hosted BJJ photo so the CDN
-// can't drift on us again. The two earlier slides keep their existing images.
+// FIX A + FIX C: pin BJJ images locally so the Unsplash CDN can't swap them
+// for unrelated photos (tennis, gym, photographer) the way it has been doing
+// when the same photo ID is requested at different sizes.
 import heroBlackBeltUrl from "@/assets/hero-3-bjj.jpg";
+import youtubeBlackBeltImg from "@/assets/youtube-black-belt-promotions.jpg";
+import youtubeMestreRobertoImg from "@/assets/youtube-mestre-roberto.jpg";
 
 const SLIDES = [
   {
@@ -393,13 +395,6 @@ function CTASection() {
     </section>
   );
 }
-
-// FIX A: YouTube cards 2 ("Black Belt Promotions") and 3 ("Mestre Roberto")
-// were hotlinking Unsplash IDs that the CDN periodically swapped to non-BJJ
-// photos (a photographer / a fitness gym shot). Pin them to local copies so
-// the visual matches the title regardless of what Unsplash decides to serve.
-import youtubeBlackBeltImg from "@/assets/youtube-black-belt-promotions.jpg";
-import youtubeMestreRobertoImg from "@/assets/youtube-mestre-roberto.jpg";
 
 function YouTubeSection() {
   const { t } = useI18n();
