@@ -55,7 +55,7 @@ export function Navbar() {
         </Link>
 
         {/* CENTER — Nav */}
-        <nav className="hidden xl:flex items-center gap-1">
+        <nav className="hidden xl:flex items-center gap-3">
           {NAV.map((item) => {
             const label = t(`nav.${item.key}`);
             if (item.children) {
@@ -176,27 +176,18 @@ function AthleteMenu() {
     return () => document.removeEventListener("mousedown", onClick);
   }, [open]);
 
-  // Not signed in → show login + join
+  // Not signed in → ONLY show "Entrar". Signup CTAs live on hero/events/academies pages.
   if (!user) {
     return (
-      <>
-        <Link
-          to="/athlete/login"
-          aria-label="Login"
-          className="text-gray-400 hover:text-white transition-base flex items-center gap-1.5"
-          style={{ fontFamily: "Barlow", fontWeight: 500 }}
-        >
-          <LogIn size={18} />
-          <span className="text-xs uppercase tracking-widest hidden lg:inline">Entrar</span>
-        </Link>
-        <Link
-          to="/athlete/signup"
-          className="ml-2 h-9 px-4 bg-[#C8211A] hover:bg-[#8B1612] text-white text-xs uppercase tracking-widest transition-base rounded-md flex items-center"
-          style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-        >
-          Cadastrar
-        </Link>
-      </>
+      <Link
+        to="/athlete/login"
+        aria-label="Entrar"
+        className="text-gray-300 hover:text-white transition-base flex items-center gap-1.5"
+        style={{ fontFamily: "Barlow", fontWeight: 500 }}
+      >
+        <LogIn size={18} />
+        <span className="text-xs uppercase tracking-widest hidden lg:inline">Entrar</span>
+      </Link>
     );
   }
 
@@ -204,72 +195,97 @@ function AthleteMenu() {
     ? profile.full_name.trim().split(/\s+/).map((p) => p[0]?.toUpperCase() ?? "").slice(0, 2).join("")
     : (user.email?.[0] ?? "A").toUpperCase();
 
+  const beltLine = profile
+    ? `Faixa ${profile.belt}${profile.degree > 0 ? ` • ${profile.degree} grau${profile.degree > 1 ? "s" : ""}` : ""}`
+    : null;
+
   return (
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 text-gray-300 hover:text-white transition-base"
+        className="flex items-center transition-base focus:outline-none focus:ring-2 focus:ring-[#C8A84B]/50 rounded-full"
         aria-label="Menu do atleta"
         aria-expanded={open}
       >
         {profile?.photo_url ? (
-          <img src={profile.photo_url} alt="" className="w-8 h-8 rounded-full object-cover border border-[#C8A84B]" />
+          <img
+            src={profile.photo_url}
+            alt=""
+            className="w-9 h-9 rounded-full object-cover"
+            style={{ border: "2px solid #C8A84B" }}
+          />
         ) : (
           <span
-            className="w-8 h-8 rounded-full bg-[#C8211A]/10 text-[#C8A84B] grid place-items-center text-xs"
-            style={{ fontFamily: "Barlow Condensed", fontWeight: 700, border: "1px solid #C8A84B" }}
+            className="w-9 h-9 rounded-full grid place-items-center text-sm text-white"
+            style={{
+              background: "#C8211A",
+              border: "2px solid #C8A84B",
+              fontFamily: "Barlow Condensed",
+              fontWeight: 700,
+            }}
           >
             {initials}
           </span>
         )}
-        <ChevronDown size={14} className="hidden lg:inline" />
       </button>
 
       {open && (
         <div
-          className="absolute right-0 top-full mt-1 min-w-[240px] py-1 z-50 bg-navbar"
-          style={{ border: "1px solid #333", borderTop: "2px solid #C8211A" }}
+          className="absolute right-0 top-full mt-2 min-w-[260px] py-1 z-50 bg-white rounded-lg overflow-hidden"
+          style={{ boxShadow: "0 10px 30px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08)" }}
         >
-          <div className="px-4 py-3 border-b border-[#222]">
-            <p className="text-sm text-white truncate" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
+          <div className="px-4 py-3 border-b border-gray-100">
+            <p
+              className="text-sm text-gray-900 truncate"
+              style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+            >
               {profile?.full_name ?? "Atleta"}
             </p>
-            <p className="text-[10px] text-gray-400 mt-0.5 truncate" style={{ fontFamily: "Barlow" }}>
-              {user.email}
-            </p>
+            {beltLine && (
+              <p
+                className="text-[11px] mt-0.5 truncate"
+                style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
+              >
+                {beltLine}
+              </p>
+            )}
             {!isActive && (
-              <span className="inline-block mt-2 text-[9px] uppercase tracking-widest text-yellow-400 border border-yellow-500/40 px-2 py-0.5 rounded-full">
+              <span
+                className="inline-block mt-2 text-[9px] uppercase tracking-widest text-yellow-700 bg-yellow-50 border border-yellow-200 px-2 py-0.5 rounded-full"
+                style={{ fontFamily: "Barlow", fontWeight: 700 }}
+              >
                 {profile?.status === "pending" ? "Aguardando aprovação" : "Conta inativa"}
               </span>
             )}
           </div>
 
           <AthleteMenuItem
-            icon={<CreditCard size={14} />}
+            icon={<CreditCard size={15} />}
             label="Minha Carteirinha"
             onClick={() => { setOpen(false); void navigate({ to: "/my-card" }); }}
           />
           <AthleteMenuItem
-            icon={<UserCircle size={14} />}
+            icon={<UserCircle size={15} />}
             label="Meu Perfil"
             onClick={() => { setOpen(false); void navigate({ to: "/my-profile" }); }}
           />
           <AthleteMenuItem
-            icon={<Trophy size={14} />}
+            icon={<Trophy size={15} />}
             label="Minhas Competições"
             onClick={() => { setOpen(false); void navigate({ to: "/my-competitions" }); }}
           />
           <AthleteMenuItem
-            icon={<Building2 size={14} />}
-            label="Meus Alvarás"
+            icon={<Building2 size={15} />}
+            label="Alvará da Academia"
             onClick={() => { setOpen(false); void navigate({ to: "/my-permits" }); }}
           />
 
-          <div className="border-t border-[#222] my-1" />
+          <div className="border-t border-gray-100 my-1" />
           <AthleteMenuItem
-            icon={<LogOut size={14} />}
+            icon={<LogOut size={15} />}
             label="Sair"
             onClick={() => { setOpen(false); void signOut(); }}
+            danger
           />
         </div>
       )}
@@ -277,14 +293,28 @@ function AthleteMenu() {
   );
 }
 
-function AthleteMenuItem({ icon, label, onClick }: { icon: React.ReactNode; label: string; onClick: () => void }) {
+function AthleteMenuItem({
+  icon,
+  label,
+  onClick,
+  danger,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  onClick: () => void;
+  danger?: boolean;
+}) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2.5 w-full text-left px-4 py-2.5 text-sm text-gray-300 hover:bg-dark hover:text-white transition-base"
+      className={`flex items-center gap-2.5 w-full text-left px-4 py-2.5 text-sm transition-base ${
+        danger
+          ? "text-[#C8211A] hover:bg-red-50"
+          : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+      }`}
       style={{ fontFamily: "Barlow", fontWeight: 500 }}
     >
-      <span className="text-gray-400">{icon}</span>
+      <span className={danger ? "text-[#C8211A]" : "text-gray-500"}>{icon}</span>
       {label}
     </button>
   );
