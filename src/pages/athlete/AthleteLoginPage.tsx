@@ -3,11 +3,27 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, Clock, ShieldAlert } from "lucide-react";
-import { toast } from "sonner";
+import { AlertCircle, Loader2, Clock, ShieldAlert } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAthleteAuth } from "@/lib/athlete-auth";
 import { AthleteAuthLayout, fieldStyles, btnStyle } from "./AthleteAuthLayout";
+
+function parseLoginError(error: Error): string {
+  const msg = error.message.toLowerCase();
+  if (msg.includes("email not confirmed")) {
+    return "Confirme seu email antes de fazer login. Verifique sua caixa de entrada.";
+  }
+  if (msg.includes("invalid login") || msg.includes("invalid credentials")) {
+    return "Email ou senha incorretos. Verifique os dados.";
+  }
+  if (msg.includes("too many") || msg.includes("rate limit")) {
+    return "Muitas tentativas. Aguarde alguns minutos.";
+  }
+  if (msg.includes("network") || msg.includes("fetch")) {
+    return "Erro de conexão. Verifique sua internet.";
+  }
+  return "Erro ao fazer login. Tente novamente.";
+}
 
 const schema = z.object({
   email: z.string().trim().email("Email inválido").max(255),
