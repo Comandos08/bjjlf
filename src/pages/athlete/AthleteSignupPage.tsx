@@ -3,10 +3,33 @@ import { Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, MailCheck } from "lucide-react";
-import { toast } from "sonner";
+import { AlertCircle, Loader2, MailCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { AthleteAuthLayout, fieldStyles, btnStyle } from "./AthleteAuthLayout";
+
+function parseSignupError(error: Error): string {
+  const msg = error.message.toLowerCase();
+  if (
+    msg.includes("user already registered") ||
+    msg.includes("email already") ||
+    msg.includes("already been registered")
+  ) {
+    return "Este email já está cadastrado. Tente fazer login ou use outro email.";
+  }
+  if (msg.includes("invalid email")) {
+    return "Email inválido. Verifique o endereço digitado.";
+  }
+  if (msg.includes("password") && msg.includes("short")) {
+    return "Senha muito curta. Use no mínimo 8 caracteres.";
+  }
+  if (msg.includes("rate limit") || msg.includes("too many")) {
+    return "Muitas tentativas. Aguarde alguns minutos e tente novamente.";
+  }
+  if (msg.includes("network") || msg.includes("fetch")) {
+    return "Erro de conexão. Verifique sua internet e tente novamente.";
+  }
+  return "Erro ao criar conta. Verifique os dados e tente novamente.";
+}
 
 const BELTS = ["Branca", "Azul", "Roxa", "Marrom", "Preta", "Coral", "Vermelha"] as const;
 const DEGREES = [0, 1, 2, 3, 4] as const;
