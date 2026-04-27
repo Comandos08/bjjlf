@@ -117,7 +117,7 @@ function AdminAthletesPage() {
               onClick={() => setFilter(s)}
               className={cn(
                 "px-3 py-2 text-xs uppercase tracking-wider border",
-                filter === s ? "bg-[#C8211A] border-[#C8211A] text-[#1A1A1A]" : "border-[#E5E5E5] text-[#666666] hover:text-[#1A1A1A]",
+                filter === s ? "bg-[#C8211A] border-[#C8211A] text-white" : "border-[#E5E5E5] text-[#666666] hover:text-[#1A1A1A]",
               )}
             >
               {s === "all" ? "Todos" : s === "pending" ? "Pendentes" : s === "active" ? "Ativos" : "Suspensos"}
@@ -158,7 +158,7 @@ function AdminAthletesPage() {
                       <button onClick={() => void approve(r)} className="text-xs px-2.5 py-1.5 bg-green-700 hover:bg-green-600 text-[#1A1A1A] rounded">Aprovar</button>
                     )}
                     {r.status === "active" && (
-                      <button onClick={() => void suspend(r)} className="text-xs px-2.5 py-1.5 bg-[#C8211A] hover:bg-[#a01828] text-[#1A1A1A] rounded">Suspender</button>
+                      <button onClick={() => void suspend(r)} className="text-xs px-2.5 py-1.5 bg-[#C8211A] hover:bg-[#a01828] text-white rounded">Suspender</button>
                     )}
                     {r.status === "suspended" && (
                       <button onClick={() => void reactivate(r)} className="text-xs px-2.5 py-1.5 bg-green-700 hover:bg-green-600 text-[#1A1A1A] rounded">Reativar</button>
@@ -237,7 +237,7 @@ function EditModal({ row, onClose, onSaved }: { row: Row; onClose: () => void; o
         </label>
         <div className="flex justify-end gap-2">
           <button onClick={onClose} className="px-3 py-2 text-sm text-[#666666] hover:text-[#1A1A1A]">Cancelar</button>
-          <button onClick={() => void save()} disabled={saving} className="px-4 py-2 bg-[#C8211A] text-[#1A1A1A] text-sm uppercase tracking-wider disabled:opacity-60">
+          <button onClick={() => void save()} disabled={saving} className="px-4 py-2 bg-[#C8211A] text-white text-sm uppercase tracking-wider disabled:opacity-60">
             {saving ? "Salvando…" : "Salvar"}
           </button>
         </div>
