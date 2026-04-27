@@ -26,7 +26,7 @@ type Row = {
   valid_until: string | null;
 };
 
-const BELTS = ["Branca", "Azul", "Roxa", "Marrom", "Preta", "Coral", "Vermelha"];
+
 
 function AdminAthletesPage() {
   const { user } = useAdminAuth();
