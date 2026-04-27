@@ -1,6 +1,11 @@
 import { useMemo, useState } from "react";
 import { ChevronDown, ChevronUp, RefreshCw, X, Bug } from "lucide-react";
-import { useImageRegistry, clearImageRegistry } from "@/lib/image-registry";
+import {
+  useImageRegistry,
+  clearImageRegistry,
+  useImageRegistryTelemetry,
+  resetImageRegistryTelemetry,
+} from "@/lib/image-registry";
 
 const isDev = import.meta.env.DEV;
 
@@ -18,6 +23,8 @@ function Panel() {
   const [open, setOpen] = useState(true);
   const [closed, setClosed] = useState(false);
   const [filter, setFilter] = useState<"all" | "loaded" | "error" | "pending">("all");
+
+  const telemetry = useImageRegistryTelemetry();
 
   const counts = useMemo(() => {
     const c = { total: entries.length, loaded: 0, error: 0, pending: 0 };
