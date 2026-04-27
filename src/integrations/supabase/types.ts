@@ -14,7 +14,393 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      admin_users: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          is_active: boolean
+          role: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id: string
+          is_active?: boolean
+          role?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          is_active?: boolean
+          role?: string
+        }
+        Relationships: []
+      }
+      affiliated_academies: {
+        Row: {
+          affiliated_since: string
+          belt: string
+          belt_degree: number
+          city: string
+          country: string
+          country_code: string
+          created_at: string
+          flag_emoji: string | null
+          id: string
+          instagram_url: string | null
+          is_active: boolean
+          logo_url: string | null
+          name: string
+          professor: string
+          slug: string
+          state: string | null
+          website_url: string | null
+        }
+        Insert: {
+          affiliated_since: string
+          belt: string
+          belt_degree?: number
+          city: string
+          country: string
+          country_code: string
+          created_at?: string
+          flag_emoji?: string | null
+          id?: string
+          instagram_url?: string | null
+          is_active?: boolean
+          logo_url?: string | null
+          name: string
+          professor: string
+          slug: string
+          state?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          affiliated_since?: string
+          belt?: string
+          belt_degree?: number
+          city?: string
+          country?: string
+          country_code?: string
+          created_at?: string
+          flag_emoji?: string | null
+          id?: string
+          instagram_url?: string | null
+          is_active?: boolean
+          logo_url?: string | null
+          name?: string
+          professor?: string
+          slug?: string
+          state?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      certified_black_belts: {
+        Row: {
+          academy: string | null
+          athlete_name: string
+          belt_degree: number
+          belt_type: string
+          certificate_number: string
+          certified_at: string
+          city: string | null
+          country_code: string
+          created_at: string
+          flag_emoji: string | null
+          id: string
+          is_active: boolean
+          photo_url: string | null
+          professor: string | null
+        }
+        Insert: {
+          academy?: string | null
+          athlete_name: string
+          belt_degree?: number
+          belt_type: string
+          certificate_number: string
+          certified_at: string
+          city?: string | null
+          country_code: string
+          created_at?: string
+          flag_emoji?: string | null
+          id?: string
+          is_active?: boolean
+          photo_url?: string | null
+          professor?: string | null
+        }
+        Update: {
+          academy?: string | null
+          athlete_name?: string
+          belt_degree?: number
+          belt_type?: string
+          certificate_number?: string
+          certified_at?: string
+          city?: string | null
+          country_code?: string
+          created_at?: string
+          flag_emoji?: string | null
+          id?: string
+          is_active?: boolean
+          photo_url?: string | null
+          professor?: string | null
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          city: string
+          country: string
+          country_code: string
+          created_at: string
+          end_date: string | null
+          event_date: string
+          event_type: string
+          id: string
+          image_url: string | null
+          is_featured: boolean
+          name_en: string
+          name_pt: string
+          registration_url: string | null
+          show_on_home: boolean
+          status: string
+        }
+        Insert: {
+          city: string
+          country: string
+          country_code: string
+          created_at?: string
+          end_date?: string | null
+          event_date: string
+          event_type: string
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean
+          name_en: string
+          name_pt: string
+          registration_url?: string | null
+          show_on_home?: boolean
+          status?: string
+        }
+        Update: {
+          city?: string
+          country?: string
+          country_code?: string
+          created_at?: string
+          end_date?: string | null
+          event_date?: string
+          event_type?: string
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean
+          name_en?: string
+          name_pt?: string
+          registration_url?: string | null
+          show_on_home?: boolean
+          status?: string
+        }
+        Relationships: []
+      }
+      hero_slides: {
+        Row: {
+          badge1_label: string | null
+          badge2_label: string | null
+          created_at: string
+          cta_primary_url: string | null
+          cta_secondary_url: string | null
+          display_order: number
+          id: string
+          image_url: string
+          is_active: boolean
+          subtitle_en: string | null
+          subtitle_pt: string | null
+          tag_en: string | null
+          tag_pt: string | null
+          title_en: string
+          title_pt: string
+        }
+        Insert: {
+          badge1_label?: string | null
+          badge2_label?: string | null
+          created_at?: string
+          cta_primary_url?: string | null
+          cta_secondary_url?: string | null
+          display_order?: number
+          id?: string
+          image_url: string
+          is_active?: boolean
+          subtitle_en?: string | null
+          subtitle_pt?: string | null
+          tag_en?: string | null
+          tag_pt?: string | null
+          title_en: string
+          title_pt: string
+        }
+        Update: {
+          badge1_label?: string | null
+          badge2_label?: string | null
+          created_at?: string
+          cta_primary_url?: string | null
+          cta_secondary_url?: string | null
+          display_order?: number
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          subtitle_en?: string | null
+          subtitle_pt?: string | null
+          tag_en?: string | null
+          tag_pt?: string | null
+          title_en?: string
+          title_pt?: string
+        }
+        Relationships: []
+      }
+      news: {
+        Row: {
+          author: string | null
+          body_en: string | null
+          body_pt: string | null
+          category: string
+          cover_image_url: string | null
+          created_at: string
+          excerpt_en: string | null
+          excerpt_pt: string | null
+          id: string
+          is_featured: boolean
+          is_published: boolean
+          published_at: string | null
+          slug: string
+          title_en: string
+          title_pt: string
+        }
+        Insert: {
+          author?: string | null
+          body_en?: string | null
+          body_pt?: string | null
+          category: string
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt_en?: string | null
+          excerpt_pt?: string | null
+          id?: string
+          is_featured?: boolean
+          is_published?: boolean
+          published_at?: string | null
+          slug: string
+          title_en: string
+          title_pt: string
+        }
+        Update: {
+          author?: string | null
+          body_en?: string | null
+          body_pt?: string | null
+          category?: string
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt_en?: string | null
+          excerpt_pt?: string | null
+          id?: string
+          is_featured?: boolean
+          is_published?: boolean
+          published_at?: string | null
+          slug?: string
+          title_en?: string
+          title_pt?: string
+        }
+        Relationships: []
+      }
+      rankings: {
+        Row: {
+          academy: string | null
+          athlete_name: string
+          belt: string
+          category: string
+          country_code: string
+          created_at: string
+          flag_emoji: string | null
+          gender: string
+          id: string
+          is_active: boolean
+          modality: string
+          points: number
+          position: number | null
+          season: string
+        }
+        Insert: {
+          academy?: string | null
+          athlete_name: string
+          belt: string
+          category: string
+          country_code: string
+          created_at?: string
+          flag_emoji?: string | null
+          gender: string
+          id?: string
+          is_active?: boolean
+          modality: string
+          points?: number
+          position?: number | null
+          season: string
+        }
+        Update: {
+          academy?: string | null
+          athlete_name?: string
+          belt?: string
+          category?: string
+          country_code?: string
+          created_at?: string
+          flag_emoji?: string | null
+          gender?: string
+          id?: string
+          is_active?: boolean
+          modality?: string
+          points?: number
+          position?: number | null
+          season?: string
+        }
+        Relationships: []
+      }
+      youtube_videos: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          is_active: boolean
+          thumbnail_url: string | null
+          title_en: string
+          title_pt: string
+          youtube_id: string
+          youtube_url: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          thumbnail_url?: string | null
+          title_en: string
+          title_pt: string
+          youtube_id: string
+          youtube_url: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          thumbnail_url?: string | null
+          title_en?: string
+          title_pt?: string
+          youtube_id?: string
+          youtube_url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
