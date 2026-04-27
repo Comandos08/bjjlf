@@ -65,17 +65,17 @@ function DashboardPage() {
             </thead>
             <tbody>
               {news.map((n) => (
-                <tr key={n.id} className="border-t" style={{ borderColor: "#FFFFFF" }}>
+                <tr key={n.id} className="border-t hover:bg-[#F5F5F5]" style={{ borderColor: "#F0F0F0" }}>
                   <td className="px-4 py-3 text-[#1A1A1A] truncate max-w-[260px]">{n.title_pt}</td>
-                  <td className="px-4 py-3"><span className="px-2 py-0.5 text-[10px] uppercase" style={{ background: "#FFFFFF", color: "#C8A84B" }}>{n.category}</span></td>
-                  <td className="px-4 py-3"><span className={cn("px-2 py-0.5 text-[10px] uppercase", n.is_published ? "text-[#1A1A1A]" : "text-[#666666]")} style={{ background: n.is_published ? "#166534" : "#E5E5E5" }}>{n.is_published ? "Sim" : "Não"}</span></td>
+                  <td className="px-4 py-3"><span className="px-2 py-0.5 text-[10px] uppercase font-semibold tracking-wider" style={{ background: "#FBF3D9", color: "#8B6F08" }}>{n.category}</span></td>
+                  <td className="px-4 py-3"><span className="px-2 py-0.5 text-[10px] uppercase font-semibold tracking-wider" style={n.is_published ? { background: "#EAF3DE", color: "#3B6D11" } : { background: "#F5F5F5", color: "#666666" }}>{n.is_published ? "Sim" : "Não"}</span></td>
                   <td className="px-4 py-3 text-right">
-                    <Link to="/admin" className="inline-flex"><Pencil size={16} style={{ color: "#C8A84B" }} /></Link>
+                    <Link to="/admin" className="inline-flex"><Pencil size={16} style={{ color: "#C8211A" }} /></Link>
                   </td>
                 </tr>
               ))}
               {news.length === 0 && (
-                <tr><td colSpan={4} className="px-4 py-6 text-center text-[#D1D1D1]">Nenhuma notícia.</td></tr>
+                <tr><td colSpan={4} className="px-4 py-6 text-center text-[#999999]">Nenhuma notícia.</td></tr>
               )}
             </tbody>
           </table>
