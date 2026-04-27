@@ -101,6 +101,69 @@ export type Database = {
         }
         Relationships: []
       }
+      athlete_profiles: {
+        Row: {
+          academy: string | null
+          approved_at: string | null
+          approved_by: string | null
+          belt: string
+          category: string | null
+          country: string | null
+          country_flag: string | null
+          created_at: string
+          degree: number
+          full_name: string
+          id: string
+          modality: string | null
+          photo_url: string | null
+          professor: string | null
+          registration_number: string | null
+          status: string
+          user_id: string
+          valid_until: string | null
+        }
+        Insert: {
+          academy?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          belt?: string
+          category?: string | null
+          country?: string | null
+          country_flag?: string | null
+          created_at?: string
+          degree?: number
+          full_name: string
+          id?: string
+          modality?: string | null
+          photo_url?: string | null
+          professor?: string | null
+          registration_number?: string | null
+          status?: string
+          user_id: string
+          valid_until?: string | null
+        }
+        Update: {
+          academy?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          belt?: string
+          category?: string | null
+          country?: string | null
+          country_flag?: string | null
+          created_at?: string
+          degree?: number
+          full_name?: string
+          id?: string
+          modality?: string | null
+          photo_url?: string | null
+          professor?: string | null
+          registration_number?: string | null
+          status?: string
+          user_id?: string
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
       certified_black_belts: {
         Row: {
           academy: string | null
@@ -151,6 +214,53 @@ export type Database = {
           professor?: string | null
         }
         Relationships: []
+      }
+      competition_history: {
+        Row: {
+          athlete_id: string
+          category: string | null
+          created_at: string
+          event_date: string
+          event_name: string
+          id: string
+          location: string | null
+          medal: string | null
+          result: string | null
+          weight_class: string | null
+        }
+        Insert: {
+          athlete_id: string
+          category?: string | null
+          created_at?: string
+          event_date: string
+          event_name: string
+          id?: string
+          location?: string | null
+          medal?: string | null
+          result?: string | null
+          weight_class?: string | null
+        }
+        Update: {
+          athlete_id?: string
+          category?: string | null
+          created_at?: string
+          event_date?: string
+          event_name?: string
+          id?: string
+          location?: string | null
+          medal?: string | null
+          result?: string | null
+          weight_class?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "competition_history_athlete_id_fkey"
+            columns: ["athlete_id"]
+            isOneToOne: false
+            referencedRelation: "athlete_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       events: {
         Row: {
@@ -413,6 +523,18 @@ export type Database = {
       has_admin_role: { Args: { _roles: string[] }; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
       super_admin_exists: { Args: never; Returns: boolean }
+      verify_athlete: {
+        Args: { _registration_number: string }
+        Returns: {
+          academy: string
+          belt: string
+          degree: number
+          full_name: string
+          registration_number: string
+          status: string
+          valid_until: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

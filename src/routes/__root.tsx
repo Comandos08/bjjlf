@@ -8,6 +8,7 @@ import { ImageDebugPanel } from "@/components/ImageDebugPanel";
 import { cleanupStaleCaches } from "@/lib/cache-cleanup";
 import { I18nProvider } from "@/lib/i18n";
 import { AdminAuthProvider } from "@/lib/admin-auth";
+import { AthleteAuthProvider } from "@/lib/athlete-auth";
 
 interface RouterContext {
   queryClient: QueryClient;
@@ -98,18 +99,20 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
         <AdminAuthProvider>
-          {isAdmin ? (
-            <Outlet />
-          ) : (
-            <div className="min-h-screen flex flex-col bg-background">
-              <Navbar />
-              <main className="flex-1">
-                <Outlet />
-              </main>
-              <Footer />
-            </div>
-          )}
-          {!isAdmin && <ImageDebugPanel />}
+          <AthleteAuthProvider>
+            {isAdmin ? (
+              <Outlet />
+            ) : (
+              <div className="min-h-screen flex flex-col bg-background">
+                <Navbar />
+                <main className="flex-1">
+                  <Outlet />
+                </main>
+                <Footer />
+              </div>
+            )}
+            {!isAdmin && <ImageDebugPanel />}
+          </AthleteAuthProvider>
         </AdminAuthProvider>
       </I18nProvider>
     </QueryClientProvider>

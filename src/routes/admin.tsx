@@ -5,7 +5,7 @@
  */
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Loader2, LayoutDashboard, Calendar, FileText, Trophy, Youtube, Award, Building2, Image as ImageIcon, Settings, LogOut } from "lucide-react";
+import { Loader2, LayoutDashboard, Calendar, FileText, Trophy, Youtube, Award, Building2, Image as ImageIcon, Settings, LogOut, Users } from "lucide-react";
 import { useAdminAuth, canAccessSection, type AdminSection } from "@/lib/admin-auth";
 import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
@@ -23,6 +23,7 @@ const NAV: { to: string; label: string; icon: typeof LayoutDashboard; section: A
   { to: "/admin/youtube", label: "YouTube", icon: Youtube, section: "youtube" },
   { to: "/admin/black-belts", label: "Faixas Pretas", icon: Award, section: "black-belts" },
   { to: "/admin/academies", label: "Academias", icon: Building2, section: "academies" },
+  { to: "/admin/athletes", label: "Atletas", icon: Users, section: "academies" },
   { to: "/admin/hero", label: "Hero Slider", icon: ImageIcon, section: "hero" },
   { to: "/admin/settings", label: "Configurações", icon: Settings, section: "settings" },
 ];

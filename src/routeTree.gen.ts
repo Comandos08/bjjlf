@@ -13,6 +13,8 @@ import { Route as TypographyRouteImport } from './routes/typography'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as MyProfileRouteImport } from './routes/my-profile'
+import { Route as MyCompetitionsRouteImport } from './routes/my-competitions'
 import { Route as MyCardRouteImport } from './routes/my-card'
 import { Route as GraduatesRouteImport } from './routes/graduates'
 import { Route as EventsRouteImport } from './routes/events'
@@ -29,6 +31,10 @@ import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
 import { Route as RegisterAcademyRouteImport } from './routes/register.academy'
 import { Route as GraduatesGraduateIdRouteImport } from './routes/graduates.$graduateId'
 import { Route as EventsEventIdRouteImport } from './routes/events.$eventId'
+import { Route as AthleteSignupRouteImport } from './routes/athlete.signup'
+import { Route as AthleteResetPasswordRouteImport } from './routes/athlete.reset-password'
+import { Route as AthleteLoginRouteImport } from './routes/athlete.login'
+import { Route as AthleteForgotPasswordRouteImport } from './routes/athlete.forgot-password'
 import { Route as AdminYoutubeRouteImport } from './routes/admin.youtube'
 import { Route as AdminSetupRouteImport } from './routes/admin.setup'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
@@ -38,6 +44,7 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminHeroRouteImport } from './routes/admin.hero'
 import { Route as AdminEventsRouteImport } from './routes/admin.events'
 import { Route as AdminBlackBeltsRouteImport } from './routes/admin.black-belts'
+import { Route as AdminAthletesRouteImport } from './routes/admin.athletes'
 import { Route as AdminAcademiesRouteImport } from './routes/admin.academies'
 
 const TypographyRoute = TypographyRouteImport.update({
@@ -58,6 +65,16 @@ const RankingsRoute = RankingsRouteImport.update({
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyProfileRoute = MyProfileRouteImport.update({
+  id: '/my-profile',
+  path: '/my-profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyCompetitionsRoute = MyCompetitionsRouteImport.update({
+  id: '/my-competitions',
+  path: '/my-competitions',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MyCardRoute = MyCardRouteImport.update({
@@ -140,6 +157,26 @@ const EventsEventIdRoute = EventsEventIdRouteImport.update({
   path: '/$eventId',
   getParentRoute: () => EventsRoute,
 } as any)
+const AthleteSignupRoute = AthleteSignupRouteImport.update({
+  id: '/athlete/signup',
+  path: '/athlete/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AthleteResetPasswordRoute = AthleteResetPasswordRouteImport.update({
+  id: '/athlete/reset-password',
+  path: '/athlete/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AthleteLoginRoute = AthleteLoginRouteImport.update({
+  id: '/athlete/login',
+  path: '/athlete/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AthleteForgotPasswordRoute = AthleteForgotPasswordRouteImport.update({
+  id: '/athlete/forgot-password',
+  path: '/athlete/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminYoutubeRoute = AdminYoutubeRouteImport.update({
   id: '/youtube',
   path: '/youtube',
@@ -185,6 +222,11 @@ const AdminBlackBeltsRoute = AdminBlackBeltsRouteImport.update({
   path: '/black-belts',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAthletesRoute = AdminAthletesRouteImport.update({
+  id: '/athletes',
+  path: '/athletes',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAcademiesRoute = AdminAcademiesRouteImport.update({
   id: '/academies',
   path: '/academies',
@@ -202,11 +244,14 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/my-card': typeof MyCardRoute
+  '/my-competitions': typeof MyCompetitionsRoute
+  '/my-profile': typeof MyProfileRoute
   '/news': typeof NewsRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
   '/admin/academies': typeof AdminAcademiesRoute
+  '/admin/athletes': typeof AdminAthletesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
   '/admin/events': typeof AdminEventsRoute
   '/admin/hero': typeof AdminHeroRoute
@@ -216,6 +261,10 @@ export interface FileRoutesByFullPath {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
   '/admin/youtube': typeof AdminYoutubeRoute
+  '/athlete/forgot-password': typeof AthleteForgotPasswordRoute
+  '/athlete/login': typeof AthleteLoginRoute
+  '/athlete/reset-password': typeof AthleteResetPasswordRoute
+  '/athlete/signup': typeof AthleteSignupRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
@@ -233,11 +282,14 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/my-card': typeof MyCardRoute
+  '/my-competitions': typeof MyCompetitionsRoute
+  '/my-profile': typeof MyProfileRoute
   '/news': typeof NewsRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
   '/admin/academies': typeof AdminAcademiesRoute
+  '/admin/athletes': typeof AdminAthletesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
   '/admin/events': typeof AdminEventsRoute
   '/admin/hero': typeof AdminHeroRoute
@@ -247,6 +299,10 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
   '/admin/youtube': typeof AdminYoutubeRoute
+  '/athlete/forgot-password': typeof AthleteForgotPasswordRoute
+  '/athlete/login': typeof AthleteLoginRoute
+  '/athlete/reset-password': typeof AthleteResetPasswordRoute
+  '/athlete/signup': typeof AthleteSignupRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
@@ -266,11 +322,14 @@ export interface FileRoutesById {
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/my-card': typeof MyCardRoute
+  '/my-competitions': typeof MyCompetitionsRoute
+  '/my-profile': typeof MyProfileRoute
   '/news': typeof NewsRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
   '/admin/academies': typeof AdminAcademiesRoute
+  '/admin/athletes': typeof AdminAthletesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
   '/admin/events': typeof AdminEventsRoute
   '/admin/hero': typeof AdminHeroRoute
@@ -280,6 +339,10 @@ export interface FileRoutesById {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
   '/admin/youtube': typeof AdminYoutubeRoute
+  '/athlete/forgot-password': typeof AthleteForgotPasswordRoute
+  '/athlete/login': typeof AthleteLoginRoute
+  '/athlete/reset-password': typeof AthleteResetPasswordRoute
+  '/athlete/signup': typeof AthleteSignupRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/register/academy': typeof RegisterAcademyRoute
@@ -300,11 +363,14 @@ export interface FileRouteTypes {
     | '/events'
     | '/graduates'
     | '/my-card'
+    | '/my-competitions'
+    | '/my-profile'
     | '/news'
     | '/rankings'
     | '/rules'
     | '/typography'
     | '/admin/academies'
+    | '/admin/athletes'
     | '/admin/black-belts'
     | '/admin/events'
     | '/admin/hero'
@@ -314,6 +380,10 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/setup'
     | '/admin/youtube'
+    | '/athlete/forgot-password'
+    | '/athlete/login'
+    | '/athlete/reset-password'
+    | '/athlete/signup'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
@@ -331,11 +401,14 @@ export interface FileRouteTypes {
     | '/events'
     | '/graduates'
     | '/my-card'
+    | '/my-competitions'
+    | '/my-profile'
     | '/news'
     | '/rankings'
     | '/rules'
     | '/typography'
     | '/admin/academies'
+    | '/admin/athletes'
     | '/admin/black-belts'
     | '/admin/events'
     | '/admin/hero'
@@ -345,6 +418,10 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/setup'
     | '/admin/youtube'
+    | '/athlete/forgot-password'
+    | '/athlete/login'
+    | '/athlete/reset-password'
+    | '/athlete/signup'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
@@ -363,11 +440,14 @@ export interface FileRouteTypes {
     | '/events'
     | '/graduates'
     | '/my-card'
+    | '/my-competitions'
+    | '/my-profile'
     | '/news'
     | '/rankings'
     | '/rules'
     | '/typography'
     | '/admin/academies'
+    | '/admin/athletes'
     | '/admin/black-belts'
     | '/admin/events'
     | '/admin/hero'
@@ -377,6 +457,10 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/setup'
     | '/admin/youtube'
+    | '/athlete/forgot-password'
+    | '/athlete/login'
+    | '/athlete/reset-password'
+    | '/athlete/signup'
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/register/academy'
@@ -396,10 +480,16 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRouteWithChildren
   GraduatesRoute: typeof GraduatesRouteWithChildren
   MyCardRoute: typeof MyCardRoute
+  MyCompetitionsRoute: typeof MyCompetitionsRoute
+  MyProfileRoute: typeof MyProfileRoute
   NewsRoute: typeof NewsRoute
   RankingsRoute: typeof RankingsRoute
   RulesRoute: typeof RulesRoute
   TypographyRoute: typeof TypographyRoute
+  AthleteForgotPasswordRoute: typeof AthleteForgotPasswordRoute
+  AthleteLoginRoute: typeof AthleteLoginRoute
+  AthleteResetPasswordRoute: typeof AthleteResetPasswordRoute
+  AthleteSignupRoute: typeof AthleteSignupRoute
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
   VerifyAthleteIdRoute: typeof VerifyAthleteIdRoute
@@ -433,6 +523,20 @@ declare module '@tanstack/react-router' {
       path: '/news'
       fullPath: '/news'
       preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-profile': {
+      id: '/my-profile'
+      path: '/my-profile'
+      fullPath: '/my-profile'
+      preLoaderRoute: typeof MyProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-competitions': {
+      id: '/my-competitions'
+      path: '/my-competitions'
+      fullPath: '/my-competitions'
+      preLoaderRoute: typeof MyCompetitionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/my-card': {
@@ -547,6 +651,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsEventIdRouteImport
       parentRoute: typeof EventsRoute
     }
+    '/athlete/signup': {
+      id: '/athlete/signup'
+      path: '/athlete/signup'
+      fullPath: '/athlete/signup'
+      preLoaderRoute: typeof AthleteSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/athlete/reset-password': {
+      id: '/athlete/reset-password'
+      path: '/athlete/reset-password'
+      fullPath: '/athlete/reset-password'
+      preLoaderRoute: typeof AthleteResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/athlete/login': {
+      id: '/athlete/login'
+      path: '/athlete/login'
+      fullPath: '/athlete/login'
+      preLoaderRoute: typeof AthleteLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/athlete/forgot-password': {
+      id: '/athlete/forgot-password'
+      path: '/athlete/forgot-password'
+      fullPath: '/athlete/forgot-password'
+      preLoaderRoute: typeof AthleteForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/youtube': {
       id: '/admin/youtube'
       path: '/youtube'
@@ -610,6 +742,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlackBeltsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/athletes': {
+      id: '/admin/athletes'
+      path: '/athletes'
+      fullPath: '/admin/athletes'
+      preLoaderRoute: typeof AdminAthletesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/academies': {
       id: '/admin/academies'
       path: '/academies'
@@ -622,6 +761,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminAcademiesRoute: typeof AdminAcademiesRoute
+  AdminAthletesRoute: typeof AdminAthletesRoute
   AdminBlackBeltsRoute: typeof AdminBlackBeltsRoute
   AdminEventsRoute: typeof AdminEventsRoute
   AdminHeroRoute: typeof AdminHeroRoute
@@ -636,6 +776,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAcademiesRoute: AdminAcademiesRoute,
+  AdminAthletesRoute: AdminAthletesRoute,
   AdminBlackBeltsRoute: AdminBlackBeltsRoute,
   AdminEventsRoute: AdminEventsRoute,
   AdminHeroRoute: AdminHeroRoute,
@@ -684,10 +825,16 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRouteWithChildren,
   GraduatesRoute: GraduatesRouteWithChildren,
   MyCardRoute: MyCardRoute,
+  MyCompetitionsRoute: MyCompetitionsRoute,
+  MyProfileRoute: MyProfileRoute,
   NewsRoute: NewsRoute,
   RankingsRoute: RankingsRoute,
   RulesRoute: RulesRoute,
   TypographyRoute: TypographyRoute,
+  AthleteForgotPasswordRoute: AthleteForgotPasswordRoute,
+  AthleteLoginRoute: AthleteLoginRoute,
+  AthleteResetPasswordRoute: AthleteResetPasswordRoute,
+  AthleteSignupRoute: AthleteSignupRoute,
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,
   VerifyAthleteIdRoute: VerifyAthleteIdRoute,
