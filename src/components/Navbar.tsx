@@ -245,7 +245,7 @@ function AthleteMenu() {
 
   const firstInitial = (profile.full_name?.trim()[0] ?? user.email?.[0] ?? "A").toUpperCase();
 
-  const beltLine = `Faixa ${profile.belt}${profile.degree > 0 ? ` • ${profile.degree} grau${profile.degree > 1 ? "s" : ""}` : ""}`;
+  const beltLine = formatBeltLine(profile);
 
   const hasPhoto = !!profile.photo_url && !imgError;
 
