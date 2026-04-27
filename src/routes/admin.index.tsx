@@ -4,7 +4,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Calendar, FileText, Building2, Award, Pencil, Loader2 } from "lucide-react";
 import { useDashboardCounts, useRecentEvents, useRecentNews } from "@/lib/admin-queries";
-import { cn } from "@/lib/utils";
+
 
 export const Route = createFileRoute("/admin/")({
   component: DashboardPage,
