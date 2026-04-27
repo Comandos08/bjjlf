@@ -211,6 +211,21 @@ export function AthleteSignupPage() {
           </select>
         </Field>
 
+        {submitError && (
+          <div
+            role="alert"
+            className="flex items-start gap-2 bg-red-50 border border-red-200 rounded-lg px-4 py-3"
+          >
+            <AlertCircle className="text-red-500 w-4 h-4 mt-0.5 shrink-0" />
+            <p
+              className="text-sm text-red-700"
+              style={{ fontFamily: "Barlow", fontWeight: 500 }}
+            >
+              {submitError}
+            </p>
+          </div>
+        )}
+
         <button type="submit" disabled={submitting} className={fieldStyles.primaryBtn} style={btnStyle}>
           {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
           Criar Conta
