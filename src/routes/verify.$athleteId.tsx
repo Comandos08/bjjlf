@@ -3,6 +3,7 @@ import { Loader2, Shield, ShieldAlert, ShieldCheck, ShieldX } from "lucide-react
 import { useEffect, useState } from "react";
 import dragon from "@/assets/dragon-logo.png";
 import { supabase } from "@/integrations/supabase/client";
+import { computeValidity } from "@/lib/validity";
 
 type VerifyResult = {
   full_name: string;
@@ -17,11 +18,13 @@ type VerifyResult = {
 export const Route = createFileRoute("/verify/$athleteId")({
   head: ({ params }) => ({
     meta: [
-      { title: `Verificar Atleta ${params.athleteId} — BJJLF` },
-      {
-        name: "description",
-        content: "Verificação oficial de atleta BJJLF.",
-      },
+      { title: `Carteirinha ${params.athleteId} — BJJLF` },
+      { name: "description", content: "Verificação oficial de atleta BJJLF." },
+      { property: "og:title", content: `Carteirinha de Atleta — BJJLF` },
+      { property: "og:description", content: `Verificação oficial da carteirinha BJJLF nº ${params.athleteId}.` },
+      { property: "og:type", content: "profile" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: `Carteirinha BJJLF ${params.athleteId}` },
     ],
   }),
   component: VerifyAthletePage,
