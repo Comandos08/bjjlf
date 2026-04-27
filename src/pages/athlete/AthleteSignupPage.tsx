@@ -260,7 +260,7 @@ function ProfileStep({
   onBack: () => void;
   onSubmit: (values: ProfileForm) => Promise<void>;
 }) {
-  const { register, handleSubmit, formState: { errors } } = useForm<ProfileForm>({
+  const { register, handleSubmit, control, formState: { errors } } = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       belt: "Branca",
@@ -279,18 +279,36 @@ function ProfileStep({
       <Field label="Professor / Mestre" error={errors.professor?.message}>
         <input {...register("professor")} className={fieldStyles.input} type="text" />
       </Field>
-      <div className="grid grid-cols-2 gap-3">
-        <Field label="Faixa" error={errors.belt?.message}>
-          <select {...register("belt")} className={fieldStyles.select}>
-            {BELTS.map((b) => <option key={b} value={b}>{b}</option>)}
-          </select>
-        </Field>
-        <Field label="Grau" error={errors.degree?.message}>
-          <select {...register("degree")} className={fieldStyles.select}>
-            {DEGREES.map((d) => <option key={d} value={d}>{d}</option>)}
-          </select>
-        </Field>
-      </div>
+      <Controller
+        control={control}
+        name="belt"
+        render={({ field: beltField }) => (
+          <Controller
+            control={control}
+            name="degree"
+            render={({ field: degreeField }) => (
+              <div>
+                <BeltSelector
+                  belt={beltField.value}
+                  degree={degreeField.value}
+                  onBeltChange={(b: BeltName) => {
+                    beltField.onChange(b);
+                    degreeField.onChange(defaultDegreeForBelt(b));
+                  }}
+                  onDegreeChange={(d) => degreeField.onChange(d)}
+                  selectClassName={fieldStyles.select}
+                  labelClassName={fieldStyles.label}
+                />
+                {(errors.belt?.message || errors.degree?.message) && (
+                  <span className={fieldStyles.error}>
+                    {errors.belt?.message ?? errors.degree?.message}
+                  </span>
+                )}
+              </div>
+            )}
+          />
+        )}
+      />
       <Field label="País" error={errors.country?.message}>
         <input {...register("country")} className={fieldStyles.input} type="text" />
       </Field>
