@@ -154,8 +154,8 @@ export function EventList({
                   data-testid="event-filter-chip"
                   data-badge={badge}
                   data-active={active}
-                  className={cn(chipBase, active ? chipActive : chipInactive)}
-                  style={{ fontFamily: "Barlow", fontWeight: active ? 700 : 600 }}
+                  className={cn(chipBase, active ? chipActive : chipInactive, "font-bold")}
+                  style={chipFontStyle}
                 >
                   {badge}
                 </button>
@@ -421,8 +421,8 @@ function FilterChip({
       data-testid="event-filter-chip"
       data-badge="ALL"
       data-active={active}
-      className={cn(chipBase, active ? chipActive : chipInactive)}
-      style={{ fontFamily: "Barlow", fontWeight: active ? 700 : 600 }}
+      className={cn(chipBase, active ? chipActive : chipInactive, "font-bold")}
+      style={chipFontStyle}
     >
       {label}
     </button>
