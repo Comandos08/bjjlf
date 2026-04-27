@@ -133,16 +133,20 @@ export function MyProfilePage() {
     toast.success("Senha atualizada.");
   }
 
-  async function handlePhoto(e: React.ChangeEvent<HTMLInputElement>) {
+  function handlePhotoSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (!file || !profile) return;
+    if (file) setPendingPhoto(file);
+    if (fileRef.current) fileRef.current.value = "";
+  }
+
+  async function handleCropConfirm(blob: Blob) {
+    if (!profile) return;
     setUploading(true);
     try {
-      const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
-      const path = `${profile.user_id}/avatar-${Date.now()}.${ext}`;
+      const path = `${profile.user_id}/avatar-${Date.now()}.jpg`;
       const { error: upErr } = await supabase.storage
         .from("athlete-photos")
-        .upload(path, file, { upsert: true, contentType: file.type });
+        .upload(path, blob, { upsert: true, contentType: "image/jpeg" });
       if (upErr) throw upErr;
       const { data: pub } = supabase.storage.from("athlete-photos").getPublicUrl(path);
       const { error: updErr } = await supabase
@@ -152,12 +156,12 @@ export function MyProfilePage() {
       if (updErr) throw updErr;
       await refresh();
       toast.success("Foto atualizada.");
+      setPendingPhoto(null);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Erro";
       toast.error(`Falha ao enviar foto: ${msg}`);
     } finally {
       setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
     }
   }
 
