@@ -127,6 +127,7 @@ export function registerImage(input: { url: string; label: string; source: strin
     status: "pending",
     registeredAt: Date.now(),
   });
+  bumpTelemetry({ registered: telemetry.registered + 1 });
   emit();
   return id;
 }
@@ -139,11 +140,26 @@ export function reportImageStatus(id: string, status: "loaded" | "error") {
     status,
     durationMs: Date.now() - prev.registeredAt,
   });
+  if (status === "loaded") {
+    bumpTelemetry({ loaded: telemetry.loaded + 1 });
+  } else {
+    bumpTelemetry({ errored: telemetry.errored + 1 });
+    if (isDev) {
+      // Surface failed images at warn level so they're easy to spot.
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[img-registry] image ERROR — source=${prev.source} label="${prev.label}" url=${prev.url}`,
+      );
+    }
+  }
   emit();
 }
 
 export function unregisterImage(id: string) {
-  if (entries.delete(id)) emit();
+  if (entries.delete(id)) {
+    bumpTelemetry({ unregistered: telemetry.unregistered + 1 });
+    emit();
+  }
 }
 
 export function clearImageRegistry() {
@@ -154,4 +170,58 @@ export function clearImageRegistry() {
 /** Hook used by the debug panel — reactive snapshot of the registry. */
 export function useImageRegistry(): ImageEntry[] {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
+// ---------------------------------------------------------------------------
+// Telemetry public API
+// ---------------------------------------------------------------------------
+
+function subscribeTelemetry(l: Listener) {
+  telemetryListeners.add(l);
+  return () => {
+    telemetryListeners.delete(l);
+  };
+}
+
+function getTelemetrySnapshot(): ImageRegistryTelemetry {
+  return cachedTelemetry;
+}
+
+function getTelemetryServerSnapshot(): ImageRegistryTelemetry {
+  return telemetry;
+}
+
+/** Reactive telemetry hook — re-renders when counters change. */
+export function useImageRegistryTelemetry(): ImageRegistryTelemetry {
+  return useSyncExternalStore(
+    subscribeTelemetry,
+    getTelemetrySnapshot,
+    getTelemetryServerSnapshot,
+  );
+}
+
+/** Non-reactive accessor — useful for tests, console, or one-off reads. */
+export function getImageRegistryTelemetry(): ImageRegistryTelemetry {
+  return cachedTelemetry;
+}
+
+/** Resets all counters back to zero. Does not touch the entries map. */
+export function resetImageRegistryTelemetry() {
+  telemetry = {
+    emits: 0,
+    registered: 0,
+    loaded: 0,
+    errored: 0,
+    unregistered: 0,
+    lastEmitAt: 0,
+  };
+  cachedTelemetry = telemetry;
+  for (const l of telemetryListeners) l();
+}
+
+// Expose telemetry on `window` in dev so you can poke at it from the console:
+//   __imageRegistryTelemetry()
+if (isDev && typeof window !== "undefined") {
+  (window as unknown as { __imageRegistryTelemetry?: () => ImageRegistryTelemetry })
+    .__imageRegistryTelemetry = getImageRegistryTelemetry;
 }
