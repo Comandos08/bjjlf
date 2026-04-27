@@ -2,9 +2,7 @@
 @source "../src";
 @import "tw-animate-css";
 
-/* SSR-safe metric-matched fallbacks: prevent CLS while web fonts load.
-   The size-adjust / ascent / descent values approximate the web font's box
-   so layout doesn't shift when "Barlow Condensed" / "DM Sans" swap in. */
+/* SSR-safe metric-matched fallbacks: prevent CLS while web fonts load. */
 @font-face {
   font-family: "Barlow Condensed Fallback";
   src: local("Arial Narrow"), local("Impact"), local("Arial");
@@ -15,12 +13,21 @@
   line-gap-override: 0%;
 }
 @font-face {
-  font-family: "DM Sans Fallback";
+  font-family: "Barlow Fallback";
   src: local("Arial"), local("Helvetica");
   font-display: swap;
   size-adjust: 100%;
   ascent-override: 92%;
   descent-override: 24%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Bebas Neue Fallback";
+  src: local("Impact"), local("Arial Narrow"), local("Arial");
+  font-display: swap;
+  size-adjust: 90%;
+  ascent-override: 100%;
+  descent-override: 20%;
   line-gap-override: 0%;
 }
 
@@ -61,69 +68,78 @@
   --color-dark-2: var(--dark-2);
   --color-dark-3: var(--dark-3);
   --color-muted-text: var(--muted-text);
+  --color-bg: var(--bg);
+  --color-bg-alt: var(--bg-alt);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
 
-  --font-display: "Barlow Condensed", "Barlow Condensed Fallback", "Oswald", system-ui, sans-serif;
+  --font-display: "Bebas Neue", "Bebas Neue Fallback", "Oswald", system-ui, sans-serif;
   --font-heading: "Barlow Condensed", "Barlow Condensed Fallback", "Oswald", system-ui, sans-serif;
-  --font-sans: "DM Sans", "DM Sans Fallback", system-ui, sans-serif;
+  --font-sans: "Barlow", "Barlow Fallback", system-ui, sans-serif;
 }
 
 :root {
   --radius: 0px;
 
-  /* BJJLF brand palette — exact hex values */
-  --background: #1A1A1A;
-  --foreground: #FFFFFF;
+  /* BJJLF White Theme — exact hex values per design brief */
+  --bg: #FFFFFF;
+  --bg-alt: #F7F7F7;
+  --text: #111111;
+  --text-muted: #6B7280;
 
-  --primary: #C41E3A;
+  --background: #FFFFFF;
+  --foreground: #111111;
+
+  --primary: #C8211A;
   --primary-foreground: #FFFFFF;
-  --primary-dark: #9B1529;
+  --primary-dark: #8B1612;
 
-  --gold: #B8960C;
-  --gold-light: #D4AC10;
-  --gold-foreground: #0F0F0F;
+  --gold: #C8A84B;
+  --gold-light: #D4B962;
+  --gold-foreground: #1A1A1A;
 
-  --navbar: #0F0F0F;
+  --navbar: #1A1A1A;
   --dark: #1A1A1A;
   --dark-2: #222222;
   --dark-3: #2C2C2C;
-  --surface: #F7F9FC;
+  --surface: #F7F7F7;
 
-  --card: #222222;
-  --card-foreground: #FFFFFF;
-  --popover: #0F0F0F;
-  --popover-foreground: #FFFFFF;
+  --card: #FFFFFF;
+  --card-foreground: #111111;
+  --popover: #FFFFFF;
+  --popover-foreground: #111111;
 
-  --secondary: #2C2C2C;
-  --secondary-foreground: #FFFFFF;
+  --secondary: #F7F7F7;
+  --secondary-foreground: #111111;
 
-  --muted: #2C2C2C;
-  --muted-foreground: #9CA3AF;
+  --muted: #F7F7F7;
+  --muted-foreground: #6B7280;
   --muted-text: #6B7280;
 
-  --accent: #2C2C2C;
-  --accent-foreground: #FFFFFF;
+  --accent: #F7F7F7;
+  --accent-foreground: #111111;
 
-  --destructive: #C41E3A;
+  --destructive: #C8211A;
   --destructive-foreground: #FFFFFF;
 
-  --border: #2A2A2A;
-  --input: #FFFFFF;
-  --ring: #C41E3A;
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #C8211A;
 
-  --chart-1: #C41E3A;
-  --chart-2: #B8960C;
+  --chart-1: #C8211A;
+  --chart-2: #C8A84B;
   --chart-3: #6B7280;
-  --chart-4: #9B1529;
-  --chart-5: #D4AC10;
+  --chart-4: #8B1612;
+  --chart-5: #D4B962;
 
-  --sidebar: #0F0F0F;
+  --sidebar: #1A1A1A;
   --sidebar-foreground: #FFFFFF;
-  --sidebar-primary: #C41E3A;
+  --sidebar-primary: #C8211A;
   --sidebar-primary-foreground: #FFFFFF;
   --sidebar-accent: #222222;
   --sidebar-accent-foreground: #FFFFFF;
   --sidebar-border: #2A2A2A;
-  --sidebar-ring: #C41E3A;
+  --sidebar-ring: #C8211A;
 
   /* Belt colors */
   --belt-white: #F5F5F5;
@@ -145,7 +161,7 @@
   }
 
   html {
-    color-scheme: dark;
+    color-scheme: light;
     scroll-behavior: smooth;
   }
 
@@ -154,28 +170,33 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-size: 15px;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Headings keep Barlow Condensed by default; uppercase only when explicitly requested via tokens */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
-    font-weight: 800;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: 0.01em;
   }
 
   /* Allow rounded utilities to override the global zero */
   .rounded-full { border-radius: 9999px !important; }
   .rounded-pill { border-radius: 9999px !important; }
+  .rounded-xl { border-radius: 12px !important; }
+  .rounded-lg { border-radius: 8px !important; }
+  .rounded-md { border-radius: 6px !important; }
+  .rounded { border-radius: 4px !important; }
 }
 
 @layer utilities {
-  .font-display { font-family: var(--font-display); font-weight: 800; }
-  .font-heading { font-family: var(--font-display); font-weight: 700; }
+  .font-display { font-family: var(--font-display); font-weight: 400; letter-spacing: 0.02em; }
+  .font-heading { font-family: var(--font-heading); font-weight: 700; }
   .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 
   .text-gradient-gold {
-    background: linear-gradient(135deg, #B8960C, #E5C547, #B8960C);
+    background: linear-gradient(135deg, #C8A84B, #E5C547, #C8A84B);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -190,21 +211,21 @@
 
   .focus-ring:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.15);
+    box-shadow: 0 0 0 3px rgba(200, 33, 26, 0.15);
   }
 
   .input-base {
-    border: 1px solid #E5E5E5;
+    border: 1px solid #E5E7EB;
     background: #FFFFFF;
-    color: #0F0F0F;
+    color: #111111;
     padding: 10px 14px;
     font-size: 14px;
     transition: all 0.18s ease;
   }
   .input-base:focus {
     outline: none;
-    border-color: #C41E3A;
-    box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.1);
+    border-color: #C8211A;
+    box-shadow: 0 0 0 3px rgba(200, 33, 26, 0.1);
   }
 
   .label-base {
@@ -223,30 +244,30 @@
   }
 
   /* ============================================================
-   * Admin panel form controls — dark theme
+   * Admin panel form controls — light theme aligned with site
    * ============================================================ */
   .admin-input {
-    background: #111111;
-    border: 1px solid #333333;
-    color: #FFFFFF;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    color: #111111;
     padding: 10px 12px;
     font-size: 14px;
     font-family: var(--font-sans);
-    border-radius: 0;
+    border-radius: 6px;
     transition: all 0.15s ease;
   }
-  .admin-input::placeholder { color: #555555; }
+  .admin-input::placeholder { color: #9CA3AF; }
   .admin-input:focus {
     outline: none;
-    border-color: #C41E3A;
-    box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.15);
+    border-color: #C8211A;
+    box-shadow: 0 0 0 3px rgba(200, 33, 26, 0.15);
   }
   .admin-input:disabled { opacity: 0.5; cursor: not-allowed; }
 
   textarea.admin-input { min-height: 80px; resize: vertical; }
   select.admin-input {
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 10px center;
     padding-right: 32px;
@@ -257,8 +278,8 @@
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #888888;
+    color: #6B7280;
     margin-bottom: 6px;
-    font-weight: 500;
+    font-weight: 600;
   }
 }
