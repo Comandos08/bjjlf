@@ -23,11 +23,15 @@ export const Route = createFileRoute("/admin/black-belts")({
 });
 
 const BELT_TYPES = [
-  { value: "preta", label: "Preta", color: "gray" as const },
-  { value: "coral", label: "Coral", color: "orange" as const },
-  { value: "vermelha_branca", label: "Vermelha e Branca", color: "red" as const },
-  { value: "vermelha", label: "Vermelha", color: "red" as const },
+  { value: "preta", label: "Preta", color: "gray" as const, degrees: [1, 2, 3, 4, 5, 6], danLabel: true },
+  { value: "coral", label: "Coral", color: "orange" as const, degrees: [7, 8], danLabel: true },
+  { value: "vermelha_branca", label: "Vermelha e Branca", color: "red" as const, degrees: [7, 8], danLabel: true },
+  { value: "vermelha", label: "Vermelha", color: "red" as const, degrees: [9, 10], danLabel: true },
 ];
+
+function degreesForBeltType(type: string): number[] {
+  return BELT_TYPES.find((b) => b.value === type)?.degrees ?? [0];
+}
 
 function uniq<T>(arr: T[]): T[] { return Array.from(new Set(arr)); }
 
