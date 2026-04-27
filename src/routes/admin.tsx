@@ -76,7 +76,7 @@ function AdminLayout() {
       <aside className="w-[240px] flex flex-col border-r" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}>
         <div className="px-5 py-5 border-b flex items-center gap-2.5" style={{ borderColor: "#E5E5E5" }}>
           <div className="h-9 w-9 rounded-full grid place-items-center" style={{ background: "#C8211A" }}>
-            <span className="text-[#1A1A1A] font-bold text-sm" style={{ fontFamily: "Barlow Condensed" }}>B</span>
+            <span className="text-white font-bold text-sm" style={{ fontFamily: "Barlow Condensed" }}>B</span>
           </div>
           <div className="leading-none">
             <div className="text-[#C8211A] font-bold text-base" style={{ fontFamily: "Barlow Condensed" }}>BJJLF</div>
@@ -95,10 +95,10 @@ function AdminLayout() {
                 className={cn(
                   "flex items-center gap-3 px-5 py-2.5 text-sm transition-colors border-l-[3px]",
                   active
-                    ? "text-[#1A1A1A] border-l-[#C8A84B]"
-                    : "text-[#666666] hover:text-[#1A1A1A] border-l-transparent",
+                    ? "text-[#C8211A] border-l-[#C8211A] font-semibold"
+                    : "text-[#666666] hover:text-[#1A1A1A] hover:bg-[#F5F5F5] border-l-transparent",
                 )}
-                style={active ? { background: "#C8211A" } : undefined}
+                style={active ? { background: "#FFF0EF" } : undefined}
               >
                 <Icon size={18} />
                 <span>{n.label}</span>
@@ -108,12 +108,12 @@ function AdminLayout() {
         </nav>
 
         <div className="border-t p-4 flex items-center gap-3" style={{ borderColor: "#E5E5E5" }}>
-          <div className="h-8 w-8 rounded-full grid place-items-center text-[#1A1A1A] text-xs font-bold" style={{ background: "#E5E5E5" }}>
+          <div className="h-8 w-8 rounded-full grid place-items-center text-white text-xs font-bold" style={{ background: "#C8211A" }}>
             {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-[11px] text-[#666666] truncate">{user.email}</div>
-            <div className="text-[10px] text-[#D1D1D1] uppercase">{role}</div>
+            <div className="text-[11px] text-[#1A1A1A] truncate font-medium">{user.email}</div>
+            <div className="text-[10px] text-[#999999] uppercase tracking-wider">{role}</div>
           </div>
           <button
             onClick={() => void signOut()}
