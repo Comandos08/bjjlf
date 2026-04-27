@@ -35,8 +35,7 @@ function parseSignupError(error: Error): string {
   return "Erro ao criar conta. Verifique os dados e tente novamente.";
 }
 
-const BELTS = ["Branca", "Azul", "Roxa", "Marrom", "Preta", "Coral", "Vermelha"] as const;
-const DEGREES = [0, 1, 2, 3, 4] as const;
+const BELTS = BELT_NAMES;
 const CATEGORIES = [
   "Infanto-Juvenil",
   "Juvenil",
