@@ -1,3 +1,8 @@
+// FIX B: local copy of the intended BJJ image for the "European Open Returns
+// to Lisbon" card. Avoids the Unsplash CDN serving a tennis-themed photo for
+// the photo-1599586120429 ID at our requested size.
+import newsEuropeanOpenImg from "@/assets/news-european-open.jpg";
+
 export type NewsItem = {
   id: string;
   title: string;
@@ -37,7 +42,10 @@ export const NEWS: NewsItem[] = [
     title: "European Open Returns to Lisbon This Summer",
     excerpt: "After a record-breaking edition in Madrid, the BJJLF European Open will be hosted at MEO Arena.",
     category: "Tournaments",
-    image: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&w=600&h=350",
+    // FIX B: previously photo-1599586120429-48281b6f0ece, which the Unsplash
+    // CDN was serving as a tennis racket/ball photo at this size. Pinned to
+    // a local copy of the intended BJJ image.
+    image: newsEuropeanOpenImg,
     date: "2025-03-28",
     author: "Maria Lopes",
   },

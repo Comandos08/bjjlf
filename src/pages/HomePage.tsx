@@ -9,6 +9,12 @@ import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import { SafeImage } from "@/components/SafeImage";
 import { EventBadge } from "@/components/EventBadge";
+// FIX A + FIX C: pin BJJ images locally so the Unsplash CDN can't swap them
+// for unrelated photos (tennis, gym, photographer) the way it has been doing
+// when the same photo ID is requested at different sizes.
+import heroBlackBeltUrl from "@/assets/hero-3-bjj.jpg";
+import youtubeBlackBeltImg from "@/assets/youtube-black-belt-promotions.jpg";
+import youtubeMestreRobertoImg from "@/assets/youtube-mestre-roberto.jpg";
 
 const SLIDES = [
   {
@@ -26,8 +32,8 @@ const SLIDES = [
     badge: "No-Gi Pan-American",
   },
   {
-    image: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&w=1440&h=600",
-    thumb: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?auto=format&fit=crop&w=80&h=50",
+    image: heroBlackBeltUrl,
+    thumb: heroBlackBeltUrl,
     titleKey: "slide.3.title",
     subKey: "slide.3.sub",
     badge: "Black Belt Registry",
@@ -394,8 +400,8 @@ function YouTubeSection() {
   const { t } = useI18n();
   const videos = [
     { t: "World Championship 2024 — Best Submissions", img: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=500&h=280" },
-    { t: "Black Belt Promotions Ceremony", img: "https://images.unsplash.com/photo-1544717305-996b815c338c?auto=format&fit=crop&w=500&h=280" },
-    { t: "Mestre Roberto — A Life on the Mat", img: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=500&h=280" },
+    { t: "Black Belt Promotions Ceremony", img: youtubeBlackBeltImg },
+    { t: "Mestre Roberto — A Life on the Mat", img: youtubeMestreRobertoImg },
   ];
   return (
     <section className="lg:py-20 bg-white" style={{ paddingTop: "80px", paddingBottom: "80px" }}>
