@@ -23,11 +23,15 @@ export function PhotoCropModal({
   const [pixels, setPixels] = useState<Area | null>(null);
 
   // Carrega o arquivo como dataURL quando abre
-  if (file && !imageSrc) {
+  useEffect(() => {
+    if (!file) {
+      setImageSrc(null);
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => setImageSrc(reader.result as string);
     reader.readAsDataURL(file);
-  }
+  }, [file]);
 
   const onCropComplete = useCallback((_: Area, areaPx: Area) => {
     setPixels(areaPx);
