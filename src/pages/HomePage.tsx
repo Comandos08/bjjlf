@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, Calendar, MapPin, Play, ArrowRight, Users, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { EVENTS, RANKINGS } from "@/data/events";
-import { NEWS } from "@/data/news";
+import { useEvents, useNews, useRankings } from "@/lib/queries";
 import { useI18n, formatDateShort } from "@/lib/i18n";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
@@ -154,6 +153,7 @@ function LocalSectionHeading({ title, action, dark = true }: { title: React.Reac
 
 function EventsSection() {
   const { t, lang } = useI18n();
+  const { data: events = [] } = useEvents();
   return (
     <section className="py-16 lg:py-20" style={{ background: "#F7F9FC" }}>
       <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
@@ -164,7 +164,7 @@ function EventsSection() {
           </Link>
         </div>
         <div className="grid gap-3.5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {EVENTS.slice(0, 6).map((e) => {
+          {events.slice(0, 6).map((e) => {
             return (
               <Link
                 key={e.id}
@@ -210,7 +210,8 @@ function EventsSection() {
 
 function NewsSection() {
   const { t, lang } = useI18n();
-  const items = NEWS.slice(0, 3);
+  const { data: news = [] } = useNews();
+  const items = news.slice(0, 3);
 
   const categoryKey = (c: string) => `news.cat.${c.toLowerCase()}.label`;
   const titleKey = (id: string) => `news.item.${id}.title`;
@@ -267,8 +268,9 @@ function RankingSection() {
   const [belt, setBelt] = useState<"black" | "brown" | "purple" | "blue" | "white">("black");
   const [category, setCategory] = useState<"adult" | "master" | "juvenile">("adult");
 
-  const giData = RANKINGS[`${gender}-gi`] ?? [];
-  const nogiData = RANKINGS[`${gender}-nogi`] ?? [];
+  const { data: rankings = {} } = useRankings();
+  const giData = rankings[`${gender}-gi`] ?? [];
+  const nogiData = rankings[`${gender}-nogi`] ?? [];
 
   const beltLabel = t(`home.ranking.belt${belt[0].toUpperCase()}${belt.slice(1)}`);
   const categoryLabel = t(`home.ranking.${category}`);
