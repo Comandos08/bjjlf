@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdminAuth } from "@/lib/admin-auth";
 import { cn } from "@/lib/utils";
+import { BeltSelector } from "@/components/BeltSelector";
+import { formatBeltLine, defaultDegreeForBelt, type BeltName } from "@/lib/belts-ibjjf";
 
 export const Route = createFileRoute("/admin/athletes")({
   head: () => ({ meta: [{ title: "Admin — Atletas" }, { name: "robots", content: "noindex, nofollow" }] }),
