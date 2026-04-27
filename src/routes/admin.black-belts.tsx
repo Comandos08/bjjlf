@@ -157,7 +157,7 @@ const schema = z.object({
   certificate_number: z.string().trim().min(1).max(50),
   certified_at: z.string().min(1),
   photo_url: z.string().max(500).optional().or(z.literal("")),
-  bio: z.string().max(2000).optional().or(z.literal("")),
+  bio: z.string().max(1000, "Máximo 1000 caracteres").optional().or(z.literal("")),
   is_active: z.boolean(),
 });
 type FormValues = z.infer<typeof schema>;
