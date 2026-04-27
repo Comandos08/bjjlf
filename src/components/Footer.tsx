@@ -8,11 +8,11 @@ import { cn } from "@/lib/utils";
 export function Footer() {
   const { t } = useI18n();
 
-  const linkClass = cn(typo.body.sm, "text-[#999] hover:text-gold transition-base block py-1");
-  const headingClass = cn(typo.heading.kicker, "mb-3");
+  const linkClass = "font-sans text-sm text-gray-400 hover:text-white transition-base block py-1";
+  const headingClass = "font-sans text-xs font-bold uppercase tracking-widest text-gray-500 mb-3";
 
   return (
-    <footer className="bg-navbar" style={{ borderTop: "3px solid #C41E3A", paddingTop: "48px", paddingBottom: "24px" }}>
+    <footer className="bg-navbar" style={{ borderTop: "3px solid #C8211A", paddingTop: "48px", paddingBottom: "24px" }}>
       <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
         <div className="grid gap-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-[2fr,1fr,1fr,1fr,1.5fr]">
           {/* Col 1 — Logo + tagline + social */}
