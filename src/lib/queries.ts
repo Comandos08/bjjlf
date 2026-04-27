@@ -14,6 +14,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { EVENTS, RANKINGS, type Event, type EventTypeBadge, type Ranked } from "@/data/events";
 import { NEWS, type NewsItem } from "@/data/news";
 import { ACADEMIES, type Academy } from "@/data/academies";
+// Local pinned BJJ assets — DB rows that reference "/src/assets/<file>" are
+// rewritten to these bundled URLs so the browser actually resolves them.
+import heroBlackBeltUrl from "@/assets/hero-3-bjj.jpg";
+import newsEuropeanOpenUrl from "@/assets/news-european-open.jpg";
 
 /* ---------- helpers ---------- */
 
@@ -21,6 +25,20 @@ const FALLBACK_EVENT_IMG =
   "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=400&h=250";
 const FALLBACK_NEWS_IMG =
   "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=600&h=350";
+
+/**
+ * Maps DB-stored `/src/assets/<file>` paths to the bundled Vite asset URL.
+ * Returns the input unchanged for absolute URLs (http(s)://...).
+ * Returns `null` for empty/missing values so callers can apply fallbacks.
+ */
+const ASSET_MAP: Record<string, string> = {
+  "/src/assets/hero-3-bjj.jpg": heroBlackBeltUrl,
+  "/src/assets/news-european-open.jpg": newsEuropeanOpenUrl,
+};
+function resolveAssetUrl(raw: string | null | undefined): string | null {
+  if (!raw || raw.trim() === "") return null;
+  return ASSET_MAP[raw] ?? raw;
+}
 
 /** Coerce arbitrary DB strings to a known badge value (defaults to GI). */
 function normalizeBadge(s: string | null | undefined): EventTypeBadge {
@@ -48,6 +66,7 @@ export function useEvents() {
       const { data, error } = await supabase
         .from("events")
         .select("*")
+        .order("is_featured", { ascending: false })
         .order("event_date", { ascending: true });
 
       if (error || !data || data.length === 0) return EVENTS;
@@ -57,7 +76,7 @@ export function useEvents() {
         name: row.name_en, // page uses single string; PT translation flows through i18n keys
         date: row.event_date,
         location: `${row.city}, ${row.country_code}`,
-        image: row.image_url ?? FALLBACK_EVENT_IMG,
+        image: resolveAssetUrl(row.image_url) ?? FALLBACK_EVENT_IMG,
         type: normalizeType(row.event_type),
         badge: normalizeBadge(row.event_type),
       }));
@@ -93,7 +112,7 @@ export function useNews() {
           title: row.title_en,
           excerpt: row.excerpt_en ?? "",
           category,
-          image: row.cover_image_url ?? FALLBACK_NEWS_IMG,
+          image: resolveAssetUrl(row.cover_image_url) ?? FALLBACK_NEWS_IMG,
           date: (row.published_at ?? row.created_at).slice(0, 10),
           author: row.author ?? "BJJLF Editorial",
           featured: row.is_featured,
@@ -203,15 +222,18 @@ export function useHeroSlides() {
 
       if (error || !data || data.length === 0) return [];
 
-      return data.map<HeroSlide>((row) => ({
-        image: row.image_url,
-        thumb: row.image_url,
-        titlePt: row.title_pt,
-        titleEn: row.title_en,
-        subPt: row.subtitle_pt ?? "",
-        subEn: row.subtitle_en ?? "",
-        badge: row.badge1_label ?? row.tag_en ?? row.title_en,
-      }));
+      return data.map<HeroSlide>((row) => {
+        const resolved = resolveAssetUrl(row.image_url) ?? row.image_url;
+        return {
+          image: resolved,
+          thumb: resolved,
+          titlePt: row.title_pt,
+          titleEn: row.title_en,
+          subPt: row.subtitle_pt ?? "",
+          subEn: row.subtitle_en ?? "",
+          badge: row.badge1_label ?? row.tag_en ?? row.title_en,
+        };
+      });
     },
   });
 }
