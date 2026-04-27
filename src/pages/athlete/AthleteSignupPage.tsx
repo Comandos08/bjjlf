@@ -92,6 +92,7 @@ export function AthleteSignupPage() {
 
   async function onSubmit(values: FormValues) {
     setSubmitting(true);
+    setSubmitError(null);
     try {
       const redirectTo = `${window.location.origin}/athlete/login`;
       const { data, error } = await supabase.auth.signUp({
@@ -119,8 +120,8 @@ export function AthleteSignupPage() {
 
       setSentEmail(values.email);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Erro desconhecido.";
-      toast.error(`Falha no cadastro: ${msg}`);
+      const err = e instanceof Error ? e : new Error("Erro desconhecido.");
+      setSubmitError(parseSignupError(err));
     } finally {
       setSubmitting(false);
     }
