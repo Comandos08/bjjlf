@@ -340,8 +340,8 @@ function AthleteMenuItem({
   );
 }
 
-function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
-  const { user, profile, isActive, isLoading, signOut } = useAthleteAuth();
+function MobileProfileBlock({ onNavigate }: { onNavigate: () => void }) {
+  const { user, profile, isActive, isLoading } = useAthleteAuth();
   const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
@@ -349,42 +349,27 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
   }, [profile?.photo_url]);
 
   if (isLoading) return null;
-
   const showAthlete = !!user && !!profile && isActive;
+  if (!showAthlete) return null;
 
-  if (!showAthlete) {
-    return (
-      <div className="flex flex-col border-t border-[#222] mt-2 pt-2">
-        <Link
-          to="/athlete/login"
-          onClick={onNavigate}
-          className="py-3 text-sm text-gray-300 flex items-center gap-2"
-          style={{ fontFamily: "Barlow", fontWeight: 500 }}
-        >
-          <LogIn size={16} /> Entrar
-        </Link>
-      </div>
-    );
-  }
+  void onNavigate;
 
   const firstInitial = (profile.full_name?.trim()[0] ?? user.email?.[0] ?? "A").toUpperCase();
-
   const beltLine = `Faixa ${profile.belt}${profile.degree > 0 ? ` • ${profile.degree} grau${profile.degree > 1 ? "s" : ""}` : ""}`;
-
   const hasPhoto = !!profile.photo_url && !imgError;
 
   return (
-    <div className="flex flex-col border-t border-[#222] mt-2 pt-3">
-      <div className="flex items-center gap-3 px-1 py-2">
-        <span className="relative w-9 h-9 block">
+    <div className="bg-white">
+      <div className="container mx-auto px-4 py-3 flex items-center gap-3 max-w-full">
+        <span className="relative w-12 h-12 block shrink-0">
           <span
-            className="absolute inset-0 w-9 h-9 rounded-full grid place-items-center text-white transition-opacity duration-150"
+            className="absolute inset-0 w-12 h-12 rounded-full grid place-items-center text-white transition-opacity duration-150"
             style={{
               background: "#C8211A",
               border: "2px solid #C8A84B",
               fontFamily: "Barlow",
               fontWeight: 700,
-              fontSize: 16,
+              fontSize: 20,
               opacity: hasPhoto ? 0 : 1,
             }}
           >
@@ -395,24 +380,40 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
               src={profile.photo_url}
               alt=""
               onError={() => setImgError(true)}
-              className="absolute inset-0 w-9 h-9 rounded-full object-cover transition-opacity duration-150"
+              className="absolute inset-0 w-12 h-12 rounded-full object-cover transition-opacity duration-150"
               style={{ border: "2px solid #C8A84B", opacity: hasPhoto ? 1 : 0 }}
             />
           )}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-sm text-white truncate" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
+          <p
+            className="truncate"
+            style={{ fontFamily: "Barlow", fontWeight: 700, fontSize: 15, color: "#1A1A1A" }}
+          >
             {profile.full_name}
           </p>
           <p
-            className="text-[11px] truncate"
-            style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
+            className="truncate mt-0.5"
+            style={{ fontFamily: "Barlow", fontWeight: 600, fontSize: 13, color: "#C8A84B" }}
           >
             {beltLine}
           </p>
         </div>
       </div>
-      <div className="border-t border-[#222] my-1" />
+      <div style={{ height: 1, background: "#C8A84B", opacity: 0.6 }} />
+    </div>
+  );
+}
+
+function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
+  const { user, profile, isActive, isLoading, signOut } = useAthleteAuth();
+
+  if (isLoading) return null;
+  const showAthlete = !!user && !!profile && isActive;
+  if (!showAthlete) return null;
+
+  return (
+    <div className="flex flex-col border-t border-[#222] mt-2 pt-2">
       <Link to="/my-card" onClick={onNavigate} className="py-2.5 text-sm text-gray-300 flex items-center gap-2" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
         <CreditCard size={16} /> Minha Carteirinha
       </Link>
