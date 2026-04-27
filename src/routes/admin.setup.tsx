@@ -121,25 +121,25 @@ function SetupPage() {
 
   if (checking) {
     return (
-      <div className="min-h-screen grid place-items-center" style={{ background: "#0A0A0A" }}>
-        <Loader2 className="h-6 w-6 animate-spin text-white" />
+      <div className="min-h-screen grid place-items-center" style={{ background: "#F8F8F8" }}>
+        <Loader2 className="h-6 w-6 animate-spin text-[#1A1A1A]" />
       </div>
     );
   }
   if (!allowed) return null;
 
   return (
-    <div className="min-h-screen grid place-items-center px-4" style={{ background: "#0A0A0A" }}>
+    <div className="min-h-screen grid place-items-center px-4" style={{ background: "#F8F8F8" }}>
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-6">
           <Logo />
         </div>
-        <div className="border" style={{ background: "#111111", borderColor: "#222" }}>
-          <div className="p-6 border-b" style={{ borderColor: "#222" }}>
-            <h1 className="text-white text-xl font-bold uppercase" style={{ fontFamily: "Barlow Condensed" }}>
+        <div className="border" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}>
+          <div className="p-6 border-b" style={{ borderColor: "#E5E5E5" }}>
+            <h1 className="text-[#1A1A1A] text-xl font-bold uppercase" style={{ fontFamily: "Barlow Condensed" }}>
               Configuração Inicial
             </h1>
-            <p className="text-[#888] text-sm mt-1">Crie a primeira conta Super Admin do sistema.</p>
+            <p className="text-[#666666] text-sm mt-1">Crie a primeira conta Super Admin do sistema.</p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
             <Field label="Nome completo" error={errors.fullName?.message}>
@@ -173,7 +173,7 @@ function SetupPage() {
               type="submit"
               disabled={submitting}
               className="w-full h-11 text-white font-semibold uppercase tracking-wide text-sm flex items-center justify-center gap-2 disabled:opacity-60"
-              style={{ background: "#C41E3A", borderRadius: 0 }}
+              style={{ background: "#C8211A", borderRadius: 0 }}
             >
               {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
               Criar Super Admin
@@ -181,7 +181,7 @@ function SetupPage() {
           </form>
         </div>
         <div className="text-center mt-4">
-          <Link to="/" className="text-[#666] text-xs hover:text-[#999]">← Voltar ao site</Link>
+          <Link to="/" className="text-[#999999] text-xs hover:text-[#666666]">← Voltar ao site</Link>
         </div>
       </div>
     </div>
@@ -191,9 +191,9 @@ function SetupPage() {
 function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="block text-xs uppercase tracking-wider text-[#888] mb-1.5">{label}</span>
+      <span className="block text-xs uppercase tracking-wider text-[#666666] mb-1.5">{label}</span>
       {children}
-      {error && <span className="block text-xs text-[#C41E3A] mt-1">{error}</span>}
+      {error && <span className="block text-xs text-[#C8211A] mt-1">{error}</span>}
     </label>
   );
 }

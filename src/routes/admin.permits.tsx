@@ -225,13 +225,13 @@ function AdminPermitsPage() {
       {/* Filters */}
       <div className="flex flex-wrap items-end gap-3">
         <div>
-          <label className="block text-[11px] uppercase tracking-widest text-[#888] mb-1">
+          <label className="block text-[11px] uppercase tracking-widest text-[#666666] mb-1">
             Status
           </label>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-[#111] border border-[#333] text-white text-sm rounded px-3 py-2 min-w-[180px]"
+            className="bg-[#FFFFFF] border border-[#E5E5E5] text-[#1A1A1A] text-sm rounded px-3 py-2 min-w-[180px]"
           >
             {STATUS_OPTIONS.map((o) => (
               <option key={o.v} value={o.v}>
@@ -241,21 +241,21 @@ function AdminPermitsPage() {
           </select>
         </div>
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-[11px] uppercase tracking-widest text-[#888] mb-1">
+          <label className="block text-[11px] uppercase tracking-widest text-[#666666] mb-1">
             Buscar
           </label>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#666]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#999999]" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Academia ou email"
-              className="w-full bg-[#111] border border-[#333] text-white text-sm rounded pl-9 pr-9 py-2"
+              className="w-full bg-[#FFFFFF] border border-[#E5E5E5] text-[#1A1A1A] text-sm rounded pl-9 pr-9 py-2"
             />
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#666] hover:text-white"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#999999] hover:text-[#1A1A1A]"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -264,7 +264,7 @@ function AdminPermitsPage() {
         </div>
         <button
           onClick={exportCsv}
-          className="inline-flex items-center gap-2 bg-[#B8960C] hover:bg-[#9a7d0a] text-white text-sm uppercase tracking-widest rounded px-4 py-2"
+          className="inline-flex items-center gap-2 bg-[#C8A84B] hover:bg-[#9a7d0a] text-[#1A1A1A] text-sm uppercase tracking-widest rounded px-4 py-2"
           style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
         >
           <Download className="h-4 w-4" /> Exportar CSV
@@ -272,18 +272,18 @@ function AdminPermitsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-[#111] border border-[#222] rounded-lg overflow-hidden">
+      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg overflow-hidden">
         {loading ? (
           <div className="grid place-items-center py-16">
-            <Loader2 className="h-6 w-6 animate-spin text-[#666]" />
+            <Loader2 className="h-6 w-6 animate-spin text-[#999999]" />
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-16 text-[#666]">Nenhum alvará encontrado.</div>
+          <div className="text-center py-16 text-[#999999]">Nenhum alvará encontrado.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-[11px] uppercase tracking-widest text-[#888] bg-[#0d0d0d]">
+                <tr className="text-left text-[11px] uppercase tracking-widest text-[#666666] bg-[#F8F8F8]">
                   <th className="px-4 py-3">Nº</th>
                   <th className="px-4 py-3">Academia</th>
                   <th className="px-4 py-3">Responsável</th>
@@ -299,11 +299,11 @@ function AdminPermitsPage() {
                 {filtered.map((r) => {
                   const s = statusBadge(r.status);
                   return (
-                    <tr key={r.id} className="border-t border-[#222] text-white hover:bg-[#161616]">
-                      <td className="px-4 py-3 text-[#aaa]">{r.permit_number ?? "—"}</td>
+                    <tr key={r.id} className="border-t border-[#E5E5E5] text-[#1A1A1A] hover:bg-[#F5F5F5]">
+                      <td className="px-4 py-3 text-[#666666]">{r.permit_number ?? "—"}</td>
                       <td className="px-4 py-3">{r.academy_name}</td>
-                      <td className="px-4 py-3 text-[#aaa]">{r.responsible_name}</td>
-                      <td className="px-4 py-3 text-[#aaa]">
+                      <td className="px-4 py-3 text-[#666666]">{r.responsible_name}</td>
+                      <td className="px-4 py-3 text-[#666666]">
                         {r.city} — {r.country}
                       </td>
                       <td className="px-4 py-3">
@@ -313,8 +313,8 @@ function AdminPermitsPage() {
                           {s.label}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-[#aaa] whitespace-nowrap">{fmt(r.issued_at)}</td>
-                      <td className="px-4 py-3 text-[#aaa] whitespace-nowrap">{fmt(r.expires_at)}</td>
+                      <td className="px-4 py-3 text-[#666666] whitespace-nowrap">{fmt(r.issued_at)}</td>
+                      <td className="px-4 py-3 text-[#666666] whitespace-nowrap">{fmt(r.expires_at)}</td>
                       <td className="px-4 py-3 whitespace-nowrap">{formatBRL(r.amount_cents)}</td>
                       <td className="px-4 py-3 space-x-2 whitespace-nowrap">
                         {r.status === "pending_payment" && (
@@ -347,7 +347,7 @@ function AdminPermitsPage() {
                               to="/my-permit/$permitNumber"
                               params={{ permitNumber: r.permit_number }}
                               target="_blank"
-                              className="inline-flex items-center gap-1 text-[#C8A84B] hover:text-white text-xs uppercase tracking-wider"
+                              className="inline-flex items-center gap-1 text-[#C8A84B] hover:text-[#1A1A1A] text-xs uppercase tracking-wider"
                             >
                               <FileText className="h-3 w-3" /> Doc
                             </Link>
@@ -355,7 +355,7 @@ function AdminPermitsPage() {
                               to="/verify/academy/$permitNumber"
                               params={{ permitNumber: r.permit_number }}
                               target="_blank"
-                              className="inline-flex items-center gap-1 text-[#C8211A] hover:text-white text-xs uppercase tracking-wider"
+                              className="inline-flex items-center gap-1 text-[#C8211A] hover:text-[#1A1A1A] text-xs uppercase tracking-wider"
                             >
                               <ExternalLink className="h-3 w-3" /> Ver
                             </Link>
@@ -385,13 +385,13 @@ function Metric({
 }) {
   return (
     <div
-      className={`bg-[#111] border rounded-lg p-5 ${
-        accent ? "border-yellow-500/60" : "border-[#222]"
+      className={`bg-[#FFFFFF] border rounded-lg p-5 ${
+        accent ? "border-yellow-500/60" : "border-[#E5E5E5]"
       }`}
     >
-      <div className="text-[11px] uppercase tracking-widest text-[#888]">{label}</div>
+      <div className="text-[11px] uppercase tracking-widest text-[#666666]">{label}</div>
       <div
-        className={`text-2xl mt-1 ${accent ? "text-yellow-400" : "text-white"}`}
+        className={`text-2xl mt-1 ${accent ? "text-yellow-400" : "text-[#1A1A1A]"}`}
         style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
       >
         {value}

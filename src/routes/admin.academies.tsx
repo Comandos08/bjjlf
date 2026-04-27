@@ -70,9 +70,9 @@ function AcademiesAdminPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#888]" /></div>
+        <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#666666]" /></div>
       ) : filtered.length === 0 ? (
-        <div className="border" style={{ background: "#161616", borderColor: "#222" }}><EmptyState message="Nenhuma academia." /></div>
+        <div className="border" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}><EmptyState message="Nenhuma academia." /></div>
       ) : (
         <AdminTableShell>
           <thead>
@@ -89,12 +89,12 @@ function AcademiesAdminPage() {
           </thead>
           <tbody>
             {filtered.map((r) => (
-              <tr key={r.id} className="hover:bg-[#1A1A1A]">
+              <tr key={r.id} className="hover:bg-[#F5F5F5]">
                 <AdminTD>
                   {r.logo_url ? <img src={r.logo_url} alt="" className="h-10 w-10 rounded-full object-cover" />
-                    : <div className="h-10 w-10 rounded-full bg-[#333] grid place-items-center text-xs font-bold text-white">{initials(r.name)}</div>}
+                    : <div className="h-10 w-10 rounded-full bg-[#E5E5E5] grid place-items-center text-xs font-bold text-[#1A1A1A]">{initials(r.name)}</div>}
                 </AdminTD>
-                <AdminTD className="text-white font-medium">{r.name}</AdminTD>
+                <AdminTD className="text-[#1A1A1A] font-medium">{r.name}</AdminTD>
                 <AdminTD>{r.professor}</AdminTD>
                 <AdminTD>{r.city}{r.state ? `, ${r.state}` : ""} — {r.flag_emoji} {r.country_code}</AdminTD>
                 <AdminTD>{r.belt} {r.belt_degree > 0 ? `${r.belt_degree}°` : ""}</AdminTD>
@@ -106,8 +106,8 @@ function AcademiesAdminPage() {
                 <AdminTD className="text-right">
                   {writable && (
                     <div className="inline-flex gap-1">
-                      <button onClick={() => setEditing(r)} className="text-[#B8960C] p-1.5"><Pencil size={14} /></button>
-                      <button onClick={() => setConfirmDelete(r)} className="text-[#C41E3A] p-1.5"><Trash2 size={14} /></button>
+                      <button onClick={() => setEditing(r)} className="text-[#C8A84B] p-1.5"><Pencil size={14} /></button>
+                      <button onClick={() => setConfirmDelete(r)} className="text-[#C8211A] p-1.5"><Trash2 size={14} /></button>
                     </div>
                   )}
                 </AdminTD>
@@ -224,7 +224,7 @@ function AcademyFormModal({ open, row, onClose }: { open: boolean; row: AcademyR
         <div>
           <label className="admin-label">URL do logo</label>
           <input className="admin-input w-full" {...register("logo_url")} />
-          {logo && <img src={logo} alt="" className="mt-2 h-16 w-16 rounded-full object-cover border" style={{ borderColor: "#222" }} />}
+          {logo && <img src={logo} alt="" className="mt-2 h-16 w-16 rounded-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
         </div>
         <div className="grid grid-cols-3 gap-3">
           <div><label className="admin-label">Afiliada desde</label><input type="date" className="admin-input w-full" {...register("affiliated_since")} /></div>
@@ -232,7 +232,7 @@ function AcademyFormModal({ open, row, onClose }: { open: boolean; row: AcademyR
           <div><label className="admin-label">Instagram</label><input className="admin-input w-full" {...register("instagram_url")} /></div>
         </div>
         <AdminToggle checked={isActive} onChange={(v) => setValue("is_active", v)} label="Ativa" />
-        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#222" }}>
+        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#E5E5E5" }}>
           <AdminButton variant="outline" onClick={onClose}>Cancelar</AdminButton>
           <AdminButton type="submit" disabled={upsert.isPending}>{upsert.isPending && <Loader2 size={14} className="animate-spin" />} Salvar</AdminButton>
         </div>

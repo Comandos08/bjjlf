@@ -55,9 +55,9 @@ function SettingsPage() {
         actions={<AdminButton onClick={() => setCreating(true)}><Plus size={16} /> Novo Usuário</AdminButton>}
       >
         {isLoading ? (
-          <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#888]" /></div>
+          <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#666666]" /></div>
         ) : users.length === 0 ? (
-          <div className="border" style={{ background: "#161616", borderColor: "#222" }}><EmptyState message="Nenhum usuário." /></div>
+          <div className="border" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}><EmptyState message="Nenhum usuário." /></div>
         ) : (
           <AdminTableShell>
             <thead>
@@ -73,8 +73,8 @@ function SettingsPage() {
               {users.map((u) => {
                 const isSelf = user?.id === u.id;
                 return (
-                  <tr key={u.id} className="hover:bg-[#1A1A1A]">
-                    <AdminTD className="text-white font-medium">{u.full_name ?? "—"}</AdminTD>
+                  <tr key={u.id} className="hover:bg-[#F5F5F5]">
+                    <AdminTD className="text-[#1A1A1A] font-medium">{u.full_name ?? "—"}</AdminTD>
                     <AdminTD>{u.email}</AdminTD>
                     <AdminTD><AdminBadge color={ROLE_BADGE[u.role] ?? "gray"}>{u.role}</AdminBadge></AdminTD>
                     <AdminTD>
@@ -86,7 +86,7 @@ function SettingsPage() {
                     </AdminTD>
                     <AdminTD className="text-right">
                       {!isSelf && (
-                        <button onClick={() => setConfirmDelete({ id: u.id, email: u.email })} className="text-[#C41E3A] p-1.5"><Trash2 size={14} /></button>
+                        <button onClick={() => setConfirmDelete({ id: u.id, email: u.email })} className="text-[#C8211A] p-1.5"><Trash2 size={14} /></button>
                       )}
                     </AdminTD>
                   </tr>
@@ -98,7 +98,7 @@ function SettingsPage() {
       </AdminSection>
 
       <AdminSection title="Informações da Federação">
-        <div className="border p-6 space-y-3" style={{ background: "#161616", borderColor: "#222" }}>
+        <div className="border p-6 space-y-3" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}>
           <div>
             <label className="admin-label">Nome da Federação</label>
             <input className="admin-input w-full" defaultValue="Brazilian Jiu-Jitsu Lovable Federation" readOnly />
@@ -107,7 +107,7 @@ function SettingsPage() {
             <label className="admin-label">Email de contato</label>
             <input className="admin-input w-full" defaultValue="contato@bjjlf.com" readOnly />
           </div>
-          <p className="text-xs text-[#666] pt-2">Mais configurações disponíveis em breve.</p>
+          <p className="text-xs text-[#999999] pt-2">Mais configurações disponíveis em breve.</p>
         </div>
       </AdminSection>
 
@@ -176,11 +176,11 @@ function CreateUserModal({ open, onClose }: { open: boolean; onClose: () => void
     <AdminModal open={open} onClose={onClose} title="Novo Usuário">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
         <div><label className="admin-label">Nome</label><input className="admin-input w-full" {...register("full_name")} />
-          {errors.full_name && <span className="text-xs text-[#C41E3A]">{errors.full_name.message}</span>}</div>
+          {errors.full_name && <span className="text-xs text-[#C8211A]">{errors.full_name.message}</span>}</div>
         <div><label className="admin-label">Email</label><input type="email" className="admin-input w-full" {...register("email")} />
-          {errors.email && <span className="text-xs text-[#C41E3A]">{errors.email.message}</span>}</div>
+          {errors.email && <span className="text-xs text-[#C8211A]">{errors.email.message}</span>}</div>
         <div><label className="admin-label">Senha</label><input type="password" className="admin-input w-full" {...register("password")} />
-          {errors.password && <span className="text-xs text-[#C41E3A]">{errors.password.message}</span>}</div>
+          {errors.password && <span className="text-xs text-[#C8211A]">{errors.password.message}</span>}</div>
         <div><label className="admin-label">Role</label>
           <select className="admin-input w-full" {...register("role")}>
             <option value="viewer">viewer</option>
@@ -189,7 +189,7 @@ function CreateUserModal({ open, onClose }: { open: boolean; onClose: () => void
           </select>
         </div>
         <AdminToggle checked={isActive} onChange={(v) => setValue("is_active", v)} label="Ativo" />
-        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#222" }}>
+        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#E5E5E5" }}>
           <AdminButton variant="outline" onClick={onClose} disabled={submitting}>Cancelar</AdminButton>
           <AdminButton type="submit" disabled={submitting}>{submitting && <Loader2 size={14} className="animate-spin" />} Criar</AdminButton>
         </div>

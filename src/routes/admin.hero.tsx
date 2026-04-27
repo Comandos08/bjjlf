@@ -37,25 +37,25 @@ function HeroAdminPage() {
       actions={writable && <AdminButton onClick={() => setCreating(true)}><Plus size={16} /> Novo Slide</AdminButton>}
     >
       {isLoading ? (
-        <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#888]" /></div>
+        <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#666666]" /></div>
       ) : rows.length === 0 ? (
-        <div className="border" style={{ background: "#161616", borderColor: "#222" }}><EmptyState message="Nenhum slide." /></div>
+        <div className="border" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}><EmptyState message="Nenhum slide." /></div>
       ) : (
         <div className="grid grid-cols-3 gap-4">
           {rows.map((r) => (
-            <div key={r.id} className="border" style={{ background: "#161616", borderColor: "#222" }}>
+            <div key={r.id} className="border" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}>
               <div className="h-40 bg-cover bg-center" style={{ backgroundImage: `url(${r.image_url})` }} />
               <div className="p-3 space-y-2">
-                <div className="text-white text-sm font-medium truncate">{r.title_pt}</div>
-                <div className="flex items-center justify-between text-xs text-[#666]">
+                <div className="text-[#1A1A1A] text-sm font-medium truncate">{r.title_pt}</div>
+                <div className="flex items-center justify-between text-xs text-[#999999]">
                   <span>Ordem #{r.display_order}</span>
                   <AdminToggle checked={r.is_active} disabled={!writable}
                     onChange={(v) => toggleField.mutate({ id: r.id, field: "is_active", value: v })} />
                 </div>
                 {writable && (
                   <div className="flex gap-2 pt-1">
-                    <button onClick={() => setEditing(r)} className="text-[#B8960C] p-1"><Pencil size={14} /></button>
-                    <button onClick={() => setConfirmDelete(r)} className="text-[#C41E3A] p-1"><Trash2 size={14} /></button>
+                    <button onClick={() => setEditing(r)} className="text-[#C8A84B] p-1"><Pencil size={14} /></button>
+                    <button onClick={() => setConfirmDelete(r)} className="text-[#C8211A] p-1"><Trash2 size={14} /></button>
                   </div>
                 )}
               </div>
@@ -156,8 +156,8 @@ function HeroFormModal({ open, row, onClose }: { open: boolean; row: HeroRow | n
         <div>
           <label className="admin-label">URL da imagem</label>
           <input className="admin-input w-full" {...register("image_url")} />
-          {errors.image_url && <span className="text-xs text-[#C41E3A]">{errors.image_url.message}</span>}
-          {img && <img src={img} alt="" className="mt-2 h-44 w-full object-cover border" style={{ borderColor: "#222" }} />}
+          {errors.image_url && <span className="text-xs text-[#C8211A]">{errors.image_url.message}</span>}
+          {img && <img src={img} alt="" className="mt-2 h-44 w-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div><label className="admin-label">URL botão principal</label><input className="admin-input w-full" {...register("cta_primary_url")} /></div>
@@ -167,7 +167,7 @@ function HeroFormModal({ open, row, onClose }: { open: boolean; row: HeroRow | n
           <div><label className="admin-label">Ordem</label><input type="number" className="admin-input w-full" {...register("display_order")} /></div>
           <AdminToggle checked={isActive} onChange={(v) => setValue("is_active", v)} label="Ativo" />
         </div>
-        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#222" }}>
+        <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "#E5E5E5" }}>
           <AdminButton variant="outline" onClick={onClose}>Cancelar</AdminButton>
           <AdminButton type="submit" disabled={upsert.isPending}>{upsert.isPending && <Loader2 size={14} className="animate-spin" />} Salvar</AdminButton>
         </div>

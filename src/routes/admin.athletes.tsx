@@ -93,7 +93,7 @@ function AdminAthletesPage() {
   }
 
   return (
-    <div className="text-white">
+    <div className="text-[#1A1A1A]">
       {pending > 0 && (
         <div className="mb-5 px-4 py-3 rounded border border-yellow-700 bg-yellow-900/30 text-yellow-200 text-sm">
           {pending} {pending === 1 ? "atleta pendente de aprovação" : "atletas pendentes de aprovação"}
@@ -102,7 +102,7 @@ function AdminAthletesPage() {
 
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-5">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#666]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#999999]" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
@@ -117,7 +117,7 @@ function AdminAthletesPage() {
               onClick={() => setFilter(s)}
               className={cn(
                 "px-3 py-2 text-xs uppercase tracking-wider border",
-                filter === s ? "bg-[#C41E3A] border-[#C41E3A] text-white" : "border-[#333] text-[#888] hover:text-white",
+                filter === s ? "bg-[#C8211A] border-[#C8211A] text-white" : "border-[#E5E5E5] text-[#666666] hover:text-[#1A1A1A]",
               )}
             >
               {s === "all" ? "Todos" : s === "pending" ? "Pendentes" : s === "active" ? "Ativos" : "Suspensos"}
@@ -126,9 +126,9 @@ function AdminAthletesPage() {
         </div>
       </div>
 
-      <div className="border border-[#222] bg-[#111] overflow-x-auto">
+      <div className="border border-[#E5E5E5] bg-[#FFFFFF] overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-[#0d0d0d] text-[#888] text-xs uppercase tracking-wider">
+          <thead className="bg-[#F8F8F8] text-[#666666] text-xs uppercase tracking-wider">
             <tr>
               <th className="text-left px-4 py-3">Nome</th>
               <th className="text-left px-4 py-3">Faixa</th>
@@ -141,31 +141,31 @@ function AdminAthletesPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={7} className="text-center py-10"><Loader2 className="h-5 w-5 animate-spin inline-block text-[#666]" /></td></tr>
+              <tr><td colSpan={7} className="text-center py-10"><Loader2 className="h-5 w-5 animate-spin inline-block text-[#999999]" /></td></tr>
             ) : filtered.length === 0 ? (
-              <tr><td colSpan={7} className="text-center py-10 text-[#666]">Nenhum atleta encontrado.</td></tr>
+              <tr><td colSpan={7} className="text-center py-10 text-[#999999]">Nenhum atleta encontrado.</td></tr>
             ) : filtered.map((r) => (
-              <tr key={r.id} className="border-t border-[#222]">
-                <td className="px-4 py-3 text-white">{r.full_name}</td>
-                <td className="px-4 py-3 text-[#ccc]">{r.belt} {r.degree > 0 && `· ${r.degree}º`}</td>
-                <td className="px-4 py-3 text-[#aaa]">{r.academy ?? "—"}</td>
-                <td className="px-4 py-3 text-[#aaa]">{r.registration_number ?? "—"}</td>
+              <tr key={r.id} className="border-t border-[#E5E5E5]">
+                <td className="px-4 py-3 text-[#1A1A1A]">{r.full_name}</td>
+                <td className="px-4 py-3 text-[#1A1A1A]">{r.belt} {r.degree > 0 && `· ${r.degree}º`}</td>
+                <td className="px-4 py-3 text-[#666666]">{r.academy ?? "—"}</td>
+                <td className="px-4 py-3 text-[#666666]">{r.registration_number ?? "—"}</td>
                 <td className="px-4 py-3"><StatusBadge status={r.status} /></td>
-                <td className="px-4 py-3 text-[#888]">{new Date(r.created_at).toLocaleDateString("pt-BR")}</td>
+                <td className="px-4 py-3 text-[#666666]">{new Date(r.created_at).toLocaleDateString("pt-BR")}</td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-2">
                     {r.status === "pending" && (
-                      <button onClick={() => void approve(r)} className="text-xs px-2.5 py-1.5 bg-green-700 hover:bg-green-600 text-white rounded">Aprovar</button>
+                      <button onClick={() => void approve(r)} className="text-xs px-2.5 py-1.5 bg-green-700 hover:bg-green-600 text-[#1A1A1A] rounded">Aprovar</button>
                     )}
                     {r.status === "active" && (
-                      <button onClick={() => void suspend(r)} className="text-xs px-2.5 py-1.5 bg-[#C41E3A] hover:bg-[#a01828] text-white rounded">Suspender</button>
+                      <button onClick={() => void suspend(r)} className="text-xs px-2.5 py-1.5 bg-[#C8211A] hover:bg-[#a01828] text-white rounded">Suspender</button>
                     )}
                     {r.status === "suspended" && (
-                      <button onClick={() => void reactivate(r)} className="text-xs px-2.5 py-1.5 bg-green-700 hover:bg-green-600 text-white rounded">Reativar</button>
+                      <button onClick={() => void reactivate(r)} className="text-xs px-2.5 py-1.5 bg-green-700 hover:bg-green-600 text-[#1A1A1A] rounded">Reativar</button>
                     )}
-                    <button onClick={() => setEditing(r)} className="text-xs px-2.5 py-1.5 border border-[#333] text-[#ccc] hover:text-white rounded">Editar</button>
+                    <button onClick={() => setEditing(r)} className="text-xs px-2.5 py-1.5 border border-[#E5E5E5] text-[#1A1A1A] hover:text-[#1A1A1A] rounded">Editar</button>
                     {r.registration_number && (
-                      <a href={`/verify/${r.registration_number}`} target="_blank" rel="noreferrer" className="text-xs px-2 py-1.5 text-[#888] hover:text-white" title="Ver carteirinha">
+                      <a href={`/verify/${r.registration_number}`} target="_blank" rel="noreferrer" className="text-xs px-2 py-1.5 text-[#666666] hover:text-[#1A1A1A]" title="Ver carteirinha">
                         <ExternalLink className="h-3.5 w-3.5" />
                       </a>
                     )}
@@ -218,26 +218,26 @@ function EditModal({ row, onClose, onSaved }: { row: Row; onClose: () => void; o
 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 px-4">
-      <div className="w-full max-w-md bg-[#111] border border-[#333] p-6">
-        <h3 className="text-white text-lg uppercase mb-4" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
+      <div className="w-full max-w-md bg-[#FFFFFF] border border-[#E5E5E5] p-6">
+        <h3 className="text-[#1A1A1A] text-lg uppercase mb-4" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
           Editar faixa/grau
         </h3>
-        <p className="text-sm text-[#888] mb-4">{row.full_name}</p>
+        <p className="text-sm text-[#666666] mb-4">{row.full_name}</p>
         <label className="block mb-3">
-          <span className="block text-xs uppercase tracking-wider text-[#888] mb-1.5">Faixa</span>
+          <span className="block text-xs uppercase tracking-wider text-[#666666] mb-1.5">Faixa</span>
           <select value={belt} onChange={(e) => setBelt(e.target.value)} className="admin-input w-full">
             {BELTS.map((b) => <option key={b}>{b}</option>)}
           </select>
         </label>
         <label className="block mb-5">
-          <span className="block text-xs uppercase tracking-wider text-[#888] mb-1.5">Grau</span>
+          <span className="block text-xs uppercase tracking-wider text-[#666666] mb-1.5">Grau</span>
           <select value={degree} onChange={(e) => setDegree(Number(e.target.value))} className="admin-input w-full">
             {[0, 1, 2, 3, 4].map((d) => <option key={d} value={d}>{d}</option>)}
           </select>
         </label>
         <div className="flex justify-end gap-2">
-          <button onClick={onClose} className="px-3 py-2 text-sm text-[#888] hover:text-white">Cancelar</button>
-          <button onClick={() => void save()} disabled={saving} className="px-4 py-2 bg-[#C41E3A] text-white text-sm uppercase tracking-wider disabled:opacity-60">
+          <button onClick={onClose} className="px-3 py-2 text-sm text-[#666666] hover:text-[#1A1A1A]">Cancelar</button>
+          <button onClick={() => void save()} disabled={saving} className="px-4 py-2 bg-[#C8211A] text-white text-sm uppercase tracking-wider disabled:opacity-60">
             {saving ? "Salvando…" : "Salvar"}
           </button>
         </div>

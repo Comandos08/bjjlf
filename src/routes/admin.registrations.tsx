@@ -173,13 +173,13 @@ function AdminRegistrationsPage() {
       {/* Filters */}
       <div className="flex flex-wrap items-end gap-3">
         <div>
-          <label className="block text-[11px] uppercase tracking-widest text-[#888] mb-1">
+          <label className="block text-[11px] uppercase tracking-widest text-[#666666] mb-1">
             Evento
           </label>
           <select
             value={eventFilter}
             onChange={(e) => setEventFilter(e.target.value)}
-            className="bg-[#111] border border-[#333] text-white text-sm rounded px-3 py-2 min-w-[200px]"
+            className="bg-[#FFFFFF] border border-[#E5E5E5] text-[#1A1A1A] text-sm rounded px-3 py-2 min-w-[200px]"
           >
             <option value="all">Todos</option>
             {EVENTS.map((ev) => (
@@ -190,13 +190,13 @@ function AdminRegistrationsPage() {
           </select>
         </div>
         <div>
-          <label className="block text-[11px] uppercase tracking-widest text-[#888] mb-1">
+          <label className="block text-[11px] uppercase tracking-widest text-[#666666] mb-1">
             Status
           </label>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-[#111] border border-[#333] text-white text-sm rounded px-3 py-2"
+            className="bg-[#FFFFFF] border border-[#E5E5E5] text-[#1A1A1A] text-sm rounded px-3 py-2"
           >
             {STATUS_OPTIONS.map((o) => (
               <option key={o.v} value={o.v}>
@@ -206,21 +206,21 @@ function AdminRegistrationsPage() {
           </select>
         </div>
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-[11px] uppercase tracking-widest text-[#888] mb-1">
+          <label className="block text-[11px] uppercase tracking-widest text-[#666666] mb-1">
             Buscar
           </label>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#666]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#999999]" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Nome ou email"
-              className="w-full bg-[#111] border border-[#333] text-white text-sm rounded pl-9 pr-9 py-2"
+              className="w-full bg-[#FFFFFF] border border-[#E5E5E5] text-[#1A1A1A] text-sm rounded pl-9 pr-9 py-2"
             />
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#666] hover:text-white"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#999999] hover:text-[#1A1A1A]"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -229,7 +229,7 @@ function AdminRegistrationsPage() {
         </div>
         <button
           onClick={exportCsv}
-          className="inline-flex items-center gap-2 bg-[#B8960C] hover:bg-[#9a7d0a] text-white text-sm uppercase tracking-widest rounded px-4 py-2"
+          className="inline-flex items-center gap-2 bg-[#C8A84B] hover:bg-[#9a7d0a] text-[#1A1A1A] text-sm uppercase tracking-widest rounded px-4 py-2"
           style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
         >
           <Download className="h-4 w-4" /> Exportar CSV
@@ -243,18 +243,18 @@ function AdminRegistrationsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-[#111] border border-[#222] rounded-lg overflow-hidden">
+      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg overflow-hidden">
         {loading ? (
           <div className="grid place-items-center py-16">
-            <Loader2 className="h-6 w-6 animate-spin text-[#666]" />
+            <Loader2 className="h-6 w-6 animate-spin text-[#999999]" />
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-16 text-[#666]">Nenhuma inscrição encontrada.</div>
+          <div className="text-center py-16 text-[#999999]">Nenhuma inscrição encontrada.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-[11px] uppercase tracking-widest text-[#888] bg-[#0d0d0d]">
+                <tr className="text-left text-[11px] uppercase tracking-widest text-[#666666] bg-[#F8F8F8]">
                   <th className="px-4 py-3">Nº</th>
                   <th className="px-4 py-3">Nome</th>
                   <th className="px-4 py-3">Email</th>
@@ -274,18 +274,18 @@ function AdminRegistrationsPage() {
                 {filtered.map((r) => {
                   const s = statusBadge(r.status);
                   return (
-                    <tr key={r.id} className="border-t border-[#222] text-white hover:bg-[#161616]">
-                      <td className="px-4 py-3 text-[#aaa]">{r.registration_number ?? "—"}</td>
+                    <tr key={r.id} className="border-t border-[#E5E5E5] text-[#1A1A1A] hover:bg-[#F5F5F5]">
+                      <td className="px-4 py-3 text-[#666666]">{r.registration_number ?? "—"}</td>
                       <td className="px-4 py-3">{r.full_name}</td>
-                      <td className="px-4 py-3 text-[#aaa]">{r.email}</td>
-                      <td className="px-4 py-3 text-[#aaa]">
+                      <td className="px-4 py-3 text-[#666666]">{r.email}</td>
+                      <td className="px-4 py-3 text-[#666666]">
                         {r.belt} {r.degree > 0 ? `${r.degree}°` : ""}
                       </td>
-                      <td className="px-4 py-3 text-[#aaa]">{r.academy ?? "—"}</td>
-                      <td className="px-4 py-3 text-[#aaa]">{eventName(r.event_id)}</td>
-                      <td className="px-4 py-3 text-[#aaa]">{r.category}</td>
-                      <td className="px-4 py-3 text-[#aaa]">{r.weight_class}</td>
-                      <td className="px-4 py-3 text-[#aaa]">{r.modality}</td>
+                      <td className="px-4 py-3 text-[#666666]">{r.academy ?? "—"}</td>
+                      <td className="px-4 py-3 text-[#666666]">{eventName(r.event_id)}</td>
+                      <td className="px-4 py-3 text-[#666666]">{r.category}</td>
+                      <td className="px-4 py-3 text-[#666666]">{r.weight_class}</td>
+                      <td className="px-4 py-3 text-[#666666]">{r.modality}</td>
                       <td className="px-4 py-3">
                         <span
                           className={`inline-block px-2 py-0.5 text-[11px] uppercase tracking-wider border rounded-full ${s.cls}`}
@@ -294,14 +294,14 @@ function AdminRegistrationsPage() {
                         </span>
                       </td>
                       <td className="px-4 py-3">{formatBRL(r.amount_cents)}</td>
-                      <td className="px-4 py-3 text-[#aaa] whitespace-nowrap">
+                      <td className="px-4 py-3 text-[#666666] whitespace-nowrap">
                         {new Date(r.created_at).toLocaleDateString("pt-BR")}
                       </td>
                       <td className="px-4 py-3">
                         {r.status !== "cancelled" && (
                           <button
                             onClick={() => void cancelRegistration(r.id)}
-                            className="text-[#C8211A] hover:text-white text-xs uppercase tracking-wider"
+                            className="text-[#C8211A] hover:text-[#1A1A1A] text-xs uppercase tracking-wider"
                           >
                             Cancelar
                           </button>
@@ -321,10 +321,10 @@ function AdminRegistrationsPage() {
 
 function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-[#111] border border-[#222] rounded-lg p-5">
-      <div className="text-[11px] uppercase tracking-widest text-[#888]">{label}</div>
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-5">
+      <div className="text-[11px] uppercase tracking-widest text-[#666666]">{label}</div>
       <div
-        className="text-2xl text-white mt-1"
+        className="text-2xl text-[#1A1A1A] mt-1"
         style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
       >
         {value}
