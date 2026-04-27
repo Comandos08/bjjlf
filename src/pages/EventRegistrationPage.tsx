@@ -86,7 +86,8 @@ const EMPTY: FormState = {
 export function EventRegistrationPage() {
   const { eventId } = useParams({ from: "/register/event/$eventId" });
   const { user, profile, isActive } = useAthleteAuth();
-  const event = useMemo(() => EVENTS.find((e) => e.id === eventId), [eventId]);
+  const { data: events = [], isLoading: eventsLoading } = useEvents();
+  const event = useMemo(() => events.find((e) => e.id === eventId), [events, eventId]);
 
   const [form, setForm] = useState<FormState>(EMPTY);
   const [amountCents, setAmountCents] = useState<number>(DEFAULT_AMOUNT_CENTS);
