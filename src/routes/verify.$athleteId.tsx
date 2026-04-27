@@ -207,14 +207,35 @@ function VerifyAthletePage() {
 
               {/* Validity badge */}
               <div className="flex justify-center mt-5 px-5">
-                {state === "verified" && (
-                  <span
-                    className="inline-block bg-green-50 border border-green-200 rounded-full px-4 py-1.5 text-xs text-green-700"
-                    style={{ fontFamily: "Barlow", fontWeight: 600 }}
-                  >
-                    ✓ Carteirinha válida até {validUntilFormatted}
-                  </span>
-                )}
+                {state === "verified" && (() => {
+                  const v = computeValidity(profile?.valid_until);
+                  if (v.kind === "ok") {
+                    return (
+                      <span className="inline-block bg-green-50 border border-green-200 rounded-full px-4 py-1.5 text-xs text-green-700" style={{ fontFamily: "Barlow", fontWeight: 600 }}>
+                        ✓ Válida até {validUntilFormatted} · {v.daysLeft} dias
+                      </span>
+                    );
+                  }
+                  if (v.kind === "warning") {
+                    return (
+                      <span className="inline-block bg-amber-50 border border-amber-200 rounded-full px-4 py-1.5 text-xs text-amber-700" style={{ fontFamily: "Barlow", fontWeight: 600 }}>
+                        ⚠️ {v.daysLeft} dias restantes — renove em breve
+                      </span>
+                    );
+                  }
+                  if (v.kind === "critical") {
+                    return (
+                      <span className="inline-block bg-red-50 border border-red-300 rounded-full px-4 py-1.5 text-xs text-red-700 animate-pulse" style={{ fontFamily: "Barlow", fontWeight: 700 }}>
+                        🔴 Vence em {v.daysLeft} dia{v.daysLeft === 1 ? "" : "s"}
+                      </span>
+                    );
+                  }
+                  return (
+                    <span className="inline-block bg-green-50 border border-green-200 rounded-full px-4 py-1.5 text-xs text-green-700" style={{ fontFamily: "Barlow", fontWeight: 600 }}>
+                      ✓ Carteirinha válida até {validUntilFormatted}
+                    </span>
+                  );
+                })()}
                 {state === "expired" && (
                   <span
                     className="inline-block bg-red-50 border border-red-200 rounded-full px-4 py-1.5 text-xs text-red-600"
