@@ -108,14 +108,14 @@ function EventsListPage() {
   const setBadges = (next: ReadonlyArray<EventTypeBadge>) =>
     navigate({
       // Preserve sort when filters change.
-      search: (prev) => ({ ...prev, badges: [...next] }),
+      search: (prev: EventsSearch) => ({ ...prev, badges: [...next] }),
       replace: true,
     });
 
   const setSort = (next: EventSort) =>
     navigate({
       // Preserve badges when sort changes.
-      search: (prev) => ({ ...prev, sort: next }),
+      search: (prev: EventsSearch) => ({ ...prev, sort: next }),
       replace: true,
     });
 
