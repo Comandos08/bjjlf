@@ -18,7 +18,7 @@ export function Footer() {
           {/* Col 1 — Logo + tagline + social */}
           <div className="col-span-2 lg:col-span-1 space-y-4">
             <Logo />
-            <p className={cn(typo.body.sm, "text-[#999] max-w-xs")}>{t("footer.tagline")}</p>
+            <p className="font-sans text-sm text-gray-400 max-w-xs leading-[1.7]">{t("footer.tagline")}</p>
             <div className="flex gap-2">
               {[Facebook, Instagram, Youtube, Twitter].map((Icon, i) => (
                 <a
@@ -69,25 +69,25 @@ export function Footer() {
           {/* Col 5 — Newsletter */}
           <div className="col-span-2 lg:col-span-1">
             <h4 className={headingClass}>{t("footer.newsletter")}</h4>
-            <p className={cn(typo.body.sm, "text-[#999] mb-3")}>{t("footer.newsletter.desc")}</p>
+            <p className="font-sans text-sm text-gray-400 mb-3">{t("footer.newsletter.desc")}</p>
             <form className="flex" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 placeholder={t("footer.email.placeholder")}
-                className={cn(typo.body.sm, "flex-1 h-9 px-3 bg-dark-2 border border-[#333] text-white focus:outline-none focus:border-gold transition-base")}
+                className="font-sans flex-1 h-9 px-3 bg-dark-2 border border-[#333] text-white text-sm focus:outline-none focus:border-[#C8A84B] transition-base rounded-l-md"
               />
-              <button type="submit" className={cn(typo.button.sm, "h-9 px-4 bg-primary text-white hover:bg-primary-dark transition-base")}>
+              <button type="submit" className="font-heading uppercase tracking-widest font-bold text-xs h-9 px-4 bg-[#C8211A] text-white hover:bg-[#8B1612] transition-base rounded-r-md">
                 {t("footer.subscribe")}
               </button>
             </form>
           </div>
         </div>
 
-        <div className="mt-10 pt-5 border-t border-[#1A1A1A] flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className={cn(typo.body.xs, "text-[#555]")}>{t("footer.copyright")}</p>
+        <div className="mt-10 pt-5 border-t border-[#2A2A2A] flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="font-sans text-xs text-gray-500">{t("footer.copyright")}</p>
           <div className="flex gap-5">
-            <a href="#" className={cn(typo.body.xs, "text-[#555] hover:text-gold transition-base")}>{t("footer.privacy")}</a>
-            <a href="#" className={cn(typo.body.xs, "text-[#555] hover:text-gold transition-base")}>{t("footer.terms")}</a>
+            <a href="#" className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.privacy")}</a>
+            <a href="#" className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.terms")}</a>
           </div>
         </div>
       </div>
