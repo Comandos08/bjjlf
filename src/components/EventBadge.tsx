@@ -29,19 +29,20 @@ export function EventBadge({ badge, variant = "overlay", className }: EventBadge
       data-testid="event-badge"
       data-badge={badge}
       className={cn(
-        variant === "overlay" && "absolute top-0 left-0",
-        "inline-flex items-center",
+        variant === "overlay" && "absolute top-3 left-3",
+        "inline-flex items-center rounded",
         className,
       )}
       style={{
         background: style.bg,
         color: style.color,
-        padding: "8px 12px",
-        fontSize: "10px",
+        padding: "4px 10px",
+        fontSize: "11px",
         fontWeight: 700,
-        letterSpacing: "0.08em",
+        letterSpacing: "0.12em",
         fontFamily: "Barlow Condensed",
-        lineHeight: 1,
+        lineHeight: 1.2,
+        textTransform: "uppercase",
       }}
     >
       {badge}
