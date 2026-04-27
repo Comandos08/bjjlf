@@ -215,6 +215,43 @@ export function AcademiesPage() {
       {/* Grid */}
       <section className="bg-gray-50 py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-6">
+          {/* CTA destaque — Afilie sua Academia */}
+          <div className="bg-gradient-to-r from-[#1A1A1A] to-[#2a2a2a] border border-[#C8A84B]/30 rounded-xl p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
+            <div className="flex-1 min-w-0">
+              <span
+                className="inline-block bg-[#C8A84B] text-black text-xs uppercase px-2 py-0.5 rounded-full mb-2"
+                style={{ fontFamily: "Barlow", fontWeight: 700 }}
+              >
+                Novo
+              </span>
+              <h3
+                className="text-white text-2xl uppercase leading-tight"
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
+              >
+                Afilie sua Academia
+              </h3>
+              <p
+                className="text-gray-400 text-sm mt-1 leading-relaxed"
+                style={{ fontFamily: "Barlow", fontWeight: 400 }}
+              >
+                Obtenha o Alvará Oficial BJJLF e apareça no diretório da federação
+              </p>
+              <p
+                className="text-[#C8A84B] text-lg mt-2"
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+              >
+                R$ 300,00 / ano
+              </p>
+            </div>
+            <Link
+              to="/academy/permit"
+              className="bg-[#C8211A] hover:bg-[#8B1612] text-white text-sm uppercase tracking-widest px-6 py-3 rounded-lg transition-base shrink-0"
+              style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+            >
+              Solicitar Alvará →
+            </Link>
+          </div>
+
           {filtered.length === 0 ? (
             <div className="bg-white border border-dashed border-gray-300 rounded-xl p-16 text-center">
               <Search className="mx-auto h-16 w-16 text-gray-200" aria-hidden />
