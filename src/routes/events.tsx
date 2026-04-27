@@ -74,7 +74,8 @@ export const Route = createFileRoute("/events")({
 
 function EventsListPage() {
   const { t } = useI18n();
-  const { badges } = Route.useSearch();
+  const search = Route.useSearch();
+  const badges: EventTypeBadge[] = search.badges;
   const navigate = useNavigate({ from: "/events" });
   const [sheetOpen, setSheetOpen] = useState(false);
 
