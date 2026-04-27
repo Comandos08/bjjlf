@@ -334,17 +334,17 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
         >
           <LogIn size={16} /> Entrar
         </Link>
-        <Link
-          to="/athlete/signup"
-          onClick={onNavigate}
-          className="py-3 text-sm text-[#C8A84B] flex items-center gap-2"
-          style={{ fontFamily: "Barlow", fontWeight: 600 }}
-        >
-          <User size={16} /> Cadastrar como atleta
-        </Link>
       </div>
     );
   }
+
+  const initials = profile?.full_name
+    ? profile.full_name.trim().split(/\s+/).map((p) => p[0]?.toUpperCase() ?? "").slice(0, 2).join("")
+    : (user.email?.[0] ?? "A").toUpperCase();
+
+  const beltLine = profile
+    ? `Faixa ${profile.belt}${profile.degree > 0 ? ` • ${profile.degree} grau${profile.degree > 1 ? "s" : ""}` : ""}`
+    : null;
 
   return (
     <div className="flex flex-col border-t border-[#222] mt-2 pt-2">
