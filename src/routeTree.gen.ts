@@ -44,6 +44,7 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminHeroRouteImport } from './routes/admin.hero'
 import { Route as AdminEventsRouteImport } from './routes/admin.events'
 import { Route as AdminBlackBeltsRouteImport } from './routes/admin.black-belts'
+import { Route as AdminAthletesRouteImport } from './routes/admin.athletes'
 import { Route as AdminAcademiesRouteImport } from './routes/admin.academies'
 
 const TypographyRoute = TypographyRouteImport.update({
@@ -221,6 +222,11 @@ const AdminBlackBeltsRoute = AdminBlackBeltsRouteImport.update({
   path: '/black-belts',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAthletesRoute = AdminAthletesRouteImport.update({
+  id: '/athletes',
+  path: '/athletes',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAcademiesRoute = AdminAcademiesRouteImport.update({
   id: '/academies',
   path: '/academies',
@@ -245,6 +251,7 @@ export interface FileRoutesByFullPath {
   '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
   '/admin/academies': typeof AdminAcademiesRoute
+  '/admin/athletes': typeof AdminAthletesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
   '/admin/events': typeof AdminEventsRoute
   '/admin/hero': typeof AdminHeroRoute
@@ -282,6 +289,7 @@ export interface FileRoutesByTo {
   '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
   '/admin/academies': typeof AdminAcademiesRoute
+  '/admin/athletes': typeof AdminAthletesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
   '/admin/events': typeof AdminEventsRoute
   '/admin/hero': typeof AdminHeroRoute
@@ -321,6 +329,7 @@ export interface FileRoutesById {
   '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
   '/admin/academies': typeof AdminAcademiesRoute
+  '/admin/athletes': typeof AdminAthletesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
   '/admin/events': typeof AdminEventsRoute
   '/admin/hero': typeof AdminHeroRoute
@@ -361,6 +370,7 @@ export interface FileRouteTypes {
     | '/rules'
     | '/typography'
     | '/admin/academies'
+    | '/admin/athletes'
     | '/admin/black-belts'
     | '/admin/events'
     | '/admin/hero'
@@ -398,6 +408,7 @@ export interface FileRouteTypes {
     | '/rules'
     | '/typography'
     | '/admin/academies'
+    | '/admin/athletes'
     | '/admin/black-belts'
     | '/admin/events'
     | '/admin/hero'
@@ -436,6 +447,7 @@ export interface FileRouteTypes {
     | '/rules'
     | '/typography'
     | '/admin/academies'
+    | '/admin/athletes'
     | '/admin/black-belts'
     | '/admin/events'
     | '/admin/hero'
@@ -730,6 +742,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlackBeltsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/athletes': {
+      id: '/admin/athletes'
+      path: '/athletes'
+      fullPath: '/admin/athletes'
+      preLoaderRoute: typeof AdminAthletesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/academies': {
       id: '/admin/academies'
       path: '/academies'
@@ -742,6 +761,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminAcademiesRoute: typeof AdminAcademiesRoute
+  AdminAthletesRoute: typeof AdminAthletesRoute
   AdminBlackBeltsRoute: typeof AdminBlackBeltsRoute
   AdminEventsRoute: typeof AdminEventsRoute
   AdminHeroRoute: typeof AdminHeroRoute
@@ -756,6 +776,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAcademiesRoute: AdminAcademiesRoute,
+  AdminAthletesRoute: AdminAthletesRoute,
   AdminBlackBeltsRoute: AdminBlackBeltsRoute,
   AdminEventsRoute: AdminEventsRoute,
   AdminHeroRoute: AdminHeroRoute,
