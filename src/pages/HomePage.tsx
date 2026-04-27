@@ -104,7 +104,7 @@ function HeroSlider() {
                   idx === i ? "border-l-[3px] border-gold bg-black/40" : "border-l-[3px] border-transparent hover:bg-black/30",
                 )}
               >
-                <SafeImage src={s.image} alt={s.badge} fallbackLabel={s.badge} source="hero-thumb" hideFallbackIcon wrapperClassName="h-10 w-16 shrink-0" />
+                <SafeImage src={s.thumb} alt={s.badge} fallbackLabel={s.badge} source="hero-thumb" hideFallbackIcon wrapperClassName="h-10 w-16 shrink-0" />
                 <div>
                   <div className={cn(typo.label.sm, "tracking-[0.08em]", idx === i ? "text-white" : "text-[#888]")}>
                     {s.badge}
