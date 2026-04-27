@@ -11,6 +11,7 @@ import {
   type Event,
   type EventTypeBadge,
 } from "@/data/events";
+import { sortEvents, DEFAULT_EVENT_SORT, type EventSort } from "@/lib/event-sort";
 
 /**
  * Reusable event list with badge filters.
@@ -51,6 +52,11 @@ export type EventListProps = {
    * (e.g. a sidebar or off-canvas drawer) — the count label still shows.
    */
   hideFilters?: boolean;
+  /**
+   * Sort order. Defaults to "soonest" (chronological). Callers wiring this
+   * to URL search params should pass the parsed value here.
+   */
+  sort?: EventSort;
   className?: string;
 };
 
@@ -69,6 +75,7 @@ export function EventList({
   availableBadges,
   gridClassName,
   hideFilters = false,
+  sort = DEFAULT_EVENT_SORT,
   className,
 }: EventListProps) {
   const { t, lang } = useI18n();
@@ -82,10 +89,12 @@ export function EventList({
   }, [events, availableBadges]);
 
   const filtered = useMemo(() => {
-    if (selectedBadges.length === 0) return events;
-    const set = new Set(selectedBadges);
-    return events.filter((e) => set.has(e.badge));
-  }, [events, selectedBadges]);
+    const base =
+      selectedBadges.length === 0
+        ? events
+        : events.filter((e) => new Set(selectedBadges).has(e.badge));
+    return sortEvents(base, sort);
+  }, [events, selectedBadges, sort]);
 
   const toggle = (badge: EventTypeBadge) => {
     const set = new Set(selectedBadges);
