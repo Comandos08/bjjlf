@@ -83,6 +83,16 @@ function recomputeSnapshot() {
 
 function emit() {
   recomputeSnapshot();
+  bumpTelemetry({ emits: telemetry.emits + 1 });
+  if (isDev) {
+    // Cheap dev breadcrumb. Grouped under a single label so it's easy to
+    // filter in the browser console: filter by "[img-registry]".
+    // eslint-disable-next-line no-console
+    console.debug(
+      `[img-registry] emit #${telemetry.emits} — entries=${entries.size} ` +
+        `(reg=${telemetry.registered} ok=${telemetry.loaded} err=${telemetry.errored} unreg=${telemetry.unregistered})`,
+    );
+  }
   for (const l of listeners) l();
 }
 
