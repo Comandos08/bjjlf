@@ -669,32 +669,27 @@ function CTASection() {
 
 function YouTubeSection() {
   const { t } = useI18n();
+  // videoId reais do YouTube — substituir conforme canal oficial
   const videos = [
-    { t: "World Championship 2024 — Best Submissions", img: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=500&h=280" },
-    { t: "Black Belt Promotions Ceremony", img: youtubeBlackBeltImg },
-    { t: "Mestre Roberto — A Life on the Mat", img: youtubeMestreRobertoImg },
+    { id: "dQw4w9WgXcQ", t: "World Championship 2024 — Best Submissions", img: undefined as string | undefined },
+    { id: "9bZkp7q19f0", t: "Black Belt Promotions Ceremony", img: youtubeBlackBeltImg },
+    { id: "kJQP7kiw5Fk", t: "Mestre Roberto — A Life on the Mat", img: youtubeMestreRobertoImg },
   ];
   return (
     <section className="bg-white py-20 md:py-28">
       <div className="max-w-7xl mx-auto px-6">
         <SectionHeader
           title={t("home.youtube.title")}
-          action={{ label: t("home.youtube.visit"), href: "#" }}
+          action={{ label: t("home.youtube.visit"), href: "https://www.youtube.com/" }}
         />
         <div className="grid md:grid-cols-3 gap-6">
-          {videos.map((v, i) => (
-            <a
-              key={i}
-              href="#"
-              className="group flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden"
+          {videos.map((v) => (
+            <div
+              key={v.id}
+              className="flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden"
             >
               <div className="relative aspect-video bg-gray-900 overflow-hidden">
-                <SafeImage src={v.img} alt={v.t} fallbackLabel={v.t} source="video" wrapperClassName="absolute inset-0" className="opacity-80 group-hover:opacity-100 transition-opacity" />
-                <div className="absolute inset-0 grid place-items-center">
-                  <span className="h-14 w-14 rounded-full bg-[#C8211A] grid place-items-center group-hover:scale-110 transition-transform" style={{ borderRadius: "9999px" }}>
-                    <Play className="h-6 w-6 text-white ml-0.5" fill="currentColor" />
-                  </span>
-                </div>
+                <LazyYouTube videoId={v.id} title={v.t} fallbackImage={v.img} />
               </div>
               <div className="p-5">
                 <h4
@@ -704,7 +699,7 @@ function YouTubeSection() {
                   {v.t}
                 </h4>
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </div>
