@@ -6,7 +6,7 @@ import { useI18n, type Lang } from "@/lib/i18n";
 
 type NavItem = {
   key: string;
-  to?: "/" | "/news" | "/graduates" | "/about" | "/register/athlete" | "/register/academy";
+  to?: "/" | "/news" | "/graduates" | "/about" | "/academies" | "/register/athlete" | "/register/academy";
   children?: { label: string; to: NavItem["to"] }[];
   nowrap?: boolean;
 };
@@ -38,6 +38,7 @@ export function Navbar() {
     {
       key: "academies",
       children: [
+        { label: t("academies.nav.affiliated"), to: "/academies" },
         { label: t("home.cta.academyBtn"), to: "/register/academy" },
       ],
     },

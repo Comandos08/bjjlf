@@ -47,8 +47,9 @@ export function Footer() {
           <div>
             <h4 className={headingClass}>{t("footer.col.registrations")}</h4>
             <ul>
-              <li><Link to="/register/athlete" className={linkClass}>{t("footer.col.registerAthlete")}</Link></li>
+              <li><Link to="/academies" className={linkClass}>{t("academies.nav.affiliated")}</Link></li>
               <li><Link to="/register/academy" className={linkClass}>{t("footer.col.affiliateAcademy")}</Link></li>
+              <li><Link to="/register/athlete" className={linkClass}>{t("footer.col.registerAthlete")}</Link></li>
               <li><Link to="/graduates" className={linkClass}>{t("footer.col.certifiedBlackBelts")}</Link></li>
               <li><a href="#" className={linkClass}>{t("footer.col.rules")}</a></li>
             </ul>
