@@ -144,19 +144,23 @@ export function NewsPage() {
       <section className="bg-gray-50 py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-6">
           {visible.length === 0 ? (
-            <div className="border border-dashed border-gray-300 bg-white rounded-xl p-16 text-center">
-              <Newspaper className="mx-auto h-16 w-16 text-gray-300" aria-hidden />
+            <div className="bg-white rounded-xl py-16 px-6 text-center flex flex-col items-center justify-center">
+              <Newspaper
+                className="text-[#C8211A]"
+                style={{ width: 64, height: 64 }}
+                aria-hidden
+              />
               <h3
-                className="mt-4 text-xl uppercase tracking-wide text-gray-400"
-                style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                className="mt-5 text-[#1A1A1A]"
+                style={{ fontFamily: "Bebas Neue, Barlow Condensed, sans-serif", fontSize: "24px", letterSpacing: "0.04em" }}
               >
-                Nenhuma notícia publicada ainda
+                Nenhuma notícia disponível
               </h3>
               <p
-                className="mt-2 max-w-md mx-auto text-sm text-gray-400 leading-[1.6]"
-                style={{ fontFamily: "Barlow", fontWeight: 400 }}
+                className="mt-2 max-w-md mx-auto text-[#666666]"
+                style={{ fontFamily: "Barlow", fontSize: "14px", fontWeight: 400, lineHeight: 1.6 }}
               >
-                Em breve novidades da federação aparecerão aqui.
+                Em breve novidades da federação por aqui.
               </p>
             </div>
           ) : (
