@@ -146,7 +146,7 @@ const PT: Dict = {
   "footer.email.placeholder": "seu@email.com",
   "footer.privacy": "Privacidade",
   "footer.terms": "Termos",
-  "footer.copyright": "© 2025 BJJLF. Todos os direitos reservados.",
+  "footer.copyright": "© 2026 BJJLF — Brazilian Jiu-Jitsu Legends Federation",
 
   // Graduates
   "grad.breadcrumb": "Faixas Pretas",
@@ -474,7 +474,7 @@ const EN: Dict = {
   "footer.email.placeholder": "your@email.com",
   "footer.privacy": "Privacy",
   "footer.terms": "Terms",
-  "footer.copyright": "© 2025 BJJLF. All rights reserved.",
+  "footer.copyright": "© 2026 BJJLF — Brazilian Jiu-Jitsu Legends Federation",
 
   "grad.breadcrumb": "Black Belts",
   "grad.title": "Certified Black Belts",

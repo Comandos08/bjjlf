@@ -3,6 +3,7 @@ import { Loader2, Shield, ShieldAlert, ShieldCheck, ShieldX } from "lucide-react
 import { useEffect, useState } from "react";
 import dragon from "@/assets/dragon-logo.png";
 import { supabase } from "@/integrations/supabase/client";
+import { computeValidity } from "@/lib/validity";
 
 type VerifyResult = {
   full_name: string;
@@ -17,11 +18,13 @@ type VerifyResult = {
 export const Route = createFileRoute("/verify/$athleteId")({
   head: ({ params }) => ({
     meta: [
-      { title: `Verificar Atleta ${params.athleteId} — BJJLF` },
-      {
-        name: "description",
-        content: "Verificação oficial de atleta BJJLF.",
-      },
+      { title: `Carteirinha ${params.athleteId} — BJJLF` },
+      { name: "description", content: "Verificação oficial de atleta BJJLF." },
+      { property: "og:title", content: `Carteirinha de Atleta — BJJLF` },
+      { property: "og:description", content: `Verificação oficial da carteirinha BJJLF nº ${params.athleteId}.` },
+      { property: "og:type", content: "profile" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: `Carteirinha BJJLF ${params.athleteId}` },
     ],
   }),
   component: VerifyAthletePage,
@@ -204,14 +207,35 @@ function VerifyAthletePage() {
 
               {/* Validity badge */}
               <div className="flex justify-center mt-5 px-5">
-                {state === "verified" && (
-                  <span
-                    className="inline-block bg-green-50 border border-green-200 rounded-full px-4 py-1.5 text-xs text-green-700"
-                    style={{ fontFamily: "Barlow", fontWeight: 600 }}
-                  >
-                    ✓ Carteirinha válida até {validUntilFormatted}
-                  </span>
-                )}
+                {state === "verified" && (() => {
+                  const v = computeValidity(profile?.valid_until);
+                  if (v.kind === "ok") {
+                    return (
+                      <span className="inline-block bg-green-50 border border-green-200 rounded-full px-4 py-1.5 text-xs text-green-700" style={{ fontFamily: "Barlow", fontWeight: 600 }}>
+                        ✓ Válida até {validUntilFormatted} · {v.daysLeft} dias
+                      </span>
+                    );
+                  }
+                  if (v.kind === "warning") {
+                    return (
+                      <span className="inline-block bg-amber-50 border border-amber-200 rounded-full px-4 py-1.5 text-xs text-amber-700" style={{ fontFamily: "Barlow", fontWeight: 600 }}>
+                        ⚠️ {v.daysLeft} dias restantes — renove em breve
+                      </span>
+                    );
+                  }
+                  if (v.kind === "critical") {
+                    return (
+                      <span className="inline-block bg-red-50 border border-red-300 rounded-full px-4 py-1.5 text-xs text-red-700 animate-pulse" style={{ fontFamily: "Barlow", fontWeight: 700 }}>
+                        🔴 Vence em {v.daysLeft} dia{v.daysLeft === 1 ? "" : "s"}
+                      </span>
+                    );
+                  }
+                  return (
+                    <span className="inline-block bg-green-50 border border-green-200 rounded-full px-4 py-1.5 text-xs text-green-700" style={{ fontFamily: "Barlow", fontWeight: 600 }}>
+                      ✓ Carteirinha válida até {validUntilFormatted}
+                    </span>
+                  );
+                })()}
                 {state === "expired" && (
                   <span
                     className="inline-block bg-red-50 border border-red-200 rounded-full px-4 py-1.5 text-xs text-red-600"

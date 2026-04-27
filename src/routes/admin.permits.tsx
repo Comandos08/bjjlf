@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Download, ExternalLink, FileText, Loader2, Search, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { ADMIN_PAGE_SIZE, Pagination, useDebounced } from "@/components/admin/Pagination";
 
 export const Route = createFileRoute("/admin/permits")({
   head: () => ({
@@ -75,6 +76,9 @@ function AdminPermitsPage() {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("all");
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounced(query, 300);
+  const [page, setPage] = useState(1);
+  useEffect(() => { setPage(1); }, [debouncedQuery, statusFilter]);
 
   async function load() {
     setLoading(true);
@@ -105,7 +109,7 @@ function AdminPermitsPage() {
   );
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = debouncedQuery.trim().toLowerCase();
     return rows.filter((r) => {
       if (statusFilter === "expiring") {
         if (r.status !== "active") return false;
@@ -115,12 +119,18 @@ function AdminPermitsPage() {
       if (
         q &&
         !r.academy_name.toLowerCase().includes(q) &&
-        !r.email.toLowerCase().includes(q)
+        !r.email.toLowerCase().includes(q) &&
+        !(r.permit_number?.toLowerCase().includes(q) ?? false)
       )
         return false;
       return true;
     });
-  }, [rows, statusFilter, query]);
+  }, [rows, statusFilter, debouncedQuery]);
+
+  const paged = useMemo(
+    () => filtered.slice((page - 1) * ADMIN_PAGE_SIZE, page * ADMIN_PAGE_SIZE),
+    [filtered, page],
+  );
 
   const totalActive = rows.filter((r) => r.status === "active").length;
   const totalPending = rows.filter((r) => r.status === "pending_payment").length;
@@ -249,7 +259,7 @@ function AdminPermitsPage() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Academia ou email"
+              placeholder="Academia, email ou nº alvará"
               className="w-full bg-[#FFFFFF] border border-[#E5E5E5] text-[#1A1A1A] text-sm rounded pl-9 pr-9 py-2"
             />
             {query && (
@@ -267,7 +277,7 @@ function AdminPermitsPage() {
           className="inline-flex items-center gap-2 bg-[#C8A84B] hover:bg-[#9a7d0a] text-[#1A1A1A] text-sm uppercase tracking-widest rounded px-4 py-2"
           style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
         >
-          <Download className="h-4 w-4" /> Exportar CSV
+          <Download className="h-4 w-4" /> Exportar CSV ({filtered.length})
         </button>
       </div>
 
@@ -296,7 +306,7 @@ function AdminPermitsPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((r) => {
+                {paged.map((r) => {
                   const s = statusBadge(r.status);
                   return (
                     <tr key={r.id} className="border-t border-[#E5E5E5] text-[#1A1A1A] hover:bg-[#F5F5F5]">
