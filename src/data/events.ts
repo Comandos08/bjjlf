@@ -268,12 +268,16 @@ export const EVENTS: Event[] = [
   },
 ];
 
+/**
+ * Badge palette restricted to BJJLF design system: red (#C8211A) and gold (#C8A84B).
+ * GI / KIDS use red; NO-GI / MASTER use gold; combined uses red with gold border accent.
+ */
 export const EVENT_BADGE_STYLES: Record<EventTypeBadge, { bg: string; color: string }> = {
-  "GI": { bg: "#1A6B1A", color: "#FFFFFF" },
-  "NO-GI": { bg: "#B8960C", color: "#111111" },
-  "GI & NO-GI": { bg: "#C41E3A", color: "#FFFFFF" },
-  "KIDS": { bg: "#1565C0", color: "#FFFFFF" },
-  "MASTER": { bg: "#6A0DAD", color: "#FFFFFF" },
+  "GI": { bg: "#C8211A", color: "#FFFFFF" },
+  "NO-GI": { bg: "#C8A84B", color: "#1A1A1A" },
+  "GI & NO-GI": { bg: "#1A1A1A", color: "#C8A84B" },
+  "KIDS": { bg: "#C8211A", color: "#FFFFFF" },
+  "MASTER": { bg: "#C8A84B", color: "#1A1A1A" },
 };
 
 export type Ranked = {
