@@ -103,8 +103,17 @@ function EventsListPage() {
   const search = Route.useSearch();
   const badges: EventTypeBadge[] = search.badges;
   const sort: EventSort = search.sort;
+  const urlQuery: string = search.q;
   const navigate = useNavigate({ from: "/events" });
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  // Local input state — typed keystrokes update immediately for responsiveness.
+  // The URL is then synced on a 200ms debounce so we don't spam history with
+  // a navigation per character. URL → input syncs on back/forward navigation.
+  const [queryInput, setQueryInput] = useState(urlQuery);
+  useEffect(() => {
+    setQueryInput(urlQuery);
+  }, [urlQuery]);
 
   // Restore filters from localStorage on first visit and persist on change.
   // URL is the source of truth during a session; storage seeds the next visit.
@@ -118,17 +127,37 @@ function EventsListPage() {
 
   const setBadges = (next: ReadonlyArray<EventTypeBadge>) =>
     navigate({
-      // Preserve sort when filters change.
+      // Preserve sort + q when filters change.
       search: (prev: EventsSearch) => ({ ...prev, badges: [...next] }),
       replace: true,
     });
 
   const setSort = (next: EventSort) =>
     navigate({
-      // Preserve badges when sort changes.
+      // Preserve badges + q when sort changes.
       search: (prev: EventsSearch) => ({ ...prev, sort: next }),
       replace: true,
     });
+
+  const setQuery = (next: string) =>
+    navigate({
+      // Preserve badges + sort when query changes.
+      search: (prev: EventsSearch) => ({ ...prev, q: next }),
+      replace: true,
+    });
+
+  // Debounce URL writes. We compare against the URL value (not the previous
+  // local value) so that programmatic clears (e.g. the X button calling
+  // setQueryInput('') AND setQuery('') in the same tick) don't double-fire.
+  useEffect(() => {
+    const next = queryInput.trim();
+    if (next === urlQuery) return;
+    const id = window.setTimeout(() => setQuery(next), 200);
+    return () => window.clearTimeout(id);
+    // setQuery is stable enough — re-creating it per render is fine since
+    // the effect cleanup cancels any in-flight timer.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryInput, urlQuery]);
 
   const toggle = (badge: EventTypeBadge) => {
     const set = new Set(badges);
@@ -138,6 +167,11 @@ function EventsListPage() {
   };
 
   const clear = () => setBadges([]);
+
+  const clearQuery = () => {
+    setQueryInput("");
+    setQuery("");
+  };
 
   return (
     <div className="bg-[#F7F9FC] min-h-screen">
