@@ -107,7 +107,7 @@ function BlackBeltsAdminPage() {
                     )}
                   </AdminTD>
                   <AdminTD className="text-[#1A1A1A] font-medium">{r.athlete_name}</AdminTD>
-                  <AdminTD><AdminBadge color={beltType?.color ?? "gray"}>{beltType?.label ?? r.belt_type} {r.belt_degree > 0 ? `· ${r.belt_degree}°` : ""}</AdminBadge></AdminTD>
+                  <AdminTD><AdminBadge color={beltType?.color ?? "gray"}>{beltType?.label ?? r.belt_type} {r.belt_degree > 0 ? `· ${r.belt_degree}º Dan` : ""}</AdminBadge></AdminTD>
                   <AdminTD>{r.academy ?? "—"}</AdminTD>
                   <AdminTD>{r.professor ?? "—"}</AdminTD>
                   <AdminTD>{r.flag_emoji} {r.country_code}</AdminTD>
