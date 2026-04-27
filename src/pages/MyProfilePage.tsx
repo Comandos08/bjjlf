@@ -50,6 +50,7 @@ export function MyProfilePage() {
   const { profile, user, isLoading, refresh } = useRequireActiveAthlete();
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [pendingPhoto, setPendingPhoto] = useState<File | null>(null);
 
   const profileForm = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
