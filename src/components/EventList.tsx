@@ -183,30 +183,36 @@ export function EventList({
 
       {filtered.length === 0 ? (
         <div
-          className="border border-dashed border-gray-300 bg-white rounded-xl p-16 text-center"
+          className="bg-white rounded-xl py-16 px-6 text-center flex flex-col items-center justify-center"
           data-testid="event-list-empty"
         >
-          <Calendar className="mx-auto h-16 w-16 text-gray-300" aria-hidden />
+          <Calendar
+            className="text-[#C8211A]"
+            style={{ width: 64, height: 64 }}
+            aria-hidden
+          />
           <h3
-            className="mt-4 text-2xl uppercase tracking-wide text-gray-400"
-            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+            className="mt-5 text-[#1A1A1A]"
+            style={{ fontFamily: "Bebas Neue, Barlow Condensed, sans-serif", fontSize: "24px", letterSpacing: "0.04em" }}
           >
             {t("events.empty.title")}
           </h3>
           <p
-            className="mt-2 max-w-md mx-auto text-base text-gray-400 leading-[1.7]"
-            style={{ fontFamily: "Barlow", fontWeight: 400 }}
+            className="mt-2 max-w-md mx-auto text-[#666666]"
+            style={{ fontFamily: "Barlow", fontSize: "14px", fontWeight: 400, lineHeight: 1.6 }}
           >
             {t("events.empty.body")}
           </p>
-          <button
-            type="button"
-            onClick={clear}
-            className="mt-5 inline-flex items-center gap-1.5 text-sm tracking-wide text-[#C8211A] hover:text-[#8B1612] transition-base"
-            style={{ fontFamily: "Barlow", fontWeight: 600 }}
-          >
-            <X className="h-3.5 w-3.5" /> {t("events.empty.clear")}
-          </button>
+          {selectedBadges.length > 0 ? (
+            <button
+              type="button"
+              onClick={clear}
+              className="mt-6 inline-flex items-center gap-2 rounded-[4px] bg-[#C8211A] hover:bg-[#8B1612] text-white px-6 py-2.5 uppercase tracking-widest transition-base"
+              style={{ fontFamily: "Barlow Condensed", fontWeight: 700, fontSize: "13px" }}
+            >
+              <X className="h-3.5 w-3.5" /> {t("events.empty.clear")}
+            </button>
+          ) : null}
         </div>
       ) : (
         <div
