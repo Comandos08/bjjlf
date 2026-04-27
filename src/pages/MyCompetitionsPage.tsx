@@ -199,6 +199,11 @@ export function MyCompetitionsPage() {
                       >
                         {status.label}
                       </span>
+                      {r.status === "pending_payment" && (
+                        <span className="text-[11px] text-yellow-700 sm:text-right max-w-[220px]" style={{ fontFamily: "Barlow" }}>
+                          Entre em contato com a federação para confirmar o pagamento.
+                        </span>
+                      )}
                       <span
                         className="text-sm text-gray-900"
                         style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
