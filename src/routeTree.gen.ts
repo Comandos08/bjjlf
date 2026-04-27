@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as TypographyRouteImport } from './routes/typography'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as RankingsRouteImport } from './routes/rankings'
@@ -54,6 +55,11 @@ import { Route as AcademyPermitRouteImport } from './routes/academy.permit'
 import { Route as VerifyAcademyPermitNumberRouteImport } from './routes/verify.academy.$permitNumber'
 import { Route as RegisterEventEventIdRouteImport } from './routes/register.event.$eventId'
 
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TypographyRoute = TypographyRouteImport.update({
   id: '/typography',
   path: '/typography',
@@ -294,6 +300,7 @@ export interface FileRoutesByFullPath {
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
+  '/welcome': typeof WelcomeRoute
   '/academy/permit': typeof AcademyPermitRoute
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/athletes': typeof AdminAthletesRoute
@@ -339,6 +346,7 @@ export interface FileRoutesByTo {
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
+  '/welcome': typeof WelcomeRoute
   '/academy/permit': typeof AcademyPermitRoute
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/athletes': typeof AdminAthletesRoute
@@ -386,6 +394,7 @@ export interface FileRoutesById {
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
+  '/welcome': typeof WelcomeRoute
   '/academy/permit': typeof AcademyPermitRoute
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/athletes': typeof AdminAthletesRoute
@@ -434,6 +443,7 @@ export interface FileRouteTypes {
     | '/rankings'
     | '/rules'
     | '/typography'
+    | '/welcome'
     | '/academy/permit'
     | '/admin/academies'
     | '/admin/athletes'
@@ -479,6 +489,7 @@ export interface FileRouteTypes {
     | '/rankings'
     | '/rules'
     | '/typography'
+    | '/welcome'
     | '/academy/permit'
     | '/admin/academies'
     | '/admin/athletes'
@@ -525,6 +536,7 @@ export interface FileRouteTypes {
     | '/rankings'
     | '/rules'
     | '/typography'
+    | '/welcome'
     | '/academy/permit'
     | '/admin/academies'
     | '/admin/athletes'
@@ -572,6 +584,7 @@ export interface RootRouteChildren {
   RankingsRoute: typeof RankingsRoute
   RulesRoute: typeof RulesRoute
   TypographyRoute: typeof TypographyRoute
+  WelcomeRoute: typeof WelcomeRoute
   AcademyPermitRoute: typeof AcademyPermitRoute
   AthleteForgotPasswordRoute: typeof AthleteForgotPasswordRoute
   AthleteLoginRoute: typeof AthleteLoginRoute
@@ -587,6 +600,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/typography': {
       id: '/typography'
       path: '/typography'
@@ -975,6 +995,7 @@ const rootRouteChildren: RootRouteChildren = {
   RankingsRoute: RankingsRoute,
   RulesRoute: RulesRoute,
   TypographyRoute: TypographyRoute,
+  WelcomeRoute: WelcomeRoute,
   AcademyPermitRoute: AcademyPermitRoute,
   AthleteForgotPasswordRoute: AthleteForgotPasswordRoute,
   AthleteLoginRoute: AthleteLoginRoute,
