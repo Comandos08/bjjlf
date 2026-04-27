@@ -1,4 +1,5 @@
 import { createRouter, useRouter } from "@tanstack/react-router";
+import { QueryClient } from "@tanstack/react-query";
 import { routeTree } from "./routeTree.gen";
 
 function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
@@ -55,13 +56,35 @@ function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => vo
 }
 
 export const getRouter = () => {
+  // Fresh QueryClient per router instance — critical for SSR so that one
+  // request's cached data never leaks into another. Don't promote this to
+  // module scope.
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        // Public content rarely changes. Keep it for 1 minute before
+        // background-refetching. Tune per-query when needed.
+        staleTime: 60_000,
+        retry: 1,
+      },
+    },
+  });
+
   const router = createRouter({
     routeTree,
-    context: {},
+    context: { queryClient },
     scrollRestoration: true,
+    // Required when delegating cache freshness to TanStack Query — otherwise
+    // the router's preload cache (30s default) short-circuits Query.
     defaultPreloadStaleTime: 0,
     defaultErrorComponent: DefaultErrorComponent,
   });
 
   return router;
 };
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: ReturnType<typeof getRouter>;
+  }
+}
