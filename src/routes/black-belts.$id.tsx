@@ -2,6 +2,20 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
+const SITE_URL = "https://bjjlf.lovable.app";
+const FALLBACK_OG_IMAGE = `${SITE_URL}/og-default.png`;
+const BIO_MAX = 1000;
+
+function beltLabel(t: string): string {
+  const map: Record<string, string> = {
+    preta: "Preta",
+    coral: "Coral",
+    vermelha: "Vermelha",
+    vermelha_branca: "Vermelha e Branca",
+  };
+  return map[t] ?? t;
+}
+
 type BlackBelt = {
   id: string;
   athlete_name: string;
