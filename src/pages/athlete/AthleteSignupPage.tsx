@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -43,7 +43,7 @@ const schema = z
 type FormValues = z.infer<typeof schema>;
 
 export function AthleteSignupPage() {
-  const navigate = useNavigate();
+  
   const [submitting, setSubmitting] = useState(false);
   const [sentEmail, setSentEmail] = useState<string | null>(null);
 
