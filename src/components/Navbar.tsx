@@ -6,7 +6,19 @@ import { useI18n, type Lang } from "@/lib/i18n";
 
 type NavItem = {
   key: string;
-  to?: "/" | "/news" | "/graduates" | "/about" | "/academies" | "/register/athlete" | "/register/academy";
+  to?:
+    | "/"
+    | "/news"
+    | "/graduates"
+    | "/about"
+    | "/academies"
+    | "/register/athlete"
+    | "/register/academy"
+    | "/championships"
+    | "/rankings"
+    | "/black-belts"
+    | "/athletes"
+    | "/rules";
   children?: { label: string; to: NavItem["to"] }[];
   nowrap?: boolean;
 };
@@ -19,21 +31,16 @@ export function Navbar() {
   const NAV: NavItem[] = [
     {
       key: "championships",
-      children: [
-        { label: t("home.events.title"), to: "/" },
-        { label: t("nav.news"), to: "/news" },
-      ],
+      to: "/championships",
     },
     {
       key: "blackbelts",
       nowrap: true,
-      children: [
-        { label: t("grad.title"), to: "/graduates" },
-      ],
+      to: "/black-belts",
     },
     {
       key: "rankings",
-      to: "/",
+      to: "/rankings",
     },
     {
       key: "academies",
@@ -44,14 +51,11 @@ export function Navbar() {
     },
     {
       key: "athletes",
-      children: [
-        { label: t("home.cta.athleteBtn"), to: "/register/athlete" },
-        { label: t("grad.title"), to: "/graduates" },
-      ],
+      to: "/athletes",
     },
     {
       key: "rules",
-      to: "/about",
+      to: "/rules",
     },
     {
       key: "news",

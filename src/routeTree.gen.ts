@@ -10,9 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TypographyRouteImport } from './routes/typography'
+import { Route as RulesRouteImport } from './routes/rules'
+import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as GraduatesRouteImport } from './routes/graduates'
 import { Route as EventsRouteImport } from './routes/events'
+import { Route as ChampionshipsRouteImport } from './routes/championships'
+import { Route as BlackBeltsRouteImport } from './routes/black-belts'
+import { Route as AthletesRouteImport } from './routes/athletes'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AcademiesRouteImport } from './routes/academies'
 import { Route as AboutRouteImport } from './routes/about'
@@ -38,6 +43,16 @@ const TypographyRoute = TypographyRouteImport.update({
   path: '/typography',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RulesRoute = RulesRouteImport.update({
+  id: '/rules',
+  path: '/rules',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RankingsRoute = RankingsRouteImport.update({
+  id: '/rankings',
+  path: '/rankings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
@@ -51,6 +66,21 @@ const GraduatesRoute = GraduatesRouteImport.update({
 const EventsRoute = EventsRouteImport.update({
   id: '/events',
   path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChampionshipsRoute = ChampionshipsRouteImport.update({
+  id: '/championships',
+  path: '/championships',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlackBeltsRoute = BlackBeltsRouteImport.update({
+  id: '/black-belts',
+  path: '/black-belts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AthletesRoute = AthletesRouteImport.update({
+  id: '/athletes',
+  path: '/athletes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -154,9 +184,14 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/academies': typeof AcademiesRoute
   '/admin': typeof AdminRouteWithChildren
+  '/athletes': typeof AthletesRoute
+  '/black-belts': typeof BlackBeltsRoute
+  '/championships': typeof ChampionshipsRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
+  '/rankings': typeof RankingsRoute
+  '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
@@ -178,9 +213,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/academies': typeof AcademiesRoute
+  '/athletes': typeof AthletesRoute
+  '/black-belts': typeof BlackBeltsRoute
+  '/championships': typeof ChampionshipsRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
+  '/rankings': typeof RankingsRoute
+  '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
@@ -204,9 +244,14 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/academies': typeof AcademiesRoute
   '/admin': typeof AdminRouteWithChildren
+  '/athletes': typeof AthletesRoute
+  '/black-belts': typeof BlackBeltsRoute
+  '/championships': typeof ChampionshipsRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/news': typeof NewsRoute
+  '/rankings': typeof RankingsRoute
+  '/rules': typeof RulesRoute
   '/typography': typeof TypographyRoute
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
@@ -231,9 +276,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/academies'
     | '/admin'
+    | '/athletes'
+    | '/black-belts'
+    | '/championships'
     | '/events'
     | '/graduates'
     | '/news'
+    | '/rankings'
+    | '/rules'
     | '/typography'
     | '/admin/academies'
     | '/admin/black-belts'
@@ -255,9 +305,14 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/academies'
+    | '/athletes'
+    | '/black-belts'
+    | '/championships'
     | '/events'
     | '/graduates'
     | '/news'
+    | '/rankings'
+    | '/rules'
     | '/typography'
     | '/admin/academies'
     | '/admin/black-belts'
@@ -280,9 +335,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/academies'
     | '/admin'
+    | '/athletes'
+    | '/black-belts'
+    | '/championships'
     | '/events'
     | '/graduates'
     | '/news'
+    | '/rankings'
+    | '/rules'
     | '/typography'
     | '/admin/academies'
     | '/admin/black-belts'
@@ -306,9 +366,14 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AcademiesRoute: typeof AcademiesRoute
   AdminRoute: typeof AdminRouteWithChildren
+  AthletesRoute: typeof AthletesRoute
+  BlackBeltsRoute: typeof BlackBeltsRoute
+  ChampionshipsRoute: typeof ChampionshipsRoute
   EventsRoute: typeof EventsRouteWithChildren
   GraduatesRoute: typeof GraduatesRouteWithChildren
   NewsRoute: typeof NewsRoute
+  RankingsRoute: typeof RankingsRoute
+  RulesRoute: typeof RulesRoute
   TypographyRoute: typeof TypographyRoute
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
@@ -321,6 +386,20 @@ declare module '@tanstack/react-router' {
       path: '/typography'
       fullPath: '/typography'
       preLoaderRoute: typeof TypographyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rules': {
+      id: '/rules'
+      path: '/rules'
+      fullPath: '/rules'
+      preLoaderRoute: typeof RulesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rankings': {
+      id: '/rankings'
+      path: '/rankings'
+      fullPath: '/rankings'
+      preLoaderRoute: typeof RankingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news': {
@@ -342,6 +421,27 @@ declare module '@tanstack/react-router' {
       path: '/events'
       fullPath: '/events'
       preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/championships': {
+      id: '/championships'
+      path: '/championships'
+      fullPath: '/championships'
+      preLoaderRoute: typeof ChampionshipsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/black-belts': {
+      id: '/black-belts'
+      path: '/black-belts'
+      fullPath: '/black-belts'
+      preLoaderRoute: typeof BlackBeltsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/athletes': {
+      id: '/athletes'
+      path: '/athletes'
+      fullPath: '/athletes'
+      preLoaderRoute: typeof AthletesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -538,9 +638,14 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AcademiesRoute: AcademiesRoute,
   AdminRoute: AdminRouteWithChildren,
+  AthletesRoute: AthletesRoute,
+  BlackBeltsRoute: BlackBeltsRoute,
+  ChampionshipsRoute: ChampionshipsRoute,
   EventsRoute: EventsRouteWithChildren,
   GraduatesRoute: GraduatesRouteWithChildren,
   NewsRoute: NewsRoute,
+  RankingsRoute: RankingsRoute,
+  RulesRoute: RulesRoute,
   TypographyRoute: TypographyRoute,
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,

@@ -36,10 +36,10 @@ export function Footer() {
           <div>
             <h4 className={headingClass}>{t("footer.col.championships")}</h4>
             <ul>
-              <li><Link to="/" className={linkClass}>{t("footer.col.upcoming")}</Link></li>
-              <li><Link to="/" className={linkClass}>{t("footer.col.results")}</Link></li>
-              <li><Link to="/" className={linkClass}>{t("footer.col.calendar")}</Link></li>
-              <li><Link to="/" className={linkClass}>{t("footer.col.rankings")}</Link></li>
+              <li><Link to="/championships" className={linkClass}>{t("footer.col.upcoming")}</Link></li>
+              <li><Link to="/championships" className={linkClass}>{t("footer.col.results")}</Link></li>
+              <li><Link to="/championships" className={linkClass}>{t("footer.col.calendar")}</Link></li>
+              <li><Link to="/rankings" className={linkClass}>{t("footer.col.rankings")}</Link></li>
             </ul>
           </div>
 
@@ -50,8 +50,8 @@ export function Footer() {
               <li><Link to="/academies" className={linkClass}>{t("academies.nav.affiliated")}</Link></li>
               <li><Link to="/register/academy" className={linkClass}>{t("footer.col.affiliateAcademy")}</Link></li>
               <li><Link to="/register/athlete" className={linkClass}>{t("footer.col.registerAthlete")}</Link></li>
-              <li><Link to="/graduates" className={linkClass}>{t("footer.col.certifiedBlackBelts")}</Link></li>
-              <li><a href="#" className={linkClass}>{t("footer.col.rules")}</a></li>
+              <li><Link to="/black-belts" className={linkClass}>{t("footer.col.certifiedBlackBelts")}</Link></li>
+              <li><Link to="/rules" className={linkClass}>{t("footer.col.rules")}</Link></li>
             </ul>
           </div>
 
