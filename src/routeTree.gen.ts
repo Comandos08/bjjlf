@@ -38,6 +38,7 @@ import { Route as AthleteForgotPasswordRouteImport } from './routes/athlete.forg
 import { Route as AdminYoutubeRouteImport } from './routes/admin.youtube'
 import { Route as AdminSetupRouteImport } from './routes/admin.setup'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminRegistrationsRouteImport } from './routes/admin.registrations'
 import { Route as AdminRankingsRouteImport } from './routes/admin.rankings'
 import { Route as AdminNewsRouteImport } from './routes/admin.news'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
@@ -193,6 +194,11 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminRegistrationsRoute = AdminRegistrationsRouteImport.update({
+  id: '/registrations',
+  path: '/registrations',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminRankingsRoute = AdminRankingsRouteImport.update({
   id: '/rankings',
   path: '/rankings',
@@ -264,6 +270,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
   '/admin/rankings': typeof AdminRankingsRoute
+  '/admin/registrations': typeof AdminRegistrationsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
   '/admin/youtube': typeof AdminYoutubeRoute
@@ -303,6 +310,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
   '/admin/rankings': typeof AdminRankingsRoute
+  '/admin/registrations': typeof AdminRegistrationsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
   '/admin/youtube': typeof AdminYoutubeRoute
@@ -344,6 +352,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
   '/admin/rankings': typeof AdminRankingsRoute
+  '/admin/registrations': typeof AdminRegistrationsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/setup': typeof AdminSetupRoute
   '/admin/youtube': typeof AdminYoutubeRoute
@@ -386,6 +395,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/news'
     | '/admin/rankings'
+    | '/admin/registrations'
     | '/admin/settings'
     | '/admin/setup'
     | '/admin/youtube'
@@ -425,6 +435,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/news'
     | '/admin/rankings'
+    | '/admin/registrations'
     | '/admin/settings'
     | '/admin/setup'
     | '/admin/youtube'
@@ -465,6 +476,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/news'
     | '/admin/rankings'
+    | '/admin/registrations'
     | '/admin/settings'
     | '/admin/setup'
     | '/admin/youtube'
@@ -713,6 +725,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/registrations': {
+      id: '/admin/registrations'
+      path: '/registrations'
+      fullPath: '/admin/registrations'
+      preLoaderRoute: typeof AdminRegistrationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/rankings': {
       id: '/admin/rankings'
       path: '/rankings'
@@ -788,6 +807,7 @@ interface AdminRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminNewsRoute: typeof AdminNewsRoute
   AdminRankingsRoute: typeof AdminRankingsRoute
+  AdminRegistrationsRoute: typeof AdminRegistrationsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSetupRoute: typeof AdminSetupRoute
   AdminYoutubeRoute: typeof AdminYoutubeRoute
@@ -803,6 +823,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminNewsRoute: AdminNewsRoute,
   AdminRankingsRoute: AdminRankingsRoute,
+  AdminRegistrationsRoute: AdminRegistrationsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminSetupRoute: AdminSetupRoute,
   AdminYoutubeRoute: AdminYoutubeRoute,
