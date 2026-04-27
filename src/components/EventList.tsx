@@ -252,8 +252,10 @@ export function EventList({
               key={e.id}
               to="/events/$eventId"
               params={{ eventId: e.id }}
-              // Preserve parent /events search params when navigating to detail.
-              search={(prev) => prev}
+              // Detail page ignores list filters; preserve whatever was there.
+              // Cast: parent /events validateSearch types these as required,
+              // but `prev` widens them to optional — safe to pass through.
+              search={((prev: unknown) => prev) as never}
               data-testid="event-list-card"
               data-badge={e.badge}
               className="rounded-none bg-white border border-[#E5E5E5] flex flex-col group cursor-pointer hover:border-primary hover:shadow-[0_8px_24px_rgba(196,30,58,0.15)] hover:-translate-y-[3px] no-underline"
