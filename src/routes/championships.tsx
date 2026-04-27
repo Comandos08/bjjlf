@@ -6,6 +6,10 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
  */
 export const Route = createFileRoute("/championships")({
   beforeLoad: () => {
-    throw redirect({ to: "/events", replace: true });
+    throw redirect({
+      to: "/events",
+      search: { badges: [], sort: "soonest", q: "", page: 1, perPage: 12 },
+      replace: true,
+    });
   },
 });
