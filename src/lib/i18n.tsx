@@ -361,6 +361,17 @@ const EN: Dict = {
   "event.register.cta": "Register now",
   "event.register.deadline": "Event date",
 
+  // Event list page + filters
+  "events.page.title": "Event Calendar",
+  "events.page.subtitle": "Upcoming official BJJLF championships",
+  "events.filter.label": "Filter by category",
+  "events.filter.all": "ALL",
+  "events.empty.title": "No events found",
+  "events.empty.body": "No events match the selected filters. Clear the filters to see all events.",
+  "events.empty.clear": "Clear filters",
+  "events.count.one": "{n} event",
+  "events.count.many": "{n} events",
+
   "news.cat.tournaments.label": "TOURNAMENTS",
   "news.cat.promotions.label": "PROMOTIONS",
   "news.cat.athletes.label": "ATHLETES",
