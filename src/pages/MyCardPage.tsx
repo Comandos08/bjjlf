@@ -1,12 +1,13 @@
-import { useMemo, useRef, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Loader2, AlertCircle, ArrowLeft } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import dragon from "@/assets/dragon-logo.png";
 import { cn } from "@/lib/utils";
 import { typo } from "@/lib/typography";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { useRequireActiveAthlete } from "@/hooks/useRequireActiveAthlete";
+import { useAthleteAuth } from "@/lib/athlete-auth";
 
 const MAX_DEGREES = 4;
 
