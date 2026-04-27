@@ -295,12 +295,14 @@ function AthleteMenu() {
             >
               {profile.full_name}
             </p>
-            <p
-              className="text-[11px] mt-0.5 truncate"
-              style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
-            >
-              {beltLine}
-            </p>
+            {beltLine && (
+              <p
+                className="text-[11px] mt-0.5 truncate"
+                style={{ fontFamily: "Barlow", fontWeight: 600, color: "#C8A84B", letterSpacing: "0.04em" }}
+              >
+                {beltLine}
+              </p>
+            )}
           </div>
 
           <AthleteMenuItem
