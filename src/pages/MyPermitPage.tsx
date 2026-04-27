@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, ExternalLink, Loader2, Printer, ShieldX } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ExternalLink, Loader2, Printer, RefreshCw, ShieldX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { AcademyPermitDocument } from "@/components/AcademyPermitDocument";
+import { computeValidity, formatValidUntil } from "@/lib/validity";
 
 type Permit = {
   academy_name: string;
