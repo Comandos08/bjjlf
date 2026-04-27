@@ -2,7 +2,6 @@ import { useEffect, useMemo } from "react";
 import { Link } from "@tanstack/react-router";
 import { Calendar, ChevronLeft, ChevronRight, MapPin, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { typo } from "@/lib/typography";
 import { useI18n, formatDateShort } from "@/lib/i18n";
 import { SafeImage } from "@/components/SafeImage";
 import { EventBadge } from "@/components/EventBadge";
@@ -22,62 +21,21 @@ import {
 /**
  * Reusable event list with badge filters.
  *
- * Surfaces:
- *   - /events page (default — shows full catalog with filters)
- *   - Any future "events by venue/season" page can drop this in by passing
- *     its own pre-filtered `events` prop and `availableBadges`.
- *
- * The badge filter chips and per-card badges share the EXACT same color
- * palette via the shared <EventBadge variant="inline" /> — that is the whole
- * point of this component: one source of truth for GI / NO-GI / GI & NO-GI /
- * KIDS / MASTER styling, used in both the filter row AND the cards.
- *
- * Filter state is controlled (via `selectedBadges` + `onChange`) so callers
- * can persist it however they like — local state, URL search params, etc.
- * The /events route wires it to URL search params; embedded usages (e.g. a
- * homepage "Upcoming Events" widget) can use plain useState.
+ * Light theme. Cards: bg-white, border-gray-200, rounded-xl, shadow-sm
+ * hover:shadow-md. CTA button is full-width red.
  */
 
 export type EventListProps = {
-  /** Events to render. Defaults to the full catalog. */
   events?: ReadonlyArray<Event>;
-  /** Which badge filters are currently active. Empty array = show all. */
   selectedBadges: ReadonlyArray<EventTypeBadge>;
-  /** Called when the user toggles a filter chip or clears all. */
   onChange: (next: ReadonlyArray<EventTypeBadge>) => void;
-  /**
-   * Which badge categories to show as filter chips. Defaults to the union
-   * of badges actually present in `events` (so we never show an empty
-   * category like "KIDS" if no kids events exist).
-   */
   availableBadges?: ReadonlyArray<EventTypeBadge>;
-  /** Optional grid override. Defaults to 1 / 2 / 3 columns. */
   gridClassName?: string;
-  /**
-   * Hide the inline filter row. Use when filters are rendered elsewhere
-   * (e.g. a sidebar or off-canvas drawer) — the count label still shows.
-   */
   hideFilters?: boolean;
-  /**
-   * Sort order. Defaults to "soonest" (chronological). Callers wiring this
-   * to URL search params should pass the parsed value here.
-   */
   sort?: EventSort;
-  /**
-   * Free-text filter applied case-insensitively to event name AND location.
-   * Empty/whitespace = no filtering. Callers wiring this to URL search
-   * params should pass the parsed value here.
-   */
   query?: string;
-  /**
-   * 1-indexed current page. When omitted, pagination is disabled and ALL
-   * filtered results render. Callers wiring this to URL search params should
-   * pass `page` + `onPageChange` together.
-   */
   page?: number;
-  /** Items per page. Defaults to DEFAULT_PER_PAGE. */
   perPage?: number;
-  /** Called when the user clicks a paginator button. */
   onPageChange?: (page: number) => void;
   className?: string;
 };
@@ -106,13 +64,8 @@ export function EventList({
 }: EventListProps) {
   const { t, lang } = useI18n();
 
-  // Pagination is only "active" when the caller wired both the page number
-  // AND the change handler. Otherwise we render every filtered result —
-  // matches the pre-pagination behavior so existing call-sites are unaffected.
   const paginationEnabled = typeof page === "number" && !!onPageChange;
 
-  // Compute which chips to show. Preserves the canonical ALL_BADGES order
-  // so the filter row never reshuffles when the dataset changes.
   const chips = useMemo<ReadonlyArray<EventTypeBadge>>(() => {
     if (availableBadges) return availableBadges;
     const present = new Set(events.map((e) => e.badge));
@@ -120,14 +73,11 @@ export function EventList({
   }, [events, availableBadges]);
 
   const filtered = useMemo(() => {
-    // 1) Badge filter
     let base =
       selectedBadges.length === 0
         ? events
         : events.filter((e) => new Set(selectedBadges).has(e.badge));
 
-    // 2) Text search — case-insensitive substring on name OR location.
-    //    Locale-lowercased so "São" matches "são" for our PT users.
     const q = query.trim().toLocaleLowerCase();
     if (q.length > 0) {
       base = base.filter(
@@ -137,11 +87,9 @@ export function EventList({
       );
     }
 
-    // 3) Sort
     return sortEvents(base, sort);
   }, [events, selectedBadges, sort, query]);
 
-  // Derive pagination geometry. Always-on math (cheap), only used when enabled.
   const total = filtered.length;
   const totalPages = pageCount(total, perPage);
   const safePage = clampPage(page ?? 1, total, perPage);
@@ -149,20 +97,15 @@ export function EventList({
     ? filtered.slice((safePage - 1) * perPage, safePage * perPage)
     : filtered;
 
-  // Self-heal the URL when filters shrink the result set below the current
-  // page. Without this, the user lands on a blank "page 5 of 2" view.
   useEffect(() => {
     if (!paginationEnabled) return;
     if (safePage !== page) onPageChange?.(safePage);
-    // We deliberately depend on `total` (not `filtered`) so this runs only
-    // when the result count actually changes — not on every render.
   }, [paginationEnabled, safePage, page, total, onPageChange]);
 
   const toggle = (badge: EventTypeBadge) => {
     const set = new Set(selectedBadges);
     if (set.has(badge)) set.delete(badge);
     else set.add(badge);
-    // Preserve canonical order when serializing back out.
     onChange(ALL_BADGES.filter((b) => set.has(b)));
   };
 
@@ -175,11 +118,13 @@ export function EventList({
 
   return (
     <div className={cn("space-y-6", className)} data-testid="event-list">
-      {/* Filter row (inline). Hidden when caller renders filters elsewhere. */}
       {!hideFilters ? (
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2">
-            <span className={cn(typo.label.md, "mr-2 shrink-0")}>
+            <span
+              className="mr-2 shrink-0 text-xs uppercase tracking-widest text-gray-500"
+              style={{ fontFamily: "Barlow", fontWeight: 600 }}
+            >
               {t("events.filter.label")}:
             </span>
 
@@ -201,41 +146,59 @@ export function EventList({
                   data-badge={badge}
                   data-active={active}
                   className={cn(
-                    "transition-base focus-ring rounded-none",
-                    active ? "ring-2 ring-offset-2 ring-offset-background ring-primary" : "opacity-70 hover:opacity-100",
+                    "transition-base focus-ring rounded",
+                    active
+                      ? "ring-2 ring-offset-2 ring-offset-white ring-[#C8211A]"
+                      : "opacity-70 hover:opacity-100",
                   )}
                 >
-                  {/* Reuse the exact same inline badge as the cards — single
-                      source of truth for GI/NO-GI/GI&NO-GI/KIDS/MASTER colors. */}
                   <EventBadge badge={badge} variant="inline" />
                 </button>
               );
             })}
           </div>
 
-          <span className={cn(typo.label.sm, "shrink-0")}>{countLabel}</span>
+          <span
+            className="shrink-0 text-xs uppercase tracking-widest text-gray-500"
+            style={{ fontFamily: "Barlow", fontWeight: 600 }}
+          >
+            {countLabel}
+          </span>
         </div>
       ) : (
         <div className="flex items-center justify-end">
-          <span className={cn(typo.label.sm)}>{countLabel}</span>
+          <span
+            className="text-xs uppercase tracking-widest text-gray-500"
+            style={{ fontFamily: "Barlow", fontWeight: 600 }}
+          >
+            {countLabel}
+          </span>
         </div>
       )}
 
-      {/* Empty state */}
       {filtered.length === 0 ? (
         <div
-          className="border border-dashed border-border bg-card p-10 text-center space-y-3"
+          className="border border-dashed border-gray-300 bg-white rounded-xl p-16 text-center"
           data-testid="event-list-empty"
         >
-          <h3 className={typo.heading.sm}>{t("events.empty.title")}</h3>
-          <p className={cn(typo.body.sm, "max-w-md mx-auto")}>{t("events.empty.body")}</p>
+          <Calendar className="mx-auto h-16 w-16 text-gray-300" aria-hidden />
+          <h3
+            className="mt-4 text-2xl uppercase tracking-wide text-gray-400"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+          >
+            {t("events.empty.title")}
+          </h3>
+          <p
+            className="mt-2 max-w-md mx-auto text-base text-gray-400 leading-[1.7]"
+            style={{ fontFamily: "Barlow", fontWeight: 400 }}
+          >
+            {t("events.empty.body")}
+          </p>
           <button
             type="button"
             onClick={clear}
-            className={cn(
-              typo.button.sm,
-              "inline-flex items-center gap-1.5 text-primary hover:text-primary-dark",
-            )}
+            className="mt-5 inline-flex items-center gap-1.5 text-sm tracking-wide text-[#C8211A] hover:text-[#8B1612] transition-base"
+            style={{ fontFamily: "Barlow", fontWeight: 600 }}
           >
             <X className="h-3.5 w-3.5" /> {t("events.empty.clear")}
           </button>
@@ -243,7 +206,7 @@ export function EventList({
       ) : (
         <div
           className={cn(
-            "grid gap-3.5",
+            "grid gap-6",
             gridClassName ?? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
           )}
         >
@@ -252,51 +215,48 @@ export function EventList({
               key={e.id}
               to="/events/$eventId"
               params={{ eventId: e.id }}
-              // Detail page ignores list filters; preserve whatever was there.
-              // Cast: parent /events validateSearch types these as required,
-              // but `prev` widens them to optional — safe to pass through.
               search={((prev: unknown) => prev) as never}
               data-testid="event-list-card"
               data-badge={e.badge}
-              className="rounded-none bg-white border border-[#E5E5E5] flex flex-col group cursor-pointer hover:border-primary hover:shadow-[0_8px_24px_rgba(196,30,58,0.15)] hover:-translate-y-[3px] no-underline"
-              style={{ transition: "all 0.18s ease" }}
+              className="group flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base no-underline overflow-hidden"
             >
               <article className="flex flex-col h-full">
-                <div className="relative">
+                <div className="relative aspect-video">
                   <SafeImage
                     src={e.image}
                     alt={`${e.name} — Brazilian Jiu-Jitsu event`}
                     fallbackLabel={e.name}
                     source="event"
-                    wrapperClassName="h-40 bg-[#F7F9FC]"
+                    wrapperClassName="absolute inset-0 bg-gray-50"
+                    className="object-cover w-full h-full"
                   />
                   <EventBadge badge={e.badge} />
                 </div>
-                <div className="p-4 space-y-2.5 flex-1 flex flex-col">
+                <div className="p-5 flex-1 flex flex-col gap-3">
                   <h3
-                    className={cn(
-                      typo.heading.sm,
-                      "text-[#0F0F0F] text-sm leading-tight",
-                    )}
+                    className="text-xl uppercase text-gray-900 leading-tight"
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
                   >
                     {e.name}
                   </h3>
                   <div
-                    className={cn(
-                      typo.body.xs,
-                      "flex items-center gap-1.5 text-[#6B7280]",
-                    )}
+                    className="flex items-center gap-1.5 text-sm text-gray-500"
+                    style={{ fontFamily: "Barlow", fontWeight: 400 }}
                   >
                     <Calendar className="h-3.5 w-3.5" /> {formatDateShort(e.date, lang)}
                   </div>
                   <div
-                    className={cn(
-                      typo.body.xs,
-                      "flex items-center gap-1.5 text-[#6B7280]",
-                    )}
+                    className="flex items-center gap-1.5 text-sm text-gray-500"
+                    style={{ fontFamily: "Barlow", fontWeight: 400 }}
                   >
                     <MapPin className="h-3.5 w-3.5" /> {e.location}
                   </div>
+                  <span
+                    className="mt-auto w-full inline-flex items-center justify-center rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white text-sm uppercase tracking-widest py-3 transition-base"
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                  >
+                    {t("home.events.details")}
+                  </span>
                 </div>
               </article>
             </Link>
@@ -304,8 +264,6 @@ export function EventList({
         </div>
       )}
 
-      {/* Numbered paginator. Hidden when pagination is off OR there's only
-          one page of results — keeps the UI clean for narrow result sets. */}
       {paginationEnabled && totalPages > 1 ? (
         <Paginator
           page={safePage}
@@ -342,6 +300,9 @@ function Paginator({
     onChange(p);
   };
 
+  const baseBtn =
+    "inline-flex items-center justify-center h-9 min-w-9 px-3 rounded-md border text-sm transition-base";
+
   return (
     <nav
       aria-label={labels.current}
@@ -355,9 +316,10 @@ function Paginator({
         aria-label={labels.prev}
         data-testid="event-pagination-prev"
         className={cn(
-          typo.button.sm,
-          "inline-flex items-center gap-1 px-3 h-9 rounded-none border border-border bg-card hover:border-primary hover:text-primary disabled:opacity-40 disabled:hover:border-border disabled:hover:text-inherit transition-base",
+          baseBtn,
+          "gap-1 border-gray-200 bg-white text-gray-700 hover:border-[#C8211A] hover:text-[#C8211A] disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-gray-700",
         )}
+        style={{ fontFamily: "Barlow", fontWeight: 600 }}
       >
         <ChevronLeft className="h-3.5 w-3.5" />
         <span className="hidden sm:inline">{labels.prev}</span>
@@ -368,7 +330,7 @@ function Paginator({
           <span
             key={`gap-${i}`}
             aria-hidden="true"
-            className="inline-flex items-center justify-center h-9 w-9 text-muted-foreground"
+            className="inline-flex items-center justify-center h-9 w-9 text-gray-400"
           >
             …
           </span>
@@ -383,12 +345,12 @@ function Paginator({
             data-page={it}
             data-active={it === page}
             className={cn(
-              typo.button.sm,
-              "inline-flex items-center justify-center h-9 min-w-9 px-3 rounded-none border transition-base",
+              baseBtn,
               it === page
-                ? "bg-primary text-primary-foreground border-primary"
-                : "border-border bg-card hover:border-primary hover:text-primary",
+                ? "bg-[#C8211A] text-white border-[#C8211A]"
+                : "border-gray-200 bg-white text-gray-700 hover:border-[#C8211A] hover:text-[#C8211A]",
             )}
+            style={{ fontFamily: "Barlow", fontWeight: 600 }}
           >
             {it}
           </button>
@@ -402,9 +364,10 @@ function Paginator({
         aria-label={labels.next}
         data-testid="event-pagination-next"
         className={cn(
-          typo.button.sm,
-          "inline-flex items-center gap-1 px-3 h-9 rounded-none border border-border bg-card hover:border-primary hover:text-primary disabled:opacity-40 disabled:hover:border-border disabled:hover:text-inherit transition-base",
+          baseBtn,
+          "gap-1 border-gray-200 bg-white text-gray-700 hover:border-[#C8211A] hover:text-[#C8211A] disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-gray-700",
         )}
+        style={{ fontFamily: "Barlow", fontWeight: 600 }}
       >
         <span className="hidden sm:inline">{labels.next}</span>
         <ChevronRight className="h-3.5 w-3.5" />
@@ -431,21 +394,12 @@ function FilterChip({
       data-badge="ALL"
       data-active={active}
       className={cn(
-        "transition-base focus-ring rounded-none inline-flex items-center",
+        "inline-flex items-center rounded transition-base focus-ring px-3 py-1.5 text-xs uppercase tracking-widest",
         active
-          ? "ring-2 ring-offset-2 ring-offset-background ring-primary"
-          : "opacity-70 hover:opacity-100",
+          ? "bg-gray-900 text-white"
+          : "bg-gray-100 text-gray-600 hover:bg-gray-200",
       )}
-      style={{
-        background: "#2C2C2C",
-        color: "#FFFFFF",
-        padding: "8px 12px",
-        fontSize: "10px",
-        fontWeight: 700,
-        letterSpacing: "0.08em",
-        fontFamily: "Barlow Condensed",
-        lineHeight: 1,
-      }}
+      style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
     >
       {label}
     </button>

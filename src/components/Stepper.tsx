@@ -52,36 +52,58 @@ export function Stepper({ steps, current }: { steps: string[]; current: number }
 export function PageHero({ kicker, title, desc, breadcrumb }: { kicker?: string; title: string; desc?: string; breadcrumb?: { label: string; to?: string }[] }) {
   const { t } = useI18n();
   return (
-    <section className="relative bg-navbar border-b border-[#2A2A2A] overflow-hidden">
+    <section className="relative bg-gray-900 overflow-hidden">
       <div
         className="absolute inset-0 opacity-[0.04] pointer-events-none"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 20% 30%, #C41E3A 0px, transparent 1px), radial-gradient(circle at 80% 70%, #B8960C 0px, transparent 1px)",
+            "radial-gradient(circle at 20% 30%, #C8211A 0px, transparent 1px), radial-gradient(circle at 80% 70%, #C8A84B 0px, transparent 1px)",
           backgroundSize: "40px 40px",
         }}
       />
-      <div className="relative max-w-[1280px] mx-auto px-4 lg:px-6 py-12 lg:py-16">
+      <div className="relative max-w-7xl mx-auto px-6 py-16 md:py-20">
         {breadcrumb && breadcrumb.length > 0 && (
-          <nav className={cn(typo.body.xs, "flex items-center gap-2 mb-4")}>
-            <Link to="/" className="text-[#999] hover:text-gold transition-base uppercase tracking-[0.06em]">
+          <nav
+            className="flex items-center gap-2 mb-4 text-sm text-gray-500"
+            style={{ fontFamily: "Barlow", fontWeight: 400 }}
+          >
+            <Link to="/" className="hover:text-white transition-base">
               {t("nav.home")}
             </Link>
             {breadcrumb.map((b, i) => (
               <span key={i} className="flex items-center gap-2">
-                <span className="text-[#444]">/</span>
+                <span className="text-gray-700">/</span>
                 {i === breadcrumb.length - 1 ? (
-                  <span className="text-gold uppercase tracking-[0.06em]">{b.label}</span>
+                  <span className="text-gray-300">{b.label}</span>
                 ) : (
-                  <span className="text-[#999] uppercase tracking-[0.06em]">{b.label}</span>
+                  <span className="text-gray-500">{b.label}</span>
                 )}
               </span>
             ))}
           </nav>
         )}
-        {kicker && <p className={cn(typo.heading.kicker, "mb-3")}>{kicker}</p>}
-        <h1 className={cn(typo.heading.xl, "text-white")}>{title}</h1>
-        {desc && <p className={cn(typo.body.md, "mt-4 max-w-2xl")}>{desc}</p>}
+        {kicker && (
+          <p
+            className="mb-3 text-xs uppercase tracking-widest text-[#C8A84B]"
+            style={{ fontFamily: "Barlow", fontWeight: 700 }}
+          >
+            {kicker}
+          </p>
+        )}
+        <h1
+          className="text-5xl md:text-6xl uppercase tracking-wide text-white leading-[0.95]"
+          style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
+        >
+          {title}
+        </h1>
+        {desc && (
+          <p
+            className="mt-4 max-w-2xl text-base md:text-lg text-gray-400 leading-[1.7]"
+            style={{ fontFamily: "Barlow", fontWeight: 400 }}
+          >
+            {desc}
+          </p>
+        )}
       </div>
     </section>
   );
