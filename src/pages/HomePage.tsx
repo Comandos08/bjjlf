@@ -4,8 +4,6 @@ import { ChevronLeft, ChevronRight, Calendar, MapPin, Play, ArrowRight, Users, B
 import { Button } from "@/components/ui/button";
 import { useEvents, useNews, useRankings } from "@/lib/queries";
 import { useI18n, formatDateShort } from "@/lib/i18n";
-import { typo } from "@/lib/typography";
-import { cn } from "@/lib/utils";
 import { SafeImage } from "@/components/SafeImage";
 import { EventBadge } from "@/components/EventBadge";
 // FIX A + FIX C: pin BJJ images locally so the Unsplash CDN can't swap them
@@ -66,25 +64,34 @@ function HeroSlider() {
         </div>
       ))}
 
-      <div className="relative z-10 max-w-[1280px] mx-auto h-full px-4 lg:px-12 flex items-center pb-32">
+      <div className="relative z-10 max-w-7xl mx-auto h-full px-4 lg:px-12 flex items-center pb-32">
         <div className="max-w-2xl">
-          <span className={cn(typo.label.sm, "inline-block bg-primary text-white px-3 py-1.5 mb-5 tracking-[0.12em]")}>
+          <span
+            className="inline-block bg-[#C8211A] text-white px-3 py-1.5 mb-5 text-xs uppercase tracking-widest rounded-md"
+            style={{ fontFamily: "Barlow", fontWeight: 600 }}
+          >
             {t("hero.featured")}
           </span>
-          {/* Hero title intentionally uses fluid clamp() — token classes set font-family/case/tracking */}
           <h1
-            className={cn(typo.heading.xl, "text-white leading-[1.0]")}
-            style={{ fontSize: "clamp(36px, 6vw, 64px)", letterSpacing: "0.01em" }}
+            className="font-display tracking-wider leading-[0.95] text-white"
+            style={{ fontSize: "clamp(48px, 7vw, 96px)", letterSpacing: "0.04em" }}
           >
             {SLIDE_TEXT[slide.titleKey]?.[lang]}
           </h1>
-          <p className={cn(typo.body.lg, "mt-4 max-w-xl")} style={{ color: "rgba(255,255,255,0.75)" }}>
+          <p
+            className="mt-4 max-w-xl text-lg leading-[1.6] text-gray-300"
+            style={{ fontFamily: "Barlow", fontWeight: 400 }}
+          >
             {SLIDE_TEXT[slide.subKey]?.[lang]}
           </p>
 
           <div className="mt-6 flex flex-wrap gap-2">
             {["BJJLF", slide.badge].map((b, k) => (
-              <span key={k} className={cn(typo.label.sm, "px-3 py-1.5 bg-white/10 backdrop-blur border border-white/20 text-white tracking-[0.1em]")}>
+              <span
+                key={k}
+                className="px-3 py-1.5 bg-white/10 backdrop-blur border border-white/20 text-white text-xs uppercase tracking-widest rounded-md"
+                style={{ fontFamily: "Barlow", fontWeight: 600 }}
+              >
                 {b}
               </span>
             ))}
@@ -98,20 +105,22 @@ function HeroSlider() {
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 z-10" style={{ background: "rgba(0,0,0,0.4)" }}>
-        <div className="max-w-[1280px] mx-auto px-4 lg:px-12 py-3 flex items-center gap-3">
+        <div className="max-w-7xl mx-auto px-4 lg:px-12 py-3 flex items-center gap-3">
           <div className="flex gap-2 flex-1 overflow-x-auto scrollbar-hide">
             {SLIDES.map((s, idx) => (
               <button
                 key={idx}
                 onClick={() => setI(idx)}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2 shrink-0 transition-base text-left",
-                  idx === i ? "border-l-[3px] border-gold bg-black/40" : "border-l-[3px] border-transparent hover:bg-black/30",
-                )}
+                className={`flex items-center gap-3 px-3 py-2 shrink-0 transition-base text-left ${
+                  idx === i ? "border-l-[3px] border-[#C8A84B] bg-black/40" : "border-l-[3px] border-transparent hover:bg-black/30"
+                }`}
               >
                 <SafeImage src={s.thumb} alt={s.badge} fallbackLabel={s.badge} source="hero-thumb" hideFallbackIcon wrapperClassName="h-10 w-16 shrink-0" />
                 <div>
-                  <div className={cn(typo.label.sm, "tracking-[0.08em]", idx === i ? "text-white" : "text-[#888]")}>
+                  <div
+                    className={`text-xs uppercase tracking-widest ${idx === i ? "text-white" : "text-gray-400"}`}
+                    style={{ fontFamily: "Barlow", fontWeight: 600 }}
+                  >
                     {s.badge}
                   </div>
                 </div>
@@ -142,11 +151,49 @@ function HeroSlider() {
   );
 }
 
-function LocalSectionHeading({ title, action, dark = true }: { title: React.ReactNode; action?: React.ReactNode; dark?: boolean }) {
+/**
+ * Section header used across all light sections.
+ * - Title: Barlow Condensed 700 uppercase, text-4xl md:text-5xl, gray-900
+ * - Decorative red line below: 4px tall, 48px wide
+ * - Optional "VER TODOS →" action: Barlow 600, text-sm, primary red
+ */
+function SectionHeader({
+  title,
+  action,
+}: {
+  title: string;
+  action?: { label: string; to?: string; href?: string };
+}) {
   return (
-    <div className="flex items-end justify-between gap-4 mb-8">
-      <h2 className={cn(typo.heading.lg, dark ? "text-foreground" : "text-[#0F0F0F]")}>{title}</h2>
-      {action}
+    <div className="mb-12 flex items-end justify-between gap-4">
+      <div>
+        <h2
+          className="text-4xl md:text-5xl uppercase tracking-wide text-gray-900"
+          style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+        >
+          {title}
+        </h2>
+        <div className="mt-3 h-1 w-12 rounded bg-[#C8211A]" />
+      </div>
+      {action && (
+        action.to ? (
+          <Link
+            to={action.to}
+            className="inline-flex items-center gap-1 text-sm tracking-wide text-[#C8211A] hover:text-[#8B1612] transition-base"
+            style={{ fontFamily: "Barlow", fontWeight: 600 }}
+          >
+            {action.label} <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        ) : (
+          <a
+            href={action.href ?? "#"}
+            className="inline-flex items-center gap-1 text-sm tracking-wide text-[#C8211A] hover:text-[#8B1612] transition-base"
+            style={{ fontFamily: "Barlow", fontWeight: 600 }}
+          >
+            {action.label} <ArrowRight className="h-3.5 w-3.5" />
+          </a>
+        )
+      )}
     </div>
   );
 }
@@ -155,53 +202,55 @@ function EventsSection() {
   const { t, lang } = useI18n();
   const { data: events = [] } = useEvents();
   return (
-    <section className="py-16 lg:py-20" style={{ background: "#F7F9FC" }}>
-      <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
-        <div className="flex items-end justify-between gap-4 mb-8">
-          <h2 className={cn(typo.heading.lg)} style={{ color: "#111827" }}>{t("home.events.title")}</h2>
-          <Link to="/about" className={cn(typo.button.md, "text-primary hover:text-primary-dark transition-base inline-flex items-center gap-1")}>
-            {t("home.events.viewAll")} <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-        <div className="grid gap-3.5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {events.slice(0, 6).map((e) => {
-            return (
-              <Link
-                key={e.id}
-                to="/events/$eventId"
-                params={{ eventId: e.id }}
-                // See EventList.tsx for why this cast is needed.
-                search={((prev: unknown) => prev) as never}
-                className="rounded-none bg-white border border-[#E5E5E5] flex flex-col group cursor-pointer hover:border-primary hover:shadow-[0_8px_24px_rgba(196,30,58,0.15)] hover:-translate-y-[3px] no-underline"
-                style={{ transition: "all 0.18s ease" }}
-              >
-                <article className="flex flex-col h-full">
-                  <div className="relative">
-                    <SafeImage
-                      src={e.image}
-                      alt={`${e.name} — Brazilian Jiu-Jitsu event`}
-                      fallbackLabel={e.name}
-                      source="event"
-                      wrapperClassName="h-40 bg-[#F7F9FC]"
-                    />
-                    <EventBadge badge={e.badge} />
+    <section className="bg-white py-20 md:py-28">
+      <div className="max-w-7xl mx-auto px-6">
+        <SectionHeader
+          title={t("home.events.title")}
+          action={{ label: t("home.events.viewAll"), to: "/events" }}
+        />
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {events.slice(0, 6).map((e) => (
+            <Link
+              key={e.id}
+              to="/events/$eventId"
+              params={{ eventId: e.id }}
+              search={((prev: unknown) => prev) as never}
+              className="group flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base no-underline overflow-hidden"
+            >
+              <article className="flex flex-col h-full">
+                <div className="relative">
+                  <SafeImage
+                    src={e.image}
+                    alt={`${e.name} — Brazilian Jiu-Jitsu event`}
+                    fallbackLabel={e.name}
+                    source="event"
+                    wrapperClassName="h-44 bg-gray-50"
+                  />
+                  <EventBadge badge={e.badge} />
+                </div>
+                <div className="p-5 space-y-3 flex-1 flex flex-col">
+                  <h3
+                    className="text-xl uppercase text-gray-900 leading-tight"
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                  >
+                    {e.name}
+                  </h3>
+                  <div className="flex items-center gap-1.5 text-sm text-gray-500" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
+                    <Calendar className="h-3.5 w-3.5" /> {formatDateShort(e.date, lang)}
                   </div>
-                  <div className="p-4 space-y-2.5 flex-1 flex flex-col">
-                    <h3 className={cn(typo.heading.sm, "text-[#0F0F0F] text-sm leading-tight")}>{e.name}</h3>
-                    <div className={cn(typo.body.xs, "flex items-center gap-1.5 text-[#6B7280]")}>
-                      <Calendar className="h-3.5 w-3.5" /> {formatDateShort(e.date, lang)}
-                    </div>
-                    <div className={cn(typo.body.xs, "flex items-center gap-1.5 text-[#6B7280]")}>
-                      <MapPin className="h-3.5 w-3.5" /> {e.location}
-                    </div>
-                    <span className={cn(typo.button.sm, "mt-auto w-full h-9 rounded-none bg-primary group-hover:bg-primary-dark text-white transition-base inline-flex items-center justify-center")}>
-                      {t("home.events.details")}
-                    </span>
+                  <div className="flex items-center gap-1.5 text-sm text-gray-500" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
+                    <MapPin className="h-3.5 w-3.5" /> {e.location}
                   </div>
-                </article>
-              </Link>
-            );
-          })}
+                  <span
+                    className="mt-auto w-full inline-flex items-center justify-center rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white text-sm uppercase tracking-widest py-3 transition-base"
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                  >
+                    {t("home.events.details")}
+                  </span>
+                </div>
+              </article>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
@@ -217,23 +266,22 @@ function NewsSection() {
   const titleKey = (id: string) => `news.item.${id}.title`;
 
   return (
-    <section className="py-16 lg:py-20 bg-[#F7F9FC]">
-      <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
-        <LocalSectionHeading
-          dark={false}
+    <section className="bg-[#F7F7F7] py-20 md:py-28">
+      <div className="max-w-7xl mx-auto px-6">
+        <SectionHeader
           title={t("home.news.title")}
-          action={
-            <Link to="/news" className={cn(typo.button.md, "text-primary hover:text-primary-dark transition-base inline-flex items-center gap-1")}>
-              {t("home.news.viewAll")} <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          }
+          action={{ label: t("home.news.viewAll"), to: "/news" }}
         />
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-3 gap-6">
           {items.map((n) => {
             const translatedCategory = t(categoryKey(n.category));
             const translatedTitle = t(titleKey(n.id));
             return (
-              <Link key={n.id} to="/news" className="group bg-white border border-[#E5E5E5] hover:border-primary transition-base flex flex-col">
+              <Link
+                key={n.id}
+                to="/news"
+                className="group flex flex-col bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md hover:border-gray-300 transition-base overflow-hidden"
+              >
                 <SafeImage
                   src={n.image}
                   alt={translatedTitle === titleKey(n.id) ? n.title : translatedTitle}
@@ -242,14 +290,20 @@ function NewsSection() {
                   wrapperClassName="h-[180px]"
                   className="transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="p-4 flex-1 flex flex-col gap-2">
-                  <span className={cn(typo.label.sm, "text-primary uppercase")}>
+                <div className="p-5 flex-1 flex flex-col gap-2">
+                  <span
+                    className="text-xs uppercase tracking-widest text-[#C8211A]"
+                    style={{ fontFamily: "Barlow", fontWeight: 700 }}
+                  >
                     {translatedCategory === categoryKey(n.category) ? n.category.toUpperCase() : translatedCategory}
                   </span>
-                  <h3 className={cn(typo.body.md, "text-[#111] font-semibold leading-[1.35]")}>
+                  <h3
+                    className="text-lg leading-tight text-gray-900"
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                  >
                     {translatedTitle === titleKey(n.id) ? n.title : translatedTitle}
                   </h3>
-                  <div className={cn(typo.body.xs, "text-[#9CA3AF] mt-auto")}>
+                  <div className="text-xs text-gray-400 mt-auto" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
                     {formatDateShort(n.date, lang)} · 4 {t("home.news.minRead")}
                   </div>
                 </div>
@@ -277,17 +331,45 @@ function RankingSection() {
   const genderLabel = t(`home.ranking.${gender}`);
 
   return (
-    <section className="py-16 lg:py-20 bg-background border-t border-b border-[#2A2A2A]">
-      <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
-        <LocalSectionHeading title={t("home.ranking.title")} />
+    <section className="bg-white py-20 md:py-28">
+      <div className="max-w-7xl mx-auto px-6">
+        <SectionHeader title={t("home.ranking.title")} />
 
-        <div className="flex flex-wrap gap-6 mb-6 border-b border-[#2A2A2A] pb-4">
-          <FilterGroup label={t("home.ranking.gender")} options={[{ v: "male", l: t("home.ranking.male") }, { v: "female", l: t("home.ranking.female") }]} value={gender} onChange={(v) => setGender(v as "male" | "female")} />
-          <FilterGroup label={t("home.ranking.belt")} options={[{ v: "black", l: t("home.ranking.beltBlack") }, { v: "brown", l: t("home.ranking.beltBrown") }, { v: "purple", l: t("home.ranking.beltPurple") }, { v: "blue", l: t("home.ranking.beltBlue") }, { v: "white", l: t("home.ranking.beltWhite") }]} value={belt} onChange={(v) => setBelt(v as typeof belt)} />
-          <FilterGroup label={t("home.ranking.category")} options={[{ v: "adult", l: t("home.ranking.adult") }, { v: "master", l: t("home.ranking.master") }, { v: "juvenile", l: t("home.ranking.juvenile") }]} value={category} onChange={(v) => setCategory(v as typeof category)} />
+        <div className="flex flex-wrap gap-8 mb-8 border-b border-gray-200 pb-5">
+          <FilterGroup
+            label={t("home.ranking.gender")}
+            options={[
+              { v: "male", l: t("home.ranking.male") },
+              { v: "female", l: t("home.ranking.female") },
+            ]}
+            value={gender}
+            onChange={(v) => setGender(v as "male" | "female")}
+          />
+          <FilterGroup
+            label={t("home.ranking.belt")}
+            options={[
+              { v: "black", l: t("home.ranking.beltBlack") },
+              { v: "brown", l: t("home.ranking.beltBrown") },
+              { v: "purple", l: t("home.ranking.beltPurple") },
+              { v: "blue", l: t("home.ranking.beltBlue") },
+              { v: "white", l: t("home.ranking.beltWhite") },
+            ]}
+            value={belt}
+            onChange={(v) => setBelt(v as typeof belt)}
+          />
+          <FilterGroup
+            label={t("home.ranking.category")}
+            options={[
+              { v: "adult", l: t("home.ranking.adult") },
+              { v: "master", l: t("home.ranking.master") },
+              { v: "juvenile", l: t("home.ranking.juvenile") },
+            ]}
+            value={category}
+            onChange={(v) => setCategory(v as typeof category)}
+          />
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-6">
           <RankingPanel title={`${genderLabel} · ${categoryLabel} · ${beltLabel}`} data={giData} mode="gi" t={t} />
           <RankingPanel title={`${genderLabel} · ${categoryLabel} · ${beltLabel}`} data={nogiData} mode="nogi" t={t} />
         </div>
@@ -296,20 +378,36 @@ function RankingSection() {
   );
 }
 
-function FilterGroup({ label, options, value, onChange }: { label: string; options: { v: string; l: string }[]; value: string; onChange: (v: string) => void }) {
+function FilterGroup({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: { v: string; l: string }[];
+  value: string;
+  onChange: (v: string) => void;
+}) {
   return (
     <div className="flex flex-col gap-2">
-      <span className={cn(typo.label.sm, "tracking-[0.15em]")}>{label}</span>
-      <div className="flex gap-3">
+      <span
+        className="text-xs uppercase tracking-widest text-gray-500"
+        style={{ fontFamily: "Barlow", fontWeight: 600 }}
+      >
+        {label}
+      </span>
+      <div className="flex gap-4">
         {options.map((o) => (
           <button
             key={o.v}
             onClick={() => onChange(o.v)}
-            className={cn(
-              typo.body.sm,
-              "pb-1 transition-base",
-              value === o.v ? "text-foreground font-bold border-b-2 border-gold" : "text-muted-foreground hover:text-foreground",
-            )}
+            className={`pb-1 text-sm transition-base ${
+              value === o.v
+                ? "text-[#C8211A] font-semibold border-b-2 border-[#C8211A]"
+                : "text-gray-500 hover:text-gray-900"
+            }`}
+            style={{ fontFamily: "Barlow", fontWeight: value === o.v ? 600 : 500 }}
           >
             {o.l}
           </button>
@@ -319,22 +417,38 @@ function FilterGroup({ label, options, value, onChange }: { label: string; optio
   );
 }
 
-function RankingPanel({ title, data, mode, t }: { title: string; data: { rank: number; athlete: string; country: string; academy: string; points: number }[]; mode: "gi" | "nogi"; t: (k: string) => string }) {
+function RankingPanel({
+  title,
+  data,
+  mode,
+  t,
+}: {
+  title: string;
+  data: { rank: number; athlete: string; country: string; academy: string; points: number }[];
+  mode: "gi" | "nogi";
+  t: (k: string) => string;
+}) {
   const [activeMode, setActiveMode] = useState<"gi" | "nogi">(mode);
   return (
-    <div className="bg-dark border border-[#2A2A2A]">
-      <div className="bg-navbar px-5 py-3.5 flex items-center justify-between border-b border-[#2A2A2A]">
-        <h3 className={cn(typo.heading.sm, "text-white text-[13px]")}>{title}</h3>
+    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="bg-gray-50 px-5 py-4 flex items-center justify-between border-b border-gray-200">
+        <h3
+          className="text-sm uppercase tracking-wide text-gray-900"
+          style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+        >
+          {title}
+        </h3>
         <div className="flex gap-1">
           {(["gi", "nogi"] as const).map((m) => (
             <button
               key={m}
               onClick={() => setActiveMode(m)}
-              className={cn(
-                typo.button.sm,
-                "px-3 py-1 transition-base",
-                activeMode === m ? "bg-primary text-white" : "border border-[#444] text-muted-foreground hover:text-white hover:border-[#666]",
-              )}
+              className={`px-3 py-1 text-xs uppercase tracking-widest rounded transition-base ${
+                activeMode === m
+                  ? "bg-[#C8211A] text-white"
+                  : "border border-gray-300 text-gray-500 hover:text-gray-900 hover:border-gray-400"
+              }`}
+              style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
             >
               {m === "gi" ? t("home.ranking.gi") : t("home.ranking.nogi")}
             </button>
@@ -344,20 +458,36 @@ function RankingPanel({ title, data, mode, t }: { title: string; data: { rank: n
 
       <div>
         {data.map((r) => (
-          <div key={r.rank} className="px-5 py-3.5 flex items-center gap-4 border-b border-[#2A2A2A] hover:bg-dark-2 transition-base">
-            <div className={cn(typo.heading.sm, "text-gold w-8 text-center text-[20px]")}>{r.rank}</div>
+          <div key={r.rank} className="px-5 py-4 flex items-center gap-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-base">
+            <div
+              className="w-8 text-center text-2xl text-gray-300"
+              style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
+            >
+              {r.rank}
+            </div>
             <div className="flex-1 min-w-0">
-              <div className={cn(typo.body.sm, "text-white font-semibold truncate")}>
+              <div className="text-sm text-gray-900 truncate" style={{ fontFamily: "Barlow", fontWeight: 600 }}>
                 {flagEmoji(r.country)} {r.athlete}
               </div>
-              <div className={cn(typo.body.xs, "text-[#888] truncate")}>{r.academy}</div>
+              <div className="text-sm text-gray-500 truncate" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
+                {r.academy}
+              </div>
             </div>
-            <div className={cn(typo.heading.sm, "text-gold text-right text-[18px]")}>{r.points.toLocaleString("en-US")}</div>
+            <div
+              className="text-xl text-[#C8A84B] text-right"
+              style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
+            >
+              {r.points.toLocaleString("en-US")}
+            </div>
           </div>
         ))}
       </div>
 
-      <Link to="/about" className={cn(typo.button.sm, "block bg-navbar text-center py-3 text-gold hover:text-gold-light transition-base")}>
+      <Link
+        to="/rankings"
+        className="block bg-gray-50 hover:bg-gray-100 text-center py-3 text-sm text-[#C8211A] transition-base"
+        style={{ fontFamily: "Barlow", fontWeight: 600 }}
+      >
         {t("home.ranking.viewFull")} →
       </Link>
     </div>
@@ -372,26 +502,54 @@ function flagEmoji(code: string) {
 function CTASection() {
   const { t } = useI18n();
   return (
-    <section className="bg-dark py-16">
-      <div className="max-w-[1280px] mx-auto px-4 lg:px-6 grid md:grid-cols-2 gap-5">
-        <Link to="/register/athlete" className="bg-dark-2 border border-[#333] p-7 transition-base hover:bg-dark-3 group" style={{ borderLeft: "4px solid #C41E3A" }}>
-          <div className="h-12 w-12 grid place-items-center bg-primary mb-5">
+    <section className="bg-[#F7F7F7] py-20 md:py-28">
+      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-6">
+        <Link
+          to="/register/athlete"
+          className="group bg-white border border-gray-200 rounded-xl p-8 transition-base hover:shadow-md"
+          style={{ borderLeft: "4px solid #C8211A" }}
+        >
+          <div className="h-12 w-12 grid place-items-center bg-[#C8211A] mb-5 rounded-lg">
             <Users className="h-6 w-6 text-white" />
           </div>
-          <h3 className={cn(typo.heading.md, "text-white mb-3")}>{t("home.cta.athleteTitle")}</h3>
-          <p className={cn(typo.body.sm, "text-[#999] mb-5 max-w-md")}>{t("home.cta.athleteDesc")}</p>
-          <span className={cn(typo.button.md, "inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 group-hover:bg-primary-dark transition-base")}>
+          <h3
+            className="text-2xl uppercase text-gray-900 mb-3"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+          >
+            {t("home.cta.athleteTitle")}
+          </h3>
+          <p className="text-base text-gray-600 mb-5 max-w-md leading-[1.7]" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
+            {t("home.cta.athleteDesc")}
+          </p>
+          <span
+            className="inline-flex items-center gap-2 bg-[#C8211A] group-hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest rounded-lg transition-base"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+          >
             {t("home.cta.athleteBtn")} <ArrowRight className="h-3.5 w-3.5" />
           </span>
         </Link>
 
-        <Link to="/register/academy" className="bg-dark-2 border border-[#333] p-7 transition-base hover:bg-dark-3 group" style={{ borderLeft: "4px solid #B8960C" }}>
-          <div className="h-12 w-12 grid place-items-center bg-gold mb-5">
-            <Building2 className="h-6 w-6 text-[#0F0F0F]" />
+        <Link
+          to="/register/academy"
+          className="group bg-white border border-gray-200 rounded-xl p-8 transition-base hover:shadow-md"
+          style={{ borderLeft: "4px solid #C8A84B" }}
+        >
+          <div className="h-12 w-12 grid place-items-center bg-[#C8A84B] mb-5 rounded-lg">
+            <Building2 className="h-6 w-6 text-white" />
           </div>
-          <h3 className={cn(typo.heading.md, "text-white mb-3")}>{t("home.cta.academyTitle")}</h3>
-          <p className={cn(typo.body.sm, "text-[#999] mb-5 max-w-md")}>{t("home.cta.academyDesc")}</p>
-          <span className={cn(typo.button.md, "inline-flex items-center gap-2 bg-gold text-[#0F0F0F] px-5 py-2.5 group-hover:bg-gold-light transition-base")}>
+          <h3
+            className="text-2xl uppercase text-gray-900 mb-3"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+          >
+            {t("home.cta.academyTitle")}
+          </h3>
+          <p className="text-base text-gray-600 mb-5 max-w-md leading-[1.7]" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
+            {t("home.cta.academyDesc")}
+          </p>
+          <span
+            className="inline-flex items-center gap-2 bg-[#C8A84B] group-hover:bg-[#D4B962] text-white px-5 py-2.5 text-sm uppercase tracking-widest rounded-lg transition-base"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+          >
             {t("home.cta.academyBtn")} <ArrowRight className="h-3.5 w-3.5" />
           </span>
         </Link>
@@ -408,30 +566,34 @@ function YouTubeSection() {
     { t: "Mestre Roberto — A Life on the Mat", img: youtubeMestreRobertoImg },
   ];
   return (
-    <section className="lg:py-20 bg-white" style={{ paddingTop: "80px", paddingBottom: "80px" }}>
-      <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
-        <LocalSectionHeading
-          dark={false}
+    <section className="bg-white py-20 md:py-28">
+      <div className="max-w-7xl mx-auto px-6">
+        <SectionHeader
           title={t("home.youtube.title")}
-          action={
-            <a href="#" className={cn(typo.button.md, "text-primary hover:text-primary-dark transition-base inline-flex items-center gap-1")}>
-              {t("home.youtube.visit")} <ArrowRight className="h-3.5 w-3.5" />
-            </a>
-          }
+          action={{ label: t("home.youtube.visit"), href: "#" }}
         />
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-3 gap-6">
           {videos.map((v, i) => (
-            <a key={i} href="#" className="group bg-white border border-[#E5E5E5] hover:border-primary transition-base">
-              <div className="relative aspect-video bg-[#1A1A1A] overflow-hidden">
-                <SafeImage src={v.img} alt={v.t} fallbackLabel={v.t} source="video" wrapperClassName="absolute inset-0" className="opacity-70 group-hover:opacity-90 transition-opacity" />
+            <a
+              key={i}
+              href="#"
+              className="group flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden"
+            >
+              <div className="relative aspect-video bg-gray-900 overflow-hidden">
+                <SafeImage src={v.img} alt={v.t} fallbackLabel={v.t} source="video" wrapperClassName="absolute inset-0" className="opacity-80 group-hover:opacity-100 transition-opacity" />
                 <div className="absolute inset-0 grid place-items-center">
-                  <span className="h-14 w-14 rounded-full bg-primary grid place-items-center group-hover:scale-110 transition-transform" style={{ borderRadius: "9999px" }}>
+                  <span className="h-14 w-14 rounded-full bg-[#C8211A] grid place-items-center group-hover:scale-110 transition-transform" style={{ borderRadius: "9999px" }}>
                     <Play className="h-6 w-6 text-white ml-0.5" fill="currentColor" />
                   </span>
                 </div>
               </div>
-              <div className="p-3">
-                <h4 className={cn(typo.body.sm, "text-[#111] font-semibold")}>{v.t}</h4>
+              <div className="p-5">
+                <h4
+                  className="text-base text-gray-900 leading-tight"
+                  style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                >
+                  {v.t}
+                </h4>
               </div>
             </a>
           ))}

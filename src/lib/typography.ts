@@ -1,62 +1,59 @@
 /**
  * Centralized typography tokens — single source of truth for fonts, weights,
- * sizes, casing, and tracking across the app.
+ * sizes, casing, and tracking across the app (BJJLF white theme).
  *
- * Rules enforced:
- *  - All headings/nav/buttons → Barlow Condensed (font-display)
- *  - All body/labels/meta    → DM Sans (font-sans, the default)
- *  - All section titles      → UPPERCASE + tracking-wider
- *  - All buttons & labels    → UPPERCASE + tracking-[0.08em]
- *
- * Usage:
- *   import { typo } from "@/lib/typography";
- *   <h2 className={typo.heading.lg}>...</h2>
- *   <button className={typo.button.md}>...</button>
- *   <span className={typo.label.sm}>...</span>
+ * Rules:
+ *  - Section titles (h2): Barlow Condensed 700, UPPERCASE, tracking-wide
+ *  - Card titles (h3):    Barlow Condensed 700, UPPERCASE
+ *  - News titles:         Barlow Condensed 700, NOT uppercase (use heading.news)
+ *  - Body copy:           Barlow 400, line-height 1.7, gray-600
+ *  - Labels/badges:       Barlow 600, UPPERCASE, tracking-widest
+ *  - Buttons:             Barlow Condensed 700, UPPERCASE, tracking-widest
+ *  - Hero h1:             Bebas Neue, tracking-wider
  */
 
 export const typo = {
-  /** Display/section/page headings — Barlow Condensed, uppercase, wider tracking. */
+  /** Display/section/page headings — Barlow Condensed, uppercase. */
   heading: {
-    /** Hero / page title (e.g. <h1>). */
-    xl: "font-display uppercase tracking-wider leading-[0.95] text-4xl md:text-5xl lg:text-6xl",
-    /** Major section title. */
-    lg: "font-display uppercase tracking-wider leading-[1.05] text-3xl md:text-4xl lg:text-5xl",
+    /** Hero — Bebas Neue, big, NOT uppercased (Bebas is naturally caps). */
+    xl: "font-display tracking-wider leading-[0.95] text-6xl md:text-7xl lg:text-8xl",
+    /** Major section title — text-4xl md:text-5xl. */
+    lg: "font-heading uppercase tracking-wide leading-[1.05] text-4xl md:text-5xl",
     /** In-section subtitle. */
-    md: "font-display uppercase tracking-wider leading-tight text-2xl md:text-3xl",
-    /** Card / list-item title. */
-    sm: "font-display uppercase tracking-wider leading-tight text-xl md:text-2xl",
+    md: "font-heading uppercase tracking-wide leading-tight text-2xl md:text-3xl",
+    /** Card / list-item title — uppercase. */
+    sm: "font-heading uppercase tracking-wide leading-tight text-xl",
+    /** News/article title — NOT uppercase, lighter sentence-case. */
+    news: "font-heading tracking-normal leading-tight text-lg",
     /** Tiny eyebrow / kicker label. */
-    kicker: "font-heading text-gold uppercase tracking-[0.2em] text-[11px] md:text-xs",
+    kicker: "font-sans uppercase tracking-[0.2em] text-[11px] md:text-xs font-bold",
   },
 
-  /** Body copy — DM Sans. */
+  /** Body copy — Barlow 400. */
   body: {
-    lg: "font-sans text-base md:text-lg leading-relaxed text-foreground/80",
-    md: "font-sans text-[15px] leading-relaxed text-foreground/70",
-    sm: "font-sans text-sm leading-relaxed text-foreground/70",
-    xs: "font-sans text-xs leading-normal text-foreground/60",
+    lg: "font-sans text-base md:text-lg leading-[1.7] text-gray-600",
+    md: "font-sans text-base leading-[1.7] text-gray-600",
+    sm: "font-sans text-sm leading-relaxed text-gray-500",
+    xs: "font-sans text-xs leading-normal text-gray-400",
   },
 
-  /** Button labels — Barlow Condensed, uppercase, tight tracking. */
+  /** Button labels — Barlow Condensed, uppercase, wide tracking. */
   button: {
-    lg: "font-heading uppercase tracking-[0.08em] font-bold text-sm md:text-base",
-    md: "font-heading uppercase tracking-[0.08em] font-bold text-xs md:text-sm",
-    sm: "font-heading uppercase tracking-[0.08em] font-bold text-[11px]",
+    lg: "font-heading uppercase tracking-widest font-bold text-sm md:text-base",
+    md: "font-heading uppercase tracking-widest font-bold text-sm",
+    sm: "font-heading uppercase tracking-widest font-bold text-xs",
   },
 
-  /** Form labels & meta tags — DM Sans, uppercase, micro tracking. */
+  /** Form labels & meta tags — Barlow 600, uppercase. */
   label: {
-    /** Standard form-field label. */
-    md: "font-sans uppercase tracking-[0.06em] text-[11px] font-semibold text-foreground/80",
-    /** Tiny meta (date · author, key/value, badges). */
-    sm: "font-sans uppercase tracking-[0.1em] text-[10px] font-semibold text-muted-foreground",
+    md: "font-sans uppercase tracking-widest text-xs font-semibold text-gray-700",
+    sm: "font-sans uppercase tracking-widest text-[10px] font-semibold text-gray-500",
   },
 
-  /** Nav links — Barlow Condensed, heaviest weight, uppercase. */
+  /** Nav links — Barlow 500, sentence case acceptable. */
   nav: {
-    link: "font-heading uppercase tracking-[0.08em] font-black text-sm",
-    sub: "font-heading uppercase tracking-[0.06em] font-semibold text-xs",
+    link: "font-sans tracking-wide font-medium text-sm",
+    sub: "font-sans tracking-wide font-medium text-xs",
   },
 
   /** Mono — for IDs, certificate numbers, code. */
