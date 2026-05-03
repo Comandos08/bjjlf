@@ -17,6 +17,7 @@ import { ACADEMIES, type Academy } from "@/data/academies";
 // Local pinned BJJ assets — DB rows that reference "/src/assets/<file>" are
 // rewritten to these bundled URLs so the browser actually resolves them.
 import heroBlackBeltUrl from "@/assets/hero-3-bjj.jpg";
+import heroMundialUrl from "@/assets/hero-1-mundial.jpg";
 import newsEuropeanOpenUrl from "@/assets/news-european-open.jpg";
 
 /* ---------- helpers ---------- */
