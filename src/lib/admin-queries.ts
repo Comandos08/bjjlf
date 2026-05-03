@@ -400,17 +400,17 @@ export function useRecalcRankings() {
  * YouTube
  * ============================================================ */
 export const useAdminYoutube = makeListHook<YoutubeRow>("youtube_videos", "youtube", { column: "display_order", asc: true });
-export const useUpsertYoutube = makeUpsertHook<YoutubeInsert, YoutubeUpdate>("youtube_videos", "youtube", "youtube");
-export const useDeleteYoutube = makeDeleteHook("youtube_videos", "youtube", "youtube");
-export const useToggleYoutubeField = makeFieldToggleHook<YoutubeUpdate>("youtube_videos", "youtube", "youtube");
+export const useUpsertYoutube = makeUpsertHook<YoutubeInsert, YoutubeUpdate>("youtube_videos", "youtube", "youtube_videos");
+export const useDeleteYoutube = makeDeleteHook("youtube_videos", "youtube", "youtube_videos");
+export const useToggleYoutubeField = makeFieldToggleHook<YoutubeUpdate>("youtube_videos", "youtube", "youtube_videos");
 
 /* ============================================================
  * Hero slides
  * ============================================================ */
 export const useAdminHero = makeListHook<HeroRow>("hero_slides", "hero", { column: "display_order", asc: true });
-export const useUpsertHero = makeUpsertHook<HeroInsert, HeroUpdate>("hero_slides", "hero", "hero-slides");
-export const useDeleteHero = makeDeleteHook("hero_slides", "hero", "hero-slides");
-export const useToggleHeroField = makeFieldToggleHook<HeroUpdate>("hero_slides", "hero", "hero-slides");
+export const useUpsertHero = makeUpsertHook<HeroInsert, HeroUpdate>("hero_slides", "hero", "hero_slides");
+export const useDeleteHero = makeDeleteHook("hero_slides", "hero", "hero_slides");
+export const useToggleHeroField = makeFieldToggleHook<HeroUpdate>("hero_slides", "hero", "hero_slides");
 
 /* ============================================================
  * Black belts

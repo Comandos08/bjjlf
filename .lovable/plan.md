@@ -1,63 +1,99 @@
-## Plan — Standalone /diploma-request page
+Fiz uma varredura somente leitura no código, logs do navegador, rede, servidor de preview e dados públicos. Encontrei alguns problemas claros que explicam por que “tudo fica sem atualização”.
 
-### 1. Dependencies & connections
-- Install `@paypal/react-paypal-js` via bun.
-- Link the existing **BJJLF - Diplomas** Google Sheets connector to the project so `LOVABLE_API_KEY` + `GOOGLE_SHEETS_API_KEY` are available server-side.
-- Confirm with user: the **Google Sheet ID** + **tab/sheet name** to append rows to (need this before wiring server function).
+Principais problemas encontrados:
 
-### 2. New files
-```
-src/routes/diploma-request.tsx            # TanStack route, head meta, no nav link
-src/pages/DiplomaRequest.tsx              # Page UI (form, language bar, price, PayPal, success)
-src/lib/diploma-i18n.ts                   # 5-language dictionary (PT/EN/ES/IT/DE) + belt names
-src/lib/diploma-pricing.ts                # belt → price group, currency table
-src/server/diploma.functions.ts           # createServerFn: append row to Google Sheet via gateway
-src/server/diploma.server.ts              # gateway helper (fetch wrapper for sheets values:append)
-```
-No existing files modified — route is not added to navbar/footer (TanStack auto-registers via routeTree.gen.ts only).
+1. O hero público não usa os slides do admin/banco
+   - Existe `useHeroSlides()` em `src/lib/queries.ts`, mas a Home usa um array fixo `SLIDES` em `src/pages/HomePage.tsx`.
+   - Resultado: alterar `/admin/hero` ou dados de `hero_slides` não muda o hero da página inicial.
+   - Confirmei no banco que há slides ativos com `/src/assets/hero-1-mundial.jpg` e `/src/assets/hero-3-bjj.jpg`, mas a Home ainda renderiza slides hardcoded/Unsplash.
 
-### 3. Page UI (BJJLF design system)
-- Black `#0F0F0F` bg, red `#C41E3A` accents, gold `#B8960C` highlights, **zero border-radius** everywhere.
-- Header: centered Logo (dragon + BJJLF), translated H1 in Barlow Condensed 900, fixed subtitle "Mestre Sergio Malibu · Faixa Coral 8° DAN".
-- Language bar: 5 flag-buttons (PT/EN/ES/IT/DE), default EN, active = gold bg + black text. Updates state via React context (no reload).
-- Price table: 4 rows (Preta / Marrom-Roxa / Azul-Verde / Até Laranja) × 3 currencies. Active currency column highlighted.
-- Currency toggle (BRL/EUR/USD) above PayPal section; selecting a belt + currency renders a live "selected belt swatch + name + price" card.
+2. A chave de cache do hero está errada no admin
+   - A query pública usa `queryKey: ["hero_slides"]`.
+   - O admin invalida `queryKey: ["hero-slides"]`.
+   - Mesmo se a Home usasse a query pública, salvar no admin não invalidaria a cache correta.
 
-### 4. Form (zero-radius, dark inputs `#111`, gold labels, red `*`)
-Sections in order:
-1. Contact — Email, WhatsApp, Affiliate Code
-2. Personal — First Name, Last Name, DOB, ID Doc Number, Sex (radio M/F), Father, Mother (optional)
-3. Jiu-Jitsu — Martial Art (locked = BJJ), Belt (full IBJJF list incl. Black 1°–7°, Coral 8°/9°, Red 9°), Currency
+3. O cache-busting do registry não é aplicado a imports diretos de assets
+   - `asset-registry.ts` aplica `?v=...` apenas quando a URL passa por `resolveAsset()` / `bustedAssetUrl()`.
+   - Mas vários componentes importam assets direto, por exemplo `heroBlackBeltUrl`, `dragon-logo.png`, `youtube...jpg`, `news-european-open.jpg`.
+   - Essas URLs não passam pelo registry, então podem não receber o token mostrado no painel.
 
-Validation with **zod**: required fields, email format, WhatsApp regex (+digits). On submit attempt with errors → red border on invalid fields, scroll to first. PayPal buttons disabled until form is valid (live recomputed).
+4. Muitas imagens ainda usam `<img>` direto ou `backgroundImage` direto
+   - Exemplos: `NewsPage`, páginas/admin previews, Navbar profile, logos, black belts, academies.
+   - Elas não entram no `ImageDebugPanel` e nem sempre recebem cache-busting.
+   - Isso faz parecer que o sistema “não detecta” ou “não atualiza”, porque só o que passa por `SafeImage` aparece no painel de debug de imagens.
 
-### 5. Belt list & pricing groups
-```
-Preta group:        Black 1°–7°, Coral 8°, Coral 9°, Red 9°    → 300 / 55 / 60
-Marrom/Roxa:        Brown, Purple                              → 250 / 45 / 50
-Azul/Verde:         Blue, Green                                → 200 / 35 / 40
-Até Laranja:        White, Grey, Yellow, Orange                → 150 / 25 / 30
-```
+5. A detecção “alterados desde último rebuild” depende de URL com hash, mas no dev as URLs locais são `/src/assets/...`
+   - No preview/dev, Vite costuma servir assets importados como `/src/assets/arquivo.jpg`, sem hash de conteúdo.
+   - O código compara `url.split('?')[0]`; se o caminho continua igual após substituir o arquivo, ele marca `0 changed`.
+   - Eu vi no console: `[asset-cache-bust] tracking 9 assets · 0 changed`.
+   - Ou seja: o painel lista assets, mas não consegue saber que o conteúdo mudou quando a URL base é igual.
 
-### 6. PayPal integration
-- `<PayPalScriptProvider options={{ clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID, currency, intent: "capture" }}>` re-keyed on currency change so SDK reloads with right currency.
-- `<PayPalButtons createOrder>`: amount = computed price, description `BJJLF Diploma Certificate — {beltName}`.
-- `onApprove`: call server fn `submitDiplomaRequest({ formData, paypalOrderId, amount, currency })`. On success → switch to success screen.
+6. O painel mostra só 9 assets porque só existem 9 arquivos em `src/assets/`
+   - Isso está correto para assets locais, mas não cobre imagens externas/URLs do banco.
+   - Várias imagens do site vêm de Unsplash, YouTube, perfis ou campos do banco; elas não fazem parte do registry de `src/assets/`.
 
-### 7. Server function → Google Sheets
-`submitDiplomaRequest` (createServerFn POST):
-- Validates payload with zod.
-- POSTs to `https://connector-gateway.lovable.dev/google_sheets/v4/spreadsheets/{SHEET_ID}/values/{TAB}!A:S:append?valueInputOption=USER_ENTERED` with headers `Authorization: Bearer ${LOVABLE_API_KEY}` + `X-Connection-Api-Key: ${GOOGLE_SHEETS_API_KEY}`.
-- Row columns (in order): Timestamp, First Name, Last Name, Email, WhatsApp, Affiliate Code, DOB, Sex, Document Number, Father, Mother, Belt, Martial Art, Language, Currency, Price, Payment Status="PAID", Diploma Created="NO", Diploma Sent="NO".
+7. Há uma imagem externa quebrando por ORB
+   - No navegador, uma imagem Unsplash de evento falhou com `net::ERR_BLOCKED_BY_ORB`.
+   - Isso não é diretamente cache do hero, mas contribui para a sensação de imagens inconsistentes.
 
-### 8. Success screen
-Replaces form on success: gold check icon, translated title + body confirming registration, payment received, team will process and send diploma by email.
+8. Há um erro recorrente no log do dev-server sobre `tailwind.config.ts`
+   - O servidor ainda sobe, mas o log mostra erro ao tentar gerar `tailwind.config.lov.json` porque `tailwind.config.ts` não existe.
+   - Como o projeto usa Tailwind v4 via `src/styles.css`, isso parece ruído/compatibilidade do tooling, mas vou confirmar e não mexer sem necessidade se não afetar o build.
 
-### 9. i18n
-Lightweight typed dictionary `diploma-i18n.ts` with 5 locales × all keys (page title, section titles, every field label, every belt name, currency labels, privacy note, success). Local React context — does not touch the existing `src/lib/i18n.tsx`.
+Plano de correção:
 
-### 10. Routing & SEO
-`createFileRoute("/diploma-request")` with `head()` providing title/description per default EN. Not added to Navbar/Footer. `robots: noindex` to keep it unlisted.
+1. Centralizar resolução/cache-busting de qualquer URL de imagem/asset
+   - Criar/ajustar helpers em `src/lib/asset-registry.ts` para:
+     - resolver `/src/assets/<arquivo>` e nomes simples via registry;
+     - aplicar token dev a URLs locais resolvidas;
+     - aplicar cache-busting também a URLs absolutas externas em preview, sem quebrar produção;
+     - expor metadados úteis para o painel: URL original, URL final, origem (`registry`, `external`, `unknown`).
 
-### Open question (need before implementation)
-What is the **Google Sheet ID** (the long string in the sheet URL) and the **tab name** where rows should be appended? I'll wire those into the server function once you share them.
+2. Fazer a Home usar `useHeroSlides()` de verdade
+   - Substituir o array fixo do hero por dados vindos de `hero_slides`.
+   - Manter fallback local/hardcoded se o banco estiver vazio ou indisponível.
+   - Preservar texto, botões, thumbs e rotação atual.
+   - Garantir que os caminhos `/src/assets/...` vindos do banco sejam resolvidos e cache-busted.
+
+3. Corrigir a invalidação do admin
+   - Trocar a chave pública do hero de `"hero-slides"` para `"hero_slides"` em `useUpsertHero`, `useDeleteHero` e `useToggleHeroField`.
+   - Revisar as outras chaves públicas para garantir que `events`, `news`, `academies`, `rankings`, `youtube_videos` invalidam exatamente as queries usadas.
+
+4. Aplicar cache-busting nos pontos que hoje usam `<img>` direto para conteúdo variável
+   - Converter áreas públicas importantes para `SafeImage` ou passar a URL por um helper/hook central:
+     - `NewsPage` featured e cards;
+     - previews/admin de hero, notícias, eventos, academias, black belts e YouTube;
+     - imagens de perfil/academia/black belt quando vierem do banco.
+   - Para logos/assets estáticos importados diretamente, aplicar `bustedAssetUrl()` ou `resolveAsset()` onde fizer sentido.
+
+5. Melhorar detecção de “arquivo alterado” no preview
+   - Como em dev a URL pode continuar `/src/assets/arquivo.jpg`, não dá para detectar mudança de conteúdo apenas comparando URL base.
+   - Vou alterar a estratégia para comparar uma assinatura mais confiável no navegador:
+     - manter URL final com token;
+     - quando possível, fazer `HEAD`/`fetch` leve dos assets locais e registrar `last-modified`, `etag`, `content-length` ou uma assinatura derivada;
+     - salvar snapshot no `localStorage`.
+   - Assim, trocar `hero-1-mundial.jpg` por outro arquivo com mesmo nome deve aparecer como alterado.
+
+6. Melhorar o painel de debug
+   - Mostrar separadamente:
+     - assets locais descobertos em `src/assets/`;
+     - URLs externas/cache-busted vistas em componentes públicos;
+     - assets alterados desde último snapshot;
+     - token aplicado;
+     - URL original e URL final.
+   - Adicionar botão para “recalcular snapshot”/“limpar snapshot” para testes rápidos.
+   - Fazer o painel indicar quando a detecção por conteúdo não conseguiu ler headers, em vez de simplesmente mostrar `0 changed`.
+
+7. Corrigir o problema de imagens externas inconsistentes
+   - Para a imagem que falha com ORB e outras Unsplash problemáticas, trocar por fallback local ou garantir que `SafeImage` mostre fallback limpo.
+   - Não vou substituir todo conteúdo visual sem sua aprovação, mas vou impedir que falhas silenciosas confundam o diagnóstico.
+
+8. Validação pós-implementação
+   - Verificar no preview:
+     - console com `[asset-cache-bust]` listando token e URLs finais;
+     - painel exibindo assets locais e URLs externas;
+     - hero vindo dos slides ativos do banco;
+     - ao salvar hero/notícia no admin, query pública invalidada corretamente;
+     - imagens públicas com token em preview e sem token em produção.
+
+Se você aprovar, implemento essas correções agora.
