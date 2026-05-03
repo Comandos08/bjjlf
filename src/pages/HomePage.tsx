@@ -134,13 +134,13 @@ function HeroSlider() {
             className="font-display tracking-wider leading-[0.95] text-white"
             style={{ fontSize: "clamp(48px, 7vw, 96px)", letterSpacing: "0.04em" }}
           >
-            {SLIDE_TEXT[slide.titleKey]?.[lang]}
+            {slideTitle}
           </h1>
           <p
             className="mt-4 max-w-xl text-lg leading-[1.6] text-gray-300"
             style={{ fontFamily: "Barlow", fontWeight: 400 }}
           >
-            {SLIDE_TEXT[slide.subKey]?.[lang]}
+            {slideSub}
           </p>
 
           <div className="mt-6 flex flex-wrap gap-2">
