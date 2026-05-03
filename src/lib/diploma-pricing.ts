@@ -71,9 +71,8 @@ export const BELT_SWATCH: Record<BeltKey, string> = {
   black4: "#0A0A0A",
   black5: "#0A0A0A",
   black6: "#0A0A0A",
-  black7: "#0A0A0A",
+  coral7: "#0A0A0A",
   coral8: "#C8211A",
-  coral9: "#C8211A",
   red9: "#9B1B14",
 };
 
@@ -92,9 +91,8 @@ export const ALL_BELTS: BeltKey[] = [
   "black4",
   "black5",
   "black6",
-  "black7",
+  "coral7",
   "coral8",
-  "coral9",
   "red9",
 ];
 
