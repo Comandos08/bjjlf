@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ImageDebugPanel } from "@/components/ImageDebugPanel";
 import { HeroAssetUpdateNotifier } from "@/components/HeroAssetUpdateNotifier";
+import { AssetCacheBustPanel } from "@/components/AssetCacheBustPanel";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { cleanupStaleCaches } from "@/lib/cache-cleanup";
 import { I18nProvider } from "@/lib/i18n";
@@ -115,6 +116,7 @@ function RootComponent() {
             )}
             {!isAdmin && <ImageDebugPanel />}
             <HeroAssetUpdateNotifier />
+            <AssetCacheBustPanel />
             <SonnerToaster position="bottom-right" richColors closeButton />
           </AthleteAuthProvider>
         </AdminAuthProvider>
