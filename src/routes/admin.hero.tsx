@@ -15,6 +15,7 @@ import {
 import {
   AdminButton, AdminToggle, AdminModal, AdminConfirm, BilingualTabs, AdminSection, EmptyState,
 } from "@/components/admin/AdminUI";
+import { bustAnyImageUrl } from "@/lib/asset-registry";
 
 export const Route = createFileRoute("/admin/hero")({
   head: () => ({ meta: [{ title: "Hero Slider — BJJLF Admin" }, { name: "robots", content: "noindex, nofollow" }] }),
@@ -44,7 +45,7 @@ function HeroAdminPage() {
         <div className="grid grid-cols-3 gap-4">
           {rows.map((r) => (
             <div key={r.id} className="border" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}>
-              <div className="h-40 bg-cover bg-center" style={{ backgroundImage: `url(${r.image_url})` }} />
+              <div className="h-40 bg-cover bg-center" style={{ backgroundImage: `url(${bustAnyImageUrl(r.image_url) ?? r.image_url})` }} />
               <div className="p-3 space-y-2">
                 <div className="text-[#1A1A1A] text-sm font-medium truncate">{r.title_pt}</div>
                 <div className="flex items-center justify-between text-xs text-[#999999]">
@@ -157,7 +158,7 @@ function HeroFormModal({ open, row, onClose }: { open: boolean; row: HeroRow | n
           <label className="admin-label">URL da imagem</label>
           <input className="admin-input w-full" {...register("image_url")} />
           {errors.image_url && <span className="text-xs text-[#C8211A]">{errors.image_url.message}</span>}
-          {img && <img src={img} alt="" className="mt-2 h-44 w-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
+          {img && <img src={bustAnyImageUrl(img) ?? img} alt="" className="mt-2 h-44 w-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div><label className="admin-label">URL botão principal</label><input className="admin-input w-full" {...register("cta_primary_url")} /></div>

@@ -20,6 +20,7 @@ import {
   AdminButton, AdminToggle, AdminBadge, AdminModal, AdminConfirm,
   BilingualTabs, AdminSection, AdminTableShell, AdminTH, AdminTD, EmptyState,
 } from "@/components/admin/AdminUI";
+import { bustAnyImageUrl } from "@/lib/asset-registry";
 
 export const Route = createFileRoute("/admin/news")({
   head: () => ({ meta: [{ title: "Notícias — BJJLF Admin" }, { name: "robots", content: "noindex, nofollow" }] }),
@@ -86,7 +87,7 @@ function NewsAdminPage() {
             {filtered.map((r) => (
               <tr key={r.id} className="hover:bg-[#F5F5F5]">
                 <AdminTD>
-                  {r.cover_image_url ? <img src={r.cover_image_url} alt="" className="h-10 w-10 object-cover" /> : <div className="h-10 w-10 bg-[#E5E5E5]" />}
+                  {r.cover_image_url ? <img src={bustAnyImageUrl(r.cover_image_url) ?? r.cover_image_url} alt="" className="h-10 w-10 object-cover" /> : <div className="h-10 w-10 bg-[#E5E5E5]" />}
                 </AdminTD>
                 <AdminTD className="text-[#1A1A1A] font-medium">{r.title_pt}</AdminTD>
                 <AdminTD><AdminBadge color="gold">{r.category}</AdminBadge></AdminTD>
@@ -280,7 +281,7 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
             <div>
               <label className="admin-label">URL da imagem de capa</label>
               <input className="admin-input w-full" {...register("cover_image_url")} />
-              {cover && <img src={cover} alt="" className="mt-2 h-28 w-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
+              {cover && <img src={bustAnyImageUrl(cover) ?? cover} alt="" className="mt-2 h-28 w-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
             </div>
 
             <div className="grid grid-cols-2 gap-3">
