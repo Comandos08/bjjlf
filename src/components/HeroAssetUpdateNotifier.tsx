@@ -1,25 +1,17 @@
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
-import heroBlackBeltUrl from "@/assets/hero-3-bjj.jpg";
-import heroMundialUrl from "@/assets/hero-1-mundial.jpg";
-import newsEuropeanOpenUrl from "@/assets/news-european-open.jpg";
+import { ASSET_REGISTRY } from "@/lib/asset-registry";
 
 /**
- * Dev-only watcher that tracks the bundled URL of each tracked asset.
- * When Vite re-bundles a file (e.g. you replaced `hero-1-mundial.jpg`),
- * the hashed URL changes — we detect that, log it, and pop a toast so
- * you can validate the new asset is live without guessing.
+ * Dev-only watcher that tracks the bundled URL of EVERY file under src/assets/.
+ * When Vite re-bundles a file (e.g. you replaced an image), the hashed URL
+ * changes — we detect that, log it, and pop a toast so you can validate the
+ * new asset is live without guessing.
  *
- * Tracked URLs are persisted in localStorage under `asset-versions:v1`
- * so reloads only fire a toast on real changes, not every mount.
+ * Tracked URLs are persisted in localStorage so reloads only fire a toast on
+ * real changes, not every mount.
  */
-const TRACKED: Record<string, string> = {
-  "hero-1-mundial.jpg": heroMundialUrl,
-  "hero-3-bjj.jpg": heroBlackBeltUrl,
-  "news-european-open.jpg": newsEuropeanOpenUrl,
-};
-
-const STORAGE_KEY = "asset-versions:v1";
+const STORAGE_KEY = "asset-versions:v2";
 
 export function HeroAssetUpdateNotifier() {
   const ranRef = useRef(false);
@@ -37,8 +29,12 @@ export function HeroAssetUpdateNotifier() {
     }
 
     const changed: string[] = [];
-    for (const [file, url] of Object.entries(TRACKED)) {
-      if (prev[file] && prev[file] !== url) {
+    for (const [file, url] of Object.entries(ASSET_REGISTRY)) {
+      // Strip the cache-bust query when comparing so a fresh session doesn't
+      // mark every asset as "changed" just because the timestamp rotated.
+      const stripped = url.split("?")[0];
+      const prevStripped = prev[file]?.split("?")[0];
+      if (prevStripped && prevStripped !== stripped) {
         changed.push(file);
         // eslint-disable-next-line no-console
         console.info(
@@ -49,18 +45,20 @@ export function HeroAssetUpdateNotifier() {
 
     if (changed.length > 0) {
       const ts = new Date().toLocaleTimeString();
+      const preview = changed.slice(0, 5).join(", ");
+      const more = changed.length > 5 ? ` (+${changed.length - 5})` : "";
       toast.success(
         changed.length === 1
           ? `Asset atualizado: ${changed[0]}`
           : `${changed.length} assets atualizados`,
         {
-          description: `Rebuild detectado às ${ts}\n${changed.join(", ")}`,
+          description: `Rebuild detectado às ${ts}\n${preview}${more}`,
           duration: 8000,
         },
       );
     }
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(TRACKED));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(ASSET_REGISTRY));
   }, []);
 
   return null;
