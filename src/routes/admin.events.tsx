@@ -34,6 +34,7 @@ import {
   AdminTD,
   EmptyState,
 } from "@/components/admin/AdminUI";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 
 export const Route = createFileRoute("/admin/events")({
   head: () => ({ meta: [{ title: "Eventos — BJJLF Admin" }, { name: "robots", content: "noindex, nofollow" }] }),
@@ -358,13 +359,13 @@ function EventFormModal({
           </div>
         </div>
 
-        <div>
-          <label className="admin-label">URL da imagem</label>
-          <input className="admin-input w-full" {...register("image_url")} placeholder="https://..." />
-          {imageUrl && (
-            <img src={imageUrl} alt="" className="mt-2 h-20 w-full object-cover border" style={{ borderColor: "#E5E5E5" }} />
-          )}
-        </div>
+        <ImageUploader
+          label="Imagem do evento"
+          folder="events"
+          value={imageUrl ?? ""}
+          onChange={(url) => setValue("image_url", url)}
+          previewClassName="mt-2 h-20 w-full object-cover border"
+        />
 
         <div>
           <label className="admin-label">URL de inscrição</label>
