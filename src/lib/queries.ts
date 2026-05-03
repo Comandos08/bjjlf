@@ -37,9 +37,28 @@ const ASSET_MAP: Record<string, string> = {
   "/src/assets/hero-1-mundial.jpg": heroMundialUrl,
   "/src/assets/news-european-open.jpg": newsEuropeanOpenUrl,
 };
+
+/**
+ * Cache-busting token appended to bundled asset URLs in dev/preview so the
+ * browser always fetches the latest file even if it cached an older version
+ * under the same hashed URL. In production builds Vite already hashes assets,
+ * so we keep URLs untouched there.
+ */
+const ASSET_CACHE_BUST =
+  import.meta.env.DEV || import.meta.env.MODE !== "production"
+    ? `v=${Date.now()}`
+    : "";
+
+function withCacheBust(url: string): string {
+  if (!ASSET_CACHE_BUST) return url;
+  return url + (url.includes("?") ? "&" : "?") + ASSET_CACHE_BUST;
+}
+
 function resolveAssetUrl(raw: string | null | undefined): string | null {
   if (!raw || raw.trim() === "") return null;
-  return ASSET_MAP[raw] ?? raw;
+  const mapped = ASSET_MAP[raw];
+  if (mapped) return withCacheBust(mapped);
+  return raw;
 }
 
 /** Coerce arbitrary DB strings to a known badge value (defaults to GI). */
