@@ -1,11 +1,12 @@
 import dragon from "@/assets/dragon-logo.png";
+import { bustAnyImageUrl } from "@/lib/asset-registry";
 
 export function Logo({ compact = false, light = true }: { compact?: boolean; light?: boolean }) {
   void light;
   return (
     <div className="flex items-center gap-3">
       <img
-        src={dragon}
+        src={bustAnyImageUrl(dragon) ?? dragon}
         alt="BJJLF dragon emblem"
         className={compact ? "h-10 w-10" : "h-12 w-12"}
         width={64}

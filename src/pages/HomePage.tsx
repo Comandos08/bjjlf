@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, Calendar, MapPin, ArrowRight, Users, Building2 } from "lucide-react";
 
-import { useEvents, useNews, useRankings } from "@/lib/queries";
+import { useEvents, useNews, useRankings, useHeroSlides } from "@/lib/queries";
 import { useI18n, formatDateShort } from "@/lib/i18n";
 import { SafeImage } from "@/components/SafeImage";
 import { EventBadge } from "@/components/EventBadge";
 import { HomeStats } from "@/components/HomeStats";
 import { LazyYouTube } from "@/components/LazyYouTube";
+import { bustAnyImageUrl } from "@/lib/asset-registry";
 // FIX A + FIX C: pin BJJ images locally so the Unsplash CDN can't swap them
 // for unrelated photos (tennis, gym, photographer) the way it has been doing
 // when the same photo ID is requested at different sizes.
@@ -15,14 +16,18 @@ import heroBlackBeltUrl from "@/assets/hero-3-bjj.jpg";
 import youtubeBlackBeltImg from "@/assets/youtube-black-belt-promotions.jpg";
 import youtubeMestreRobertoImg from "@/assets/youtube-mestre-roberto.jpg";
 
-const SLIDES: ReadonlyArray<{
+type Slide = {
   image: string;
   thumb: string;
-  titleKey: string;
-  subKey: string;
+  titleKey?: string;
+  subKey?: string;
+  titleText?: { pt: string; en: string };
+  subText?: { pt: string; en: string };
   badge: string;
   event_id?: string;
-}> = [
+};
+
+const FALLBACK_SLIDES: ReadonlyArray<Slide> = [
   {
     image: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=1440&h=600",
     thumb: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=80&h=50",
@@ -59,14 +64,32 @@ const SLIDE_TEXT: Record<string, { pt: string; en: string }> = {
 
 function HeroSlider() {
   const { lang, t } = useI18n();
+  const { data: dbSlides = [] } = useHeroSlides();
+
+  const SLIDES: ReadonlyArray<Slide> = dbSlides.length > 0
+    ? dbSlides.map((s): Slide => ({
+        image: bustAnyImageUrl(s.image) ?? s.image,
+        thumb: bustAnyImageUrl(s.thumb) ?? s.thumb,
+        titleText: { pt: s.titlePt, en: s.titleEn },
+        subText: { pt: s.subPt, en: s.subEn },
+        badge: s.badge,
+      }))
+    : FALLBACK_SLIDES;
+
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   useEffect(() => {
-    if (paused) return;
+    if (paused || SLIDES.length === 0) return;
     const id = setInterval(() => setI((p) => (p + 1) % SLIDES.length), 6000);
     return () => clearInterval(id);
-  }, [paused]);
-  const slide = SLIDES[i];
+  }, [paused, SLIDES.length]);
+  // Keep index in range when slides list shrinks/grows.
+  useEffect(() => { if (i >= SLIDES.length) setI(0); }, [i, SLIDES.length]);
+  const slide = SLIDES[i] ?? SLIDES[0];
+  if (!slide) return null;
+
+  const slideTitle = slide.titleText?.[lang] ?? (slide.titleKey ? SLIDE_TEXT[slide.titleKey]?.[lang] : "") ?? "";
+  const slideSub = slide.subText?.[lang] ?? (slide.subKey ? SLIDE_TEXT[slide.subKey]?.[lang] : "") ?? "";
 
   return (
     <section
@@ -111,13 +134,13 @@ function HeroSlider() {
             className="font-display tracking-wider leading-[0.95] text-white"
             style={{ fontSize: "clamp(48px, 7vw, 96px)", letterSpacing: "0.04em" }}
           >
-            {SLIDE_TEXT[slide.titleKey]?.[lang]}
+            {slideTitle}
           </h1>
           <p
             className="mt-4 max-w-xl text-lg leading-[1.6] text-gray-300"
             style={{ fontFamily: "Barlow", fontWeight: 400 }}
           >
-            {SLIDE_TEXT[slide.subKey]?.[lang]}
+            {slideSub}
           </p>
 
           <div className="mt-6 flex flex-wrap gap-2">
