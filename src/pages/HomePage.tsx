@@ -100,7 +100,15 @@ function HeroSlider() {
     >
       {SLIDES.map((s, idx) => (
         <div key={idx} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: idx === i ? 1 : 0 }}>
-          <SafeImage src={s.image} alt={s.badge} fallbackLabel={s.badge} source="hero" wrapperClassName="absolute inset-0" />
+          <SafeImage
+            src={s.image}
+            alt={s.badge}
+            fallbackLabel={s.badge}
+            source="hero"
+            wrapperClassName="absolute inset-0"
+            className="!object-contain"
+            style={{ objectPosition: "center" }}
+          />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3) 100%)" }} />
         </div>
       ))}
