@@ -6,6 +6,7 @@ import { type NewsItem } from "@/data/news";
 import { useNews } from "@/lib/queries";
 import { useI18n, formatDateShort, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { bustAnyImageUrl } from "@/lib/asset-registry";
 
 const CATEGORIES = ["All", "Tournaments", "Promotions", "Athletes", "Federation"] as const;
 
@@ -89,7 +90,7 @@ export function NewsPage() {
             <article className="grid lg:grid-cols-[3fr,2fr] gap-0 items-stretch bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden">
               <div className="relative aspect-[16/10] lg:aspect-auto overflow-hidden bg-gray-100">
                 <img
-                  src={featured.image}
+                  src={bustAnyImageUrl(featured.image) ?? featured.image}
                   alt={translateTitle(featured)}
                   className="absolute inset-0 h-full w-full object-cover"
                   loading="lazy"
@@ -243,7 +244,7 @@ function NewsCard({
     >
       <div className="relative aspect-video overflow-hidden bg-gray-100">
         <img
-          src={n.image}
+          src={bustAnyImageUrl(n.image) ?? n.image}
           alt={title}
           loading="lazy"
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
