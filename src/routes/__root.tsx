@@ -5,6 +5,8 @@ import appCss from "../styles.css?url";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ImageDebugPanel } from "@/components/ImageDebugPanel";
+import { HeroAssetUpdateNotifier } from "@/components/HeroAssetUpdateNotifier";
+import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { cleanupStaleCaches } from "@/lib/cache-cleanup";
 import { I18nProvider } from "@/lib/i18n";
 import { AdminAuthProvider } from "@/lib/admin-auth";
@@ -112,6 +114,8 @@ function RootComponent() {
               </div>
             )}
             {!isAdmin && <ImageDebugPanel />}
+            <HeroAssetUpdateNotifier />
+            <SonnerToaster position="bottom-right" richColors closeButton />
           </AthleteAuthProvider>
         </AdminAuthProvider>
       </I18nProvider>
