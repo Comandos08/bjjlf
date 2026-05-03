@@ -14,11 +14,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { EVENTS, RANKINGS, type Event, type EventTypeBadge, type Ranked } from "@/data/events";
 import { NEWS, type NewsItem } from "@/data/news";
 import { ACADEMIES, type Academy } from "@/data/academies";
-// Local pinned BJJ assets — DB rows that reference "/src/assets/<file>" are
-// rewritten to these bundled URLs so the browser actually resolves them.
-import heroBlackBeltUrl from "@/assets/hero-3-bjj.jpg";
-import heroMundialUrl from "@/assets/hero-1-mundial.jpg";
-import newsEuropeanOpenUrl from "@/assets/news-european-open.jpg";
+// All assets under src/assets/ are auto-discovered and cache-busted in dev
+// via the central registry. DB rows that store "/src/assets/<file>" paths
+// are rewritten to the bundled URL on the fly.
+import { resolveAsset } from "@/lib/asset-registry";
 
 /* ---------- helpers ---------- */
 
@@ -27,38 +26,8 @@ const FALLBACK_EVENT_IMG =
 const FALLBACK_NEWS_IMG =
   "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?auto=format&fit=crop&w=600&h=350";
 
-/**
- * Maps DB-stored `/src/assets/<file>` paths to the bundled Vite asset URL.
- * Returns the input unchanged for absolute URLs (http(s)://...).
- * Returns `null` for empty/missing values so callers can apply fallbacks.
- */
-const ASSET_MAP: Record<string, string> = {
-  "/src/assets/hero-3-bjj.jpg": heroBlackBeltUrl,
-  "/src/assets/hero-1-mundial.jpg": heroMundialUrl,
-  "/src/assets/news-european-open.jpg": newsEuropeanOpenUrl,
-};
-
-/**
- * Cache-busting token appended to bundled asset URLs in dev/preview so the
- * browser always fetches the latest file even if it cached an older version
- * under the same hashed URL. In production builds Vite already hashes assets,
- * so we keep URLs untouched there.
- */
-const ASSET_CACHE_BUST =
-  import.meta.env.DEV || import.meta.env.MODE !== "production"
-    ? `v=${Date.now()}`
-    : "";
-
-function withCacheBust(url: string): string {
-  if (!ASSET_CACHE_BUST) return url;
-  return url + (url.includes("?") ? "&" : "?") + ASSET_CACHE_BUST;
-}
-
 function resolveAssetUrl(raw: string | null | undefined): string | null {
-  if (!raw || raw.trim() === "") return null;
-  const mapped = ASSET_MAP[raw];
-  if (mapped) return withCacheBust(mapped);
-  return raw;
+  return resolveAsset(raw);
 }
 
 /** Coerce arbitrary DB strings to a known badge value (defaults to GI). */
