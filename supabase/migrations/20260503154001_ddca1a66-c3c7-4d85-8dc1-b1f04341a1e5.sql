@@ -1,0 +1,1 @@
+UPDATE public.hero_slides SET image_url = '/src/assets/hero-1-mundial.jpg' WHERE id = '922dccf8-f432-40d8-800c-dffab67469f2';
