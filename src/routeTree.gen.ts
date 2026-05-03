@@ -22,6 +22,7 @@ import { Route as MyCompetitionsRouteImport } from './routes/my-competitions'
 import { Route as MyCardRouteImport } from './routes/my-card'
 import { Route as GraduatesRouteImport } from './routes/graduates'
 import { Route as EventsRouteImport } from './routes/events'
+import { Route as DiplomaRequestRouteImport } from './routes/diploma-request'
 import { Route as ChampionshipsRouteImport } from './routes/championships'
 import { Route as BlackBeltsRouteImport } from './routes/black-belts'
 import { Route as AthletesRouteImport } from './routes/athletes'
@@ -121,6 +122,11 @@ const GraduatesRoute = GraduatesRouteImport.update({
 const EventsRoute = EventsRouteImport.update({
   id: '/events',
   path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiplomaRequestRoute = DiplomaRequestRouteImport.update({
+  id: '/diploma-request',
+  path: '/diploma-request',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChampionshipsRoute = ChampionshipsRouteImport.update({
@@ -308,6 +314,7 @@ export interface FileRoutesByFullPath {
   '/athletes': typeof AthletesRoute
   '/black-belts': typeof BlackBeltsRouteWithChildren
   '/championships': typeof ChampionshipsRoute
+  '/diploma-request': typeof DiplomaRequestRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/my-card': typeof MyCardRoute
@@ -357,6 +364,7 @@ export interface FileRoutesByTo {
   '/athletes': typeof AthletesRoute
   '/black-belts': typeof BlackBeltsRouteWithChildren
   '/championships': typeof ChampionshipsRoute
+  '/diploma-request': typeof DiplomaRequestRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/my-card': typeof MyCardRoute
@@ -408,6 +416,7 @@ export interface FileRoutesById {
   '/athletes': typeof AthletesRoute
   '/black-belts': typeof BlackBeltsRouteWithChildren
   '/championships': typeof ChampionshipsRoute
+  '/diploma-request': typeof DiplomaRequestRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/my-card': typeof MyCardRoute
@@ -460,6 +469,7 @@ export interface FileRouteTypes {
     | '/athletes'
     | '/black-belts'
     | '/championships'
+    | '/diploma-request'
     | '/events'
     | '/graduates'
     | '/my-card'
@@ -509,6 +519,7 @@ export interface FileRouteTypes {
     | '/athletes'
     | '/black-belts'
     | '/championships'
+    | '/diploma-request'
     | '/events'
     | '/graduates'
     | '/my-card'
@@ -559,6 +570,7 @@ export interface FileRouteTypes {
     | '/athletes'
     | '/black-belts'
     | '/championships'
+    | '/diploma-request'
     | '/events'
     | '/graduates'
     | '/my-card'
@@ -610,6 +622,7 @@ export interface RootRouteChildren {
   AthletesRoute: typeof AthletesRoute
   BlackBeltsRoute: typeof BlackBeltsRouteWithChildren
   ChampionshipsRoute: typeof ChampionshipsRoute
+  DiplomaRequestRoute: typeof DiplomaRequestRoute
   EventsRoute: typeof EventsRouteWithChildren
   GraduatesRoute: typeof GraduatesRouteWithChildren
   MyCardRoute: typeof MyCardRoute
@@ -727,6 +740,13 @@ declare module '@tanstack/react-router' {
       path: '/events'
       fullPath: '/events'
       preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/diploma-request': {
+      id: '/diploma-request'
+      path: '/diploma-request'
+      fullPath: '/diploma-request'
+      preLoaderRoute: typeof DiplomaRequestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/championships': {
@@ -1056,6 +1076,7 @@ const rootRouteChildren: RootRouteChildren = {
   AthletesRoute: AthletesRoute,
   BlackBeltsRoute: BlackBeltsRouteWithChildren,
   ChampionshipsRoute: ChampionshipsRoute,
+  DiplomaRequestRoute: DiplomaRequestRoute,
   EventsRoute: EventsRouteWithChildren,
   GraduatesRoute: GraduatesRouteWithChildren,
   MyCardRoute: MyCardRoute,
