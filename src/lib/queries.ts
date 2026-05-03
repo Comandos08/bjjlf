@@ -34,6 +34,7 @@ const FALLBACK_NEWS_IMG =
  */
 const ASSET_MAP: Record<string, string> = {
   "/src/assets/hero-3-bjj.jpg": heroBlackBeltUrl,
+  "/src/assets/hero-1-mundial.jpg": heroMundialUrl,
   "/src/assets/news-european-open.jpg": newsEuropeanOpenUrl,
 };
 function resolveAssetUrl(raw: string | null | undefined): string | null {
