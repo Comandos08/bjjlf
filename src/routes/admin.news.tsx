@@ -21,6 +21,7 @@ import {
   BilingualTabs, AdminSection, AdminTableShell, AdminTH, AdminTD, EmptyState,
 } from "@/components/admin/AdminUI";
 import { bustAnyImageUrl } from "@/lib/asset-registry";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 
 export const Route = createFileRoute("/admin/news")({
   head: () => ({ meta: [{ title: "Notícias — BJJLF Admin" }, { name: "robots", content: "noindex, nofollow" }] }),
@@ -278,11 +279,13 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
               </div>
             </div>
 
-            <div>
-              <label className="admin-label">URL da imagem de capa</label>
-              <input className="admin-input w-full" {...register("cover_image_url")} />
-              {cover && <img src={bustAnyImageUrl(cover) ?? cover} alt="" className="mt-2 h-28 w-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
-            </div>
+            <ImageUploader
+              label="Imagem de capa"
+              folder="news"
+              value={cover ?? ""}
+              onChange={(url) => setValue("cover_image_url", url)}
+              previewClassName="mt-2 h-28 w-full object-cover border"
+            />
 
             <div className="grid grid-cols-2 gap-3">
               <div>
