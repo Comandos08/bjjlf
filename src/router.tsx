@@ -62,9 +62,10 @@ export const getRouter = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        // Public content rarely changes. Keep it for 1 minute before
-        // background-refetching. Tune per-query when needed.
-        staleTime: 60_000,
+        // Always re-validate so admin deletes/edits surface immediately.
+        // gcTime keeps cached data instantly available during background refetch.
+        staleTime: 0,
+        gcTime: 5 * 60_000,
         retry: 1,
       },
     },
