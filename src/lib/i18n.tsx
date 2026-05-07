@@ -336,6 +336,31 @@ const PT: Dict = {
   "academies.cta.subtitle": "Afilie sua academia à BJJLF e tenha seus alunos reconhecidos oficialmente pela federação.",
   "academies.cta.btn": "AFILIAR MINHA ACADEMIA →",
   "academies.nav.affiliated": "Academias Afiliadas",
+
+  // Rankings (public page)
+  "rankings.title": "Rankings Oficiais",
+  "rankings.subtitle": "Classificação oficial de atletas BJJLF por temporada, faixa, gênero e modalidade.",
+  "rankings.filters.season": "Temporada",
+  "rankings.filters.belt": "Faixa",
+  "rankings.filters.gender": "Gênero",
+  "rankings.filters.modality": "Modalidade",
+  "rankings.filters.all": "Todas",
+  "rankings.empty": "Nenhum resultado encontrado",
+  "rankings.col.position": "Posição",
+  "rankings.col.athlete": "Atleta",
+  "rankings.col.belt": "Faixa",
+  "rankings.col.academy": "Academia",
+  "rankings.col.country": "País",
+  "rankings.col.points": "Pontos",
+  "rankings.belt.white": "Branca",
+  "rankings.belt.blue": "Azul",
+  "rankings.belt.purple": "Roxa",
+  "rankings.belt.brown": "Marrom",
+  "rankings.belt.black": "Preta",
+  "rankings.gender.male": "Masculino",
+  "rankings.gender.female": "Feminino",
+  "rankings.modality.gi": "Gi",
+  "rankings.modality.nogi": "No-Gi",
 };
 
 const EN: Dict = {
