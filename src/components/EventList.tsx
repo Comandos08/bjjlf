@@ -59,7 +59,7 @@ const ALL_BADGES: ReadonlyArray<EventTypeBadge> = [
 ];
 
 export function EventList({
-  events = DEFAULT_EVENTS,
+  events = [],
   selectedBadges,
   onChange,
   availableBadges,
