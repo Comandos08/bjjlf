@@ -364,6 +364,8 @@ const PT: Dict = {
   "athletes.sort.label": "Ordenar por",
   "athletes.sort.nameAsc": "Nome (A–Z)",
   "athletes.sort.beltDegree": "Grau de Faixa",
+  "athletes.sort.beltAsc": "Faixa (menor → maior)",
+  "athletes.sort.beltDesc": "Faixa (maior → menor)",
   "athletes.empty": "Nenhum atleta cadastrado ainda.",
   "athletes.emptyFiltered": "Nenhum atleta encontrado com esses filtros.",
   "athletes.clearFilters": "Limpar filtros",
