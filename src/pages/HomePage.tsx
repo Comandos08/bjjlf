@@ -705,21 +705,13 @@ function YouTubeSection() {
   const { data: dbVideos } = useYouTubeVideos();
   const [sortBy, setSortBy] = useState<YouTubeSortKey>("featured");
 
-  const fallbackVideos = [
-    { id: "dQw4w9WgXcQ", t: "World Championship 2024 — Best Submissions", img: undefined as string | undefined, displayOrder: 0, createdAt: "" },
-    { id: "9bZkp7q19f0", t: "Black Belt Promotions Ceremony", img: youtubeBlackBeltImg, displayOrder: 1, createdAt: "" },
-    { id: "kJQP7kiw5Fk", t: "Mestre Roberto — A Life on the Mat", img: youtubeMestreRobertoImg, displayOrder: 2, createdAt: "" },
-  ];
-
-  const normalized = (dbVideos && dbVideos.length > 0)
-    ? dbVideos.map((v) => ({
-        id: v.youtubeId,
-        t: lang === "pt" ? v.titlePt : v.titleEn,
-        img: v.image,
-        displayOrder: v.displayOrder,
-        createdAt: v.createdAt,
-      }))
-    : fallbackVideos;
+  const normalized = (dbVideos ?? []).map((v) => ({
+    id: v.youtubeId,
+    t: lang === "pt" ? v.titlePt : v.titleEn,
+    img: v.image,
+    displayOrder: v.displayOrder,
+    createdAt: v.createdAt,
+  }));
 
   const sorted = [...normalized].sort((a, b) => {
     if (sortBy === "featured") return a.displayOrder - b.displayOrder;
