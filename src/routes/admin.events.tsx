@@ -255,6 +255,20 @@ function EventsAdminPage() {
           });
         }}
       />
+
+      <AdminConfirm
+        open={confirmDeactivateAll}
+        message={`Desativar todos os ${activeCount} eventos ativos? Eles não aparecerão mais em /events até serem reativados.`}
+        confirmLabel="Desativar todos"
+        loading={deactivateAll.isPending}
+        onCancel={() => setConfirmDeactivateAll(false)}
+        onConfirm={() => {
+          deactivateAll.mutate(undefined, {
+            onSuccess: (n) => { toast.success(`${n} evento(s) desativado(s).`); setConfirmDeactivateAll(false); },
+            onError: (e) => toast.error(`Erro: ${(e as Error).message}`),
+          });
+        }}
+      />
     </AdminSection>
   );
 }
