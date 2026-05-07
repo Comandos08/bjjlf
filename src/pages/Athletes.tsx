@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Search, Users, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
-import { BELT_DEFS, ADULT_BELT_NAMES, getBeltDef, type BeltName } from "@/lib/belts-ibjjf";
+import { BELT_DEFS, BELT_NAMES, getBeltDef, type BeltName } from "@/lib/belts-ibjjf";
 
 type AthleteRow = {
   id: string;
@@ -18,7 +18,7 @@ type AthleteRow = {
   status: string;
 };
 
-type SortKey = "name_asc" | "belt_degree";
+type SortKey = "name_asc" | "belt_asc" | "belt_desc";
 
 const BELT_RANK: Record<string, number> = Object.fromEntries(
   BELT_DEFS.map((b, i) => [b.name, i]),
@@ -140,10 +140,15 @@ export function AthletesPage() {
       return true;
     });
     out.sort((a, b) => {
-      if (sort === "belt_degree") {
-        const ra = BELT_RANK[normalizeBelt(a.belt) ?? "branca"] ?? 0;
-        const rb = BELT_RANK[normalizeBelt(b.belt) ?? "branca"] ?? 0;
-        if (rb !== ra) return rb - ra;
+      if (sort === "belt_asc" || sort === "belt_desc") {
+        const ka = normalizeBelt(a.belt);
+        const kb = normalizeBelt(b.belt);
+        const ra = ka ? BELT_RANK[ka] ?? 0 : 0;
+        const rb = kb ? BELT_RANK[kb] ?? 0 : 0;
+        if (ra !== rb) return sort === "belt_asc" ? ra - rb : rb - ra;
+        const da = a.degree ?? 0;
+        const db = b.degree ?? 0;
+        if (da !== db) return sort === "belt_asc" ? da - db : db - da;
       }
       return a.full_name.localeCompare(b.full_name, "pt-BR");
     });
@@ -220,7 +225,7 @@ export function AthletesPage() {
             style={{ fontFamily: "Barlow", borderRadius: 0 }}
           >
             <option value="">{t("athletes.filters.allBelts")}</option>
-            {ADULT_BELT_NAMES.map((b) => (
+            {BELT_NAMES.map((b: BeltName) => (
               <option key={b} value={b}>
                 {lang === "en" ? (BELT_LABEL_EN[b] ?? b) : b}
               </option>
@@ -247,7 +252,8 @@ export function AthletesPage() {
             style={{ fontFamily: "Barlow", borderRadius: 0 }}
           >
             <option value="name_asc">{t("athletes.sort.nameAsc")}</option>
-            <option value="belt_degree">{t("athletes.sort.beltDegree")}</option>
+            <option value="belt_asc">{t("athletes.sort.beltAsc")}</option>
+            <option value="belt_desc">{t("athletes.sort.beltDesc")}</option>
           </select>
         </div>
 
