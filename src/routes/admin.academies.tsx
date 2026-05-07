@@ -223,9 +223,13 @@ function AcademyFormModal({ open, row, onClose }: { open: boolean; row: AcademyR
           </div>
         </div>
         <div>
-          <label className="admin-label">URL do logo</label>
-          <input className="admin-input w-full" {...register("logo_url")} />
-          {logo && <img src={logo} alt="" className="mt-2 h-16 w-16 rounded-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
+          <ImageUploader
+            label="Logo"
+            folder="academies"
+            value={logo ?? ""}
+            onChange={(url) => setValue("logo_url", url, { shouldValidate: true })}
+            previewClassName="mt-2 h-16 w-16 rounded-full object-cover border"
+          />
         </div>
         <div className="grid grid-cols-3 gap-3">
           <div><label className="admin-label">Afiliada desde</label><input type="date" className="admin-input w-full" {...register("affiliated_since")} /></div>
