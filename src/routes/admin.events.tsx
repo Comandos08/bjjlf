@@ -201,6 +201,7 @@ function EventsAdminPage() {
                 <AdminTH>Local</AdminTH>
                 <AdminTH>Tipo</AdminTH>
                 <AdminTH>Status</AdminTH>
+                <AdminTH>Ativo</AdminTH>
                 <AdminTH>Home</AdminTH>
                 <AdminTH className="text-right">Ações</AdminTH>
               </tr>
