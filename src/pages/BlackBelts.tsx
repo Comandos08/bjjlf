@@ -319,7 +319,7 @@ export function BlackBeltsPage() {
                           className="inline-flex items-center bg-[#C8211A] text-white px-2.5 py-1 rounded text-xs uppercase tracking-widest shadow-md"
                           style={{ fontFamily: "Barlow", fontWeight: 700, letterSpacing: "0.1em" }}
                         >
-                          {bb.belt_degree > 0 ? `${bb.belt_degree}º Dan` : BELT_LABEL[bb.belt_type] ?? bb.belt_type}
+                          {beltLabelFor(bb.belt_type, bb.belt_degree)}
                         </span>
                       </div>
                       {/* Bandeira */}
