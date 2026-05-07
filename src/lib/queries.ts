@@ -56,9 +56,12 @@ export function useEvents() {
   return useQuery<Event[]>({
     queryKey: ["events"],
     queryFn: async () => {
+      const today = new Date().toISOString().slice(0, 10);
       const { data, error } = await supabase
         .from("events")
         .select("*")
+        .eq("status", "upcoming")
+        .gte("event_date", today)
         .order("is_featured", { ascending: false })
         .order("event_date", { ascending: true });
 
