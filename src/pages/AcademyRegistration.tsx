@@ -6,10 +6,17 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft, ArrowRight, CheckCircle2, Plus, Trash2, Award } from "lucide-react";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
+import { ImageUploader } from "@/components/admin/ImageUploader";
+import { useI18n } from "@/lib/i18n";
 
 const STEPS = ["Head Professor", "Academy", "Other Professors", "Payment", "Certificate"];
 
 export function AcademyRegistration() {
+  const { t } = useI18n();
+  const [step, setStep] = useState(0);
+  const [profs, setProfs] = useState<{ name: string; belt: string }[]>([]);
+  const [academy, setAcademy] = useState({ name: "", country: "", city: "", address: "", logo_url: "" });
+  const [head, setHead] = useState({ name: "", belt: "Black", years: "" });
   const [step, setStep] = useState(0);
   const [profs, setProfs] = useState<{ name: string; belt: string }[]>([]);
   const [academy, setAcademy] = useState({ name: "", country: "", city: "", address: "" });
