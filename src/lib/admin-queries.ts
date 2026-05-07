@@ -283,8 +283,9 @@ export function useToggleEventStatus() {
 }
 
 /**
- * Bulk-deactivate all events that are not already cancelled.
- * Useful for QA: lets admins clear the public /events list with one click.
+ * Bulk-deactivate all currently active events (sets is_active=false).
+ * Useful for QA: lets admins clear the public /events list with one click
+ * without altering each event's status (Próximo / Em Andamento / etc.).
  */
 export function useDeactivateAllEvents() {
   const qc = useQueryClient();
@@ -292,8 +293,8 @@ export function useDeactivateAllEvents() {
     mutationFn: async () => {
       const { error, count } = await supabase
         .from("events")
-        .update({ status: "cancelled" }, { count: "exact" })
-        .neq("status", "cancelled");
+        .update({ is_active: false }, { count: "exact" })
+        .eq("is_active", true);
       if (error) throw error;
       return count ?? 0;
     },
