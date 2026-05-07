@@ -16,6 +16,7 @@ import {
   AdminButton, AdminToggle, AdminBadge, AdminModal, AdminConfirm,
   AdminSection, AdminTableShell, AdminTH, AdminTD, EmptyState,
 } from "@/components/admin/AdminUI";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 
 export const Route = createFileRoute("/admin/black-belts")({
   head: () => ({ meta: [{ title: "Faixas Pretas — BJJLF Admin" }, { name: "robots", content: "noindex, nofollow" }] }),
@@ -245,11 +246,13 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
           <div><label className="admin-label">Nº Certificado</label><input className="admin-input w-full font-mono" {...register("certificate_number")} /></div>
           <div><label className="admin-label">Data de certificação</label><input type="date" className="admin-input w-full" {...register("certified_at")} /></div>
         </div>
-        <div>
-          <label className="admin-label">URL da foto</label>
-          <input className="admin-input w-full" {...register("photo_url")} />
-          {photo && <img src={photo} alt="" className="mt-2 h-16 w-16 rounded-full object-cover border" style={{ borderColor: "#E5E5E5" }} />}
-        </div>
+        <ImageUploader
+          label="Foto"
+          folder="black-belts"
+          value={photo ?? ""}
+          onChange={(url) => setValue("photo_url", url, { shouldValidate: true })}
+          previewClassName="mt-2 h-24 w-24 rounded-full object-cover border"
+        />
         <div>
           <label className="admin-label">Biografia (opcional)</label>
           <textarea
