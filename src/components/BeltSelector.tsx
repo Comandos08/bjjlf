@@ -14,6 +14,7 @@ import {
   type BeltName,
   degreesForBelt,
   defaultDegreeForBelt,
+  formatDegreeLabel,
   getBeltDef,
 } from "@/lib/belts-ibjjf";
 import { cn } from "@/lib/utils";
