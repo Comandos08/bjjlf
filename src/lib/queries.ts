@@ -11,9 +11,9 @@
  */
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { EVENTS, RANKINGS, type Event, type EventTypeBadge, type Ranked } from "@/data/events";
-import { NEWS, type NewsItem } from "@/data/news";
-import { ACADEMIES, type Academy } from "@/data/academies";
+import { RANKINGS, type Event, type EventTypeBadge, type Ranked } from "@/data/events";
+import { type NewsItem } from "@/data/news";
+import { type Academy } from "@/data/academies";
 // All assets under src/assets/ are auto-discovered and cache-busted in dev
 // via the central registry. DB rows that store "/src/assets/<file>" paths
 // are rewritten to the bundled URL on the fly.
