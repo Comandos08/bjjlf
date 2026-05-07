@@ -408,17 +408,17 @@ export const useToggleYoutubeField = makeFieldToggleHook<YoutubeUpdate>("youtube
  * Hero slides
  * ============================================================ */
 export const useAdminHero = makeListHook<HeroRow>("hero_slides", "hero", { column: "display_order", asc: true });
-export const useUpsertHero = makeUpsertHook<HeroInsert, HeroUpdate>("hero_slides", "hero", "hero_slides");
-export const useDeleteHero = makeDeleteHook("hero_slides", "hero", "hero_slides");
-export const useToggleHeroField = makeFieldToggleHook<HeroUpdate>("hero_slides", "hero", "hero_slides");
+export const useUpsertHero = makeUpsertHook<HeroInsert, HeroUpdate>("hero_slides", "hero", "hero");
+export const useDeleteHero = makeDeleteHook("hero_slides", "hero", "hero");
+export const useToggleHeroField = makeFieldToggleHook<HeroUpdate>("hero_slides", "hero", "hero");
 
 /* ============================================================
  * Black belts
  * ============================================================ */
 export const useAdminBlackBelts = makeListHook<BlackBeltRow>("certified_black_belts", "black-belts", { column: "certified_at", asc: false });
-export const useUpsertBlackBelt = makeUpsertHook<BlackBeltInsert, BlackBeltUpdate>("certified_black_belts", "black-belts", "graduates");
-export const useDeleteBlackBelt = makeDeleteHook("certified_black_belts", "black-belts", "graduates");
-export const useToggleBlackBeltField = makeFieldToggleHook<BlackBeltUpdate>("certified_black_belts", "black-belts", "graduates");
+export const useUpsertBlackBelt = makeUpsertHook<BlackBeltInsert, BlackBeltUpdate>("certified_black_belts", "black-belts", "black-belts");
+export const useDeleteBlackBelt = makeDeleteHook("certified_black_belts", "black-belts", "black-belts");
+export const useToggleBlackBeltField = makeFieldToggleHook<BlackBeltUpdate>("certified_black_belts", "black-belts", "black-belts");
 
 /* ============================================================
  * Academies
