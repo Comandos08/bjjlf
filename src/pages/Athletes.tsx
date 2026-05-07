@@ -140,10 +140,15 @@ export function AthletesPage() {
       return true;
     });
     out.sort((a, b) => {
-      if (sort === "belt_degree") {
-        const ra = BELT_RANK[normalizeBelt(a.belt) ?? "branca"] ?? 0;
-        const rb = BELT_RANK[normalizeBelt(b.belt) ?? "branca"] ?? 0;
-        if (rb !== ra) return rb - ra;
+      if (sort === "belt_asc" || sort === "belt_desc") {
+        const ka = normalizeBelt(a.belt);
+        const kb = normalizeBelt(b.belt);
+        const ra = ka ? BELT_RANK[ka] ?? 0 : 0;
+        const rb = kb ? BELT_RANK[kb] ?? 0 : 0;
+        if (ra !== rb) return sort === "belt_asc" ? ra - rb : rb - ra;
+        const da = a.degree ?? 0;
+        const db = b.degree ?? 0;
+        if (da !== db) return sort === "belt_asc" ? da - db : db - da;
       }
       return a.full_name.localeCompare(b.full_name, "pt-BR");
     });
