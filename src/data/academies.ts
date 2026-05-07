@@ -22,7 +22,7 @@ export type Academy = {
   /** Flag emoji rendered inline next to the country. */
   flag: string;
   /** Belt rank of the head professor. Visible on the card. */
-  belt: "Preta" | "Coral";
+  belt: "Preta" | "Vermelha e Preta";
   /** Degree on the belt (e.g. 4 for Preta 4° grau). */
   degree: number;
   /** Display string for "affiliated since" (e.g. "Jan 2020"). Used for label
@@ -59,7 +59,7 @@ export const ACADEMIES: Academy[] = [
     state: "RJ",
     country: "Brasil",
     flag: "🇧🇷",
-    belt: "Coral",
+    belt: "Vermelha e Preta",
     degree: 8,
     since: "Mar 2019",
     sinceTimestamp: Date.UTC(2019, 2, 1),
@@ -171,7 +171,7 @@ export const ACADEMIES: Academy[] = [
     state: "—",
     country: "Reino Unido",
     flag: "🇬🇧",
-    belt: "Coral",
+    belt: "Vermelha e Preta",
     degree: 7,
     since: "Out 2020",
     sinceTimestamp: Date.UTC(2020, 9, 1),
