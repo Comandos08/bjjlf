@@ -371,6 +371,13 @@ export type Database = {
             referencedRelation: "athlete_profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "competition_history_athlete_id_fkey"
+            columns: ["athlete_id"]
+            isOneToOne: false
+            referencedRelation: "public_athlete_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       event_prices: {
@@ -491,6 +498,13 @@ export type Database = {
             columns: ["athlete_id"]
             isOneToOne: false
             referencedRelation: "athlete_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_registrations_athlete_id_fkey"
+            columns: ["athlete_id"]
+            isOneToOne: false
+            referencedRelation: "public_athlete_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -767,7 +781,45 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_athlete_profiles: {
+        Row: {
+          academy: string | null
+          belt: string | null
+          country: string | null
+          country_flag: string | null
+          degree: number | null
+          full_name: string | null
+          id: string | null
+          photo_url: string | null
+          registration_number: string | null
+          status: string | null
+        }
+        Insert: {
+          academy?: string | null
+          belt?: string | null
+          country?: string | null
+          country_flag?: string | null
+          degree?: number | null
+          full_name?: string | null
+          id?: string | null
+          photo_url?: string | null
+          registration_number?: string | null
+          status?: string | null
+        }
+        Update: {
+          academy?: string | null
+          belt?: string | null
+          country?: string | null
+          country_flag?: string | null
+          degree?: number | null
+          full_name?: string | null
+          id?: string | null
+          photo_url?: string | null
+          registration_number?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       bootstrap_first_admin: {
