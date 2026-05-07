@@ -69,6 +69,7 @@ function EventsAdminPage() {
   const { data: events = [], isLoading } = useAdminEvents();
   const toggleField = useToggleEventField();
   const toggleStatus = useToggleEventStatus();
+  const deactivateAll = useDeactivateAllEvents();
   const deleteEvent = useDeleteEvent();
 
   const [search, setSearch] = useState("");
@@ -76,6 +77,9 @@ function EventsAdminPage() {
   const [editing, setEditing] = useState<EventRow | null>(null);
   const [creating, setCreating] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<EventRow | null>(null);
+  const [confirmDeactivateAll, setConfirmDeactivateAll] = useState(false);
+
+  const activeCount = events.filter((e) => e.status !== "cancelled").length;
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
