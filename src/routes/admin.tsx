@@ -3,15 +3,33 @@
  * render inside this. Guards: redirect to /admin/login if not signed in or not
  * an active admin.
  */
-import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, redirect, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Loader2, LayoutDashboard, Calendar, FileText, Trophy, Youtube, Award, Building2, Image as ImageIcon, Settings, LogOut, Users, ClipboardList, ShieldCheck } from "lucide-react";
 import { useAdminAuth, canAccessSection, type AdminSection } from "@/lib/admin-auth";
 import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "BJJLF Admin" }, { name: "robots", content: "noindex, nofollow" }] }),
+  beforeLoad: async ({ location }) => {
+    // /admin/setup and /admin/login are public.
+    if (location.pathname === "/admin/setup" || location.pathname === "/admin/login") return;
+    // SSR/prerender has no session — skip; client guard will run.
+    if (typeof window === "undefined") return;
+    const { data: userRes } = await supabase.auth.getUser();
+    const user = userRes.user;
+    if (!user) throw redirect({ to: "/admin/login" });
+    const { data: adminRow } = await supabase
+      .from("admin_users")
+      .select("id, is_active, role")
+      .eq("id", user.id)
+      .maybeSingle();
+    if (!adminRow || !adminRow.is_active || !adminRow.role) {
+      throw redirect({ to: "/admin/login" });
+    }
+  },
   component: AdminLayout,
 });
 

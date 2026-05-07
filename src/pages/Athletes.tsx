@@ -91,7 +91,7 @@ export function AthletesPage() {
     let cancelled = false;
     void (async () => {
       const { data, error } = await supabase
-        .from("athlete_profiles")
+        .from("public_athlete_profiles" as never)
         .select(
           "id, full_name, belt, degree, photo_url, registration_number, academy, country, country_flag, status",
         )
