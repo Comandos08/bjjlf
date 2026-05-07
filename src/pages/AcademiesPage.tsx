@@ -368,7 +368,7 @@ function AcademyCard({ academy: a }: { academy: Academy }) {
   const beltColor =
     a.belt?.toLowerCase().includes("preta") || a.belt?.toLowerCase().includes("black")
       ? { bg: "#1a1a1a", color: "#FFFFFF" }
-      : a.belt?.toLowerCase().includes("coral")
+      : a.belt?.toLowerCase().includes("vermelha")
         ? { bg: "#C8211A", color: "#FFFFFF" }
         : { bg: "#F3F4F6", color: "#111827" };
 
