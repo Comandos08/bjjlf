@@ -4,20 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { useI18n, type Lang } from "@/lib/i18n";
 import { useAthleteAuth, type AthleteProfile } from "@/lib/athlete-auth";
+import { formatBeltLine as formatBeltLineFromBelt } from "@/lib/belts-ibjjf";
 
-/**
- * Build belt line. Returns null when there's nothing meaningful to show,
- * so the caller can hide the row entirely.
- *   - no belt → null
- *   - belt only (degree 0/null) → "Faixa {belt}"
- *   - belt + degree → "Faixa {belt} • {n} grau(s)"
- */
 function formatBeltLine(profile: Pick<AthleteProfile, "belt" | "degree"> | null | undefined): string | null {
   const belt = profile?.belt?.trim();
   if (!belt) return null;
-  const degree = typeof profile?.degree === "number" ? profile.degree : 0;
-  if (!degree || degree <= 0) return `Faixa ${belt}`;
-  return `Faixa ${belt} • ${degree} grau${degree > 1 ? "s" : ""}`;
+  return formatBeltLineFromBelt(belt, profile?.degree ?? 0) ?? `Faixa ${belt}`;
 }
 
 type NavItem = {

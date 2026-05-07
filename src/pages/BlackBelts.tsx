@@ -17,11 +17,26 @@ type BlackBelt = {
 };
 
 const BELT_LABEL: Record<string, string> = {
+  Preta: "Preta",
+  "Vermelha e Preta": "Vermelha e Preta",
+  "Vermelha e Branca": "Vermelha e Branca",
+  Vermelha: "Vermelha",
+  // legacy lowercase fallbacks
   preta: "Preta",
-  coral: "Coral",
+  vermelha_e_preta: "Vermelha e Preta",
+  vermelha_e_branca: "Vermelha e Branca",
   vermelha_branca: "Vermelha e Branca",
   vermelha: "Vermelha",
+  coral: "Vermelha e Preta",
 };
+
+function beltLabelFor(type: string, degree: number): string {
+  if (type === "Preta" || type === "preta") {
+    return degree === 0 ? "Preta Lisa" : `Preta · ${degree}º Grau`;
+  }
+  const label = BELT_LABEL[type] ?? type;
+  return degree > 0 ? `${label} · ${degree}º Dan` : label;
+}
 
 // ISO 3166-1 alpha-2/alpha-3 → nome PT (principais países do BJJ)
 const COUNTRY_NAME: Record<string, string> = {
@@ -304,7 +319,7 @@ export function BlackBeltsPage() {
                           className="inline-flex items-center bg-[#C8211A] text-white px-2.5 py-1 rounded text-xs uppercase tracking-widest shadow-md"
                           style={{ fontFamily: "Barlow", fontWeight: 700, letterSpacing: "0.1em" }}
                         >
-                          {bb.belt_degree > 0 ? `${bb.belt_degree}º Dan` : BELT_LABEL[bb.belt_type] ?? bb.belt_type}
+                          {beltLabelFor(bb.belt_type, bb.belt_degree)}
                         </span>
                       </div>
                       {/* Bandeira */}

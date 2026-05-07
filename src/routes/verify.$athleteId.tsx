@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import dragon from "@/assets/dragon-logo.png";
 import { supabase } from "@/integrations/supabase/client";
 import { computeValidity } from "@/lib/validity";
+import { formatBeltLine } from "@/lib/belts-ibjjf";
 
 type VerifyResult = {
   full_name: string;
@@ -186,7 +187,7 @@ function VerifyAthletePage() {
                   <DataRow label="Nome" value={profile.full_name} />
                   <DataRow
                     label="Faixa"
-                    value={`${profile.belt}${profile.degree ? ` — ${profile.degree}º grau` : ""}`}
+                    value={formatBeltLine(profile.belt, profile.degree) ?? profile.belt}
                   />
                   <DataRow label="Academia" value={profile.academy ?? "—"} />
                   <DataRow

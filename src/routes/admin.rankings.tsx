@@ -23,7 +23,16 @@ export const Route = createFileRoute("/admin/rankings")({
   component: RankingsAdminPage,
 });
 
-const BELTS = ["white", "blue", "purple", "brown", "black"];
+const BELTS = [
+  { value: "Branca",            label: "Branca" },
+  { value: "Azul",              label: "Azul" },
+  { value: "Roxa",              label: "Roxa" },
+  { value: "Marrom",            label: "Marrom" },
+  { value: "Preta",             label: "Preta" },
+  { value: "Vermelha e Preta",  label: "Vermelha e Preta" },
+  { value: "Vermelha e Branca", label: "Vermelha e Branca" },
+  { value: "Vermelha",          label: "Vermelha" },
+];
 const GENDERS = ["male", "female"];
 const MODALITIES = ["gi", "no_gi"];
 const CATEGORIES = ["adult", "master", "kids", "juvenile"];
@@ -85,7 +94,7 @@ function RankingsAdminPage() {
         </select>
         <select className="admin-input" value={filters.belt} onChange={(e) => setFilters({ ...filters, belt: e.target.value })}>
           <option value="">Todas as faixas</option>
-          {BELTS.map((b) => <option key={b} value={b}>{b}</option>)}
+          {BELTS.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
         </select>
         <select className="admin-input" value={filters.category} onChange={(e) => setFilters({ ...filters, category: e.target.value })}>
           <option value="">Todas as categorias</option>
@@ -178,7 +187,7 @@ function RankingFormModal({ open, row, onClose }: { open: boolean; row: RankingR
       academy: row?.academy ?? "",
       country_code: row?.country_code ?? "",
       flag_emoji: row?.flag_emoji ?? "",
-      belt: row?.belt ?? "black",
+      belt: row?.belt ?? "Preta",
       gender: row?.gender ?? "male",
       category: row?.category ?? "adult",
       modality: row?.modality ?? "gi",
@@ -214,7 +223,7 @@ function RankingFormModal({ open, row, onClose }: { open: boolean; row: RankingR
           </div>
         </div>
         <div className="grid grid-cols-4 gap-3">
-          <div><label className="admin-label">Faixa</label><select className="admin-input w-full" {...register("belt")}>{BELTS.map((b) => <option key={b} value={b}>{b}</option>)}</select></div>
+          <div><label className="admin-label">Faixa</label><select className="admin-input w-full" {...register("belt")}>{BELTS.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}</select></div>
           <div><label className="admin-label">Gênero</label><select className="admin-input w-full" {...register("gender")}>{GENDERS.map((g) => <option key={g} value={g}>{g}</option>)}</select></div>
           <div><label className="admin-label">Categoria</label><select className="admin-input w-full" {...register("category")}>{CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
           <div><label className="admin-label">Modalidade</label><select className="admin-input w-full" {...register("modality")}>{MODALITIES.map((m) => <option key={m} value={m}>{m}</option>)}</select></div>

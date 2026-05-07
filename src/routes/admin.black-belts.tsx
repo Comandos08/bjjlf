@@ -24,14 +24,26 @@ export const Route = createFileRoute("/admin/black-belts")({
 });
 
 const BELT_TYPES = [
-  { value: "preta", label: "Preta", color: "gray" as const, degrees: [1, 2, 3, 4, 5, 6], danLabel: true },
-  { value: "coral", label: "Coral", color: "orange" as const, degrees: [7, 8], danLabel: true },
-  { value: "vermelha_branca", label: "Vermelha e Branca", color: "red" as const, degrees: [7, 8], danLabel: true },
-  { value: "vermelha", label: "Vermelha", color: "red" as const, degrees: [9, 10], danLabel: true },
+  { value: "Preta",             label: "Preta",             color: "gray" as const, degrees: [0, 1, 2, 3, 4, 5, 6] },
+  { value: "Vermelha e Preta",  label: "Vermelha e Preta",  color: "red"  as const, degrees: [7] },
+  { value: "Vermelha e Branca", label: "Vermelha e Branca", color: "red"  as const, degrees: [8] },
+  { value: "Vermelha",          label: "Vermelha",          color: "red"  as const, degrees: [9] },
 ];
 
 function degreesForBeltType(type: string): number[] {
   return BELT_TYPES.find((b) => b.value === type)?.degrees ?? [0];
+}
+
+function isDanBelt(type: string): boolean {
+  return type !== "Preta" && BELT_TYPES.some((b) => b.value === type);
+}
+
+function badgeLabel(type: string, degree: number): string {
+  if (type === "Preta" || type === "preta") {
+    return degree === 0 ? "Preta Lisa" : `Preta · ${degree}º Grau`;
+  }
+  const def = BELT_TYPES.find((b) => b.value === type);
+  return def ? `${def.label} · ${degree}º Dan` : type;
 }
 
 function uniq<T>(arr: T[]): T[] { return Array.from(new Set(arr)); }
@@ -108,7 +120,7 @@ function BlackBeltsAdminPage() {
                     )}
                   </AdminTD>
                   <AdminTD className="text-[#1A1A1A] font-medium">{r.athlete_name}</AdminTD>
-                  <AdminTD><AdminBadge color={beltType?.color ?? "gray"}>{beltType?.label ?? r.belt_type} {r.belt_degree > 0 ? `· ${r.belt_degree}º Dan` : ""}</AdminBadge></AdminTD>
+                  <AdminTD><AdminBadge color={beltType?.color ?? "gray"}>{badgeLabel(r.belt_type, r.belt_degree)}</AdminBadge></AdminTD>
                   <AdminTD>{r.academy ?? "—"}</AdminTD>
                   <AdminTD>{r.professor ?? "—"}</AdminTD>
                   <AdminTD>{r.flag_emoji} {r.country_code}</AdminTD>
@@ -177,7 +189,7 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
       athlete_name: row?.athlete_name ?? "",
       academy: row?.academy ?? "",
       professor: row?.professor ?? "",
-      belt_type: row?.belt_type ?? "preta",
+      belt_type: row?.belt_type ?? "Preta",
       belt_degree: row?.belt_degree ?? 0,
       country_code: row?.country_code ?? "",
       flag_emoji: row?.flag_emoji ?? "",
@@ -230,9 +242,15 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
                 {BELT_TYPES.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
               </select>
             </div>
-            <div><label className="admin-label">Dan</label>
+            <div><label className="admin-label">{isDanBelt(currentBeltType) ? "Dan" : "Grau"}</label>
               <select className="admin-input w-full" {...register("belt_degree")}>
-                {allowedDegrees.map((d) => <option key={d} value={d}>{d}º Dan</option>)}
+                {allowedDegrees.map((d) => {
+                  let label: string;
+                  if (isDanBelt(currentBeltType)) label = `${d}º Dan`;
+                  else if (d === 0) label = "Lisa (sem grau)";
+                  else label = `${d}º Grau`;
+                  return <option key={d} value={d}>{label}</option>;
+                })}
               </select>
             </div>
           </div>
