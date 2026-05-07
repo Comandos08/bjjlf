@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Search, Users, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
-import { BELT_DEFS, ADULT_BELT_NAMES, getBeltDef, type BeltName } from "@/lib/belts-ibjjf";
+import { BELT_DEFS, BELT_NAMES, getBeltDef, type BeltName } from "@/lib/belts-ibjjf";
 
 type AthleteRow = {
   id: string;
