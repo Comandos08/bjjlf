@@ -146,15 +146,15 @@ export function RulesPage() {
       {/* Accordion */}
       <section className="bg-background pb-16">
         <div className="max-w-3xl mx-auto px-4 lg:px-6">
-          <Accordion type="single" collapsible className="border-t border-white/10">
+          <Accordion type="single" collapsible className="border-t border-gray-200">
             {SECTIONS.map((s) => (
               <AccordionItem
                 key={s.value}
                 value={s.value}
-                className="border-b border-white/10"
+                className="border-b border-gray-200"
               >
                 <AccordionTrigger
-                  className={`${typo.heading.sm} text-white py-5 hover:no-underline hover:text-gold`}
+                  className={`${typo.heading.sm} text-gray-900 py-5 hover:no-underline hover:text-primary`}
                 >
                   {t(s.titleKey)}
                 </AccordionTrigger>
@@ -162,25 +162,14 @@ export function RulesPage() {
                   {s.blocks.map((block, i) => {
                     if (block.kind === "intro") {
                       return (
-                        <p
-                          key={i}
-                          className="text-gray-300"
-                          style={{ fontFamily: "Barlow", lineHeight: 1.7 }}
-                        >
+                        <p key={i} className={typo.body.md}>
                           {t(block.key)}
                         </p>
                       );
                     }
                     if (block.kind === "subtitle") {
                       return (
-                        <h4
-                          key={i}
-                          className="text-gold uppercase tracking-widest text-sm pt-2"
-                          style={{
-                            fontFamily: "Barlow Condensed",
-                            fontWeight: 700,
-                          }}
-                        >
+                        <h4 key={i} className={`${typo.label.md} text-primary pt-2`}>
                           {t(block.key)}
                         </h4>
                       );
@@ -188,8 +177,7 @@ export function RulesPage() {
                     return (
                       <ul
                         key={i}
-                        className="list-disc pl-5 space-y-2 text-gray-300"
-                        style={{ fontFamily: "Barlow", lineHeight: 1.7 }}
+                        className={`${typo.body.md} list-disc pl-5 space-y-2`}
                       >
                         {block.items.map((k) => (
                           <li key={k}>{t(k)}</li>
@@ -207,33 +195,15 @@ export function RulesPage() {
       {/* CTA */}
       <section className="bg-dark-2 py-16 border-t border-white/10">
         <div className="max-w-2xl mx-auto px-4 lg:px-6 text-center">
-          <h2
-            className="text-white mb-3"
-            style={{
-              fontFamily: "Barlow Condensed",
-              fontWeight: 900,
-              fontSize: "2rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.02em",
-            }}
-          >
+          <h2 className={`${typo.heading.md} text-white mb-3`}>
             {t("rules.cta.title")}
           </h2>
-          <p
-            className="text-gray-400 mb-7"
-            style={{ fontFamily: "Barlow", lineHeight: 1.7 }}
-          >
+          <p className={`${typo.body.md} text-gray-300 mb-7`}>
             {t("rules.cta.subtitle")}
           </p>
           <a
             href="#"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3.5 uppercase tracking-widest hover:bg-primary/90 transition-colors"
-            style={{
-              borderRadius: 0,
-              fontFamily: "Barlow Condensed",
-              fontWeight: 700,
-              fontSize: 14,
-            }}
+            className={`${typo.button.md} inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3.5 hover:bg-primary/90 transition-colors`}
           >
             <Download className="w-4 h-4" />
             {t("rules.cta.button")}
