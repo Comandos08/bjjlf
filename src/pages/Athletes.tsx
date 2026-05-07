@@ -216,8 +216,8 @@ export function AthletesPage() {
                     )}
                     {r.registration_number && (
                       <Link
-                        to="/verify/$registrationNumber"
-                        params={{ registrationNumber: r.registration_number }}
+                        to="/verify/$athleteId"
+                        params={{ athleteId: r.registration_number }}
                         className="mt-2 block text-center border border-gold text-gold py-2 text-xs uppercase tracking-widest hover:bg-gold hover:text-black transition-colors"
                         style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
                       >
