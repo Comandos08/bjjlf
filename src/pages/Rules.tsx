@@ -156,7 +156,7 @@ export function RulesPage() {
                 <AccordionTrigger
                   className={`${typo.heading.sm} text-gray-900 py-5 hover:no-underline hover:text-primary`}
                 >
-                  {t(s.titleKey)}
+                  <span className="flex-1 text-left">{t(s.titleKey)}</span>
                 </AccordionTrigger>
                 <AccordionContent className="pb-6 space-y-4">
                   {s.blocks.map((block, i) => {
