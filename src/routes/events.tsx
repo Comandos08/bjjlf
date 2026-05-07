@@ -107,12 +107,15 @@ function EventsListPage() {
 
   usePersistedEventFilters();
 
+  const { data: dbEvents = [] } = useEvents();
+  const EVENTS = dbEvents;
+
   // Categories shown as chips (in order). Filter out unused.
   const CHIP_BADGES: ReadonlyArray<EventTypeBadge> = useMemo(() => {
     const present = new Set(EVENTS.map((e) => e.badge));
     return (["GI", "NO-GI", "GI & NO-GI", "KIDS", "MASTER"] as EventTypeBadge[])
       .filter((b) => present.has(b));
-  }, []);
+  }, [EVENTS]);
 
   // Counters reflect the total per category across the full dataset (after
   // text-search), independent of the currently-active chip selection.
@@ -132,7 +135,7 @@ function EventsListPage() {
       map.set(e.badge, (map.get(e.badge) ?? 0) + 1);
     }
     return map;
-  }, [urlQuery, CHIP_BADGES]);
+  }, [urlQuery, CHIP_BADGES, EVENTS]);
 
   // Total of currently filtered events (for the results counter).
   const filteredTotal = useMemo(() => {
@@ -148,7 +151,7 @@ function EventsListPage() {
       );
     }
     return base.length;
-  }, [badges, urlQuery]);
+  }, [badges, urlQuery, EVENTS]);
 
   const setBadges = (next: ReadonlyArray<EventTypeBadge>) =>
     navigate({
