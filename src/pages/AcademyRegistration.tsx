@@ -36,7 +36,7 @@ export function AcademyRegistration() {
               <div className="grid sm:grid-cols-2 gap-5">
                 <Field label="Belt grade">
                   <select className="h-9 w-full bg-input border border-border px-3 text-sm rounded-md" value={head.belt} onChange={(e) => setHead({ ...head, belt: e.target.value })}>
-                    <option>Black 1st Degree</option><option>Black 2nd Degree</option><option>Black 3rd Degree</option><option>Black 4th Degree</option><option>Coral</option><option>Red</option>
+                    <option>Preta · 1º Grau</option><option>Preta · 2º Grau</option><option>Preta · 3º Grau</option><option>Preta · 4º Grau</option><option>Vermelha e Preta · 7º Dan</option><option>Vermelha e Branca · 8º Dan</option><option>Vermelha · 9º Dan</option>
                   </select>
                 </Field>
                 <Field label="Years teaching"><Input type="number" value={head.years} onChange={(e) => setHead({ ...head, years: e.target.value })} /></Field>
