@@ -336,6 +336,31 @@ const PT: Dict = {
   "academies.cta.subtitle": "Afilie sua academia à BJJLF e tenha seus alunos reconhecidos oficialmente pela federação.",
   "academies.cta.btn": "AFILIAR MINHA ACADEMIA →",
   "academies.nav.affiliated": "Academias Afiliadas",
+
+  // Rankings (public page)
+  "rankings.title": "Rankings Oficiais",
+  "rankings.subtitle": "Classificação oficial de atletas BJJLF por temporada, faixa, gênero e modalidade.",
+  "rankings.filters.season": "Temporada",
+  "rankings.filters.belt": "Faixa",
+  "rankings.filters.gender": "Gênero",
+  "rankings.filters.modality": "Modalidade",
+  "rankings.filters.all": "Todas",
+  "rankings.empty": "Nenhum resultado encontrado",
+  "rankings.col.position": "Posição",
+  "rankings.col.athlete": "Atleta",
+  "rankings.col.belt": "Faixa",
+  "rankings.col.academy": "Academia",
+  "rankings.col.country": "País",
+  "rankings.col.points": "Pontos",
+  "rankings.belt.white": "Branca",
+  "rankings.belt.blue": "Azul",
+  "rankings.belt.purple": "Roxa",
+  "rankings.belt.brown": "Marrom",
+  "rankings.belt.black": "Preta",
+  "rankings.gender.male": "Masculino",
+  "rankings.gender.female": "Feminino",
+  "rankings.modality.gi": "Gi",
+  "rankings.modality.nogi": "No-Gi",
 };
 
 const EN: Dict = {
@@ -659,6 +684,31 @@ const EN: Dict = {
   "academies.cta.subtitle": "Affiliate your academy with BJJLF and have your students officially recognized by the federation.",
   "academies.cta.btn": "AFFILIATE MY ACADEMY →",
   "academies.nav.affiliated": "Affiliated Academies",
+
+  // Rankings (public page)
+  "rankings.title": "Official Rankings",
+  "rankings.subtitle": "Official BJJLF athlete standings by season, belt, gender, and modality.",
+  "rankings.filters.season": "Season",
+  "rankings.filters.belt": "Belt",
+  "rankings.filters.gender": "Gender",
+  "rankings.filters.modality": "Modality",
+  "rankings.filters.all": "All",
+  "rankings.empty": "No results found",
+  "rankings.col.position": "Position",
+  "rankings.col.athlete": "Athlete",
+  "rankings.col.belt": "Belt",
+  "rankings.col.academy": "Academy",
+  "rankings.col.country": "Country",
+  "rankings.col.points": "Points",
+  "rankings.belt.white": "White",
+  "rankings.belt.blue": "Blue",
+  "rankings.belt.purple": "Purple",
+  "rankings.belt.brown": "Brown",
+  "rankings.belt.black": "Black",
+  "rankings.gender.male": "Male",
+  "rankings.gender.female": "Female",
+  "rankings.modality.gi": "Gi",
+  "rankings.modality.nogi": "No-Gi",
 };
 
 const DICTS: Record<Lang, Dict> = { pt: PT, en: EN };
