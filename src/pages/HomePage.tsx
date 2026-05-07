@@ -62,9 +62,9 @@ const SLIDE_TEXT: Record<string, { pt: string; en: string }> = {
 
 function HeroSlider() {
   const { lang, t } = useI18n();
-  const { data: dbSlides = [] } = useHeroSlides();
+  const { data: dbSlides, isLoading: slidesLoading } = useHeroSlides();
 
-  const SLIDES: ReadonlyArray<Slide> = dbSlides.length > 0
+  const SLIDES: ReadonlyArray<Slide> = dbSlides
     ? dbSlides.map((s): Slide => ({
         image: bustAnyImageUrl(s.image) ?? s.image,
         thumb: bustAnyImageUrl(s.thumb) ?? s.thumb,
@@ -72,7 +72,7 @@ function HeroSlider() {
         subText: { pt: s.subPt, en: s.subEn },
         badge: s.badge,
       }))
-    : FALLBACK_SLIDES;
+    : (slidesLoading ? [] : FALLBACK_SLIDES);
 
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
