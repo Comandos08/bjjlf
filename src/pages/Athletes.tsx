@@ -161,10 +161,16 @@ export function AthletesPage() {
     .replace("{to}", String(to))
     .replace("{total}", String(filtered.length));
 
-  const beltLabel = (b: string) => {
+  const beltLabel = (b: string, degree?: number | null) => {
     const k = normalizeBelt(b);
     if (!k) return b;
-    return lang === "en" ? BELT_LABEL_EN[k] : BELT_LABEL_PT[k];
+    const def = getBeltDef(k)!;
+    const baseLabel = lang === "en" ? (BELT_LABEL_EN[k] ?? k) : k;
+    const d = degree ?? 0;
+    if (def.useDan) return `${baseLabel} · ${d}º Dan`;
+    if (k === "Preta") return d === 0 ? `${baseLabel} ${lang === "en" ? "Plain" : "Lisa"}` : `${baseLabel} · ${d}º Grau`;
+    if (d === 0) return baseLabel;
+    return `${baseLabel} · ${d}º Grau`;
   };
 
   const hasFilters = !!(search || filterBelt || filterCountry);
@@ -214,9 +220,9 @@ export function AthletesPage() {
             style={{ fontFamily: "Barlow", borderRadius: 0 }}
           >
             <option value="">{t("athletes.filters.allBelts")}</option>
-            {BELT_VALUES.map((b) => (
+            {ADULT_BELT_NAMES.map((b) => (
               <option key={b} value={b}>
-                {lang === "en" ? BELT_LABEL_EN[b] : BELT_LABEL_PT[b]}
+                {lang === "en" ? (BELT_LABEL_EN[b] ?? b) : b}
               </option>
             ))}
           </select>
@@ -321,8 +327,9 @@ export function AthletesPage() {
             <ul className="bg-white border border-gray-200">
               {paged.map((a) => {
                 const beltKey = normalizeBelt(a.belt);
-                const beltStyle = beltKey
-                  ? BELT_STYLE[beltKey]
+                const def = beltKey ? getBeltDef(beltKey) : undefined;
+                const beltStyle = def
+                  ? { bg: def.color, color: def.textOn, border: def.border }
                   : { bg: "#E5E7EB", color: "#111111", border: "#D1D5DB" };
                 return (
                   <li
