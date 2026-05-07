@@ -252,6 +252,8 @@ const PT: Dict = {
   "reg.academy.bjjlfId": "ID BJJLF",
   "reg.academy.data.title": "Dados da Academia",
   "reg.academy.name": "Nome da Academia",
+  "reg.academy.logo": "Logo da Academia",
+  "reg.academy.logo.help": "Aceitos: JPG, PNG, SVG · Máx 2MB",
   "reg.academy.country": "País",
   "reg.academy.city": "Cidade",
   "reg.academy.address": "Endereço completo",
