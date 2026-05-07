@@ -82,7 +82,7 @@ function EventsAdminPage() {
   const [confirmDelete, setConfirmDelete] = useState<EventRow | null>(null);
   const [confirmDeactivateAll, setConfirmDeactivateAll] = useState(false);
 
-  const activeCount = events.filter((e) => e.status !== "cancelled").length;
+  const activeCount = events.filter((e) => e.is_active).length;
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
