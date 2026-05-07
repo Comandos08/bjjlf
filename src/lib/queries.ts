@@ -126,7 +126,7 @@ export function useNews() {
           title: row.title_en,
           excerpt: row.excerpt_en ?? "",
           category,
-          image: resolveAssetUrl(row.cover_image_url) ?? FALLBACK_NEWS_IMG,
+          image: bustStorageUrl(resolveAssetUrl(row.cover_image_url), row.created_at) ?? FALLBACK_NEWS_IMG,
           date: (row.published_at ?? row.created_at).slice(0, 10),
           author: row.author ?? "BJJLF Editorial",
           featured: row.is_featured,
