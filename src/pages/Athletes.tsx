@@ -252,7 +252,8 @@ export function AthletesPage() {
             style={{ fontFamily: "Barlow", borderRadius: 0 }}
           >
             <option value="name_asc">{t("athletes.sort.nameAsc")}</option>
-            <option value="belt_degree">{t("athletes.sort.beltDegree")}</option>
+            <option value="belt_asc">{t("athletes.sort.beltAsc")}</option>
+            <option value="belt_desc">{t("athletes.sort.beltDesc")}</option>
           </select>
         </div>
 
