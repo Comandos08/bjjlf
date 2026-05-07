@@ -17,10 +17,6 @@ export function AcademyRegistration() {
   const [profs, setProfs] = useState<{ name: string; belt: string }[]>([]);
   const [academy, setAcademy] = useState({ name: "", country: "", city: "", address: "", logo_url: "" });
   const [head, setHead] = useState({ name: "", belt: "Black", years: "" });
-  const [step, setStep] = useState(0);
-  const [profs, setProfs] = useState<{ name: string; belt: string }[]>([]);
-  const [academy, setAcademy] = useState({ name: "", country: "", city: "", address: "" });
-  const [head, setHead] = useState({ name: "", belt: "Black", years: "" });
 
   const next = () => setStep((s) => Math.min(STEPS.length - 1, s + 1));
   const prev = () => setStep((s) => Math.max(0, s - 1));
