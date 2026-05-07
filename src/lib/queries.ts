@@ -59,7 +59,11 @@ export function useEvents() {
         .order("is_featured", { ascending: false })
         .order("event_date", { ascending: true });
 
-      if (error || !data || data.length === 0) return EVENTS;
+      if (error) {
+        console.error("[useEvents] Supabase error:", error);
+        return [];
+      }
+      if (!data) return [];
 
       return data.map<Event>((row) => ({
         id: row.id,
@@ -86,7 +90,11 @@ export function useNews() {
         .eq("is_published", true)
         .order("published_at", { ascending: false, nullsFirst: false });
 
-      if (error || !data || data.length === 0) return NEWS;
+      if (error) {
+        console.error("[useNews] Supabase error:", error);
+        return [];
+      }
+      if (!data) return [];
 
       return data.map<NewsItem>((row) => {
         // Map free-form DB category onto our literal union; default to Federation.
@@ -124,7 +132,11 @@ export function useAcademies() {
         .eq("is_active", true)
         .order("affiliated_since", { ascending: false });
 
-      if (error || !data || data.length === 0) return ACADEMIES;
+      if (error) {
+        console.error("[useAcademies] Supabase error:", error);
+        return [];
+      }
+      if (!data) return [];
 
       return data.map<Academy>((row) => {
         const ts = Date.parse(row.affiliated_since);
@@ -164,7 +176,11 @@ export function useRankings() {
         .eq("is_active", true)
         .order("position", { ascending: true, nullsFirst: false });
 
-      if (error || !data || data.length === 0) return RANKINGS;
+      if (error) {
+        console.error("[useRankings] Supabase error:", error);
+        return {};
+      }
+      if (!data) return {};
 
       // Group rows into the existing { "male-gi": [...], ... } shape.
       const out: Record<string, Ranked[]> = {};
@@ -177,11 +193,6 @@ export function useRankings() {
           academy: row.academy ?? "",
           points: row.points,
         });
-      }
-
-      // Fill any missing keys from fallback so the UI never shows empty panels.
-      for (const k of Object.keys(RANKINGS)) {
-        if (!out[k]) out[k] = RANKINGS[k];
       }
       return out;
     },
