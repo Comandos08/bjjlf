@@ -520,6 +520,7 @@ export type Database = {
           event_type: string
           id: string
           image_url: string | null
+          is_active: boolean
           is_featured: boolean
           name_en: string
           name_pt: string
@@ -537,6 +538,7 @@ export type Database = {
           event_type: string
           id?: string
           image_url?: string | null
+          is_active?: boolean
           is_featured?: boolean
           name_en: string
           name_pt: string
@@ -554,6 +556,7 @@ export type Database = {
           event_type?: string
           id?: string
           image_url?: string | null
+          is_active?: boolean
           is_featured?: boolean
           name_en?: string
           name_pt?: string
