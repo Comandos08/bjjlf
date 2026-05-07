@@ -354,6 +354,7 @@ function EventsListPage() {
 
           {/* Grid */}
           <EventList
+            events={EVENTS}
             selectedBadges={badges}
             onChange={setBadges}
             sort={sort}
