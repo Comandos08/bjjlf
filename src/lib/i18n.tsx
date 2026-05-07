@@ -667,6 +667,8 @@ const EN: Dict = {
   "reg.academy.bjjlfId": "BJJLF Athlete ID",
   "reg.academy.data.title": "Academy data",
   "reg.academy.name": "Academy name",
+  "reg.academy.logo": "Academy Logo",
+  "reg.academy.logo.help": "Accepted: JPG, PNG, SVG · Max 2MB",
   "reg.academy.country": "Country",
   "reg.academy.city": "City",
   "reg.academy.address": "Full address",
