@@ -194,6 +194,12 @@ export function useRankings() {
           points: row.points,
         });
       }
+      // Fill any missing keys from fallback so partially-populated DBs don't show empty panels.
+      if (data.length > 0) {
+        for (const k of Object.keys(RANKINGS)) {
+          if (!out[k]) out[k] = RANKINGS[k];
+        }
+      }
       return out;
     },
   });
