@@ -107,7 +107,10 @@ export function BeltSelector({
         >
           {allowed.map((d) => (
             <option key={d} value={d}>
-              {def?.useDan ? `${d}º Dan` : d === 0 ? "0 (sem grau)" : `${d}`}
+              {(() => {
+                const lbl = formatDegreeLabel(belt, d);
+                return lbl || "Lisa (sem grau)";
+              })()}
             </option>
           ))}
         </select>
