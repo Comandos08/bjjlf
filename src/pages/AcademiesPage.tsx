@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   Search,
@@ -17,6 +17,7 @@ import {
   type Academy,
 } from "@/data/academies";
 import { useAcademies } from "@/lib/queries";
+import { supabase } from "@/integrations/supabase/client";
 
 type SortKey = "recent" | "az" | "byCountry" | "byState";
 
