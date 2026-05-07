@@ -97,9 +97,18 @@ function EventsAdminPage() {
       title="Eventos"
       actions={
         writable && (
-          <AdminButton onClick={() => setCreating(true)}>
-            <Plus size={16} /> Novo Evento
-          </AdminButton>
+          <div className="flex gap-2">
+            <AdminButton
+              variant="outline"
+              disabled={activeCount === 0 || deactivateAll.isPending}
+              onClick={() => setConfirmDeactivateAll(true)}
+            >
+              <PowerOff size={16} /> Desativar todos ({activeCount})
+            </AdminButton>
+            <AdminButton onClick={() => setCreating(true)}>
+              <Plus size={16} /> Novo Evento
+            </AdminButton>
+          </div>
         )
       }
     >
