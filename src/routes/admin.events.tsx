@@ -20,7 +20,6 @@ import {
   useUpsertEvent,
   useDeleteEvent,
   useToggleEventField,
-  useToggleEventStatus,
   useDeactivateAllEvents,
   type EventRow,
 } from "@/lib/admin-queries";
