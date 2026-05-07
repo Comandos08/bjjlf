@@ -246,7 +246,7 @@ export function useHeroSlides() {
       if (error || !data || data.length === 0) return [];
 
       return data.map<HeroSlide>((row) => {
-        const resolved = resolveAssetUrl(row.image_url) ?? row.image_url;
+        const resolved = bustStorageUrl(resolveAssetUrl(row.image_url) ?? row.image_url, row.created_at) ?? row.image_url;
         return {
           image: resolved,
           thumb: resolved,
