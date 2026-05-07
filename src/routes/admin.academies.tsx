@@ -16,6 +16,7 @@ import {
   AdminButton, AdminToggle, AdminModal, AdminConfirm,
   AdminSection, AdminTableShell, AdminTH, AdminTD, EmptyState,
 } from "@/components/admin/AdminUI";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 
 export const Route = createFileRoute("/admin/academies")({
   head: () => ({ meta: [{ title: "Academias — BJJLF Admin" }, { name: "robots", content: "noindex, nofollow" }] }),
