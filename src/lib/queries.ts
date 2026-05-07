@@ -250,7 +250,16 @@ export function useHeroSlides() {
 
 /* ---------- youtube videos ---------- */
 
-export type YouTubeVideo = { titleEn: string; titlePt: string; image: string; url: string };
+export type YouTubeVideo = {
+  id: string;
+  titleEn: string;
+  titlePt: string;
+  image: string;
+  url: string;
+  youtubeId: string;
+  displayOrder: number;
+  createdAt: string;
+};
 
 export function useYouTubeVideos() {
   return useQuery<YouTubeVideo[]>({
@@ -265,10 +274,14 @@ export function useYouTubeVideos() {
       if (error || !data || data.length === 0) return [];
 
       return data.map<YouTubeVideo>((row) => ({
+        id: row.id,
         titleEn: row.title_en,
         titlePt: row.title_pt,
         image: row.thumbnail_url ?? `https://img.youtube.com/vi/${row.youtube_id}/hqdefault.jpg`,
         url: row.youtube_url,
+        youtubeId: row.youtube_id,
+        displayOrder: row.display_order,
+        createdAt: row.created_at,
       }));
     },
   });
