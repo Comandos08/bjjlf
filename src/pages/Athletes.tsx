@@ -18,7 +18,7 @@ type AthleteRow = {
   status: string;
 };
 
-type SortKey = "name_asc" | "belt_degree";
+type SortKey = "name_asc" | "belt_asc" | "belt_desc";
 
 const BELT_RANK: Record<string, number> = Object.fromEntries(
   BELT_DEFS.map((b, i) => [b.name, i]),
