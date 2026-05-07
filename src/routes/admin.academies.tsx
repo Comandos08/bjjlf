@@ -23,7 +23,11 @@ export const Route = createFileRoute("/admin/academies")({
   component: AcademiesAdminPage,
 });
 
-const BELTS = ["white", "blue", "purple", "brown", "black", "coral", "red"];
+const BELTS = [
+  "Branca", "Cinza", "Amarela", "Laranja", "Verde",
+  "Azul", "Roxa", "Marrom", "Preta",
+  "Vermelha e Preta", "Vermelha e Branca", "Vermelha",
+];
 
 function uniq<T>(arr: T[]): T[] { return Array.from(new Set(arr)); }
 function slugify(s: string) {
