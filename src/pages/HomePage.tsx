@@ -764,26 +764,40 @@ function YouTubeSection() {
             );
           })}
         </div>
-        <div className="grid md:grid-cols-3 gap-6">
-          {sorted.map((v) => (
-            <div
-              key={v.id}
-              className="flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden"
+        {sorted.length === 0 ? (
+          <div className="bg-white border border-gray-200 rounded-xl py-16 text-center">
+            <Youtube className="h-12 w-12 text-gray-300 mx-auto mb-4" aria-hidden />
+            <p
+              className="text-base text-gray-600"
+              style={{ fontFamily: "Barlow", fontWeight: 500 }}
             >
-              <div className="relative aspect-video bg-gray-900 overflow-hidden">
-                <LazyYouTube videoId={v.id} title={v.t} fallbackImage={v.img} />
+              {lang === "pt"
+                ? "Em breve, conteúdo do canal oficial BJJLF no YouTube."
+                : "Coming soon: content from the official BJJLF YouTube channel."}
+            </p>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6">
+            {sorted.map((v) => (
+              <div
+                key={v.id}
+                className="flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden"
+              >
+                <div className="relative aspect-video bg-gray-900 overflow-hidden">
+                  <LazyYouTube videoId={v.id} title={v.t} fallbackImage={v.img} />
+                </div>
+                <div className="p-5">
+                  <h4
+                    className="text-base text-gray-900 leading-tight"
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                  >
+                    {v.t}
+                  </h4>
+                </div>
               </div>
-              <div className="p-5">
-                <h4
-                  className="text-base text-gray-900 leading-tight"
-                  style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-                >
-                  {v.t}
-                </h4>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
