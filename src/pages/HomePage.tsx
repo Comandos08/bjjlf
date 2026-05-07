@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Calendar, MapPin, ArrowRight, Users, Building2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Calendar, MapPin, ArrowRight, Users, Building2, Youtube } from "lucide-react";
 
 import { useEvents, useNews, useRankings, useHeroSlides, useYouTubeVideos } from "@/lib/queries";
 import { useI18n, formatDateShort } from "@/lib/i18n";
@@ -13,8 +13,6 @@ import { bustAnyImageUrl } from "@/lib/asset-registry";
 // for unrelated photos (tennis, gym, photographer) the way it has been doing
 // when the same photo ID is requested at different sizes.
 import heroBlackBeltUrl from "@/assets/hero-3-bjj.jpg";
-import youtubeBlackBeltImg from "@/assets/youtube-black-belt-promotions.jpg";
-import youtubeMestreRobertoImg from "@/assets/youtube-mestre-roberto.jpg";
 
 type Slide = {
   image: string;
@@ -705,21 +703,13 @@ function YouTubeSection() {
   const { data: dbVideos } = useYouTubeVideos();
   const [sortBy, setSortBy] = useState<YouTubeSortKey>("featured");
 
-  const fallbackVideos = [
-    { id: "dQw4w9WgXcQ", t: "World Championship 2024 — Best Submissions", img: undefined as string | undefined, displayOrder: 0, createdAt: "" },
-    { id: "9bZkp7q19f0", t: "Black Belt Promotions Ceremony", img: youtubeBlackBeltImg, displayOrder: 1, createdAt: "" },
-    { id: "kJQP7kiw5Fk", t: "Mestre Roberto — A Life on the Mat", img: youtubeMestreRobertoImg, displayOrder: 2, createdAt: "" },
-  ];
-
-  const normalized = (dbVideos && dbVideos.length > 0)
-    ? dbVideos.map((v) => ({
-        id: v.youtubeId,
-        t: lang === "pt" ? v.titlePt : v.titleEn,
-        img: v.image,
-        displayOrder: v.displayOrder,
-        createdAt: v.createdAt,
-      }))
-    : fallbackVideos;
+  const normalized = (dbVideos ?? []).map((v) => ({
+    id: v.youtubeId,
+    t: lang === "pt" ? v.titlePt : v.titleEn,
+    img: v.image,
+    displayOrder: v.displayOrder,
+    createdAt: v.createdAt,
+  }));
 
   const sorted = [...normalized].sort((a, b) => {
     if (sortBy === "featured") return a.displayOrder - b.displayOrder;
@@ -772,26 +762,40 @@ function YouTubeSection() {
             );
           })}
         </div>
-        <div className="grid md:grid-cols-3 gap-6">
-          {sorted.map((v) => (
-            <div
-              key={v.id}
-              className="flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden"
+        {sorted.length === 0 ? (
+          <div className="bg-white border border-gray-200 rounded-xl py-16 text-center">
+            <Youtube className="h-12 w-12 text-gray-300 mx-auto mb-4" aria-hidden />
+            <p
+              className="text-base text-gray-600"
+              style={{ fontFamily: "Barlow", fontWeight: 500 }}
             >
-              <div className="relative aspect-video bg-gray-900 overflow-hidden">
-                <LazyYouTube videoId={v.id} title={v.t} fallbackImage={v.img} />
+              {lang === "pt"
+                ? "Em breve, conteúdo do canal oficial BJJLF no YouTube."
+                : "Coming soon: content from the official BJJLF YouTube channel."}
+            </p>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6">
+            {sorted.map((v) => (
+              <div
+                key={v.id}
+                className="flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden"
+              >
+                <div className="relative aspect-video bg-gray-900 overflow-hidden">
+                  <LazyYouTube videoId={v.id} title={v.t} fallbackImage={v.img} />
+                </div>
+                <div className="p-5">
+                  <h4
+                    className="text-base text-gray-900 leading-tight"
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                  >
+                    {v.t}
+                  </h4>
+                </div>
               </div>
-              <div className="p-5">
-                <h4
-                  className="text-base text-gray-900 leading-tight"
-                  style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-                >
-                  {v.t}
-                </h4>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   Search,
@@ -17,6 +17,7 @@ import {
   type Academy,
 } from "@/data/academies";
 import { useAcademies } from "@/lib/queries";
+import { supabase } from "@/integrations/supabase/client";
 
 type SortKey = "recent" | "az" | "byCountry" | "byState";
 
@@ -45,6 +46,26 @@ export function AcademiesPage() {
   };
 
   const { data: academies = [], isLoading } = useAcademies();
+
+  const [stats, setStats] = useState<{ academies: number; countries: number; athletes: number } | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const [aRes, cRes, athRes] = await Promise.all([
+        supabase.from("affiliated_academies").select("*", { count: "exact", head: true }).eq("is_active", true),
+        supabase.from("affiliated_academies").select("country").eq("is_active", true),
+        supabase.from("athlete_profiles").select("*", { count: "exact", head: true }).eq("status", "active"),
+      ]);
+      if (cancelled) return;
+      const countries = new Set((cRes.data ?? []).map((r: { country: string | null }) => r.country).filter(Boolean));
+      setStats({
+        academies: aRes.count ?? 0,
+        countries: countries.size,
+        athletes: athRes.count ?? 0,
+      });
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   const filtered = useMemo<Academy[]>(() => {
     const q = query.trim().toLocaleLowerCase();
@@ -107,9 +128,9 @@ export function AcademiesPage() {
       <section className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
           {[
-            { n: "500+", l: t("academies.stats.certified") },
-            { n: "28", l: t("academies.stats.countries") },
-            { n: "15.000+", l: t("academies.stats.athletes") },
+            { n: stats ? String(stats.academies) : "—", l: t("academies.stats.certified") },
+            { n: stats ? String(stats.countries) : "—", l: t("academies.stats.countries") },
+            { n: stats ? String(stats.athletes) : "—", l: t("academies.stats.athletes") },
           ].map((s, i) => (
             <div key={s.l} className="flex items-center gap-3">
               {i > 0 && (
