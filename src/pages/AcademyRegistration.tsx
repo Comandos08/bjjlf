@@ -6,13 +6,16 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft, ArrowRight, CheckCircle2, Plus, Trash2, Award } from "lucide-react";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
+import { ImageUploader } from "@/components/admin/ImageUploader";
+import { useI18n } from "@/lib/i18n";
 
 const STEPS = ["Head Professor", "Academy", "Other Professors", "Payment", "Certificate"];
 
 export function AcademyRegistration() {
+  const { t } = useI18n();
   const [step, setStep] = useState(0);
   const [profs, setProfs] = useState<{ name: string; belt: string }[]>([]);
-  const [academy, setAcademy] = useState({ name: "", country: "", city: "", address: "" });
+  const [academy, setAcademy] = useState({ name: "", country: "", city: "", address: "", logo_url: "" });
   const [head, setHead] = useState({ name: "", belt: "Black", years: "" });
 
   const next = () => setStep((s) => Math.min(STEPS.length - 1, s + 1));
@@ -47,6 +50,17 @@ export function AcademyRegistration() {
             <div className="space-y-5">
               <h2 className={cn(typo.heading.md, "text-gold")}>Academy data</h2>
               <Field label="Academy name"><Input value={academy.name} onChange={(e) => setAcademy({ ...academy, name: e.target.value })} /></Field>
+              <div>
+                <Label className="mb-2 block uppercase tracking-wider text-xs text-muted-foreground">{t("reg.academy.logo")}</Label>
+                <ImageUploader
+                  folder="academies"
+                  label=""
+                  value={academy.logo_url}
+                  onChange={(url) => setAcademy((a) => ({ ...a, logo_url: url }))}
+                  previewClassName="mt-2 h-20 w-20 object-cover border"
+                />
+                <p className="mt-1 text-xs text-muted-foreground">{t("reg.academy.logo.help")}</p>
+              </div>
               <div className="grid sm:grid-cols-2 gap-5">
                 <Field label="Country"><Input value={academy.country} onChange={(e) => setAcademy({ ...academy, country: e.target.value })} /></Field>
                 <Field label="City"><Input value={academy.city} onChange={(e) => setAcademy({ ...academy, city: e.target.value })} /></Field>
