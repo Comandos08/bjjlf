@@ -30,6 +30,22 @@ function resolveAssetUrl(raw: string | null | undefined): string | null {
   return resolveAsset(raw);
 }
 
+/**
+ * Append a cache-busting `t=` param to Supabase Storage public URLs so that
+ * re-uploaded images at the same path bypass the browser cache. External
+ * URLs are returned unchanged.
+ */
+function bustStorageUrl(
+  url: string | null | undefined,
+  updatedAt: string | null | undefined,
+): string | null {
+  if (!url) return null;
+  if (!url.includes("/storage/v1/object/public/")) return url;
+  const ts = updatedAt ? new Date(updatedAt).getTime() : Date.now();
+  const separator = url.includes("?") ? "&" : "?";
+  return `${url}${separator}t=${ts}`;
+}
+
 /** Coerce arbitrary DB strings to a known badge value (defaults to GI). */
 function normalizeBadge(s: string | null | undefined): EventTypeBadge {
   const v = (s ?? "").toUpperCase().replace(/\s+/g, " ").trim();
@@ -70,7 +86,7 @@ export function useEvents() {
         name: row.name_en, // page uses single string; PT translation flows through i18n keys
         date: row.event_date,
         location: `${row.city}, ${row.country_code}`,
-        image: resolveAssetUrl(row.image_url) ?? FALLBACK_EVENT_IMG,
+        image: bustStorageUrl(resolveAssetUrl(row.image_url), row.created_at) ?? FALLBACK_EVENT_IMG,
         type: normalizeType(row.event_type),
         badge: normalizeBadge(row.event_type),
       }));
@@ -110,7 +126,7 @@ export function useNews() {
           title: row.title_en,
           excerpt: row.excerpt_en ?? "",
           category,
-          image: resolveAssetUrl(row.cover_image_url) ?? FALLBACK_NEWS_IMG,
+          image: bustStorageUrl(resolveAssetUrl(row.cover_image_url), row.created_at) ?? FALLBACK_NEWS_IMG,
           date: (row.published_at ?? row.created_at).slice(0, 10),
           author: row.author ?? "BJJLF Editorial",
           featured: row.is_featured,
@@ -219,7 +235,7 @@ export type HeroSlide = {
 
 export function useHeroSlides() {
   return useQuery<HeroSlide[]>({
-    queryKey: ["hero_slides"],
+    queryKey: ["hero"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("hero_slides")
@@ -230,7 +246,7 @@ export function useHeroSlides() {
       if (error || !data || data.length === 0) return [];
 
       return data.map<HeroSlide>((row) => {
-        const resolved = resolveAssetUrl(row.image_url) ?? row.image_url;
+        const resolved = bustStorageUrl(resolveAssetUrl(row.image_url) ?? row.image_url, row.created_at) ?? row.image_url;
         return {
           image: resolved,
           thumb: resolved,
