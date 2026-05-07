@@ -86,7 +86,7 @@ export function useEvents() {
         name: row.name_en, // page uses single string; PT translation flows through i18n keys
         date: row.event_date,
         location: `${row.city}, ${row.country_code}`,
-        image: bustStorageUrl(resolveAssetUrl(row.image_url), row.updated_at) ?? FALLBACK_EVENT_IMG,
+        image: bustStorageUrl(resolveAssetUrl(row.image_url), row.created_at) ?? FALLBACK_EVENT_IMG,
         type: normalizeType(row.event_type),
         badge: normalizeBadge(row.event_type),
       }));
