@@ -9,7 +9,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { bustStorageUrl } from "@/lib/bust-storage-url";
 import { useMemo, useState } from "react";
-import { Plus, Pencil, Trash2, Search, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, Loader2, Power, PowerOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -20,6 +20,7 @@ import {
   useUpsertEvent,
   useDeleteEvent,
   useToggleEventField,
+  useToggleEventStatus,
   type EventRow,
 } from "@/lib/admin-queries";
 import {
@@ -66,6 +67,7 @@ function EventsAdminPage() {
   const writable = canWrite(role, "events");
   const { data: events = [], isLoading } = useAdminEvents();
   const toggleField = useToggleEventField();
+  const toggleStatus = useToggleEventStatus();
   const deleteEvent = useDeleteEvent();
 
   const [search, setSearch] = useState("");
@@ -163,6 +165,35 @@ function EventsAdminPage() {
                     <AdminTD className="text-right">
                       {writable && (
                         <div className="inline-flex gap-1">
+                          {e.status === "cancelled" ? (
+                            <button
+                              onClick={() =>
+                                toggleStatus.mutate(
+                                  { id: e.id, activate: true },
+                                  { onSuccess: () => toast.success("Evento ativado.") },
+                                )
+                              }
+                              className="text-[#1f7a3a] hover:bg-[#0e1f14] p-1.5"
+                              aria-label="Ativar"
+                              title="Ativar evento"
+                            >
+                              <Power size={14} />
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                toggleStatus.mutate(
+                                  { id: e.id, activate: false },
+                                  { onSuccess: () => toast.success("Evento desativado.") },
+                                )
+                              }
+                              className="text-[#999999] hover:bg-[#1a1a1a] p-1.5"
+                              aria-label="Desativar"
+                              title="Desativar evento"
+                            >
+                              <PowerOff size={14} />
+                            </button>
+                          )}
                           <button onClick={() => setEditing(e)} className="text-[#C8A84B] hover:bg-[#1f1a08] p-1.5" aria-label="Editar">
                             <Pencil size={14} />
                           </button>

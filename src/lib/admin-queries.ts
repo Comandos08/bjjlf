@@ -262,6 +262,27 @@ export function useToggleEventField() {
   });
 }
 
+/**
+ * Toggle event activation. Public /events page lists rows with status='upcoming'.
+ * "Desativar" => status='cancelled' (hidden from public list).
+ * "Ativar" => status='upcoming' (visible).
+ */
+export function useToggleEventStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: { id: string; activate: boolean }) => {
+      const patch: EventUpdate = { status: input.activate ? "upcoming" : "cancelled" };
+      const { error } = await supabase.from("events").update(patch).eq("id", input.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "events"] });
+      qc.invalidateQueries({ queryKey: ["admin", "dashboard"] });
+      qc.invalidateQueries({ queryKey: ["events"] });
+    },
+  });
+}
+
 /* ============================================================
  * Generic helpers — small, repeated patterns
  * ============================================================ */
