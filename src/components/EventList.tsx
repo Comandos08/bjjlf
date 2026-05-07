@@ -6,7 +6,6 @@ import { useI18n, formatDateShort } from "@/lib/i18n";
 import { SafeImage } from "@/components/SafeImage";
 import { EventBadge } from "@/components/EventBadge";
 import {
-  EVENTS as DEFAULT_EVENTS,
   type Event,
   type EventTypeBadge,
 } from "@/data/events";
