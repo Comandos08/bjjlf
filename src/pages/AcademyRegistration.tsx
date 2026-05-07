@@ -50,6 +50,17 @@ export function AcademyRegistration() {
             <div className="space-y-5">
               <h2 className={cn(typo.heading.md, "text-gold")}>Academy data</h2>
               <Field label="Academy name"><Input value={academy.name} onChange={(e) => setAcademy({ ...academy, name: e.target.value })} /></Field>
+              <div>
+                <Label className="mb-2 block uppercase tracking-wider text-xs text-muted-foreground">{t("reg.academy.logo")}</Label>
+                <ImageUploader
+                  folder="academies"
+                  label=""
+                  value={academy.logo_url}
+                  onChange={(url) => setAcademy((a) => ({ ...a, logo_url: url }))}
+                  previewClassName="mt-2 h-20 w-20 object-cover border"
+                />
+                <p className="mt-1 text-xs text-muted-foreground">{t("reg.academy.logo.help")}</p>
+              </div>
               <div className="grid sm:grid-cols-2 gap-5">
                 <Field label="Country"><Input value={academy.country} onChange={(e) => setAcademy({ ...academy, country: e.target.value })} /></Field>
                 <Field label="City"><Input value={academy.city} onChange={(e) => setAcademy({ ...academy, city: e.target.value })} /></Field>
