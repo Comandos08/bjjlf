@@ -24,14 +24,26 @@ export const Route = createFileRoute("/admin/black-belts")({
 });
 
 const BELT_TYPES = [
-  { value: "preta", label: "Preta", color: "gray" as const, degrees: [1, 2, 3, 4, 5, 6], danLabel: true },
-  { value: "coral", label: "Coral", color: "orange" as const, degrees: [7, 8], danLabel: true },
-  { value: "vermelha_branca", label: "Vermelha e Branca", color: "red" as const, degrees: [7, 8], danLabel: true },
-  { value: "vermelha", label: "Vermelha", color: "red" as const, degrees: [9, 10], danLabel: true },
+  { value: "Preta",             label: "Preta",             color: "gray" as const, degrees: [0, 1, 2, 3, 4, 5, 6] },
+  { value: "Vermelha e Preta",  label: "Vermelha e Preta",  color: "red"  as const, degrees: [7] },
+  { value: "Vermelha e Branca", label: "Vermelha e Branca", color: "red"  as const, degrees: [8] },
+  { value: "Vermelha",          label: "Vermelha",          color: "red"  as const, degrees: [9] },
 ];
 
 function degreesForBeltType(type: string): number[] {
   return BELT_TYPES.find((b) => b.value === type)?.degrees ?? [0];
+}
+
+function isDanBelt(type: string): boolean {
+  return type !== "Preta" && BELT_TYPES.some((b) => b.value === type);
+}
+
+function badgeLabel(type: string, degree: number): string {
+  if (type === "Preta" || type === "preta") {
+    return degree === 0 ? "Preta Lisa" : `Preta · ${degree}º Grau`;
+  }
+  const def = BELT_TYPES.find((b) => b.value === type);
+  return def ? `${def.label} · ${degree}º Dan` : type;
 }
 
 function uniq<T>(arr: T[]): T[] { return Array.from(new Set(arr)); }
