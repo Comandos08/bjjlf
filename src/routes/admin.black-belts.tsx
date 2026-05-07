@@ -249,7 +249,7 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
         <ImageUploader
           label="Foto"
           folder="black-belts"
-          value={photo}
+          value={photo ?? ""}
           onChange={(url) => setValue("photo_url", url, { shouldValidate: true })}
           previewClassName="mt-2 h-24 w-24 rounded-full object-cover border"
         />
