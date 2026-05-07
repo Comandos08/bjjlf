@@ -165,6 +165,35 @@ function EventsAdminPage() {
                     <AdminTD className="text-right">
                       {writable && (
                         <div className="inline-flex gap-1">
+                          {e.status === "cancelled" ? (
+                            <button
+                              onClick={() =>
+                                toggleStatus.mutate(
+                                  { id: e.id, activate: true },
+                                  { onSuccess: () => toast.success("Evento ativado.") },
+                                )
+                              }
+                              className="text-[#1f7a3a] hover:bg-[#0e1f14] p-1.5"
+                              aria-label="Ativar"
+                              title="Ativar evento"
+                            >
+                              <Power size={14} />
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                toggleStatus.mutate(
+                                  { id: e.id, activate: false },
+                                  { onSuccess: () => toast.success("Evento desativado.") },
+                                )
+                              }
+                              className="text-[#999999] hover:bg-[#1a1a1a] p-1.5"
+                              aria-label="Desativar"
+                              title="Desativar evento"
+                            >
+                              <PowerOff size={14} />
+                            </button>
+                          )}
                           <button onClick={() => setEditing(e)} className="text-[#C8A84B] hover:bg-[#1f1a08] p-1.5" aria-label="Editar">
                             <Pencil size={14} />
                           </button>
