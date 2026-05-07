@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Loader2, Shield, ShieldAlert, ShieldCheck, ShieldX } from "lucide-react";
 import { useEffect, useState } from "react";
-import dragon from "@/assets/dragon-logo.png";
+import { Logo } from "@/components/Logo";
 import { supabase } from "@/integrations/supabase/client";
 import { computeValidity } from "@/lib/validity";
 import { formatBeltLine } from "@/lib/belts-ibjjf";
