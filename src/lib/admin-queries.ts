@@ -249,9 +249,8 @@ export function useDeleteEvent() {
 export function useToggleEventField() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (input: { id: string; field: "show_on_home" | "is_featured"; value: boolean }) => {
-      const patch: EventUpdate =
-        input.field === "show_on_home" ? { show_on_home: input.value } : { is_featured: input.value };
+    mutationFn: async (input: { id: string; field: "show_on_home" | "is_featured" | "is_active"; value: boolean }) => {
+      const patch: EventUpdate = { [input.field]: input.value } as EventUpdate;
       const { error } = await supabase.from("events").update(patch).eq("id", input.id);
       if (error) throw error;
     },
