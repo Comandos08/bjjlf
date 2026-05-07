@@ -189,7 +189,7 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
       athlete_name: row?.athlete_name ?? "",
       academy: row?.academy ?? "",
       professor: row?.professor ?? "",
-      belt_type: row?.belt_type ?? "preta",
+      belt_type: row?.belt_type ?? "Preta",
       belt_degree: row?.belt_degree ?? 0,
       country_code: row?.country_code ?? "",
       flag_emoji: row?.flag_emoji ?? "",
