@@ -9,8 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAthleteAuth } from "@/lib/athlete-auth";
 import { computeValidity, formatValidUntil } from "@/lib/validity";
-
-const MAX_DEGREES = 4;
+import { formatBeltLine } from "@/lib/belts-ibjjf";
 
 export function MyCardPage() {
   const navigate = useNavigate();
@@ -205,10 +204,10 @@ export function MyCardPage() {
                 {profile.full_name}
               </h2>
               <div className="flex flex-col items-center gap-2">
-                <span className="text-xs text-gray-700 bg-gray-50 border border-gray-200 px-3 py-1 rounded-full" style={{ fontFamily: "Barlow", fontWeight: 500 }}>
-                  Faixa {profile.belt}
+                <span className="text-xs text-gray-700 bg-gray-50 border border-gray-200 px-3 py-1 rounded-full"
+                  style={{ fontFamily: "Barlow", fontWeight: 500 }}>
+                  {formatBeltLine(profile.belt, profile.degree) ?? `Faixa ${profile.belt}`}
                 </span>
-                <DegreeDots filled={profile.degree} max={MAX_DEGREES} />
               </div>
             </div>
 
@@ -340,18 +339,8 @@ function InfoRow({ label, value, last }: { label: string; value: string; last?: 
   );
 }
 
-function DegreeDots({ filled, max }: { filled: number; max: number }) {
-  return (
-    <div className="flex items-center gap-1.5">
-      {Array.from({ length: max }).map((_, i) => {
-        const on = i < filled;
-        return (
-          <span key={i} className={cn("rounded-full", on ? "" : "border border-gray-300")} style={{ width: 7, height: 7, background: on ? "#C8A84B" : "transparent" }} />
-        );
-      })}
-    </div>
-  );
-}
+
+
 
 function CardPageSkeleton() {
   return (
