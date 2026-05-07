@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, Calendar, MapPin, ArrowRight, Users, Building2 } from "lucide-react";
 
-import { useEvents, useNews, useRankings, useHeroSlides } from "@/lib/queries";
+import { useEvents, useNews, useRankings, useHeroSlides, useYouTubeVideos } from "@/lib/queries";
 import { useI18n, formatDateShort } from "@/lib/i18n";
 import { SafeImage } from "@/components/SafeImage";
 import { EventBadge } from "@/components/EventBadge";
@@ -698,14 +698,42 @@ function CTASection() {
   );
 }
 
+type YouTubeSortKey = "featured" | "date_desc" | "date_asc";
+
 function YouTubeSection() {
-  const { t } = useI18n();
-  // videoId reais do YouTube — substituir conforme canal oficial
-  const videos = [
-    { id: "dQw4w9WgXcQ", t: "World Championship 2024 — Best Submissions", img: undefined as string | undefined },
-    { id: "9bZkp7q19f0", t: "Black Belt Promotions Ceremony", img: youtubeBlackBeltImg },
-    { id: "kJQP7kiw5Fk", t: "Mestre Roberto — A Life on the Mat", img: youtubeMestreRobertoImg },
+  const { t, lang } = useI18n();
+  const { data: dbVideos } = useYouTubeVideos();
+  const [sortBy, setSortBy] = useState<YouTubeSortKey>("featured");
+
+  const fallbackVideos = [
+    { id: "dQw4w9WgXcQ", t: "World Championship 2024 — Best Submissions", img: undefined as string | undefined, displayOrder: 0, createdAt: "" },
+    { id: "9bZkp7q19f0", t: "Black Belt Promotions Ceremony", img: youtubeBlackBeltImg, displayOrder: 1, createdAt: "" },
+    { id: "kJQP7kiw5Fk", t: "Mestre Roberto — A Life on the Mat", img: youtubeMestreRobertoImg, displayOrder: 2, createdAt: "" },
   ];
+
+  const normalized = (dbVideos && dbVideos.length > 0)
+    ? dbVideos.map((v) => ({
+        id: v.youtubeId,
+        t: lang === "pt" ? v.titlePt : v.titleEn,
+        img: v.image,
+        displayOrder: v.displayOrder,
+        createdAt: v.createdAt,
+      }))
+    : fallbackVideos;
+
+  const sorted = [...normalized].sort((a, b) => {
+    if (sortBy === "featured") return a.displayOrder - b.displayOrder;
+    const ta = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+    const tb = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+    return sortBy === "date_desc" ? tb - ta : ta - tb;
+  });
+
+  const sortOptions: ReadonlyArray<{ key: YouTubeSortKey; label: string }> = [
+    { key: "featured", label: lang === "pt" ? "Destaques" : "Featured" },
+    { key: "date_desc", label: lang === "pt" ? "Mais recentes" : "Newest" },
+    { key: "date_asc", label: lang === "pt" ? "Mais antigos" : "Oldest" },
+  ];
+
   return (
     <section className="bg-white py-20 md:py-28">
       <div className="max-w-7xl mx-auto px-6">
@@ -713,8 +741,39 @@ function YouTubeSection() {
           title={t("home.youtube.title")}
           action={{ label: t("home.youtube.visit"), href: "https://www.youtube.com/" }}
         />
+        <div
+          className="flex flex-wrap items-center gap-2 mb-6"
+          role="group"
+          aria-label={lang === "pt" ? "Ordenar vídeos" : "Sort videos"}
+        >
+          <span
+            className="text-xs uppercase tracking-widest text-gray-500 mr-2"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+          >
+            {lang === "pt" ? "Ordenar por:" : "Sort by:"}
+          </span>
+          {sortOptions.map((opt) => {
+            const active = sortBy === opt.key;
+            return (
+              <button
+                key={opt.key}
+                type="button"
+                onClick={() => setSortBy(opt.key)}
+                aria-pressed={active}
+                className={`px-3 py-1.5 text-xs uppercase tracking-widest rounded-lg border transition-base ${
+                  active
+                    ? "bg-[#C8A84B] text-white border-[#C8A84B]"
+                    : "bg-white text-gray-700 border-gray-200 hover:border-[#C8A84B]"
+                }`}
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+              >
+                {opt.label}
+              </button>
+            );
+          })}
+        </div>
         <div className="grid md:grid-cols-3 gap-6">
-          {videos.map((v) => (
+          {sorted.map((v) => (
             <div
               key={v.id}
               className="flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden"
