@@ -13,8 +13,6 @@ import { bustAnyImageUrl } from "@/lib/asset-registry";
 // for unrelated photos (tennis, gym, photographer) the way it has been doing
 // when the same photo ID is requested at different sizes.
 import heroBlackBeltUrl from "@/assets/hero-3-bjj.jpg";
-import youtubeBlackBeltImg from "@/assets/youtube-black-belt-promotions.jpg";
-import youtubeMestreRobertoImg from "@/assets/youtube-mestre-roberto.jpg";
 
 type Slide = {
   image: string;
