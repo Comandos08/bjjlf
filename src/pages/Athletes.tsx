@@ -3,11 +3,13 @@ import { Link } from "@tanstack/react-router";
 import { Search, Users, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
+import { BELT_DEFS, ADULT_BELT_NAMES, getBeltDef, type BeltName } from "@/lib/belts-ibjjf";
 
 type AthleteRow = {
   id: string;
   full_name: string;
   belt: string;
+  degree?: number | null;
   photo_url: string | null;
   registration_number: string | null;
   academy: string | null;
@@ -18,48 +20,49 @@ type AthleteRow = {
 
 type SortKey = "name_asc" | "belt_degree";
 
-const BELT_VALUES = ["branca", "azul", "roxa", "marrom", "preta"] as const;
-type BeltKey = (typeof BELT_VALUES)[number];
+const BELT_RANK: Record<string, number> = Object.fromEntries(
+  BELT_DEFS.map((b, i) => [b.name, i]),
+);
 
-const BELT_LABEL_PT: Record<BeltKey, string> = {
-  branca: "Branca",
-  azul: "Azul",
-  roxa: "Roxa",
-  marrom: "Marrom",
-  preta: "Preta",
-};
-const BELT_LABEL_EN: Record<BeltKey, string> = {
-  branca: "White",
-  azul: "Blue",
-  roxa: "Purple",
-  marrom: "Brown",
-  preta: "Black",
-};
-
-const BELT_RANK: Record<BeltKey, number> = {
-  branca: 1,
-  azul: 2,
-  roxa: 3,
-  marrom: 4,
-  preta: 5,
+const BELT_LABEL_EN: Partial<Record<BeltName, string>> = {
+  Branca: "White",
+  Cinza: "Grey",
+  Amarela: "Yellow",
+  Laranja: "Orange",
+  Verde: "Green",
+  Azul: "Blue",
+  Roxa: "Purple",
+  Marrom: "Brown",
+  Preta: "Black",
+  "Vermelha e Preta": "Red & Black",
+  "Vermelha e Branca": "Red & White",
+  Vermelha: "Red",
 };
 
-const BELT_STYLE: Record<BeltKey, { bg: string; color: string; border?: string }> = {
-  branca: { bg: "#FFFFFF", color: "#111111", border: "#D1D5DB" },
-  azul: { bg: "#1D4ED8", color: "#FFFFFF" },
-  roxa: { bg: "#7C3AED", color: "#FFFFFF" },
-  marrom: { bg: "#92400E", color: "#FFFFFF" },
-  preta: { bg: "#111111", color: "#FFFFFF" },
-};
-
-function normalizeBelt(b: string): BeltKey | null {
-  const v = (b ?? "").toLowerCase().trim();
-  if (v === "branca" || v === "branco" || v === "white") return "branca";
-  if (v === "azul" || v === "blue") return "azul";
-  if (v === "roxa" || v === "roxo" || v === "purple") return "roxa";
-  if (v === "marrom" || v === "brown") return "marrom";
-  if (v === "preta" || v === "preto" || v === "black") return "preta";
-  return null;
+function normalizeBelt(b: string | null | undefined): BeltName | null {
+  if (!b) return null;
+  const v = b.trim();
+  // exact match
+  const exact = BELT_DEFS.find((d) => d.name.toLowerCase() === v.toLowerCase());
+  if (exact) return exact.name;
+  // legacy/lowercase mapping
+  const map: Record<string, BeltName> = {
+    branca: "Branca", branco: "Branca", white: "Branca",
+    cinza: "Cinza", grey: "Cinza", gray: "Cinza",
+    amarela: "Amarela", amarelo: "Amarela", yellow: "Amarela",
+    laranja: "Laranja", orange: "Laranja",
+    verde: "Verde", green: "Verde",
+    azul: "Azul", blue: "Azul",
+    roxa: "Roxa", roxo: "Roxa", purple: "Roxa",
+    marrom: "Marrom", brown: "Marrom",
+    preta: "Preta", preto: "Preta", black: "Preta",
+    coral: "Vermelha e Preta",
+    vermelha_e_preta: "Vermelha e Preta",
+    vermelha_e_branca: "Vermelha e Branca",
+    vermelha_branca: "Vermelha e Branca",
+    vermelha: "Vermelha", red: "Vermelha",
+  };
+  return map[v.toLowerCase()] ?? null;
 }
 
 function initials(name: string) {
