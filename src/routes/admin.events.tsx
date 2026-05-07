@@ -73,6 +73,10 @@ function EventsAdminPage() {
   const deleteEvent = useDeleteEvent();
 
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [featuredFilter, setFeaturedFilter] = useState<string>("all");
+  const [dateFrom, setDateFrom] = useState<string>("");
+  const [dateTo, setDateTo] = useState<string>("");
   const [page, setPage] = useState(1);
   const [editing, setEditing] = useState<EventRow | null>(null);
   const [creating, setCreating] = useState(false);
@@ -83,14 +87,30 @@ function EventsAdminPage() {
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return events;
-    return events.filter(
-      (e) => e.name_pt.toLowerCase().includes(q) || e.name_en.toLowerCase().includes(q),
-    );
-  }, [events, search]);
+    return events.filter((e) => {
+      if (q && !e.name_pt.toLowerCase().includes(q) && !e.name_en.toLowerCase().includes(q)) return false;
+      if (statusFilter !== "all" && e.status !== statusFilter) return false;
+      if (featuredFilter === "featured" && !e.is_featured) return false;
+      if (featuredFilter === "not_featured" && e.is_featured) return false;
+      if (dateFrom && e.event_date < dateFrom) return false;
+      if (dateTo && e.event_date > dateTo) return false;
+      return true;
+    });
+  }, [events, search, statusFilter, featuredFilter, dateFrom, dateTo]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const pageRows = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+
+  function resetFilters() {
+    setSearch("");
+    setStatusFilter("all");
+    setFeaturedFilter("all");
+    setDateFrom("");
+    setDateTo("");
+    setPage(1);
+  }
+  const hasActiveFilter =
+    search !== "" || statusFilter !== "all" || featuredFilter !== "all" || dateFrom !== "" || dateTo !== "";
 
   return (
     <AdminSection
@@ -112,18 +132,57 @@ function EventsAdminPage() {
         )
       }
     >
-      <div className="relative">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]" />
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-2">
+        <div className="relative md:col-span-4">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]" />
+          <input
+            className="admin-input w-full pl-9"
+            placeholder="Buscar eventos..."
+            value={search}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          />
+        </div>
+        <select
+          className="admin-input md:col-span-2"
+          value={statusFilter}
+          onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
+        >
+          <option value="all">Todos os status</option>
+          <option value="upcoming">Próximo</option>
+          <option value="ongoing">Em Andamento</option>
+          <option value="completed">Concluído</option>
+          <option value="cancelled">Cancelado</option>
+        </select>
+        <select
+          className="admin-input md:col-span-2"
+          value={featuredFilter}
+          onChange={(e) => { setFeaturedFilter(e.target.value); setPage(1); }}
+        >
+          <option value="all">Destaque: todos</option>
+          <option value="featured">Em destaque</option>
+          <option value="not_featured">Sem destaque</option>
+        </select>
         <input
-          className="admin-input w-full pl-9"
-          placeholder="Buscar eventos..."
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
-          }}
+          type="date"
+          className="admin-input md:col-span-2"
+          value={dateFrom}
+          onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
+          aria-label="Data inicial"
+        />
+        <input
+          type="date"
+          className="admin-input md:col-span-2"
+          value={dateTo}
+          onChange={(e) => { setDateTo(e.target.value); setPage(1); }}
+          aria-label="Data final"
         />
       </div>
+      {hasActiveFilter && (
+        <div className="flex items-center justify-between text-xs text-[#999999]">
+          <span>{filtered.length} resultado(s) com filtros aplicados</span>
+          <button onClick={resetFilters} className="text-[#C8211A] hover:underline">Limpar filtros</button>
+        </div>
+      )}
 
       {isLoading ? (
         <div className="grid place-items-center py-16"><Loader2 className="animate-spin text-[#666666]" /></div>
