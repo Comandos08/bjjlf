@@ -225,7 +225,7 @@ export function AthletesPage() {
             style={{ fontFamily: "Barlow", borderRadius: 0 }}
           >
             <option value="">{t("athletes.filters.allBelts")}</option>
-            {ADULT_BELT_NAMES.map((b) => (
+            {BELT_NAMES.map((b: BeltName) => (
               <option key={b} value={b}>
                 {lang === "en" ? (BELT_LABEL_EN[b] ?? b) : b}
               </option>
