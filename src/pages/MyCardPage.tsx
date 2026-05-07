@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Loader2, AlertCircle, ArrowLeft, Share2, Download, Copy } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
-import dragon from "@/assets/dragon-logo.png";
+import { Logo } from "@/components/Logo";
 import { cn } from "@/lib/utils";
 import { typo } from "@/lib/typography";
 import { supabase } from "@/integrations/supabase/client";
@@ -176,11 +176,8 @@ export function MyCardPage() {
           <div ref={cardRef} className="w-[300px] bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
             <div className="h-[5px]" style={{ background: "linear-gradient(90deg, #C8211A, #C8A84B, #C8211A)" }} />
             <div className="px-5 pt-5 pb-4 text-center border-b border-gray-100">
-              <div className="flex items-center justify-center gap-2">
-                <img src={dragon} alt="BJJLF" className="h-7 w-7 object-contain" />
-                <span className="text-2xl text-[#C8211A]" style={{ fontFamily: "Bebas Neue, Barlow Condensed, sans-serif", letterSpacing: "3px" }}>
-                  BJJLF
-                </span>
+              <div className="flex items-center justify-center">
+                <Logo compact />
               </div>
               <p className="mt-1 text-[7.5px] text-gray-400 uppercase tracking-widest" style={{ fontFamily: "Barlow", fontWeight: 300 }}>
                 Brazilian Jiu-Jitsu Legends Federation
