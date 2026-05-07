@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Calendar, MapPin, ArrowRight, Users, Building2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Calendar, MapPin, ArrowRight, Users, Building2, Youtube } from "lucide-react";
 
 import { useEvents, useNews, useRankings, useHeroSlides, useYouTubeVideos } from "@/lib/queries";
 import { useI18n, formatDateShort } from "@/lib/i18n";
