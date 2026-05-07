@@ -31,21 +31,7 @@ function resolveAssetUrl(raw: string | null | undefined): string | null {
   return resolveAsset(raw);
 }
 
-/**
- * Append a cache-busting `t=` param to Supabase Storage public URLs so that
- * re-uploaded images at the same path bypass the browser cache. External
- * URLs are returned unchanged.
- */
-function bustStorageUrl(
-  url: string | null | undefined,
-  updatedAt: string | null | undefined,
-): string | null {
-  if (!url) return null;
-  if (!url.includes("/storage/v1/object/public/")) return url;
-  const ts = updatedAt ? new Date(updatedAt).getTime() : Date.now();
-  const separator = url.includes("?") ? "&" : "?";
-  return `${url}${separator}t=${ts}`;
-}
+
 
 /** Coerce arbitrary DB strings to a known badge value (defaults to GI). */
 function normalizeBadge(s: string | null | undefined): EventTypeBadge {
