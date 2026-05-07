@@ -21,6 +21,7 @@ import {
   useDeleteEvent,
   useToggleEventField,
   useToggleEventStatus,
+  useDeactivateAllEvents,
   type EventRow,
 } from "@/lib/admin-queries";
 import {
@@ -68,6 +69,7 @@ function EventsAdminPage() {
   const { data: events = [], isLoading } = useAdminEvents();
   const toggleField = useToggleEventField();
   const toggleStatus = useToggleEventStatus();
+  const deactivateAll = useDeactivateAllEvents();
   const deleteEvent = useDeleteEvent();
 
   const [search, setSearch] = useState("");
@@ -75,6 +77,9 @@ function EventsAdminPage() {
   const [editing, setEditing] = useState<EventRow | null>(null);
   const [creating, setCreating] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<EventRow | null>(null);
+  const [confirmDeactivateAll, setConfirmDeactivateAll] = useState(false);
+
+  const activeCount = events.filter((e) => e.status !== "cancelled").length;
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -92,9 +97,18 @@ function EventsAdminPage() {
       title="Eventos"
       actions={
         writable && (
-          <AdminButton onClick={() => setCreating(true)}>
-            <Plus size={16} /> Novo Evento
-          </AdminButton>
+          <div className="flex gap-2">
+            <AdminButton
+              variant="outline"
+              disabled={activeCount === 0 || deactivateAll.isPending}
+              onClick={() => setConfirmDeactivateAll(true)}
+            >
+              <PowerOff size={16} /> Desativar todos ({activeCount})
+            </AdminButton>
+            <AdminButton onClick={() => setCreating(true)}>
+              <Plus size={16} /> Novo Evento
+            </AdminButton>
+          </div>
         )
       }
     >
@@ -237,6 +251,20 @@ function EventsAdminPage() {
           if (!confirmDelete) return;
           deleteEvent.mutate(confirmDelete.id, {
             onSuccess: () => { toast.success("Evento excluído."); setConfirmDelete(null); },
+            onError: (e) => toast.error(`Erro: ${(e as Error).message}`),
+          });
+        }}
+      />
+
+      <AdminConfirm
+        open={confirmDeactivateAll}
+        message={`Desativar todos os ${activeCount} eventos ativos? Eles não aparecerão mais em /events até serem reativados.`}
+        confirmLabel="Desativar todos"
+        loading={deactivateAll.isPending}
+        onCancel={() => setConfirmDeactivateAll(false)}
+        onConfirm={() => {
+          deactivateAll.mutate(undefined, {
+            onSuccess: (n) => { toast.success(`${n} evento(s) desativado(s).`); setConfirmDeactivateAll(false); },
             onError: (e) => toast.error(`Erro: ${(e as Error).message}`),
           });
         }}

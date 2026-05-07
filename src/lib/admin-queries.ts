@@ -283,6 +283,29 @@ export function useToggleEventStatus() {
   });
 }
 
+/**
+ * Bulk-deactivate all events that are not already cancelled.
+ * Useful for QA: lets admins clear the public /events list with one click.
+ */
+export function useDeactivateAllEvents() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      const { error, count } = await supabase
+        .from("events")
+        .update({ status: "cancelled" }, { count: "exact" })
+        .neq("status", "cancelled");
+      if (error) throw error;
+      return count ?? 0;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "events"] });
+      qc.invalidateQueries({ queryKey: ["admin", "dashboard"] });
+      qc.invalidateQueries({ queryKey: ["events"] });
+    },
+  });
+}
+
 /* ============================================================
  * Generic helpers — small, repeated patterns
  * ============================================================ */
