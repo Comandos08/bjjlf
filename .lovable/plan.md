@@ -1,52 +1,42 @@
-# Build Public /athletes Directory
+# Build Public /rules Page
 
-Replace the `ComingSoon` placeholder in `src/pages/Athletes.tsx` with a real, filterable athlete directory backed by the `athlete_profiles` table (status = 'active'). Match the visual language already established by `Rankings.tsx` (PageHero, Barlow Condensed headings, square corners, gold accents, dark background).
+Replace `ComingSoon` in `src/pages/Rules.tsx` with a static bilingual rulebook page using the existing `PageHero`, `SectionHeading`, `Accordion` components and `typo` tokens.
 
-## Scope
+## Page structure (`src/pages/Rules.tsx`)
 
-### 1. `src/pages/Athletes.tsx` — full rewrite
+1. **Hero** — `<PageHero kicker="BJJLF" title={t("rules.title")} desc={t("rules.subtitle")} />` (matches Rankings/Athletes pattern; dark bg already provided).
 
-- **Data**: TanStack Query `["athletes", "public"]` → `supabase.from("athlete_profiles").select("id,full_name,belt,degree,academy,country,country_flag,photo_url,registration_number").eq("status","active").order("full_name")`. RLS already permits this for the athlete's own row only — but we'll rely on the existing public read pattern; if no rows surface for anonymous users, fall back to a `verify_athletes_public` style and surface that as a follow-up. (Note: current RLS on `athlete_profiles` does NOT have a public SELECT policy — see "Open question" below.)
-- **Hero**: `<PageHero kicker="BJJLF" title={t("athletes.title")} desc={t("athletes.subtitle")} />`.
-- **Controls bar** (border-bottom, mb-6):
-  - Search input — full-width on mobile, `w-[400px]` desktop, `borderRadius: 0`, dark-2 bg, gold focus border. Filters `full_name` client-side, case-insensitive, debounced 200 ms via `useDeferredValue`.
-  - Belt `FilterSelect` — White/Blue/Purple/Brown/Black + All. Uses same `normalizeBelt` helper as Rankings.
-  - Country `FilterSelect` — derived from `Array.from(new Set(rows.map(r => r.country)))` sorted.
-- **Grid**: `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4`.
-- **Card** (border `white/10`, bg `dark-2`, square corners):
-  - Top: photo (`aspect-square object-cover`) or fallback initials block (gold on dark-2, Barlow Condensed 900).
-  - Body: full_name (Barlow Condensed 800, white), `<BeltPill>` (extracted from Rankings, includes degree count if degree > 0 as small dots), academy (gray-400, Barlow), `flag + country` line, `registration_number` (xs, gray-500, mono-ish via Barlow Condensed).
-  - Footer button: full-width, gold border, "Ver Perfil" / "View Profile" → `Link to="/verify/$registrationNumber"` with `params={{ registrationNumber: r.registration_number }}`. Hidden if `registration_number` is null.
-- **Empty state**: bordered block, `t("athletes.empty")`.
-- **Loading**: skeleton grid (6 placeholder cards).
+2. **Intro block** — White section, max-w-3xl centered, single paragraph using `typo.body.lg`. Key: `rules.intro`.
 
-### 2. `src/lib/i18n.tsx` — add keys
+3. **Accordion** — `<Accordion type="single" collapsible>` from `@/components/ui/accordion` with 5 items. Each `AccordionTrigger` uses `typo.heading.sm`, each `AccordionContent` renders structured bilingual copy:
+   - `rules.cat.title` / `rules.cat.body` — Categories & Divisions. Body rendered as two subsections: "Faixas etárias" (Infantil 4-13, Juvenil 14-17, Adulto 18-29, Master 30+) and "Divisões de peso" (Gi & No-Gi tables: galo/pluma/pena/leve/médio/meio-pesado/pesado/super-pesado/pesadíssimo + open class).
+   - `rules.scoring.title` / `rules.scoring.body` — list of scoring values: takedown 2, sweep 2, knee on belly 2, guard pass 3, mount 4, back control 4, plus advantages and submission.
+   - `rules.fouls.title` / `rules.fouls.body` — illegal techniques per belt level (white/blue: no heel hooks, reaping, neck cranks; brown/black: most leg locks allowed in no-gi only) + unsportsmanlike conduct.
+   - `rules.equipment.title` / `rules.equipment.body` — gi (IBJJF-compliant cotton, color white/blue/black, A0–A5), no-gi attire (rashguard ranked color, board shorts), belt requirements.
+   - `rules.format.title` / `rules.format.body` — single-elimination brackets, time limits per category (Infantil 3 min, Juvenil 4 min, Adulto faixa branca/azul 5 min, roxa 6 min, marrom 7 min, preta 10 min).
 
-In both PT and EN sections (after the rankings block):
-- `athletes.title` — "Atletas" / "Athletes"
-- `athletes.subtitle` — "Diretório oficial de atletas registrados na BJJLF." / "Official directory of BJJLF registered athletes."
-- `athletes.search.placeholder` — "Buscar por nome..." / "Search by name..."
-- `athletes.filters.belt` — "Faixa" / "Belt"
-- `athletes.filters.country` — "País" / "Country"
-- `athletes.filters.all` — reuse existing `rankings.filters.all` (no new key)
-- `athletes.empty` — "Nenhum atleta encontrado" / "No athletes found"
-- `athletes.card.viewProfile` — "Ver Perfil" / "View Profile"
+   Lists are arrays of strings stored as separate i18n keys (one per bullet) OR a single multiline key split by `\n`. Plan uses **arrays of i18n keys** (one bullet = one key) for clean translation parity, e.g. `rules.scoring.item.takedown`, `rules.scoring.item.sweep`, etc. Items rendered with `<ul className="space-y-2 list-disc pl-5">`.
 
-### 3. Shared helper (inline for now)
+4. **Download CTA block** — Full-width dark section, centered. Headline `typo.heading.md` (`rules.cta.title`), small subtitle (`rules.cta.subtitle`), then a primary-red button `bg-primary text-primary-foreground` with `borderRadius: 0`, `typo.button` styling, label `rules.cta.button`, `href="#"`, `download` attribute hint removed (placeholder).
 
-`BeltPill` and `normalizeBelt` are duplicated from Rankings to keep this PR scoped. A future refactor can move them to `src/components/BeltPill.tsx`.
+## i18n keys (`src/lib/i18n.tsx`)
 
-## Open question / risk
+Add to both PT and EN dictionaries (after the rankings block) under `rules.*`:
 
-The `athlete_profiles` table has **no `public` SELECT RLS policy** — only authenticated admins and the athlete themselves can read rows. A public anonymous visitor will get an empty array. Two options to unblock the directory:
+- Top-level: `rules.title`, `rules.subtitle`, `rules.intro`
+- Per accordion section (5 sections): `.title`, plus per-bullet item keys
+  - `rules.cat.title`, `rules.cat.ages.title`, `rules.cat.ages.item.{infantil,juvenil,adulto,master}`, `rules.cat.weights.title`, `rules.cat.weights.item.{galo,pluma,pena,leve,medio,meioPesado,pesado,superPesado,pesadissimo,open}`
+  - `rules.scoring.title`, `rules.scoring.intro`, `rules.scoring.item.{takedown,sweep,knee,pass,mount,back,advantage,submission}`
+  - `rules.fouls.title`, `rules.fouls.byBelt.title`, `rules.fouls.item.{whiteBlue,purple,brownBlack,conduct1,conduct2}`
+  - `rules.equipment.title`, `rules.equipment.item.{gi1,gi2,nogi1,nogi2,belt}`
+  - `rules.format.title`, `rules.format.intro`, `rules.format.item.{infantil,juvenil,whiteBlue,purple,brown,black}`
+- CTA: `rules.cta.title`, `rules.cta.subtitle`, `rules.cta.button`
 
-- **A. Add a migration** with `CREATE POLICY "Public can read active athletes" ON athlete_profiles FOR SELECT TO public USING (status = 'active');` exposing only name, belt, degree, academy, country, photo, registration_number to anon. Simple, but leaks all active athlete columns.
-- **B. Create a SECURITY DEFINER function** `list_public_athletes()` returning only the safe columns, and call it via `supabase.rpc(...)`. Safer, more code.
-
-The plan as written assumes **Option A** (simpler, matches the pattern used for `affiliated_academies`, `certified_black_belts`, `rankings`). I will include the migration. Confirm or switch to B before approving.
+Roughly ~50 keys × 2 languages.
 
 ## Files touched
 
-- `src/pages/Athletes.tsx` (rewrite)
-- `src/lib/i18n.tsx` (add ~7 keys × 2 languages)
-- `supabase/migrations/<timestamp>_athletes_public_read.sql` (Option A)
+- `src/pages/Rules.tsx` — full rewrite (no new components)
+- `src/lib/i18n.tsx` — add `rules.*` block (PT + EN)
+
+No DB changes, no new dependencies, no router changes (route already wired to `RulesPage`).
