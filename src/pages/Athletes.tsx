@@ -93,7 +93,7 @@ export function AthletesPage() {
       const { data, error } = await supabase
         .from("athlete_profiles")
         .select(
-          "id, full_name, belt, photo_url, registration_number, academy, country, country_flag, status",
+          "id, full_name, belt, degree, photo_url, registration_number, academy, country, country_flag, status",
         )
         .eq("status", "active");
       if (cancelled) return;
@@ -396,7 +396,7 @@ export function AthletesPage() {
                           letterSpacing: "0.1em",
                         }}
                       >
-                        {beltLabel(a.belt)}
+                        {beltLabel(a.belt, a.degree)}
                       </span>
                     </div>
 
