@@ -18,6 +18,7 @@ import { type Academy } from "@/data/academies";
 // via the central registry. DB rows that store "/src/assets/<file>" paths
 // are rewritten to the bundled URL on the fly.
 import { resolveAsset } from "@/lib/asset-registry";
+import { bustStorageUrl } from "@/lib/bust-storage-url";
 
 /* ---------- helpers ---------- */
 
