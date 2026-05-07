@@ -67,7 +67,7 @@ function EventsAdminPage() {
   const writable = canWrite(role, "events");
   const { data: events = [], isLoading } = useAdminEvents();
   const toggleField = useToggleEventField();
-  const toggleStatus = useToggleEventStatus();
+  
   const deactivateAll = useDeactivateAllEvents();
   const deleteEvent = useDeleteEvent();
 
