@@ -61,8 +61,21 @@ function YoutubeAdminPage() {
                 <div className="text-[#1A1A1A] text-sm font-medium truncate">{r.title_pt}</div>
                 <div className="flex items-center justify-between text-xs text-[#999999]">
                   <span>Ordem #{r.display_order}</span>
-                  <AdminToggle checked={r.is_active} disabled={!writable}
-                    onChange={(v) => toggleField.mutate({ id: r.id, field: "is_active", value: v })} />
+                  <AdminToggle
+                    checked={r.is_active}
+                    disabled={!writable || toggleField.isPending}
+                    label={r.is_active ? "Ativo" : "Inativo"}
+                    onChange={(v) =>
+                      toggleField.mutate(
+                        { id: r.id, field: "is_active", value: v },
+                        {
+                          onSuccess: () =>
+                            toast.success(v ? "Vídeo ativado." : "Vídeo desativado."),
+                          onError: (e) => toast.error((e as Error).message),
+                        },
+                      )
+                    }
+                  />
                 </div>
                 {writable && (
                   <div className="flex gap-2 pt-1">
