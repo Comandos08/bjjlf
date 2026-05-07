@@ -1,38 +1,49 @@
-# Wire ImageUploader into Black Belts admin
+# Ajuste do hero para 1600×720 (proporção 20:9)
 
-## Status of the requested forms
+## Situação atual
 
-I checked all four files. Three of them already use `ImageUploader`:
+O container do hero em `src/pages/HomePage.tsx` (linha 95) usa altura fixa:
 
-- `src/routes/admin.hero.tsx` (line 159) — folder `hero`, writes `image_url`. ✅ already done
-- `src/routes/admin.news.tsx` (line 282) — folder `news`, writes `cover_image_url`. ✅ already done
-- `src/routes/admin.events.tsx` (line 362) — folder `events`, writes `image_url`. ✅ already done
-- `src/routes/admin.black-belts.tsx` — still uses a plain `<input>` for `photo_url` (lines 248–252). ❌ needs the change
+```tsx
+style={{ height: "560px" }}
+```
 
-The `ImageUploader` component itself already satisfies all the implementation rules listed in the request: it has the manual URL fallback input, an upload button + loading state, a built-in preview, square corners, and posts to the `site-images` bucket.
+A imagem é renderizada com `object-cover` em largura total da viewport, então hoje a proporção exibida varia conforme a largura da tela (em 1812px de largura → ~3.24:1, bem mais "panorâmico" que 1600×720).
 
-## Change
+Para casar com 1600×720 (≈ **20:9** ou **2.22:1**), troco a altura fixa por uma proporção CSS.
 
-In `src/routes/admin.black-belts.tsx`:
+## Mudança
 
-1. Add `import { ImageUploader } from "@/components/admin/ImageUploader";`.
-2. Replace the photo block (lines 248–252) — the plain `<label>URL da foto</label> + <input> + <img>` — with:
+**Arquivo:** `src/pages/HomePage.tsx` (linha 95)
 
-   ```tsx
-   <ImageUploader
-     label="Foto"
-     folder="black-belts"
-     value={photo}
-     onChange={(url) => setValue("photo_url", url, { shouldValidate: true })}
-     previewClassName="mt-2 h-24 w-24 rounded-full object-cover border"
-   />
-   ```
+Substituir:
+```tsx
+style={{ height: "560px" }}
+```
 
-3. Keep `const photo = watch("photo_url");` (still used to feed `value`).
-4. No schema, no DB and no other component changes.
+por:
+```tsx
+style={{ aspectRatio: "20 / 9", maxHeight: "720px" }}
+```
 
-The uploader pushes files to `site-images/black-belts/...` and stores the resulting public URL in the existing `photo_url` field, so the rest of the form, the table thumbnail, and the public Black Belts page keep working unchanged.
+- `aspectRatio: 20/9` faz o container respeitar exatamente a proporção das imagens 1600×720, eliminando o corte lateral/vertical inesperado.
+- `maxHeight: 720px` evita que em telas muito largas (>1600px) o hero fique gigante — trava no tamanho nativo da imagem.
+- Em telas estreitas o hero fica proporcionalmente menor (ex.: 1200px → ~540px de altura; 768px → ~345px), o que é mais natural que forçar 560px.
 
-## Files touched
+## Atualizar a recomendação no admin (opcional)
 
-- `src/routes/admin.black-belts.tsx` (1 import + 1 JSX block replacement)
+Hoje não há texto de recomendação visível no formulário do hero — então nenhuma mudança de cópia é necessária. Se quiser, posso adicionar uma nota "Recomendado: 1600×720 (JPG)" no `ImageUploader` da tela `/admin/hero`.
+
+## O que NÃO muda
+
+- Imagens já cadastradas continuam funcionando (são exibidas com `object-cover`).
+- Layout do conteúdo sobreposto (título, badges, CTAs, thumbs) permanece igual — só a altura do "palco" muda.
+- Nenhuma mudança em banco de dados, queries ou lógica.
+
+## Pergunta antes de implementar
+
+Você prefere:
+
+- **(A)** Aspect-ratio 20/9 com `maxHeight: 720px` (recomendado — fiel ao 1600×720, responsivo).
+- **(B)** Altura fixa **720px** em todas as telas (mais "alto" que hoje, mas sem variação).
+- **(C)** Manter altura fixa, só mudar o número (ex.: 600px) — sem aspect-ratio.
