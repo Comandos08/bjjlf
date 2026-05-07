@@ -12,7 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { EVENTS, type EventTypeBadge } from "@/data/events";
+import { type EventTypeBadge } from "@/data/events";
+import { useEvents } from "@/lib/queries";
 import { usePersistedEventFilters } from "@/lib/event-filters-storage";
 import {
   EVENT_SORTS,
