@@ -791,6 +791,8 @@ const EN: Dict = {
   "athletes.sort.label": "Sort by",
   "athletes.sort.nameAsc": "Name (A–Z)",
   "athletes.sort.beltDegree": "Belt Degree",
+  "athletes.sort.beltAsc": "Belt (low → high)",
+  "athletes.sort.beltDesc": "Belt (high → low)",
   "athletes.empty": "No athletes registered yet.",
   "athletes.emptyFiltered": "No athletes found with these filters.",
   "athletes.clearFilters": "Clear filters",
