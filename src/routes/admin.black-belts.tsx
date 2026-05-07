@@ -120,7 +120,7 @@ function BlackBeltsAdminPage() {
                     )}
                   </AdminTD>
                   <AdminTD className="text-[#1A1A1A] font-medium">{r.athlete_name}</AdminTD>
-                  <AdminTD><AdminBadge color={beltType?.color ?? "gray"}>{beltType?.label ?? r.belt_type} {r.belt_degree > 0 ? `· ${r.belt_degree}º Dan` : ""}</AdminBadge></AdminTD>
+                  <AdminTD><AdminBadge color={beltType?.color ?? "gray"}>{badgeLabel(r.belt_type, r.belt_degree)}</AdminBadge></AdminTD>
                   <AdminTD>{r.academy ?? "—"}</AdminTD>
                   <AdminTD>{r.professor ?? "—"}</AdminTD>
                   <AdminTD>{r.flag_emoji} {r.country_code}</AdminTD>
@@ -242,9 +242,15 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
                 {BELT_TYPES.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
               </select>
             </div>
-            <div><label className="admin-label">Dan</label>
+            <div><label className="admin-label">{isDanBelt(currentBeltType) ? "Dan" : "Grau"}</label>
               <select className="admin-input w-full" {...register("belt_degree")}>
-                {allowedDegrees.map((d) => <option key={d} value={d}>{d}º Dan</option>)}
+                {allowedDegrees.map((d) => {
+                  let label: string;
+                  if (isDanBelt(currentBeltType)) label = `${d}º Dan`;
+                  else if (d === 0) label = "Lisa (sem grau)";
+                  else label = `${d}º Grau`;
+                  return <option key={d} value={d}>{label}</option>;
+                })}
               </select>
             </div>
           </div>
