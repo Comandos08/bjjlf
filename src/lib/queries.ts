@@ -219,7 +219,7 @@ export type HeroSlide = {
 
 export function useHeroSlides() {
   return useQuery<HeroSlide[]>({
-    queryKey: ["hero_slides"],
+    queryKey: ["hero"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("hero_slides")
