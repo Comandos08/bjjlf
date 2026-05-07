@@ -8,9 +8,15 @@ const BIO_MAX = 1000;
 
 function beltLabel(t: string): string {
   const map: Record<string, string> = {
+    Preta: "Preta",
+    "Vermelha e Preta": "Vermelha e Preta",
+    "Vermelha e Branca": "Vermelha e Branca",
+    Vermelha: "Vermelha",
     preta: "Preta",
-    coral: "Coral",
+    coral: "Vermelha e Preta",
     vermelha: "Vermelha",
+    vermelha_e_preta: "Vermelha e Preta",
+    vermelha_e_branca: "Vermelha e Branca",
     vermelha_branca: "Vermelha e Branca",
   };
   return map[t] ?? t;
