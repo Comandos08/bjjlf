@@ -138,7 +138,7 @@ function EventsAdminPage() {
                   <tr key={e.id} className="hover:bg-[#F5F5F5]">
                     <AdminTD>
                       {e.image_url ? (
-                        <img src={e.image_url} alt="" className="h-10 w-10 object-cover" />
+                        <img src={bustStorageUrl(e.image_url, e.created_at) ?? e.image_url} alt="" className="h-10 w-10 object-cover" />
                       ) : (
                         <div className="h-10 w-10 bg-[#E5E5E5]" />
                       )}
