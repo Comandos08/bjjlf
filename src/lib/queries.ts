@@ -61,6 +61,7 @@ export function useEvents() {
         .from("events")
         .select("*")
         .eq("status", "upcoming")
+        .eq("is_active", true)
         .gte("event_date", today)
         .order("is_featured", { ascending: false })
         .order("event_date", { ascending: true });

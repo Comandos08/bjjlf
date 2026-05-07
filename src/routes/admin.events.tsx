@@ -9,7 +9,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { bustStorageUrl } from "@/lib/bust-storage-url";
 import { useMemo, useState } from "react";
-import { Plus, Pencil, Trash2, Search, Loader2, Power, PowerOff } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, Loader2, PowerOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -20,7 +20,6 @@ import {
   useUpsertEvent,
   useDeleteEvent,
   useToggleEventField,
-  useToggleEventStatus,
   useDeactivateAllEvents,
   type EventRow,
 } from "@/lib/admin-queries";
@@ -68,7 +67,7 @@ function EventsAdminPage() {
   const writable = canWrite(role, "events");
   const { data: events = [], isLoading } = useAdminEvents();
   const toggleField = useToggleEventField();
-  const toggleStatus = useToggleEventStatus();
+  
   const deactivateAll = useDeactivateAllEvents();
   const deleteEvent = useDeleteEvent();
 
@@ -83,7 +82,7 @@ function EventsAdminPage() {
   const [confirmDelete, setConfirmDelete] = useState<EventRow | null>(null);
   const [confirmDeactivateAll, setConfirmDeactivateAll] = useState(false);
 
-  const activeCount = events.filter((e) => e.status !== "cancelled").length;
+  const activeCount = events.filter((e) => e.is_active).length;
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -201,6 +200,7 @@ function EventsAdminPage() {
                 <AdminTH>Local</AdminTH>
                 <AdminTH>Tipo</AdminTH>
                 <AdminTH>Status</AdminTH>
+                <AdminTH>Ativo</AdminTH>
                 <AdminTH>Home</AdminTH>
                 <AdminTH className="text-right">Ações</AdminTH>
               </tr>
@@ -225,6 +225,18 @@ function EventsAdminPage() {
                     <AdminTD><AdminBadge color={s.color}>{s.label}</AdminBadge></AdminTD>
                     <AdminTD>
                       <AdminToggle
+                        checked={e.is_active}
+                        disabled={!writable}
+                        onChange={(v) =>
+                          toggleField.mutate(
+                            { id: e.id, field: "is_active", value: v },
+                            { onSuccess: () => toast.success(v ? "Evento ativado." : "Evento desativado.") },
+                          )
+                        }
+                      />
+                    </AdminTD>
+                    <AdminTD>
+                      <AdminToggle
                         checked={e.show_on_home}
                         disabled={!writable}
                         onChange={(v) =>
@@ -238,35 +250,6 @@ function EventsAdminPage() {
                     <AdminTD className="text-right">
                       {writable && (
                         <div className="inline-flex gap-1">
-                          {e.status === "cancelled" ? (
-                            <button
-                              onClick={() =>
-                                toggleStatus.mutate(
-                                  { id: e.id, activate: true },
-                                  { onSuccess: () => toast.success("Evento ativado.") },
-                                )
-                              }
-                              className="text-[#1f7a3a] hover:bg-[#0e1f14] p-1.5"
-                              aria-label="Ativar"
-                              title="Ativar evento"
-                            >
-                              <Power size={14} />
-                            </button>
-                          ) : (
-                            <button
-                              onClick={() =>
-                                toggleStatus.mutate(
-                                  { id: e.id, activate: false },
-                                  { onSuccess: () => toast.success("Evento desativado.") },
-                                )
-                              }
-                              className="text-[#999999] hover:bg-[#1a1a1a] p-1.5"
-                              aria-label="Desativar"
-                              title="Desativar evento"
-                            >
-                              <PowerOff size={14} />
-                            </button>
-                          )}
                           <button onClick={() => setEditing(e)} className="text-[#C8A84B] hover:bg-[#1f1a08] p-1.5" aria-label="Editar">
                             <Pencil size={14} />
                           </button>

@@ -249,9 +249,8 @@ export function useDeleteEvent() {
 export function useToggleEventField() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (input: { id: string; field: "show_on_home" | "is_featured"; value: boolean }) => {
-      const patch: EventUpdate =
-        input.field === "show_on_home" ? { show_on_home: input.value } : { is_featured: input.value };
+    mutationFn: async (input: { id: string; field: "show_on_home" | "is_featured" | "is_active"; value: boolean }) => {
+      const patch: EventUpdate = { [input.field]: input.value } as EventUpdate;
       const { error } = await supabase.from("events").update(patch).eq("id", input.id);
       if (error) throw error;
     },
@@ -284,8 +283,9 @@ export function useToggleEventStatus() {
 }
 
 /**
- * Bulk-deactivate all events that are not already cancelled.
- * Useful for QA: lets admins clear the public /events list with one click.
+ * Bulk-deactivate all currently active events (sets is_active=false).
+ * Useful for QA: lets admins clear the public /events list with one click
+ * without altering each event's status (Próximo / Em Andamento / etc.).
  */
 export function useDeactivateAllEvents() {
   const qc = useQueryClient();
@@ -293,8 +293,8 @@ export function useDeactivateAllEvents() {
     mutationFn: async () => {
       const { error, count } = await supabase
         .from("events")
-        .update({ status: "cancelled" }, { count: "exact" })
-        .neq("status", "cancelled");
+        .update({ is_active: false }, { count: "exact" })
+        .eq("is_active", true);
       if (error) throw error;
       return count ?? 0;
     },
