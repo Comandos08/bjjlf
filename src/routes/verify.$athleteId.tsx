@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Loader2, Shield, ShieldAlert, ShieldCheck, ShieldX } from "lucide-react";
 import { useEffect, useState } from "react";
-import dragon from "@/assets/dragon-logo.png";
+import { Logo } from "@/components/Logo";
 import { supabase } from "@/integrations/supabase/client";
 import { computeValidity } from "@/lib/validity";
 import { formatBeltLine } from "@/lib/belts-ibjjf";
@@ -140,17 +140,8 @@ function VerifyAthletePage() {
 
               {/* Header */}
               <div className="bg-gray-900 py-5 text-center">
-                <div className="flex items-center justify-center gap-2">
-                  <img src={dragon} alt="BJJLF" className="h-8 w-8 object-contain" />
-                  <span
-                    className="text-2xl text-[#C8211A]"
-                    style={{
-                      fontFamily: "Bebas Neue, Barlow Condensed, sans-serif",
-                      letterSpacing: "3px",
-                    }}
-                  >
-                    BJJLF
-                  </span>
+                <div className="flex items-center justify-center">
+                  <Logo compact />
                 </div>
                 <p
                   className="mt-1 text-xs text-gray-400 uppercase tracking-widest"
