@@ -47,6 +47,26 @@ export function AcademiesPage() {
 
   const { data: academies = [], isLoading } = useAcademies();
 
+  const [stats, setStats] = useState<{ academies: number; countries: number; athletes: number } | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const [aRes, cRes, athRes] = await Promise.all([
+        supabase.from("affiliated_academies").select("*", { count: "exact", head: true }).eq("is_active", true),
+        supabase.from("affiliated_academies").select("country").eq("is_active", true),
+        supabase.from("athlete_profiles").select("*", { count: "exact", head: true }).eq("status", "active"),
+      ]);
+      if (cancelled) return;
+      const countries = new Set((cRes.data ?? []).map((r: { country: string | null }) => r.country).filter(Boolean));
+      setStats({
+        academies: aRes.count ?? 0,
+        countries: countries.size,
+        athletes: athRes.count ?? 0,
+      });
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
   const filtered = useMemo<Academy[]>(() => {
     const q = query.trim().toLocaleLowerCase();
 
