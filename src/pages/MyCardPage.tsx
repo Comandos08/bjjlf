@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Loader2, AlertCircle, ArrowLeft, Share2, Download, Copy } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
-import dragon from "@/assets/dragon-logo.png";
+import { Logo } from "@/components/Logo";
 import { cn } from "@/lib/utils";
 import { typo } from "@/lib/typography";
 import { supabase } from "@/integrations/supabase/client";
