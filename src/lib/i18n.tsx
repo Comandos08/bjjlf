@@ -350,6 +350,8 @@ const PT: Dict = {
   "rankings.filters.modality": "Modalidade",
   "rankings.filters.all": "Todas",
   "rankings.empty": "Nenhum resultado encontrado",
+  "rankings.empty.title": "Rankings em breve",
+  "rankings.empty.subtitle": "Os rankings serão publicados após a realização dos primeiros eventos oficiais.",
   "rankings.col.position": "Posição",
   "rankings.col.athlete": "Atleta",
   "rankings.col.belt": "Faixa",
