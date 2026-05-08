@@ -164,7 +164,7 @@ function ProfessorAdd({ onAdd, nameLabel, beltLabel }: { onAdd: (p: { name: stri
       <div className="flex-1"><Label className="mb-2 block uppercase tracking-wider text-xs text-muted-foreground">{nameLabel}</Label><Input value={n} onChange={(e) => setN(e.target.value)} /></div>
       <div className="w-44"><Label className="mb-2 block uppercase tracking-wider text-xs text-muted-foreground">{beltLabel}</Label>
         <select className="h-9 w-full bg-input border border-border px-3 text-sm rounded-md" value={b} onChange={(e) => setB(e.target.value)}>
-          <option>Marrom</option><option>Preta · 1º Grau</option><option>Preta · 2º Grau</option><option>Preta · 3º Grau</option>
+          <option>Marrom</option><option>Preta Lisa</option><option>Preta · 1º Grau</option><option>Preta · 2º Grau</option><option>Preta · 3º Grau</option><option>Preta · 4º Grau</option><option>Preta · 5º Grau</option><option>Preta · 6º Grau</option><option>Vermelha e Preta · 7º Grau</option><option>Vermelha e Branca · 8º Grau</option><option>Vermelha · 9º Grau</option>
         </select>
       </div>
       <Button variant="outline" onClick={() => { if (n.trim()) { onAdd({ name: n, belt: b }); setN(""); } }}><Plus className="h-4 w-4" /></Button>
