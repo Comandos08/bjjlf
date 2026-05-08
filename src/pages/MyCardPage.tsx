@@ -18,6 +18,7 @@ export function MyCardPage() {
   const cardRef = useRef<HTMLDivElement>(null);
   const [uploading, setUploading] = useState(false);
   const [savingImg, setSavingImg] = useState(false);
+  const [savingPdf, setSavingPdf] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !user) {
