@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { PageHero } from "@/components/Stepper";
 import { useI18n } from "@/lib/i18n";
+import { useAthleteAuth } from "@/lib/athlete-auth";
 import { cn } from "@/lib/utils";
 import {
   ACADEMY_BR_STATES,
@@ -258,20 +259,8 @@ export function AcademiesPage() {
               >
                 Obtenha o Alvará Oficial BJJLF e apareça no diretório da federação
               </p>
-              <p
-                className="text-[#C8A84B] text-lg mt-2"
-                style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-              >
-                R$ 300,00 / ano
-              </p>
             </div>
-            <Link
-              to="/academy/permit"
-              className="bg-[#C8211A] hover:bg-[#8B1612] text-white text-sm uppercase tracking-widest px-6 py-3 rounded-lg transition-base shrink-0"
-              style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-            >
-              Solicitar Alvará →
-            </Link>
+            <PermitCTAButton />
           </div>
 
           {isLoading ? (
@@ -481,5 +470,21 @@ function AcademyCardSkeleton() {
         <div className="mt-4 h-11 w-full bg-[#E5E5E5] rounded-lg animate-pulse" />
       </div>
     </div>
+  );
+}
+
+function PermitCTAButton() {
+  const { user } = useAthleteAuth();
+  const to = user ? "/academy/permit" : "/athlete/login";
+  const search = user ? undefined : ({ redirect: "/academy/permit" } as never);
+  return (
+    <Link
+      to={to}
+      search={search}
+      className="bg-[#C8211A] hover:bg-[#8B1612] text-white text-sm uppercase tracking-widest px-6 py-3 rounded-lg transition-base shrink-0"
+      style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+    >
+      Solicitar Alvará →
+    </Link>
   );
 }
