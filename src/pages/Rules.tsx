@@ -193,20 +193,22 @@ export function RulesPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-dark-2 py-16 border-t border-white/10">
-        <div className="max-w-2xl mx-auto px-4 lg:px-6 text-center">
-          <h2 className={`${typo.heading.md} text-white mb-3`}>
-            {t("rules.cta.title")}
+      <section className="bg-[#0F0F0F] py-16 text-center">
+        <div className="max-w-2xl mx-auto px-6">
+          <h2
+            className="text-white text-3xl uppercase mb-4"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 900 }}
+          >
+            Regulamento Completo
           </h2>
-          <p className={`${typo.body.md} text-gray-300 mb-7`}>
-            {t("rules.cta.subtitle")}
+          <p className="text-gray-400 text-sm mb-6" style={{ fontFamily: "Barlow" }}>
+            O documento oficial em PDF com todos os detalhes técnicos está sendo finalizado e será disponibilizado em breve.
           </p>
           <span
-            className={`${typo.button.md} inline-flex items-center gap-2 bg-gray-400 text-white px-7 py-3.5 cursor-not-allowed opacity-60`}
-            title="Documento em elaboração"
+            className="inline-flex items-center gap-2 text-gray-500 text-sm uppercase tracking-widest border border-gray-700 px-6 py-3 cursor-not-allowed"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
           >
-            <Download className="w-4 h-4" />
-            {t("rules.cta.button")}
+            Em breve
           </span>
         </div>
       </section>

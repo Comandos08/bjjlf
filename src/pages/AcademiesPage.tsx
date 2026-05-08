@@ -435,7 +435,7 @@ function AcademyCard({ academy: a }: { academy: Academy }) {
                   fontWeight: 700,
                 }}
               >
-                {a.belt}
+                {formatBeltLabel(a.belt)}
               </span>
               · {a.degree}° {t("academies.card.degree")}
             </span>

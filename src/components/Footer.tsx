@@ -77,18 +77,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 pt-5 border-t border-[#2A2A2A] flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="font-sans text-xs text-gray-500">
-            {t("footer.copyright")} |{" "}
-            {t("footer.developedBy")}{" "}
-            <a
-              href="https://sportcombat.pro"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white transition-base"
-            >
-              SportCombat
-            </a>
-          </p>
+          <p className="font-sans text-xs text-gray-500">{t("footer.copyright")}</p>
           <div className="flex gap-5">
             <Link to="/privacy" className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.privacy")}</Link>
             <Link to="/terms" className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.terms")}</Link>
