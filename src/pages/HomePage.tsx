@@ -23,6 +23,11 @@ type Slide = {
   subText?: { pt: string; en: string };
   badge: string;
   event_id?: string;
+  tagText?: { pt: string; en: string } | null;
+  badge1?: string | null;
+  badge2?: string | null;
+  ctaPrimaryUrl?: string | null;
+  ctaSecondaryUrl?: string | null;
 };
 
 const FALLBACK_SLIDES: ReadonlyArray<Slide> = [
