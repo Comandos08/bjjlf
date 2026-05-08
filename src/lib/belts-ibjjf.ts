@@ -55,9 +55,39 @@ export const BELT_NAMES: BeltName[] = BELT_DEFS.map((b) => b.name);
 export const ADULT_BELT_NAMES: BeltName[] = BELT_DEFS.filter((b) => !b.kidsOnly).map((b) => b.name);
 export const KIDS_BELT_NAMES: BeltName[] = BELT_DEFS.filter((b) => b.kidsOnly || b.name === "Branca").map((b) => b.name);
 
+/**
+ * Normalizes legacy / lowercase / English belt names to the canonical BeltName.
+ * Returns null when the input doesn't match any known belt.
+ */
+export function normalizeBelt(b: string | null | undefined): BeltName | null {
+  if (!b) return null;
+  const v = b.trim();
+  const exact = BELT_DEFS.find((d) => d.name.toLowerCase() === v.toLowerCase());
+  if (exact) return exact.name;
+  const map: Record<string, BeltName> = {
+    branca: "Branca", branco: "Branca", white: "Branca",
+    cinza: "Cinza", grey: "Cinza", gray: "Cinza",
+    amarela: "Amarela", amarelo: "Amarela", yellow: "Amarela",
+    laranja: "Laranja", orange: "Laranja",
+    verde: "Verde", green: "Verde",
+    azul: "Azul", blue: "Azul",
+    roxa: "Roxa", roxo: "Roxa", purple: "Roxa",
+    marrom: "Marrom", brown: "Marrom",
+    preta: "Preta", preto: "Preta", black: "Preta",
+    coral: "Vermelha e Preta",
+    vermelha_e_preta: "Vermelha e Preta",
+    vermelha_e_branca: "Vermelha e Branca",
+    vermelha_branca: "Vermelha e Branca",
+    vermelha: "Vermelha", red: "Vermelha",
+  };
+  return map[v.toLowerCase()] ?? null;
+}
+
 export function getBeltDef(name: string | null | undefined): BeltDef | undefined {
   if (!name) return undefined;
-  return BELT_DEFS.find((b) => b.name === name);
+  const canonical = normalizeBelt(name);
+  if (!canonical) return undefined;
+  return BELT_DEFS.find((b) => b.name === canonical);
 }
 
 /** Allowed degrees for a given belt name. Falls back to [0..4]. */
