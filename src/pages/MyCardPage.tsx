@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Loader2, AlertCircle, ArrowLeft, Share2, Download, Copy } from "lucide-react";
+import { Loader2, AlertCircle, ArrowLeft, Share2, Download, Copy, FileDown } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { Logo } from "@/components/Logo";
 import { cn } from "@/lib/utils";
