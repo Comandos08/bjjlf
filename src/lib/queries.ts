@@ -133,11 +133,11 @@ export function useAcademies() {
   return useQuery<Academy[]>({
     queryKey: ["academies"],
     queryFn: async () => {
+      // Reads approved academy permits exposed via the public view.
       const { data, error } = await supabase
-        .from("affiliated_academies")
-        .select("*")
-        .eq("is_active", true)
-        .order("affiliated_since", { ascending: false });
+        .from("affiliated_academies_view")
+        .select("id, name, logo_url, city, state, country, country_flag, professor, athlete_id, approved_at")
+        .order("approved_at", { ascending: false, nullsFirst: false });
 
       if (error) {
         console.error("[useAcademies] Supabase error:", error);
@@ -145,24 +145,41 @@ export function useAcademies() {
       }
       if (!data) return [];
 
+      // Optional enrichment: pull belt/degree from the linked athlete profile.
+      const athleteIds = Array.from(
+        new Set(data.map((r) => r.athlete_id).filter((x): x is string => !!x)),
+      );
+      const beltMap = new Map<string, { belt: string; degree: number }>();
+      if (athleteIds.length > 0) {
+        const { data: profs } = await supabase
+          .from("athlete_profiles")
+          .select("id, belt, degree")
+          .in("id", athleteIds);
+        for (const p of profs ?? []) beltMap.set(p.id, { belt: p.belt, degree: p.degree });
+      }
+
       return data.map<Academy>((row) => {
-        const ts = Date.parse(row.affiliated_since);
-        const initials = row.name
-          .split(/\s+/)
-          .slice(0, 2)
-          .map((w) => w[0]?.toUpperCase() ?? "")
-          .join("") || "AC";
+        const ts = row.approved_at ? Date.parse(row.approved_at) : 0;
+        const name = row.name ?? "Academia";
+        const initials =
+          name
+            .split(/\s+/)
+            .slice(0, 2)
+            .map((w) => w[0]?.toUpperCase() ?? "")
+            .join("") || "AC";
+        const beltInfo = row.athlete_id ? beltMap.get(row.athlete_id) : undefined;
+        const slug = (row.id ?? name).toString().toLowerCase().replace(/[^a-z0-9]+/g, "-");
         return {
-          slug: row.slug,
-          name: row.name,
-          professor: row.professor,
-          city: row.city,
+          slug,
+          name,
+          professor: row.professor ?? "—",
+          city: row.city ?? "—",
           state: row.state ?? "—",
-          country: row.country,
-          flag: row.flag_emoji ?? "🏳️",
-          belt: (row.belt as Academy["belt"]) ?? "Preta",
-          degree: row.belt_degree ?? 0,
-          since: row.affiliated_since.slice(0, 7), // "YYYY-MM"
+          country: row.country ?? "—",
+          flag: row.country_flag ?? "🏳️",
+          belt: ((beltInfo?.belt as Academy["belt"]) ?? "Preta"),
+          degree: beltInfo?.degree ?? 0,
+          since: row.approved_at ? row.approved_at.slice(0, 7) : "",
           sinceTimestamp: Number.isFinite(ts) ? ts : 0,
           initials,
         };

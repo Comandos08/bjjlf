@@ -17,19 +17,25 @@ export type Database = {
       academy_permits: {
         Row: {
           academy_id: string | null
+          academy_logo_url: string | null
           academy_name: string
+          additional_professors: Json
           address: string | null
           alert_30_sent: boolean
           alert_7_sent: boolean
           amount_cents: number
+          athlete_id: string | null
           city: string
           country: string
+          country_code: string | null
           country_flag: string | null
           created_at: string
           email: string
           expires_at: string | null
           id: string
+          instagram: string | null
           issued_at: string | null
+          notes: string | null
           paid_at: string | null
           permit_number: string | null
           phone: string | null
@@ -46,19 +52,25 @@ export type Database = {
         }
         Insert: {
           academy_id?: string | null
+          academy_logo_url?: string | null
           academy_name: string
+          additional_professors?: Json
           address?: string | null
           alert_30_sent?: boolean
           alert_7_sent?: boolean
           amount_cents?: number
+          athlete_id?: string | null
           city: string
           country?: string
+          country_code?: string | null
           country_flag?: string | null
           created_at?: string
           email: string
           expires_at?: string | null
           id?: string
+          instagram?: string | null
           issued_at?: string | null
+          notes?: string | null
           paid_at?: string | null
           permit_number?: string | null
           phone?: string | null
@@ -75,19 +87,25 @@ export type Database = {
         }
         Update: {
           academy_id?: string | null
+          academy_logo_url?: string | null
           academy_name?: string
+          additional_professors?: Json
           address?: string | null
           alert_30_sent?: boolean
           alert_7_sent?: boolean
           amount_cents?: number
+          athlete_id?: string | null
           city?: string
           country?: string
+          country_code?: string | null
           country_flag?: string | null
           created_at?: string
           email?: string
           expires_at?: string | null
           id?: string
+          instagram?: string | null
           issued_at?: string | null
+          notes?: string | null
           paid_at?: string | null
           permit_number?: string | null
           phone?: string | null
@@ -115,6 +133,13 @@ export type Database = {
             columns: ["previous_permit_id"]
             isOneToOne: false
             referencedRelation: "academy_permits"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "academy_permits_previous_permit_id_fkey"
+            columns: ["previous_permit_id"]
+            isOneToOne: false
+            referencedRelation: "affiliated_academies_view"
             referencedColumns: ["id"]
           },
         ]
@@ -814,6 +839,63 @@ export type Database = {
       }
     }
     Views: {
+      affiliated_academies_view: {
+        Row: {
+          approved_at: string | null
+          athlete_id: string | null
+          city: string | null
+          country: string | null
+          country_code: string | null
+          country_flag: string | null
+          expires_at: string | null
+          id: string | null
+          instagram: string | null
+          logo_url: string | null
+          name: string | null
+          permit_number: string | null
+          phone: string | null
+          professor: string | null
+          state: string | null
+          website: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          athlete_id?: string | null
+          city?: string | null
+          country?: string | null
+          country_code?: string | null
+          country_flag?: string | null
+          expires_at?: string | null
+          id?: string | null
+          instagram?: string | null
+          logo_url?: string | null
+          name?: string | null
+          permit_number?: string | null
+          phone?: string | null
+          professor?: string | null
+          state?: string | null
+          website?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          athlete_id?: string | null
+          city?: string | null
+          country?: string | null
+          country_code?: string | null
+          country_flag?: string | null
+          expires_at?: string | null
+          id?: string | null
+          instagram?: string | null
+          logo_url?: string | null
+          name?: string | null
+          permit_number?: string | null
+          phone?: string | null
+          professor?: string | null
+          state?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
       public_athlete_profiles: {
         Row: {
           academy: string | null
@@ -866,19 +948,25 @@ export type Database = {
         Args: { p_permit_number: string }
         Returns: {
           academy_id: string | null
+          academy_logo_url: string | null
           academy_name: string
+          additional_professors: Json
           address: string | null
           alert_30_sent: boolean
           alert_7_sent: boolean
           amount_cents: number
+          athlete_id: string | null
           city: string
           country: string
+          country_code: string | null
           country_flag: string | null
           created_at: string
           email: string
           expires_at: string | null
           id: string
+          instagram: string | null
           issued_at: string | null
+          notes: string | null
           paid_at: string | null
           permit_number: string | null
           phone: string | null
