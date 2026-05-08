@@ -52,7 +52,17 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 3 — Cadastros */}
+          {/* Col 3 — Informações */}
+          <div>
+            <h4 className={headingClass}>{t("footer.col.info")}</h4>
+            <ul>
+              <li><Link to="/about" className={linkClass}>{t("footer.col.about")}</Link></li>
+              <li><Link to="/news" className={linkClass}>{t("footer.col.news")}</Link></li>
+              <li><Link to="/contact" className={linkClass}>{t("footer.col.contact")}</Link></li>
+            </ul>
+          </div>
+
+          {/* Col 4 — Cadastros */}
           <div>
             <h4 className={headingClass}>{t("footer.col.registrations")}</h4>
             <ul>
@@ -62,18 +72,6 @@ export function Footer() {
               <li><Link to="/members" className={linkClass}>{t("nav.members")}</Link></li>
               <li><Link to="/members" className={linkClass}>{t("footer.col.certifiedBlackBelts")}</Link></li>
               <li><Link to="/rules" className={linkClass}>{t("footer.col.rules")}</Link></li>
-            </ul>
-          </div>
-
-          {/* Col 4 — Informações */}
-          <div>
-            <h4 className={headingClass}>{t("footer.col.info")}</h4>
-            <ul>
-              <li><Link to="/about" className={linkClass}>{t("footer.col.about")}</Link></li>
-              <li><Link to="/news" className={linkClass}>{t("footer.col.news")}</Link></li>
-              <li><Link to="/contact" className={linkClass}>{t("footer.col.contactUs")}</Link></li>
-              <li><Link to="/privacy" className={linkClass}>{t("footer.col.privacy")}</Link></li>
-              <li><Link to="/terms" className={linkClass}>{t("footer.terms")}</Link></li>
             </ul>
           </div>
 
