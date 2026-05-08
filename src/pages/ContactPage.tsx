@@ -31,29 +31,33 @@ export function ContactPage() {
     }
   };
 
-  const labelClass = "block text-xs uppercase tracking-widest text-[#B8960C] mb-2";
+  const labelClass = "block text-xs uppercase tracking-widest text-gray-700 mb-2";
   const inputClass =
-    "w-full bg-transparent border border-[#2A2A2A] focus:border-[#B8960C] outline-none text-white px-4 py-3 text-sm transition-colors";
+    "w-full bg-white border border-gray-200 focus:border-[#B8960C] outline-none text-gray-900 placeholder:text-gray-400 px-4 py-3 text-sm transition-colors";
 
   return (
-    <div className="min-h-screen bg-[#0F0F0F] text-white">
-      <div className="max-w-3xl mx-auto px-4 lg:px-6 py-16 lg:py-24">
-        <p className="text-xs uppercase tracking-[0.3em] text-[#B8960C] mb-3">
-          BJJLF
-        </p>
-        <h1
-          className="text-4xl lg:text-5xl uppercase tracking-wide mb-4"
-          style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
-        >
-          {t("contact.title")}
-        </h1>
-        <p
-          className="text-gray-400 text-base leading-relaxed mb-12 max-w-xl"
-          style={{ fontFamily: "DM Sans, system-ui, sans-serif" }}
-        >
-          {t("contact.intro")}
-        </p>
+    <div className="min-h-screen bg-white text-gray-900">
+      <div className="border-b border-gray-100">
+        <div className="max-w-3xl mx-auto px-4 lg:px-6 pt-16 lg:pt-24 pb-10">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#B8960C] mb-3">
+            BJJLF
+          </p>
+          <h1
+            className="text-4xl lg:text-5xl uppercase tracking-wide mb-4 text-gray-900"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
+          >
+            {t("contact.title")}
+          </h1>
+          <p
+            className="text-gray-600 text-base leading-relaxed max-w-xl"
+            style={{ fontFamily: "DM Sans, system-ui, sans-serif" }}
+          >
+            {t("contact.intro")}
+          </p>
+        </div>
+      </div>
 
+      <div className="max-w-3xl mx-auto px-4 lg:px-6 py-12 lg:py-16">
         {status === "success" ? (
           <div
             className="border border-[#B8960C] bg-[#B8960C]/5 px-6 py-8 text-center"
@@ -62,11 +66,11 @@ export function ContactPage() {
             <p className="text-[#B8960C] uppercase tracking-widest text-xs mb-3">
               ✓
             </p>
-            <p className="text-white text-base">{t("contact.success")}</p>
+            <p className="text-gray-900 text-base">{t("contact.success")}</p>
             <button
               type="button"
               onClick={() => setStatus("idle")}
-              className="mt-6 inline-block border border-[#B8960C] text-[#B8960C] px-6 py-2.5 text-xs uppercase tracking-widest hover:bg-[#B8960C] hover:text-black transition-colors"
+              className="mt-6 inline-block border border-[#B8960C] text-[#B8960C] px-6 py-2.5 text-xs uppercase tracking-widest hover:bg-[#B8960C] hover:text-white transition-colors"
             >
               {t("contact.sendAnother")}
             </button>
@@ -121,7 +125,7 @@ export function ContactPage() {
             </div>
 
             {status === "error" && (
-              <p className="text-sm text-[#C8211A]">
+              <p className="text-sm text-[#C41E3A]">
                 {t("contact.error")}
                 {errorMsg ? ` — ${errorMsg}` : ""}
               </p>
@@ -130,7 +134,7 @@ export function ContactPage() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="w-full sm:w-auto bg-[#B8960C] text-black px-8 py-3.5 text-xs uppercase tracking-widest font-bold hover:bg-[#d4af1c] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+              className="w-full sm:w-auto bg-[#C41E3A] text-white px-8 py-3.5 text-xs uppercase tracking-widest font-bold hover:bg-[#a51830] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
             >
               {status === "sending" ? t("contact.sending") : t("contact.submit")}
             </button>
