@@ -189,11 +189,13 @@ export function AcademiesPage() {
             ariaLabel={t("academies.filter.allCountries")}
           >
             <option value={ALL}>{t("academies.filter.allCountries")}</option>
-            {ACADEMY_COUNTRIES.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
+            {Array.from(new Set(academies.map((a) => a.country).filter(Boolean)))
+              .sort((a, b) => a.localeCompare(b, "pt-BR"))
+              .map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
           </SelectField>
 
           <SelectField
