@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
-import dragon from "@/assets/dragon-logo.png";
 import { Link } from "@tanstack/react-router";
+import { Logo } from "@/components/Logo";
 
 export function AthleteAuthLayout({
   title,
@@ -16,14 +16,8 @@ export function AthleteAuthLayout({
   return (
     <div className="bg-gray-50 min-h-screen py-16 px-4">
       <div className="max-w-md mx-auto">
-        <Link to="/" className="flex items-center justify-center gap-2 mb-6">
-          <img src={dragon} alt="BJJLF" className="h-9 w-9 object-contain" />
-          <span
-            className="text-2xl text-[#C8211A]"
-            style={{ fontFamily: "Bebas Neue, Barlow Condensed, sans-serif", letterSpacing: "3px" }}
-          >
-            BJJLF
-          </span>
+        <Link to="/" className="flex items-center justify-center mb-6">
+          <Logo />
         </Link>
         <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
           <div className="px-6 pt-7 pb-5 text-center border-b border-gray-100">
