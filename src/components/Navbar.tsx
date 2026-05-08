@@ -39,7 +39,7 @@ export function Navbar() {
 
   const NAV: NavItem[] = [
     { key: "championships", to: "/events" },
-    { key: "blackbelts", nowrap: true, to: "/black-belts" },
+    { key: "members", to: "/members" },
     { key: "rankings", to: "/rankings" },
     {
       key: "academies",
@@ -48,7 +48,6 @@ export function Navbar() {
         { label: t("home.cta.academyBtn"), to: "/register/academy" },
       ],
     },
-    { key: "athletes", to: "/members" },
     { key: "rules", to: "/rules" },
     { key: "news", to: "/news" },
   ];
