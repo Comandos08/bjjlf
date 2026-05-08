@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Loader2, AlertCircle, ArrowLeft, Share2, Download, Copy } from "lucide-react";
+import { Loader2, AlertCircle, ArrowLeft, Share2, Download, Copy, FileDown } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { Logo } from "@/components/Logo";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ export function MyCardPage() {
   const cardRef = useRef<HTMLDivElement>(null);
   const [uploading, setUploading] = useState(false);
   const [savingImg, setSavingImg] = useState(false);
+  const [savingPdf, setSavingPdf] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -159,6 +160,48 @@ export function MyCardPage() {
     }
   }
 
+  async function handleSavePdf() {
+    if (!cardRef.current) return;
+    setSavingPdf(true);
+    try {
+      const [{ toPng }, { jsPDF }] = await Promise.all([
+        import("html-to-image"),
+        import("jspdf"),
+      ]);
+      const node = cardRef.current;
+      const img = node.querySelector("img");
+      if (img && !img.complete) {
+        await new Promise((res) => {
+          img.onload = res;
+          img.onerror = res;
+        });
+      }
+      const rect = node.getBoundingClientRect();
+      const dataUrl = await toPng(node, {
+        cacheBust: true,
+        pixelRatio: 3,
+        backgroundColor: "#ffffff",
+        width: rect.width,
+        height: rect.height,
+      });
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const cardW = 90;
+      const cardH = (rect.height / rect.width) * cardW;
+      const x = (pageW - cardW) / 2;
+      const y = (pageH - cardH) / 2;
+      pdf.addImage(dataUrl, "PNG", x, y, cardW, cardH, undefined, "FAST");
+      pdf.save(`carteirinha-bjjlf-${profile?.registration_number ?? "atleta"}.pdf`);
+      toast.success("PDF gerado!");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Erro";
+      toast.error(`Falha ao gerar PDF: ${msg}`);
+    } finally {
+      setSavingPdf(false);
+    }
+  }
+
   return (
     <div className="bg-gray-50 min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-6">
@@ -274,6 +317,14 @@ export function MyCardPage() {
               <Download className="h-4 w-4" /> {savingImg ? "Gerando…" : "Salvar imagem"}
             </button>
             <button
+              onClick={handleSavePdf}
+              disabled={savingPdf}
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg disabled:opacity-50 transition-colors"
+              style={{ fontFamily: "Barlow", fontWeight: 600 }}
+            >
+              <FileDown className="h-4 w-4" /> {savingPdf ? "Gerando…" : "Salvar PDF"}
+            </button>
+            <button
               onClick={async () => {
                 if (!verifyUrl) return;
                 try {
@@ -347,8 +398,6 @@ function InfoRow({ label, value, last }: { label: string; value: string; last?: 
     </div>
   );
 }
-
-
 
 
 function CardPageSkeleton() {
