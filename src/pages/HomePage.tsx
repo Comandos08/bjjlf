@@ -669,7 +669,7 @@ function CTASection() {
         </Link>
 
         <Link
-          to="/register/academy"
+          to="/academy/permit"
           className="group bg-white border border-gray-200 rounded-xl p-8 transition-base hover:shadow-md"
           style={{ borderLeft: "4px solid #C8A84B" }}
         >
