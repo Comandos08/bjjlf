@@ -89,9 +89,16 @@ export function AthleteAuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let cancelled = false;
 
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       setTimeout(() => {
         if (cancelled) return;
+        if (event === "PASSWORD_RECOVERY") {
+          // Session is valid — just apply the user so updateUser() works.
+          // Do NOT redirect away; let the reset-password page handle it.
+          void applyUser(session?.user ?? null);
+          if (!cancelled) setIsLoading(false);
+          return;
+        }
         void applyUser(session?.user ?? null);
       }, 0);
     });
