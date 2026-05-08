@@ -125,13 +125,25 @@ export function MyCardPage() {
     if (!cardRef.current) return;
     setSavingImg(true);
     try {
-      const html2canvas = (await import("html2canvas")).default;
-      const canvas = await html2canvas(cardRef.current, {
+      const { toPng } = await import("html-to-image");
+      const node = cardRef.current;
+      // Pré-carrega a foto (CORS) para garantir que aparece no PNG
+      const img = node.querySelector("img");
+      if (img && !img.complete) {
+        await new Promise((res) => {
+          img.onload = res;
+          img.onerror = res;
+        });
+      }
+      const rect = node.getBoundingClientRect();
+      const dataUrl = await toPng(node, {
+        cacheBust: true,
+        pixelRatio: 3,
         backgroundColor: "#ffffff",
-        scale: 2,
-        useCORS: true,
+        width: rect.width,
+        height: rect.height,
+        skipFonts: false,
       });
-      const dataUrl = canvas.toDataURL("image/png");
       const a = document.createElement("a");
       a.href = dataUrl;
       a.download = `carteirinha-bjjlf-${profile?.registration_number ?? "atleta"}.png`;
