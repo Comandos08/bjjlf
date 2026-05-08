@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,10 +22,34 @@ type FormValues = z.infer<typeof schema>;
 export function AthleteResetPasswordPage() {
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
+  const [checking, setChecking] = useState(true);
+  const [invalidLink, setInvalidLink] = useState(false);
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
+
+  useEffect(() => {
+    let cancelled = false;
+    async function check() {
+      // Wait a tick to allow Supabase to parse the recovery hash from the URL.
+      const hash = typeof window !== "undefined" ? window.location.hash.slice(1) : "";
+      const hashParams = new URLSearchParams(hash);
+      const isRecoveryHash = hashParams.get("type") === "recovery";
+
+      const { data } = await supabase.auth.getSession();
+      if (cancelled) return;
+
+      if (!data.session && !isRecoveryHash) {
+        setInvalidLink(true);
+      }
+      setChecking(false);
+    }
+    void check();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function onSubmit(values: FormValues) {
     setSubmitting(true);
@@ -40,6 +64,41 @@ export function AthleteResetPasswordPage() {
     } finally {
       setSubmitting(false);
     }
+  }
+
+  if (checking) {
+    return (
+      <AthleteAuthLayout title="Nova senha" subtitle="Validando link...">
+        <div className="flex justify-center py-6">
+          <Loader2 className="h-6 w-6 animate-spin text-[#C8211A]" />
+        </div>
+      </AthleteAuthLayout>
+    );
+  }
+
+  if (invalidLink) {
+    return (
+      <AthleteAuthLayout
+        title="Link inválido"
+        subtitle="Este link de redefinição não é mais válido"
+        footer={
+          <Link to="/athlete/login" className="text-[#C8211A] hover:underline">
+            Voltar ao login
+          </Link>
+        }
+      >
+        <p className="text-sm text-gray-700">
+          Link inválido ou expirado. Solicite um novo link de redefinição.
+        </p>
+        <Link
+          to="/athlete/forgot-password"
+          className={fieldStyles.primaryBtn}
+          style={btnStyle}
+        >
+          Solicitar novo link
+        </Link>
+      </AthleteAuthLayout>
+    );
   }
 
   return (
