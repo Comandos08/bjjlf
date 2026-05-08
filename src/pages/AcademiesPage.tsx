@@ -128,9 +128,9 @@ export function AcademiesPage() {
       <section className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
           {[
-            { n: stats ? String(stats.academies) : "—", l: t("academies.stats.certified") },
-            { n: stats ? String(stats.countries) : "—", l: t("academies.stats.countries") },
-            { n: stats ? String(stats.athletes) : "—", l: t("academies.stats.athletes") },
+            { n: String(stats?.academies ?? 0), l: t("academies.stats.certified") },
+            { n: String(stats?.countries ?? 0), l: t("academies.stats.countries") },
+            { n: String(stats?.athletes ?? 0), l: t("academies.stats.athletes") },
           ].map((s, i) => (
             <div key={s.l} className="flex items-center gap-3">
               {i > 0 && (
