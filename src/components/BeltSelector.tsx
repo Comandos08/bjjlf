@@ -67,10 +67,10 @@ export function BeltSelector({
 
   // Clamp degree to a valid value whenever the user changes the belt.
   // Skip the first render so the initial belt/degree from props are preserved.
-  const initializedRef = useRef(false);
+  const mountedRef = useRef(false);
   useEffect(() => {
-    if (!initializedRef.current) {
-      initializedRef.current = true;
+    if (!mountedRef.current) {
+      mountedRef.current = true;
       return;
     }
     if (!allowed.includes(degree)) {
