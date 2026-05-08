@@ -267,6 +267,7 @@ function EditModal({ row, onClose, onSaved }: { row: Row; onClose: () => void; o
           <BeltSelector
             belt={belt}
             degree={degree}
+            adultOnly
             onBeltChange={(b: BeltName) => {
               setBelt(b);
               setDegree(defaultDegreeForBelt(b));
