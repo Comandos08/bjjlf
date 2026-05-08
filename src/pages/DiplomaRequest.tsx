@@ -76,10 +76,21 @@ export function DiplomaRequestPage() {
   const [touched, setTouched] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [affiliateLocked, setAffiliateLocked] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
   const t = I18N[locale];
   const submit = useServerFn(submitDiplomaRequest);
+  const search = useSearch({ strict: false });
+
+  useEffect(() => {
+    const ref = (search as Record<string, unknown>)?.ref;
+    if (typeof ref === "string" && ref.trim()) {
+      setForm((s) => ({ ...s, affiliateCode: ref.trim().toUpperCase() }));
+      setAffiliateLocked(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const errors = useMemo(() => {
     const e: Partial<Record<keyof FormState, true>> = {};
