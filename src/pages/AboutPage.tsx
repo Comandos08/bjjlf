@@ -69,12 +69,13 @@ export function AboutPage() {
       <section className="py-20 bg-[#0F0F0F] border-y border-white/10">
         <div className="container mx-auto px-4 lg:px-6 grid lg:grid-cols-2 gap-12 items-center max-w-5xl">
           <div className="flex justify-center">
-            <div className="relative h-72 w-72 rounded-full bg-black border border-[#B8960C]/40 grid place-items-center">
+            <div className="relative h-72 w-72 md:h-80 md:w-80 rounded-full overflow-hidden bg-black border-2 border-[#B8960C]/50 shadow-[0_20px_60px_-10px_rgba(184,150,12,0.35)]">
               <img
-                src={dragon}
-                alt=""
-                className="h-44 w-44 object-contain opacity-90"
+                src={mestreMalibu}
+                alt={t("about.founder.name")}
+                className="absolute inset-0 h-full w-full object-cover object-[50%_18%] scale-[1.15]"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
             </div>
           </div>
           <div>
