@@ -28,7 +28,7 @@ export function Footer() {
               >
                 <Instagram className="h-3.5 w-3.5" />
               </a>
-              <
+              <a
                 href={`https://wa.me/${WHATSAPP_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
