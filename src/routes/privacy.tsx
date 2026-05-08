@@ -43,8 +43,8 @@ function PrivacyPage() {
 
         <h2>4. Seus direitos</h2>
         <p>
-          Você pode solicitar acesso, correção ou exclusão dos seus dados a qualquer momento, escrevendo para{" "}
-          <a className="text-[#C8211A]" href="mailto:contato@bjjlf.com.br">contato@bjjlf.com.br</a>.
+          Você pode solicitar acesso, correção ou exclusão dos seus dados a qualquer momento através da nossa{" "}
+          <a className="text-[#C8211A]" href="/contact">página de contato</a>.
         </p>
 
         <h2>5. Cookies</h2>

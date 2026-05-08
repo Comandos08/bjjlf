@@ -1,9 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Mail, MessageCircle } from "lucide-react";
+import { Instagram, MessageCircle } from "lucide-react";
 import { Logo } from "./Logo";
 import { useI18n } from "@/lib/i18n";
 
-const CONTACT_EMAIL = "contato@bjjlf.com.br";
 const WHATSAPP_NUMBER = "5521981750139"; // formato internacional E.164 sem '+'
 
 export function Footer() {
@@ -72,11 +71,7 @@ export function Footer() {
             <ul>
               <li><Link to="/about" className={linkClass}>{t("footer.col.about")}</Link></li>
               <li><Link to="/news" className={linkClass}>{t("footer.col.news")}</Link></li>
-              <li>
-                <a href={`mailto:${CONTACT_EMAIL}`} className={linkClass}>
-                  <span className="inline-flex items-center gap-1.5"><Mail className="h-3.5 w-3.5" /> {CONTACT_EMAIL}</span>
-                </a>
-              </li>
+              <li><Link to="/contact" className={linkClass}>{t("footer.col.contactUs")}</Link></li>
               <li><Link to="/privacy" className={linkClass}>{t("footer.col.privacy")}</Link></li>
               <li><Link to="/terms" className={linkClass}>{t("footer.terms")}</Link></li>
             </ul>
@@ -104,7 +99,7 @@ export function Footer() {
           <div className="flex gap-5">
             <Link to="/privacy" className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.privacy")}</Link>
             <Link to="/terms" className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.terms")}</Link>
-            <a href={`mailto:${CONTACT_EMAIL}`} className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.col.contact")}</a>
+            <Link to="/contact" className="font-sans text-xs text-gray-500 hover:text-white transition-base">{t("footer.col.contact")}</Link>
           </div>
         </div>
       </div>
