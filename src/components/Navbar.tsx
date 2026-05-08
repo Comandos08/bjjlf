@@ -21,7 +21,7 @@ type NavItem = {
     | "/about"
     | "/academies"
     | "/register/athlete"
-    | "/register/academy"
+    | "/academy/permit"
     | "/events"
     | "/rankings"
     | "/black-belts"
