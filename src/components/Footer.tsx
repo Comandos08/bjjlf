@@ -4,7 +4,7 @@ import { Logo } from "./Logo";
 import { useI18n } from "@/lib/i18n";
 
 const CONTACT_EMAIL = "contato@bjjlf.com.br";
-const WHATSAPP_NUMBER = "5511999990000"; // formato internacional E.164 sem '+'
+const WHATSAPP_NUMBER = "5521981750139"; // formato internacional E.164 sem '+'
 
 export function Footer() {
   const { t } = useI18n();
@@ -22,7 +22,9 @@ export function Footer() {
             <p className="font-sans text-sm text-gray-400 max-w-xs leading-[1.7]">{t("footer.tagline")}</p>
             <div className="flex gap-2">
               <a
-                href="#"
+                href="https://www.instagram.com/bjjlf.oficial"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Instagram"
                 className="h-8 w-8 grid place-items-center border border-[#333] text-gray-400 hover:text-white hover:border-[#C8A84B] transition-base rounded"
               >
