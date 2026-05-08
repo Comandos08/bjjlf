@@ -178,7 +178,7 @@ function AdminAthletesPage() {
             ) : paged.map((r) => (
               <tr key={r.id} className="border-t border-[#E5E5E5]">
                 <td className="px-4 py-3 text-[#1A1A1A]">{r.full_name}</td>
-                <td className="px-4 py-3 text-[#1A1A1A]">{formatBeltLine(r.belt, r.degree) ?? r.belt}</td>
+                <td className="px-4 py-3 text-[#1A1A1A]">{formatBeltLine(r.belt, r.degree) ?? normalizeBelt(r.belt) ?? r.belt}</td>
                 <td className="px-4 py-3 text-[#666666]">{r.academy ?? "—"}</td>
                 <td className="px-4 py-3 text-[#666666]">{r.registration_number ?? "—"}</td>
                 <td className="px-4 py-3"><StatusBadge status={r.status} /></td>
