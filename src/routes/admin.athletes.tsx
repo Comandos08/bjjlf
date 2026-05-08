@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Loader2, Search, ExternalLink } from "lucide-react";
+import { Loader2, Search, ExternalLink, Star } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdminAuth } from "@/lib/admin-auth";
@@ -25,6 +25,7 @@ type Row = {
   created_at: string;
   registration_number: string | null;
   valid_until: string | null;
+  is_certified: boolean;
 };
 
 
@@ -46,7 +47,7 @@ function AdminAthletesPage() {
     setLoading(true);
     const { data, error } = await supabase
       .from("athlete_profiles")
-      .select("id, user_id, full_name, belt, degree, academy, status, created_at, registration_number, valid_until")
+      .select("id, user_id, full_name, belt, degree, academy, status, created_at, registration_number, valid_until, is_certified")
       .order("created_at", { ascending: false });
     if (error) toast.error(error.message);
     setRows((data ?? []) as Row[]);
@@ -163,6 +164,7 @@ function AdminAthletesPage() {
             <tr>
               <th className="text-left px-4 py-3">Nome</th>
               <th className="text-left px-4 py-3">Faixa</th>
+              <th className="text-left px-4 py-3">Diplomado</th>
               <th className="text-left px-4 py-3">Academia</th>
               <th className="text-left px-4 py-3">ID</th>
               <th className="text-left px-4 py-3">Status</th>
@@ -172,13 +174,20 @@ function AdminAthletesPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={7} className="text-center py-10"><Loader2 className="h-5 w-5 animate-spin inline-block text-[#999999]" /></td></tr>
+              <tr><td colSpan={8} className="text-center py-10"><Loader2 className="h-5 w-5 animate-spin inline-block text-[#999999]" /></td></tr>
             ) : filtered.length === 0 ? (
-              <tr><td colSpan={7} className="text-center py-10 text-[#999999]">Nenhum atleta encontrado.</td></tr>
+              <tr><td colSpan={8} className="text-center py-10 text-[#999999]">Nenhum atleta encontrado.</td></tr>
             ) : paged.map((r) => (
               <tr key={r.id} className="border-t border-[#E5E5E5]">
                 <td className="px-4 py-3 text-[#1A1A1A]">{r.full_name}</td>
                 <td className="px-4 py-3 text-[#1A1A1A]">{formatBeltLine(r.belt, r.degree) ?? normalizeBelt(r.belt) ?? r.belt}</td>
+                <td className="px-4 py-3">
+                  {r.is_certified ? (
+                    <Star className="h-4 w-4 fill-[#B8960C] text-[#B8960C]" aria-label="Diplomado BJJLF" />
+                  ) : (
+                    <span className="text-[#CCCCCC]">—</span>
+                  )}
+                </td>
                 <td className="px-4 py-3 text-[#666666]">{r.academy ?? "—"}</td>
                 <td className="px-4 py-3 text-[#666666]">{r.registration_number ?? "—"}</td>
                 <td className="px-4 py-3"><StatusBadge status={r.status} /></td>
@@ -245,14 +254,18 @@ function EditModal({ row, onClose, onSaved }: { row: Row; onClose: () => void; o
   const initialBelt = (normalizeBelt(row.belt) ?? row.belt) as string;
   const [belt, setBelt] = useState<string>(initialBelt);
   const [degree, setDegree] = useState<number>(row.degree ?? 0);
+  const [isCertified, setIsCertified] = useState<boolean>(!!row.is_certified);
   const [saving, setSaving] = useState(false);
 
   async function save() {
     setSaving(true);
-    const { error } = await supabase.from("athlete_profiles").update({ belt, degree }).eq("id", row.id);
+    const { error } = await supabase
+      .from("athlete_profiles")
+      .update({ belt, degree, is_certified: isCertified })
+      .eq("id", row.id);
     setSaving(false);
     if (error) return toast.error(error.message);
-    toast.success("Faixa/grau atualizados.");
+    toast.success("Atleta atualizado.");
     onSaved();
   }
 
@@ -277,6 +290,17 @@ function EditModal({ row, onClose, onSaved }: { row: Row; onClose: () => void; o
             labelClassName="block text-xs uppercase tracking-wider text-[#666666] mb-1.5"
           />
         </div>
+        <label className="flex items-center gap-2 mb-5 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={isCertified}
+            onChange={(e) => setIsCertified(e.target.checked)}
+            className="h-4 w-4 accent-[#B8960C]"
+          />
+          <span className="text-sm text-[#1A1A1A]" style={{ fontFamily: "Barlow", fontWeight: 600 }}>
+            Diplomado pela BJJLF
+          </span>
+        </label>
         <div className="flex justify-end gap-2">
           <button onClick={onClose} className="px-3 py-2 text-sm text-[#666666] hover:text-[#1A1A1A]">Cancelar</button>
           <button onClick={() => void save()} disabled={saving} className="px-4 py-2 bg-[#C8211A] text-white text-sm uppercase tracking-wider disabled:opacity-60">
