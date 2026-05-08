@@ -149,19 +149,45 @@ export function Navbar() {
           <div className="xl:hidden relative z-50 border-t border-[#333] bg-[#1C1C1C] overflow-x-hidden max-w-full">
             <MobileProfileBlock />
             <nav className="container mx-auto flex flex-col px-4 py-3 max-w-full overflow-x-hidden">
-              {NAV.map((item) => (
-                <Link
-                  key={item.key}
-                  to={item.to ?? "/"}
-                  onClick={() => setOpen(false)}
-                  className="py-3 text-sm tracking-wide text-white truncate"
-                  style={{ fontFamily: "Barlow", fontWeight: 500 }}
-                  activeProps={{ className: "py-3 text-sm tracking-wide text-white truncate border-l-2 border-[#C8A84B] pl-2", style: { fontFamily: "Barlow", fontWeight: 600 } }}
-                  activeOptions={{ exact: item.to === "/" }}
-                >
-                  {t(`nav.${item.key}`)}
-                </Link>
-              ))}
+              {NAV.map((item) => {
+                if (item.children) {
+                  return (
+                    <div key={item.key} className="flex flex-col">
+                      <span
+                        className="py-2 text-xs font-bold uppercase tracking-widest text-gray-500"
+                        style={{ fontFamily: "Barlow", fontWeight: 700 }}
+                      >
+                        {t(`nav.${item.key}`)}
+                      </span>
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.label}
+                          to={child.to ?? "/"}
+                          onClick={() => setOpen(false)}
+                          className="py-2.5 pl-3 text-sm tracking-wide text-gray-300 border-l border-[#444]"
+                          style={{ fontFamily: "Barlow", fontWeight: 500 }}
+                          activeProps={{ className: "py-2.5 pl-3 text-sm tracking-wide text-white border-l-2 border-[#C8A84B]", style: { fontFamily: "Barlow", fontWeight: 600 } }}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  );
+                }
+                return (
+                  <Link
+                    key={item.key}
+                    to={item.to ?? "/"}
+                    onClick={() => setOpen(false)}
+                    className="py-3 text-sm tracking-wide text-white truncate"
+                    style={{ fontFamily: "Barlow", fontWeight: 500 }}
+                    activeProps={{ className: "py-3 text-sm tracking-wide text-white truncate border-l-2 border-[#C8A84B] pl-2", style: { fontFamily: "Barlow", fontWeight: 600 } }}
+                    activeOptions={{ exact: item.to === "/" }}
+                  >
+                    {t(`nav.${item.key}`)}
+                  </Link>
+                );
+              })}
               <MobileAthleteLinks onNavigate={() => setOpen(false)} />
               <MobileGuestLinks onNavigate={() => setOpen(false)} />
               <div className="flex items-center gap-3 pt-3 border-t border-[#333] mt-2">

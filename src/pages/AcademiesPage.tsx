@@ -458,19 +458,6 @@ function AcademyCard({ academy: a }: { academy: Academy }) {
             </span>
           </li>
         </ul>
-
-        {/* CTA — full-width */}
-        <div className="mt-6">
-          <a
-            href={`/academies/${a.slug}`}
-            onClick={(e) => e.preventDefault()}
-            aria-disabled
-            className="block w-full text-center rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white py-3 text-sm uppercase tracking-widest transition-base"
-            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-          >
-            {t("academies.card.viewBtn")}
-          </a>
-        </div>
       </div>
     </article>
   );

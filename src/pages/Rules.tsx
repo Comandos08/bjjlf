@@ -201,13 +201,13 @@ export function RulesPage() {
           <p className={`${typo.body.md} text-gray-300 mb-7`}>
             {t("rules.cta.subtitle")}
           </p>
-          <a
-            href="#"
-            className={`${typo.button.md} inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3.5 hover:bg-primary/90 transition-colors`}
+          <span
+            className={`${typo.button.md} inline-flex items-center gap-2 bg-gray-400 text-white px-7 py-3.5 cursor-not-allowed opacity-60`}
+            title="Documento em elaboração"
           >
             <Download className="w-4 h-4" />
             {t("rules.cta.button")}
-          </a>
+          </span>
         </div>
       </section>
     </>
