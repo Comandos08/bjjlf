@@ -165,8 +165,7 @@ function RenewalBanner({ expiresAt, permitNumber }: { expiresAt: string | null; 
       </div>
       {isCritical && (
         <Link
-          to="/register/academy"
-          search={{ renew: permitNumber } as never}
+          to="/academy/permit"
           className="inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-4 py-2 text-xs uppercase tracking-widest transition shrink-0"
           style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
         >
