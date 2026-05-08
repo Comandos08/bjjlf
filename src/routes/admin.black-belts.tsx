@@ -43,7 +43,7 @@ function badgeLabel(type: string, degree: number): string {
     return degree === 0 ? "Preta Lisa" : `Preta · ${degree}º Grau`;
   }
   const def = BELT_TYPES.find((b) => b.value === type);
-  return def ? `${def.label} · ${degree}º Dan` : type;
+  return def ? `${def.label} · ${degree}º Grau` : type;
 }
 
 function uniq<T>(arr: T[]): T[] { return Array.from(new Set(arr)); }
@@ -246,7 +246,7 @@ function BlackBeltFormModal({ open, row, onClose }: { open: boolean; row: BlackB
               <select className="admin-input w-full" {...register("belt_degree")}>
                 {allowedDegrees.map((d) => {
                   let label: string;
-                  if (isDanBelt(currentBeltType)) label = `${d}º Dan`;
+                  if (isDanBelt(currentBeltType)) label = `${d}º Grau`;
                   else if (d === 0) label = "Lisa (sem grau)";
                   else label = `${d}º Grau`;
                   return <option key={d} value={d}>{label}</option>;
