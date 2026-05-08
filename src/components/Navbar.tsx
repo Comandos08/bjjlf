@@ -129,7 +129,7 @@ export function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          className="xl:hidden p-2 text-foreground"
+          className="xl:hidden p-2 text-[#C8A84B]"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
