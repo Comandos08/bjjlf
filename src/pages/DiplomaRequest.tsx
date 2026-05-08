@@ -4,6 +4,7 @@ import {
   PayPalButtons,
 } from "@paypal/react-paypal-js";
 import { useServerFn } from "@tanstack/react-start";
+import { useSearch } from "@tanstack/react-router";
 import { Logo } from "@/components/Logo";
 import {
   ALL_BELTS,
@@ -75,10 +76,21 @@ export function DiplomaRequestPage() {
   const [touched, setTouched] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [affiliateLocked, setAffiliateLocked] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
   const t = I18N[locale];
   const submit = useServerFn(submitDiplomaRequest);
+  const search = useSearch({ strict: false });
+
+  useEffect(() => {
+    const ref = (search as Record<string, unknown>)?.ref;
+    if (typeof ref === "string" && ref.trim()) {
+      setForm((s) => ({ ...s, affiliateCode: ref.trim().toUpperCase() }));
+      setAffiliateLocked(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const errors = useMemo(() => {
     const e: Partial<Record<keyof FormState, true>> = {};
@@ -145,6 +157,7 @@ export function DiplomaRequestPage() {
         email: form.email.trim(),
         whatsapp: form.whatsapp.trim(),
         affiliateCode: form.affiliateCode.trim(),
+        affiliateSource: affiliateLocked ? "url" : "manual",
         dob: form.dob,
         sex: form.sex,
         documentNumber: form.documentNumber.trim(),
@@ -275,12 +288,35 @@ export function DiplomaRequestPage() {
                     <input
                       type="text"
                       value={form.affiliateCode}
+                      readOnly={affiliateLocked}
                       onChange={(e) =>
+                        !affiliateLocked &&
                         update("affiliateCode", e.target.value.toUpperCase())
                       }
-                      style={inputStyle("affiliateCode")}
+                      style={{
+                        ...inputStyle("affiliateCode"),
+                        backgroundColor: affiliateLocked ? "#1A1A0A" : INPUT_BG,
+                        cursor: affiliateLocked ? "not-allowed" : "text",
+                        borderColor: affiliateLocked
+                          ? GOLD
+                          : touched && errors.affiliateCode
+                            ? RED
+                            : BORDER,
+                      }}
                       className={inputCls("affiliateCode")}
                     />
+                    {affiliateLocked && (
+                      <div
+                        style={{
+                          marginTop: 6,
+                          color: GOLD,
+                          fontSize: 12,
+                          letterSpacing: "0.04em",
+                        }}
+                      >
+                        🔒 {form.affiliateCode}
+                      </div>
+                    )}
                   </Field>
                 </div>
               </div>
