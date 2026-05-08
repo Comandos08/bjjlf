@@ -259,20 +259,8 @@ export function AcademiesPage() {
               >
                 Obtenha o Alvará Oficial BJJLF e apareça no diretório da federação
               </p>
-              <p
-                className="text-[#C8A84B] text-lg mt-2"
-                style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-              >
-                R$ 300,00 / ano
-              </p>
             </div>
-            <Link
-              to="/academy/permit"
-              className="bg-[#C8211A] hover:bg-[#8B1612] text-white text-sm uppercase tracking-widest px-6 py-3 rounded-lg transition-base shrink-0"
-              style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-            >
-              Solicitar Alvará →
-            </Link>
+            <PermitCTAButton />
           </div>
 
           {isLoading ? (
