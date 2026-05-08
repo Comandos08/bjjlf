@@ -61,42 +61,6 @@ const CONFIG: Record<ComingSoonPage, Config> = {
 export function ComingSoon({ page }: { page: ComingSoonPage }) {
   const cfg = CONFIG[page];
   const Icon = cfg.icon;
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!email || submitting) return;
-    setSubmitting(true);
-    try {
-      // Verifica duplicidade
-      const { data: existing } = await supabase
-        .from("waitlist")
-        .select("id")
-        .eq("email", email.trim().toLowerCase())
-        .eq("source", page)
-        .maybeSingle();
-      if (existing) {
-        toast.success("Você já está na lista!");
-        setSubmitted(true);
-        setEmail("");
-        return;
-      }
-      const { error } = await supabase
-        .from("waitlist")
-        .insert({ email: email.trim().toLowerCase(), source: page });
-      if (error) throw error;
-      setSubmitted(true);
-      setEmail("");
-      toast.success("Anotado! Você será o primeiro a saber.");
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Erro";
-      toast.error(`Não foi possível registrar: ${msg}`);
-    } finally {
-      setSubmitting(false);
-    }
-  }
 
   return (
     <section className="relative overflow-hidden bg-gray-50 text-[#1a1a1a]">
@@ -156,56 +120,27 @@ export function ComingSoon({ page }: { page: ComingSoonPage }) {
           {cfg.subtitle}
         </p>
 
-        {/* Feature chips */}
-        <div className="mt-10 grid w-full max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
+        {/* Features */}
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
           {cfg.features.map((f) => (
             <div
               key={f}
-              className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700"
-              style={{ fontFamily: "Barlow", fontWeight: 600 }}
+              className="rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-gray-600 shadow-sm"
             >
               {f}
             </div>
           ))}
         </div>
 
-        {/* Email form */}
-        <div className="mt-12 w-full max-w-md">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
-            Receba um aviso no lançamento
-          </p>
-          <form
-            onSubmit={handleSubmit}
-            className="flex w-full overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm focus-within:border-gray-400"
+        {/* Contact CTA */}
+        <div className="mt-12 w-full max-w-md flex justify-center">
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 bg-[#C8211A] text-white text-sm uppercase tracking-widest px-6 py-3 hover:bg-[#8B1612] transition-colors"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
           >
-            <div className="grid place-items-center pl-4 text-gray-400">
-              <Mail size={16} />
-            </div>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="seu@email.com"
-              className="flex-1 bg-transparent px-3 py-3 text-sm text-gray-800 placeholder-gray-400 outline-none"
-            />
-            <button
-              type="submit"
-              disabled={submitting}
-              className="px-5 text-xs font-bold uppercase tracking-[0.15em] text-white transition-opacity hover:opacity-90 disabled:opacity-60"
-              style={{
-                background:
-                  "linear-gradient(135deg, #C8211A 0%, #8B1612 100%)",
-              }}
-            >
-              {submitting ? "Enviando…" : "Avisar"}
-            </button>
-          </form>
-          {submitted && (
-            <p className="mt-3 text-sm font-medium text-green-600">
-              ✓ Anotado! Você será o primeiro a saber.
-            </p>
-          )}
+            Entre em Contato →
+          </Link>
         </div>
 
         {/* Progress */}
