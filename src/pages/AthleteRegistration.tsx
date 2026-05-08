@@ -59,7 +59,7 @@ export function AthleteRegistration() {
           {step === 0 && (
             <div className="space-y-5">
               <FormSectionTitle>{t("reg.account.title")}</FormSectionTitle>
-              <Field label={t("reg.email")}><TextInput type="email" value={data.email} onChange={(v) => set("email", v)} placeholder="you@email.com" /></Field>
+              <Field label={t("reg.email")}><TextInput type="email" value={data.email} onChange={(v) => set("email", v)} placeholder="" /></Field>
               <Field label={t("reg.password")}><TextInput type="password" value={data.password} onChange={(v) => set("password", v)} placeholder={t("reg.password.min")} /></Field>
               <Field label={t("reg.password.confirm")}><TextInput type="password" placeholder={t("reg.password.min")} /></Field>
               <p className={cn(typo.body.xs, "text-[#6B7280] flex items-center gap-2")}>
