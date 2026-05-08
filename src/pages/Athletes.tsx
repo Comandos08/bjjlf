@@ -172,7 +172,7 @@ export function AthletesPage() {
     const def = getBeltDef(k)!;
     const baseLabel = lang === "en" ? (BELT_LABEL_EN[k] ?? k) : k;
     const d = degree ?? 0;
-    if (def.useDan) return `${baseLabel} · ${d}º Dan`;
+    if (def.useDan) return `${baseLabel} · ${d}º Grau`;
     if (k === "Preta") return d === 0 ? `${baseLabel} ${lang === "en" ? "Plain" : "Lisa"}` : `${baseLabel} · ${d}º Grau`;
     if (d === 0) return baseLabel;
     return `${baseLabel} · ${d}º Grau`;

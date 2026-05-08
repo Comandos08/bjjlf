@@ -35,7 +35,7 @@ function beltLabelFor(type: string, degree: number): string {
     return degree === 0 ? "Preta Lisa" : `Preta · ${degree}º Grau`;
   }
   const label = BELT_LABEL[type] ?? type;
-  return degree > 0 ? `${label} · ${degree}º Dan` : label;
+  return degree > 0 ? `${label} · ${degree}º Grau` : label;
 }
 
 // ISO 3166-1 alpha-2/alpha-3 → nome PT (principais países do BJJ)

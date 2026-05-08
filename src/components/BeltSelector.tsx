@@ -63,7 +63,7 @@ export function BeltSelector({
   const degreeId = useId();
   const def = getBeltDef(belt);
   const allowed = degreesForBelt(belt);
-  const dynamicDegreeLabel = degreeLabel ?? (def?.useDan ? "Dan" : "Grau");
+  const dynamicDegreeLabel = degreeLabel ?? (def?.useDan ? "Grau" : "Grau");
 
   // Clamp degree to a valid value whenever belt changes.
   useEffect(() => {

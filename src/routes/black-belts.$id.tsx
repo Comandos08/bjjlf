@@ -61,7 +61,7 @@ export const Route = createFileRoute("/black-belts/$id")({
       ? bio.length > 160
         ? `${bio.slice(0, 157)}...`
         : bio
-      : `Conheça ${bb.athlete_name}, ${beltLabel(bb.belt_type)}${bb.belt_degree > 0 ? ` ${bb.belt_degree}º Dan` : ""} da Brazilian Jiu-Jitsu Legends Federation.`;
+      : `Conheça ${bb.athlete_name}, ${beltLabel(bb.belt_type)}${bb.belt_degree > 0 ? ` ${bb.belt_degree}º Grau` : ""} da Brazilian Jiu-Jitsu Legends Federation.`;
     const url = `${SITE_URL}/black-belts/${params.id}`;
     const image = bb.photo_url ?? FALLBACK_OG_IMAGE;
     return {
@@ -137,7 +137,7 @@ function BlackBeltDetail() {
                 className="inline-block bg-[#C8211A] text-white px-3 py-1 text-xs uppercase tracking-widest rounded-md mb-3"
                 style={{ fontFamily: "Barlow", fontWeight: 600 }}
               >
-                {bb.belt_degree}º Dan · {bb.belt_type}
+                {bb.belt_degree}º Grau · {bb.belt_type}
               </span>
               <h1
                 className="text-3xl md:text-4xl uppercase leading-tight"

@@ -170,7 +170,7 @@ export function AcademyPermitDocument({
               className="text-[10px] uppercase tracking-widest text-gray-500"
               style={{ fontFamily: "Barlow", fontWeight: 600 }}
             >
-              Faixa Vermelha e Branca 8º Dan — Presidente BJJLF
+              Faixa Vermelha e Branca 8º Grau — Presidente BJJLF
             </p>
           </div>
         </div>
