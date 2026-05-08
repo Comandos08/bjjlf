@@ -307,35 +307,6 @@ export function AcademiesPage() {
         </div>
       </section>
 
-      {/* CTA — dark accent strip */}
-      <section className="bg-gray-900 py-20 md:py-24">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <Building2
-            className="mx-auto mb-4 text-[#C8A84B]"
-            style={{ width: 48, height: 48 }}
-            aria-hidden
-          />
-          <h2
-            className="text-white text-3xl md:text-4xl uppercase tracking-wide leading-tight"
-            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-          >
-            {t("academies.cta.title")}
-          </h2>
-          <p
-            className="mx-auto mt-3 max-w-2xl text-base md:text-lg text-gray-400 leading-[1.7]"
-            style={{ fontFamily: "Barlow", fontWeight: 400 }}
-          >
-            {t("academies.cta.subtitle")}
-          </p>
-          <Link
-            to="/register/academy"
-            className="inline-block mt-7 px-8 py-3.5 rounded-lg bg-[#C8211A] text-white hover:bg-[#8B1612] transition-base text-sm uppercase tracking-widest"
-            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-          >
-            {t("academies.cta.btn")}
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }
