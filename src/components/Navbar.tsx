@@ -26,6 +26,7 @@ type NavItem = {
     | "/rankings"
     | "/black-belts"
     | "/athletes"
+    | "/members"
     | "/rules";
   children?: { label: string; to: NavItem["to"] }[];
   nowrap?: boolean;
