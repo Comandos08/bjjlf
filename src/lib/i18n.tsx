@@ -222,6 +222,7 @@ const PT: Dict = {
   "reg.payment.title": "Pagamento",
   "reg.payment.annual": "Filiação Anual",
   "reg.payment.year": "/ ano",
+  "reg.payment.confirm": "Pagar e Confirmar",
   "reg.card.number": "Número do cartão",
   "reg.card.expiry": "Validade",
   "reg.card.cvc": "CVC",
