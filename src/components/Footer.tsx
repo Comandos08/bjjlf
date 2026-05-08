@@ -69,7 +69,7 @@ export function Footer() {
               <li><Link to="/academies" className={linkClass}>{t("nav.academies")}</Link></li>
               <li><Link to="/register/athlete" className={linkClass}>{t("footer.col.registerAthlete")}</Link></li>
               <li><Link to="/members" className={linkClass}>{t("nav.members")}</Link></li>
-              <li><Link to="/members" className={linkClass}>{t("footer.col.certifiedBlackBelts")}</Link></li>
+              
               <li><Link to="/rules" className={linkClass}>{t("footer.col.rules")}</Link></li>
             </ul>
           </div>
