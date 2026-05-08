@@ -1,16 +1,12 @@
-import { useState, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   BarChart3,
   Award,
   User,
   FileText,
-  Mail,
   type LucideIcon,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 
 export type ComingSoonPage =
   | "rankings"
