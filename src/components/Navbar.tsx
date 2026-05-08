@@ -41,13 +41,7 @@ export function Navbar() {
     { key: "championships", to: "/events" },
     { key: "members", to: "/members" },
     { key: "rankings", to: "/rankings" },
-    {
-      key: "academies",
-      children: [
-        { label: t("academies.nav.affiliated"), to: "/academies" },
-        { label: t("home.cta.academyBtn"), to: "/academy/permit" },
-      ],
-    },
+    { key: "academies", to: "/academies" },
     { key: "rules", to: "/rules" },
     { key: "news", to: "/news" },
   ];
