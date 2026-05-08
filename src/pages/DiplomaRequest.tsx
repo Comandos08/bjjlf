@@ -287,12 +287,35 @@ export function DiplomaRequestPage() {
                     <input
                       type="text"
                       value={form.affiliateCode}
+                      readOnly={affiliateLocked}
                       onChange={(e) =>
+                        !affiliateLocked &&
                         update("affiliateCode", e.target.value.toUpperCase())
                       }
-                      style={inputStyle("affiliateCode")}
+                      style={{
+                        ...inputStyle("affiliateCode"),
+                        backgroundColor: affiliateLocked ? "#1A1A0A" : INPUT_BG,
+                        cursor: affiliateLocked ? "not-allowed" : "text",
+                        borderColor: affiliateLocked
+                          ? GOLD
+                          : touched && errors.affiliateCode
+                            ? RED
+                            : BORDER,
+                      }}
                       className={inputCls("affiliateCode")}
                     />
+                    {affiliateLocked && (
+                      <div
+                        style={{
+                          marginTop: 6,
+                          color: GOLD,
+                          fontSize: 12,
+                          letterSpacing: "0.04em",
+                        }}
+                      >
+                        🔒 {form.affiliateCode}
+                      </div>
+                    )}
                   </Field>
                 </div>
               </div>
