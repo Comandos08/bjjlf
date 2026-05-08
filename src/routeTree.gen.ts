@@ -20,6 +20,7 @@ import { Route as MyProfileRouteImport } from './routes/my-profile'
 import { Route as MyPermitsRouteImport } from './routes/my-permits'
 import { Route as MyCompetitionsRouteImport } from './routes/my-competitions'
 import { Route as MyCardRouteImport } from './routes/my-card'
+import { Route as MembersRouteImport } from './routes/members'
 import { Route as GraduatesRouteImport } from './routes/graduates'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as DiplomaRequestRouteImport } from './routes/diploma-request'
@@ -113,6 +114,11 @@ const MyCompetitionsRoute = MyCompetitionsRouteImport.update({
 const MyCardRoute = MyCardRouteImport.update({
   id: '/my-card',
   path: '/my-card',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MembersRoute = MembersRouteImport.update({
+  id: '/members',
+  path: '/members',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GraduatesRoute = GraduatesRouteImport.update({
@@ -324,6 +330,7 @@ export interface FileRoutesByFullPath {
   '/diploma-request': typeof DiplomaRequestRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
+  '/members': typeof MembersRoute
   '/my-card': typeof MyCardRoute
   '/my-competitions': typeof MyCompetitionsRoute
   '/my-permits': typeof MyPermitsRoute
@@ -375,6 +382,7 @@ export interface FileRoutesByTo {
   '/diploma-request': typeof DiplomaRequestRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
+  '/members': typeof MembersRoute
   '/my-card': typeof MyCardRoute
   '/my-competitions': typeof MyCompetitionsRoute
   '/my-permits': typeof MyPermitsRoute
@@ -428,6 +436,7 @@ export interface FileRoutesById {
   '/diploma-request': typeof DiplomaRequestRoute
   '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
+  '/members': typeof MembersRoute
   '/my-card': typeof MyCardRoute
   '/my-competitions': typeof MyCompetitionsRoute
   '/my-permits': typeof MyPermitsRoute
@@ -482,6 +491,7 @@ export interface FileRouteTypes {
     | '/diploma-request'
     | '/events'
     | '/graduates'
+    | '/members'
     | '/my-card'
     | '/my-competitions'
     | '/my-permits'
@@ -533,6 +543,7 @@ export interface FileRouteTypes {
     | '/diploma-request'
     | '/events'
     | '/graduates'
+    | '/members'
     | '/my-card'
     | '/my-competitions'
     | '/my-permits'
@@ -585,6 +596,7 @@ export interface FileRouteTypes {
     | '/diploma-request'
     | '/events'
     | '/graduates'
+    | '/members'
     | '/my-card'
     | '/my-competitions'
     | '/my-permits'
@@ -638,6 +650,7 @@ export interface RootRouteChildren {
   DiplomaRequestRoute: typeof DiplomaRequestRoute
   EventsRoute: typeof EventsRouteWithChildren
   GraduatesRoute: typeof GraduatesRouteWithChildren
+  MembersRoute: typeof MembersRoute
   MyCardRoute: typeof MyCardRoute
   MyCompetitionsRoute: typeof MyCompetitionsRoute
   MyPermitsRoute: typeof MyPermitsRoute
@@ -739,6 +752,13 @@ declare module '@tanstack/react-router' {
       path: '/my-card'
       fullPath: '/my-card'
       preLoaderRoute: typeof MyCardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/members': {
+      id: '/members'
+      path: '/members'
+      fullPath: '/members'
+      preLoaderRoute: typeof MembersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/graduates': {
@@ -1100,6 +1120,7 @@ const rootRouteChildren: RootRouteChildren = {
   DiplomaRequestRoute: DiplomaRequestRoute,
   EventsRoute: EventsRouteWithChildren,
   GraduatesRoute: GraduatesRouteWithChildren,
+  MembersRoute: MembersRoute,
   MyCardRoute: MyCardRoute,
   MyCompetitionsRoute: MyCompetitionsRoute,
   MyPermitsRoute: MyPermitsRoute,
