@@ -128,10 +128,22 @@ export function RankingsPage() {
             </div>
           ) : rows.length === 0 ? (
             <div
-              className="py-20 text-center text-muted-foreground border border-white/10"
-              style={{ fontFamily: "Barlow", fontWeight: 500 }}
+              className="py-20 px-6 text-center border border-white/10"
+              style={{ fontFamily: "Barlow" }}
             >
-              {t("rankings.empty")}
+              <Trophy className="mx-auto h-14 w-14 text-gold/70" aria-hidden />
+              <h3
+                className="mt-5 text-2xl uppercase tracking-wide text-white"
+                style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+              >
+                {t("rankings.empty.title")}
+              </h3>
+              <p
+                className="mx-auto mt-2 max-w-md text-sm text-gray-400 leading-[1.7]"
+                style={{ fontFamily: "Barlow", fontWeight: 400 }}
+              >
+                {t("rankings.empty.subtitle")}
+              </p>
             </div>
           ) : (
             <>
