@@ -653,6 +653,7 @@ const EN: Dict = {
   "reg.payment.title": "Payment",
   "reg.payment.annual": "Annual Membership",
   "reg.payment.year": "/ year",
+  "reg.payment.confirm": "Pay & Confirm",
   "reg.card.number": "Card number",
   "reg.card.expiry": "Expiry",
   "reg.card.cvc": "CVC",
