@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { typo } from "@/lib/typography";
-import { Download } from "lucide-react";
+
 
 type Section = {
   value: string;
