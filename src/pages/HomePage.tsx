@@ -138,7 +138,7 @@ function HeroSlider() {
       </button>
 
 
-      <div className="relative z-10 max-w-7xl mx-auto h-full px-4 lg:px-12 flex items-center pb-32">
+      <div className="relative z-10 max-w-7xl mx-auto h-full px-4 lg:px-12 flex items-center">
         <div className="max-w-2xl">
           {(() => {
             const tagValue = slide.tagText ? (slide.tagText[lang] || "").trim() : "";
@@ -263,49 +263,6 @@ function HeroSlider() {
         ))}
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 z-10" style={{ background: "rgba(0,0,0,0.4)" }}>
-        <div className="max-w-7xl mx-auto px-4 lg:px-12 py-3 flex items-center gap-3">
-          <div className="flex gap-2 flex-1 overflow-x-auto scrollbar-hide">
-            {SLIDES.map((s, idx) => (
-              <button
-                key={idx}
-                onClick={() => setI(idx)}
-                className={`flex items-center gap-3 px-3 py-2 shrink-0 transition-base text-left ${
-                  idx === i ? "border-l-[3px] border-[#C8A84B] bg-black/40" : "border-l-[3px] border-transparent hover:bg-black/30"
-                }`}
-              >
-                <SafeImage src={s.thumb} alt={s.badge} fallbackLabel={s.badge} source="hero-thumb" hideFallbackIcon wrapperClassName="h-10 w-16 shrink-0" />
-                <div>
-                  <div
-                    className={`text-xs uppercase tracking-widest ${idx === i ? "text-white" : "text-gray-400"}`}
-                    style={{ fontFamily: "Barlow", fontWeight: 600 }}
-                  >
-                    {s.badge}
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-          <div className="flex gap-2 shrink-0">
-            <button
-              onClick={() => setI((p) => (p - 1 + SLIDES.length) % SLIDES.length)}
-              className="h-9 w-9 grid place-items-center border border-white/40 text-white hover:bg-white hover:text-black transition-base rounded-full"
-              aria-label="Prev"
-              style={{ borderRadius: "9999px" }}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <button
-              onClick={() => setI((p) => (p + 1) % SLIDES.length)}
-              className="h-9 w-9 grid place-items-center border border-white/40 text-white hover:bg-white hover:text-black transition-base rounded-full"
-              aria-label="Next"
-              style={{ borderRadius: "9999px" }}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      </div>
     </section>
   );
 }
