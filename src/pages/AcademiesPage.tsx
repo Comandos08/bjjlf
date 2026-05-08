@@ -13,7 +13,6 @@ import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import {
   ACADEMY_BR_STATES,
-  ACADEMY_COUNTRIES,
   type Academy,
 } from "@/data/academies";
 import { useAcademies } from "@/lib/queries";
@@ -128,9 +127,9 @@ export function AcademiesPage() {
       <section className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
           {[
-            { n: stats ? String(stats.academies) : "—", l: t("academies.stats.certified") },
-            { n: stats ? String(stats.countries) : "—", l: t("academies.stats.countries") },
-            { n: stats ? String(stats.athletes) : "—", l: t("academies.stats.athletes") },
+            { n: String(stats?.academies ?? 0), l: t("academies.stats.certified") },
+            { n: String(stats?.countries ?? 0), l: t("academies.stats.countries") },
+            { n: String(stats?.athletes ?? 0), l: t("academies.stats.athletes") },
           ].map((s, i) => (
             <div key={s.l} className="flex items-center gap-3">
               {i > 0 && (
@@ -189,11 +188,13 @@ export function AcademiesPage() {
             ariaLabel={t("academies.filter.allCountries")}
           >
             <option value={ALL}>{t("academies.filter.allCountries")}</option>
-            {ACADEMY_COUNTRIES.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
+            {Array.from(new Set(academies.map((a) => a.country).filter(Boolean)))
+              .sort((a, b) => a.localeCompare(b, "pt-BR"))
+              .map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
           </SelectField>
 
           <SelectField
@@ -307,35 +308,6 @@ export function AcademiesPage() {
         </div>
       </section>
 
-      {/* CTA — dark accent strip */}
-      <section className="bg-gray-900 py-20 md:py-24">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <Building2
-            className="mx-auto mb-4 text-[#C8A84B]"
-            style={{ width: 48, height: 48 }}
-            aria-hidden
-          />
-          <h2
-            className="text-white text-3xl md:text-4xl uppercase tracking-wide leading-tight"
-            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-          >
-            {t("academies.cta.title")}
-          </h2>
-          <p
-            className="mx-auto mt-3 max-w-2xl text-base md:text-lg text-gray-400 leading-[1.7]"
-            style={{ fontFamily: "Barlow", fontWeight: 400 }}
-          >
-            {t("academies.cta.subtitle")}
-          </p>
-          <Link
-            to="/register/academy"
-            className="inline-block mt-7 px-8 py-3.5 rounded-lg bg-[#C8211A] text-white hover:bg-[#8B1612] transition-base text-sm uppercase tracking-widest"
-            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-          >
-            {t("academies.cta.btn")}
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }

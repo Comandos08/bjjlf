@@ -669,7 +669,7 @@ function CTASection() {
         </Link>
 
         <Link
-          to="/register/academy"
+          to="/academy/permit"
           className="group bg-white border border-gray-200 rounded-xl p-8 transition-base hover:shadow-md"
           style={{ borderLeft: "4px solid #C8A84B" }}
         >
@@ -730,7 +730,7 @@ function YouTubeSection() {
       <div className="max-w-7xl mx-auto px-6">
         <SectionHeader
           title={t("home.youtube.title")}
-          action={{ label: t("home.youtube.visit"), href: "https://www.youtube.com/" }}
+          action={{ label: t("home.youtube.visit"), href: "https://www.youtube.com/@bjjlf" }}
         />
         <div
           className="flex flex-wrap items-center gap-2 mb-6"
