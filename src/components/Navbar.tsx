@@ -48,7 +48,7 @@ export function Navbar() {
         { label: t("home.cta.academyBtn"), to: "/register/academy" },
       ],
     },
-    { key: "athletes", to: "/athletes" },
+    { key: "athletes", to: "/members" },
     { key: "rules", to: "/rules" },
     { key: "news", to: "/news" },
   ];
