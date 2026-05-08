@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAdminAuth } from "@/lib/admin-auth";
 import { cn } from "@/lib/utils";
 import { BeltSelector } from "@/components/BeltSelector";
-import { formatBeltLine, defaultDegreeForBelt, type BeltName } from "@/lib/belts-ibjjf";
+import { formatBeltLine, defaultDegreeForBelt, normalizeBelt, type BeltName } from "@/lib/belts-ibjjf";
 import { ADMIN_PAGE_SIZE, Pagination, useDebounced } from "@/components/admin/Pagination";
 
 export const Route = createFileRoute("/admin/athletes")({
@@ -242,8 +242,9 @@ function StatusBadge({ status }: { status: Row["status"] }) {
 }
 
 function EditModal({ row, onClose, onSaved }: { row: Row; onClose: () => void; onSaved: () => void }) {
-  const [belt, setBelt] = useState(row.belt);
-  const [degree, setDegree] = useState(row.degree);
+  const initialBelt = (normalizeBelt(row.belt) ?? row.belt) as string;
+  const [belt, setBelt] = useState<string>(initialBelt);
+  const [degree, setDegree] = useState<number>(row.degree ?? 0);
   const [saving, setSaving] = useState(false);
 
   async function save() {
