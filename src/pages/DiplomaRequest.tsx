@@ -157,6 +157,7 @@ export function DiplomaRequestPage() {
         email: form.email.trim(),
         whatsapp: form.whatsapp.trim(),
         affiliateCode: form.affiliateCode.trim(),
+        affiliateSource: affiliateLocked ? "url" : "manual",
         dob: form.dob,
         sex: form.sex,
         documentNumber: form.documentNumber.trim(),
