@@ -46,7 +46,16 @@ function HeroAdminPage() {
         <div className="grid grid-cols-3 gap-4">
           {rows.map((r) => (
             <div key={r.id} className="border" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}>
-              <div className="h-40 bg-cover bg-center" style={{ backgroundImage: `url(${bustAnyImageUrl(r.image_url) ?? r.image_url})` }} />
+              <div className="h-40 bg-[#F5F5F5] overflow-hidden">
+                {r.image_url ? (
+                  <img
+                    src={bustAnyImageUrl(r.image_url) ?? r.image_url}
+                    alt={r.title_pt}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                ) : null}
+              </div>
               <div className="p-3 space-y-2">
                 <div className="text-[#1A1A1A] text-sm font-medium truncate">{r.title_pt}</div>
                 <div className="flex items-center justify-between text-xs text-[#999999]">
