@@ -52,8 +52,8 @@ export function AcademiesPage() {
     let cancelled = false;
     void (async () => {
       const [aRes, cRes, athRes] = await Promise.all([
-        supabase.from("affiliated_academies").select("*", { count: "exact", head: true }).eq("is_active", true),
-        supabase.from("affiliated_academies").select("country").eq("is_active", true),
+        supabase.from("affiliated_academies_view").select("*", { count: "exact", head: true }),
+        supabase.from("affiliated_academies_view").select("country"),
         supabase.from("athlete_profiles").select("*", { count: "exact", head: true }).eq("status", "active"),
       ]);
       if (cancelled) return;
