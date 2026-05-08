@@ -299,7 +299,7 @@ function AdminPermitsPage() {
             </table>
           </div>
         )}
-        <Pagination page={page} pageSize={ADMIN_PAGE_SIZE} total={filtered.length} onChange={setPage} />
+        <Pagination page={page} perPage={ADMIN_PAGE_SIZE} total={filtered.length} onPageChange={setPage} itemLabel="alvarás" />
       </div>
 
       {detailRow && <DetailModal row={detailRow} onClose={() => setDetailRow(null)} t={t} />}
