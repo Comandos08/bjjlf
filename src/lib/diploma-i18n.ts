@@ -57,8 +57,9 @@ const beltsBase = (
   purple: string,
   brown: string,
   blackPattern: (n: number) => string,
-  coralPattern: (n: number) => string,
-  redPattern: (n: number) => string,
+  vermelhaPretaLabel: string,
+  vermelhaBrancaLabel: string,
+  vermelhaLabel: string,
 ): Record<BeltKey, string> => ({
   white,
   grey,
@@ -75,9 +76,9 @@ const beltsBase = (
   black5: blackPattern(5),
   black6: blackPattern(6),
   black7: blackPattern(7),
-  coral8: coralPattern(8),
-  coral9: coralPattern(9),
-  red9: redPattern(9),
+  vermelha_e_preta7: vermelhaPretaLabel,
+  vermelha_e_branca8: vermelhaBrancaLabel,
+  red9: vermelhaLabel,
 });
 
 export const I18N: Record<Locale, Dict> = {
