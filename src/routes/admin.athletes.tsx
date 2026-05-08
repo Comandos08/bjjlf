@@ -174,13 +174,20 @@ function AdminAthletesPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={7} className="text-center py-10"><Loader2 className="h-5 w-5 animate-spin inline-block text-[#999999]" /></td></tr>
+              <tr><td colSpan={8} className="text-center py-10"><Loader2 className="h-5 w-5 animate-spin inline-block text-[#999999]" /></td></tr>
             ) : filtered.length === 0 ? (
-              <tr><td colSpan={7} className="text-center py-10 text-[#999999]">Nenhum atleta encontrado.</td></tr>
+              <tr><td colSpan={8} className="text-center py-10 text-[#999999]">Nenhum atleta encontrado.</td></tr>
             ) : paged.map((r) => (
               <tr key={r.id} className="border-t border-[#E5E5E5]">
                 <td className="px-4 py-3 text-[#1A1A1A]">{r.full_name}</td>
                 <td className="px-4 py-3 text-[#1A1A1A]">{formatBeltLine(r.belt, r.degree) ?? normalizeBelt(r.belt) ?? r.belt}</td>
+                <td className="px-4 py-3">
+                  {r.is_certified ? (
+                    <Star className="h-4 w-4 fill-[#B8960C] text-[#B8960C]" aria-label="Diplomado BJJLF" />
+                  ) : (
+                    <span className="text-[#CCCCCC]">—</span>
+                  )}
+                </td>
                 <td className="px-4 py-3 text-[#666666]">{r.academy ?? "—"}</td>
                 <td className="px-4 py-3 text-[#666666]">{r.registration_number ?? "—"}</td>
                 <td className="px-4 py-3"><StatusBadge status={r.status} /></td>
