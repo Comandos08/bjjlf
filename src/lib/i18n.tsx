@@ -441,6 +441,20 @@ const PT: Dict = {
   "rules.cta.title": "Regulamento Completo",
   "rules.cta.subtitle": "Baixe o documento oficial em PDF com todos os detalhes técnicos, anexos e atualizações da temporada.",
   "rules.cta.button": "Baixar Regulamento Completo (PDF)",
+
+  // Contact page
+  "contact.title": "Fale Conosco",
+  "contact.intro": "Tem alguma dúvida, sugestão ou quer falar com a federação? Envie sua mensagem abaixo e nossa equipe retornará em breve.",
+  "contact.field.name": "Nome",
+  "contact.field.email": "E-mail",
+  "contact.field.subject": "Assunto",
+  "contact.field.message": "Mensagem",
+  "contact.submit": "Enviar Mensagem",
+  "contact.sending": "Enviando...",
+  "contact.success": "Mensagem enviada! Retornaremos em breve.",
+  "contact.sendAnother": "Enviar outra mensagem",
+  "contact.error": "Não foi possível enviar sua mensagem. Tente novamente.",
+  "footer.col.contactUs": "Fale Conosco",
 };
 
 const EN: Dict = {
@@ -869,6 +883,20 @@ const EN: Dict = {
   "rules.cta.title": "Full Rulebook",
   "rules.cta.subtitle": "Download the official PDF with full technical details, appendices and seasonal updates.",
   "rules.cta.button": "Download Full Rulebook (PDF)",
+
+  // Contact page
+  "contact.title": "Contact Us",
+  "contact.intro": "Have a question, suggestion, or want to reach the federation? Send a message and our team will get back to you soon.",
+  "contact.field.name": "Name",
+  "contact.field.email": "Email",
+  "contact.field.subject": "Subject",
+  "contact.field.message": "Message",
+  "contact.submit": "Send Message",
+  "contact.sending": "Sending...",
+  "contact.success": "Message sent! We'll get back to you soon.",
+  "contact.sendAnother": "Send another message",
+  "contact.error": "Could not send your message. Please try again.",
+  "footer.col.contactUs": "Contact Us",
 };
 
 const DICTS: Record<Lang, Dict> = { pt: PT, en: EN };
