@@ -347,9 +347,51 @@ function InfoRow({ label, value, last }: { label: string; value: string; last?: 
       </span>
     </div>
   );
-}
+  }
 
+  async function handleSavePdf() {
+    if (!cardRef.current) return;
+    setSavingPdf(true);
+    try {
+      const [{ toPng }, { jsPDF }] = await Promise.all([
+        import("html-to-image"),
+        import("jspdf"),
+      ]);
+      const node = cardRef.current;
+      const img = node.querySelector("img");
+      if (img && !img.complete) {
+        await new Promise((res) => {
+          img.onload = res;
+          img.onerror = res;
+        });
+      }
+      const rect = node.getBoundingClientRect();
+      const dataUrl = await toPng(node, {
+        cacheBust: true,
+        pixelRatio: 3,
+        backgroundColor: "#ffffff",
+        width: rect.width,
+        height: rect.height,
+      });
 
+      // PDF A4 retrato com a carteirinha centralizada
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const cardW = 90; // ~tamanho cartão
+      const cardH = (rect.height / rect.width) * cardW;
+      const x = (pageW - cardW) / 2;
+      const y = (pageH - cardH) / 2;
+      pdf.addImage(dataUrl, "PNG", x, y, cardW, cardH, undefined, "FAST");
+      pdf.save(`carteirinha-bjjlf-${profile?.registration_number ?? "atleta"}.pdf`);
+      toast.success("PDF gerado!");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Erro";
+      toast.error(`Falha ao gerar PDF: ${msg}`);
+    } finally {
+      setSavingPdf(false);
+    }
+  }
 
 
 function CardPageSkeleton() {
