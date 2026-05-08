@@ -45,7 +45,7 @@ export function Navbar() {
       key: "academies",
       children: [
         { label: t("academies.nav.affiliated"), to: "/academies" },
-        { label: t("home.cta.academyBtn"), to: "/register/academy" },
+        { label: t("home.cta.academyBtn"), to: "/academy/permit" },
       ],
     },
     { key: "rules", to: "/rules" },
