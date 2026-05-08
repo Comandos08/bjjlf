@@ -104,7 +104,7 @@ export function defaultDegreeForBelt(name: string | null | undefined): number {
 export function formatDegreeLabel(belt: string | null | undefined, degree: number): string {
   const def = getBeltDef(belt);
   if (!def) return String(degree);
-  if (def.useDan) return `${degree}º Dan`;
+  if (def.useDan) return `${degree}º Grau`;
   if (belt === "Preta") return degree === 0 ? "Lisa" : `${degree}º Grau`;
   if (degree === 0) return ""; // colored belt with no stripe
   return `${degree}º Grau`;
@@ -118,7 +118,7 @@ export function formatBeltLine(belt: string | null | undefined, degree: number |
   const def = getBeltDef(belt);
   if (!def) return null;
   const d = typeof degree === "number" ? degree : 0;
-  if (def.useDan) return `${def.name} · ${d}º Dan`;
+  if (def.useDan) return `${def.name} · ${d}º Grau`;
   if (belt === "Preta") return d === 0 ? "Faixa Preta Lisa" : `Faixa Preta · ${d}º Grau`;
   if (d === 0) return `Faixa ${def.name}`;
   return `Faixa ${def.name} · ${d}º Grau`;
