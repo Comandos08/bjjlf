@@ -34,6 +34,8 @@ export type Academy = {
   sinceTimestamp: number;
   /** 2-letter initials shown when no logo image is available. */
   initials: string;
+  /** Optional uploaded logo URL (from academy permit). */
+  logoUrl?: string | null;
 };
 
 export const ACADEMIES: Academy[] = [
