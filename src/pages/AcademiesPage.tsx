@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { PageHero } from "@/components/Stepper";
 import { useI18n } from "@/lib/i18n";
+import { useAthleteAuth } from "@/lib/athlete-auth";
 import { cn } from "@/lib/utils";
 import {
   ACADEMY_BR_STATES,
