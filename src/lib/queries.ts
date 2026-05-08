@@ -222,6 +222,12 @@ export type HeroSlide = {
   subPt: string;
   subEn: string;
   badge: string;
+  tagPt: string | null;
+  tagEn: string | null;
+  badge1: string | null;
+  badge2: string | null;
+  ctaPrimaryUrl: string | null;
+  ctaSecondaryUrl: string | null;
 };
 
 export function useHeroSlides() {
