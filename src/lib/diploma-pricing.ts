@@ -16,8 +16,8 @@ export type BeltKey =
   | "black5"
   | "black6"
   | "black7"
-  | "coral8"
-  | "coral9"
+  | "vermelha_e_preta7"
+  | "vermelha_e_branca8"
   | "red9";
 
 export type PriceGroup = "preta" | "marromRoxa" | "azulVerde" | "ateLaranja";
@@ -38,8 +38,8 @@ export const BELT_GROUP: Record<BeltKey, PriceGroup> = {
   black5: "preta",
   black6: "preta",
   black7: "preta",
-  coral8: "preta",
-  coral9: "preta",
+  vermelha_e_preta7: "preta",
+  vermelha_e_branca8: "preta",
   red9: "preta",
 };
 
@@ -72,8 +72,8 @@ export const BELT_SWATCH: Record<BeltKey, string> = {
   black5: "#0A0A0A",
   black6: "#0A0A0A",
   black7: "#0A0A0A",
-  coral8: "#C8211A",
-  coral9: "#C8211A",
+  vermelha_e_preta7: "#8B0000",
+  vermelha_e_branca8: "#DC2626",
   red9: "#9B1B14",
 };
 
@@ -93,8 +93,8 @@ export const ALL_BELTS: BeltKey[] = [
   "black5",
   "black6",
   "black7",
-  "coral8",
-  "coral9",
+  "vermelha_e_preta7",
+  "vermelha_e_branca8",
   "red9",
 ];
 

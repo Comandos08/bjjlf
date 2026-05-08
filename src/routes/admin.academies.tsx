@@ -17,6 +17,7 @@ import {
   AdminSection, AdminTableShell, AdminTH, AdminTD, EmptyState,
 } from "@/components/admin/AdminUI";
 import { ImageUploader } from "@/components/admin/ImageUploader";
+import { normalizeBelt } from "@/lib/belts-ibjjf";
 
 export const Route = createFileRoute("/admin/academies")({
   head: () => ({ meta: [{ title: "Academias — BJJLF Admin" }, { name: "robots", content: "noindex, nofollow" }] }),
@@ -102,7 +103,7 @@ function AcademiesAdminPage() {
                 <AdminTD className="text-[#1A1A1A] font-medium">{r.name}</AdminTD>
                 <AdminTD>{r.professor}</AdminTD>
                 <AdminTD>{r.city}{r.state ? `, ${r.state}` : ""} — {r.flag_emoji} {r.country_code}</AdminTD>
-                <AdminTD>{r.belt} {r.belt_degree > 0 ? `${r.belt_degree}°` : ""}</AdminTD>
+                <AdminTD>{normalizeBelt(r.belt) ?? r.belt} {r.belt_degree > 0 ? `${r.belt_degree}º Grau` : ""}</AdminTD>
                 <AdminTD>{new Date(r.affiliated_since).toLocaleDateString("pt-BR")}</AdminTD>
                 <AdminTD>
                   <AdminToggle checked={r.is_active} disabled={!writable}
