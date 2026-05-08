@@ -163,6 +163,7 @@ export function Navbar() {
                 </Link>
               ))}
               <MobileAthleteLinks onNavigate={() => setOpen(false)} />
+              <MobileGuestLinks onNavigate={() => setOpen(false)} />
               <div className="flex items-center gap-3 pt-3 border-t border-[#333] mt-2">
                 <LangToggle lang={lang} onChange={setLang} />
                 <button aria-label="Shop" className="text-gray-400 hover:text-white">
@@ -453,6 +454,23 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
       >
         <LogOut size={16} className="shrink-0" /> Sair
       </button>
+    </div>
+  );
+}
+
+function MobileGuestLinks({ onNavigate }: { onNavigate: () => void }) {
+  const { user, profile, isActive, isLoading } = useAthleteAuth();
+  if (isLoading) return null;
+  if (user && profile && isActive) return null;
+
+  const linkClass = "py-2.5 text-sm text-gray-300 flex items-center gap-2 truncate";
+  const linkStyle = { fontFamily: "Barlow", fontWeight: 500 } as const;
+
+  return (
+    <div className="flex flex-col border-t border-[#333] mt-2 pt-2">
+      <Link to="/athlete/login" onClick={onNavigate} className={linkClass} style={linkStyle}>
+        <LogIn size={16} className="shrink-0" /> <span className="truncate">Entrar</span>
+      </Link>
     </div>
   );
 }
