@@ -1,5 +1,6 @@
 import { Target, Eye, HeartHandshake } from "lucide-react";
 import dragon from "@/assets/dragon-logo.png";
+import mestreMalibu from "@/assets/mestre-sergio-malibu.jpg";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
