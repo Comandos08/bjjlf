@@ -25,6 +25,7 @@ type Row = {
   created_at: string;
   registration_number: string | null;
   valid_until: string | null;
+  is_certified: boolean;
 };
 
 
