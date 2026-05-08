@@ -138,7 +138,7 @@ function HeroSlider() {
       </button>
 
 
-      <div className="relative z-10 max-w-7xl mx-auto h-full px-4 lg:px-12 flex items-center pb-32">
+      <div className="relative z-10 max-w-7xl mx-auto h-full px-4 lg:px-12 flex items-center">
         <div className="max-w-2xl">
           {(() => {
             const tagValue = slide.tagText ? (slide.tagText[lang] || "").trim() : "";
