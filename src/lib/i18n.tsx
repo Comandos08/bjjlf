@@ -860,6 +860,8 @@ const EN: Dict = {
   "rankings.filters.modality": "Modality",
   "rankings.filters.all": "All",
   "rankings.empty": "No results found",
+  "rankings.empty.title": "Rankings coming soon",
+  "rankings.empty.subtitle": "Rankings will be published after the first official events take place.",
   "rankings.col.position": "Position",
   "rankings.col.athlete": "Athlete",
   "rankings.col.belt": "Belt",
