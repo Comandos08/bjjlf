@@ -14,7 +14,7 @@ export function Footer() {
   return (
     <footer className="bg-navbar" style={{ borderTop: "3px solid #C8211A", paddingTop: "48px", paddingBottom: "24px" }}>
       <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
-        <div className="grid gap-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-[2fr,1fr,1fr,1fr,1.5fr]">
+        <div className="grid gap-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-[2fr,1fr,1fr,1fr]">
           {/* Col 1 — Logo + tagline + social */}
           <div className="col-span-2 lg:col-span-1 space-y-4">
             <Logo />
@@ -77,21 +77,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 5 — Newsletter */}
-          <div className="col-span-2 lg:col-span-1">
-            <h4 className={headingClass}>{t("footer.newsletter")}</h4>
-            <p className="font-sans text-sm text-gray-400 mb-3">{t("footer.newsletter.desc")}</p>
-            <form className="flex" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder={t("footer.email.placeholder")}
-                className="font-sans flex-1 h-9 px-3 bg-dark-2 border border-[#333] text-white text-sm focus:outline-none focus:border-[#C8A84B] transition-base rounded-l-md"
-              />
-              <button type="submit" className="font-heading uppercase tracking-widest font-bold text-xs h-9 px-4 bg-[#C8211A] text-white hover:bg-[#8B1612] transition-base rounded-r-md">
-                {t("footer.subscribe")}
-              </button>
-            </form>
-          </div>
         </div>
 
         <div className="mt-10 pt-5 border-t border-[#2A2A2A] flex flex-col sm:flex-row items-center justify-between gap-3">
