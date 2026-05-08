@@ -144,9 +144,9 @@ export function Navbar() {
             type="button"
             aria-label="Fechar menu"
             onClick={() => setOpen(false)}
-            className="xl:hidden fixed inset-0 top-16 z-40 bg-black/40"
+            className="xl:hidden fixed inset-0 top-16 z-40 bg-black/20"
           />
-          <div className="xl:hidden relative z-50 border-t border-[#222] bg-navbar overflow-x-hidden max-w-full">
+          <div className="xl:hidden relative z-50 border-t border-[#333] bg-[#1C1C1C] overflow-x-hidden max-w-full">
             <MobileProfileBlock />
             <nav className="container mx-auto flex flex-col px-4 py-3 max-w-full overflow-x-hidden">
               {NAV.map((item) => (
@@ -154,16 +154,16 @@ export function Navbar() {
                   key={item.key}
                   to={item.to ?? "/"}
                   onClick={() => setOpen(false)}
-                  className="py-3 text-sm tracking-wide text-gray-300 truncate"
+                  className="py-3 text-sm tracking-wide text-white truncate"
                   style={{ fontFamily: "Barlow", fontWeight: 500 }}
-                  activeProps={{ className: "py-3 text-sm tracking-wide text-white truncate", style: { fontFamily: "Barlow", fontWeight: 600 } }}
+                  activeProps={{ className: "py-3 text-sm tracking-wide text-white truncate border-l-2 border-[#C8A84B] pl-2", style: { fontFamily: "Barlow", fontWeight: 600 } }}
                   activeOptions={{ exact: item.to === "/" }}
                 >
                   {t(`nav.${item.key}`)}
                 </Link>
               ))}
               <MobileAthleteLinks onNavigate={() => setOpen(false)} />
-              <div className="flex items-center gap-3 pt-3 border-t border-[#222] mt-2">
+              <div className="flex items-center gap-3 pt-3 border-t border-[#333] mt-2">
                 <LangToggle lang={lang} onChange={setLang} />
                 <button aria-label="Shop" className="text-gray-400 hover:text-white">
                   <ShoppingBag size={18} />
