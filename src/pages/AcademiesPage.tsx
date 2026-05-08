@@ -344,6 +344,31 @@ function SelectField({
   );
 }
 
+function formatBeltLabel(belt?: string | null): string {
+  if (!belt) return "";
+  const k = belt.trim().toLowerCase();
+  const map: Record<string, string> = {
+    coral: "Coral",
+    black: "Preta",
+    preta: "Preta",
+    red_black: "Vermelha e Preta",
+    vermelha_e_preta: "Vermelha e Preta",
+    red_white: "Vermelha e Branca",
+    vermelha_e_branca: "Vermelha e Branca",
+    red: "Vermelha",
+    vermelha: "Vermelha",
+    brown: "Marrom",
+    marrom: "Marrom",
+    purple: "Roxa",
+    roxa: "Roxa",
+    blue: "Azul",
+    azul: "Azul",
+    white: "Branca",
+    branca: "Branca",
+  };
+  return map[k] ?? belt.charAt(0).toUpperCase() + belt.slice(1).toLowerCase();
+}
+
 function AcademyCard({ academy: a }: { academy: Academy }) {
   const { t } = useI18n();
 
@@ -435,7 +460,7 @@ function AcademyCard({ academy: a }: { academy: Academy }) {
                   fontWeight: 700,
                 }}
               >
-                {a.belt}
+                {formatBeltLabel(a.belt)}
               </span>
               · {a.degree}° {t("academies.card.degree")}
             </span>
