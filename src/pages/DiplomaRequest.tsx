@@ -4,6 +4,7 @@ import {
   PayPalButtons,
 } from "@paypal/react-paypal-js";
 import { useServerFn } from "@tanstack/react-start";
+import { useSearch } from "@tanstack/react-router";
 import { Logo } from "@/components/Logo";
 import {
   ALL_BELTS,
