@@ -6,6 +6,7 @@ export type DiplomaRow = {
   email: string;
   whatsapp: string;
   affiliateCode: string;
+  affiliateSource?: string;
   dob: string;
   sex: string;
   documentNumber: string;
