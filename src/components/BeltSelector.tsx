@@ -65,8 +65,14 @@ export function BeltSelector({
   const allowed = degreesForBelt(belt);
   const dynamicDegreeLabel = degreeLabel ?? (def?.useDan ? "Grau" : "Grau");
 
-  // Clamp degree to a valid value whenever belt changes.
+  // Clamp degree to a valid value whenever the user changes the belt.
+  // Skip the first render so the initial belt/degree from props are preserved.
+  const initializedRef = useRef(false);
   useEffect(() => {
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      return;
+    }
     if (!allowed.includes(degree)) {
       onDegreeChange(defaultDegreeForBelt(belt));
     }
