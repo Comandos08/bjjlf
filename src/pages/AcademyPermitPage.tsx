@@ -221,10 +221,10 @@ export function AcademyPermitPage() {
         instagram: academy.instagram.trim() || null,
         notes: academy.notes.trim() || null,
         // Responsible professor (from athlete profile)
-        responsible_name: profile.full_name,
+        responsible_name: profile!.full_name,
         email: auth.user?.email ?? "",
         user_id: auth.user?.id ?? null,
-        athlete_id: profile.id,
+        athlete_id: profile!.id,
         // Additional professors
         additional_professors: profs.map((p) => ({
           name: p.name,
