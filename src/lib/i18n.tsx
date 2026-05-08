@@ -148,6 +148,7 @@ const PT: Dict = {
   "footer.privacy": "Privacidade",
   "footer.terms": "Termos",
   "footer.copyright": "© 2026 BJJLF — Brazilian Jiu-Jitsu Legends Federation",
+  "footer.developedBy": "Desenvolvido por",
 
   // Graduates
   "grad.breadcrumb": "Faixas Pretas",
@@ -663,6 +664,7 @@ const EN: Dict = {
   "footer.privacy": "Privacy",
   "footer.terms": "Terms",
   "footer.copyright": "© 2026 BJJLF — Brazilian Jiu-Jitsu Legends Federation",
+  "footer.developedBy": "Developed by",
 
   "grad.breadcrumb": "Black Belts",
   "grad.title": "Certified Black Belts",
