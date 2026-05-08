@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Instagram, Youtube, Twitter, Mail, MessageCircle } from "lucide-react";
+import { Instagram, Mail, MessageCircle } from "lucide-react";
 import { Logo } from "./Logo";
 import { useI18n } from "@/lib/i18n";
 
@@ -21,17 +21,14 @@ export function Footer() {
             <Logo />
             <p className="font-sans text-sm text-gray-400 max-w-xs leading-[1.7]">{t("footer.tagline")}</p>
             <div className="flex gap-2">
-              {[Facebook, Instagram, Youtube, Twitter].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  aria-label="Rede social"
-                  className="h-8 w-8 grid place-items-center border border-[#333] text-gray-400 hover:text-white hover:border-[#C8A84B] transition-base rounded"
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                </a>
-              ))}
               <a
+                href="#"
+                aria-label="Instagram"
+                className="h-8 w-8 grid place-items-center border border-[#333] text-gray-400 hover:text-white hover:border-[#C8A84B] transition-base rounded"
+              >
+                <Instagram className="h-3.5 w-3.5" />
+              </a>
+              <
                 href={`https://wa.me/${WHATSAPP_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
