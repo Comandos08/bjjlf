@@ -220,6 +220,7 @@ export type Database = {
           first_login_completed: boolean
           full_name: string
           id: string
+          is_certified: boolean
           modality: string | null
           photo_url: string | null
           professor: string | null
@@ -241,6 +242,7 @@ export type Database = {
           first_login_completed?: boolean
           full_name: string
           id?: string
+          is_certified?: boolean
           modality?: string | null
           photo_url?: string | null
           professor?: string | null
@@ -262,6 +264,7 @@ export type Database = {
           first_login_completed?: boolean
           full_name?: string
           id?: string
+          is_certified?: boolean
           modality?: string | null
           photo_url?: string | null
           professor?: string | null
@@ -820,6 +823,7 @@ export type Database = {
           degree: number | null
           full_name: string | null
           id: string | null
+          is_certified: boolean | null
           photo_url: string | null
           registration_number: string | null
           status: string | null
@@ -832,6 +836,7 @@ export type Database = {
           degree?: number | null
           full_name?: string | null
           id?: string | null
+          is_certified?: boolean | null
           photo_url?: string | null
           registration_number?: string | null
           status?: string | null
@@ -844,6 +849,7 @@ export type Database = {
           degree?: number | null
           full_name?: string | null
           id?: string | null
+          is_certified?: boolean | null
           photo_url?: string | null
           registration_number?: string | null
           status?: string | null
