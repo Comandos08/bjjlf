@@ -39,7 +39,7 @@ const NAV: { to: string; label: string; icon: typeof LayoutDashboard; section: A
   { to: "/admin/news", label: "Notícias", icon: FileText, section: "news" },
   { to: "/admin/rankings", label: "Rankings", icon: Trophy, section: "rankings" },
   { to: "/admin/youtube", label: "YouTube", icon: Youtube, section: "youtube" },
-  { to: "/admin/black-belts", label: "Faixas Pretas", icon: Award, section: "black-belts" },
+  
   // "Academias" removed — academies are now managed entirely through "Alvarás".
   { to: "/admin/athletes", label: "Membros", icon: Users, section: "academies" },
   { to: "/admin/registrations", label: "Inscrições", icon: ClipboardList, section: "academies" },
