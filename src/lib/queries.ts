@@ -252,6 +252,12 @@ export function useHeroSlides() {
           subPt: row.subtitle_pt ?? "",
           subEn: row.subtitle_en ?? "",
           badge: row.badge1_label ?? row.tag_en ?? row.title_en,
+          tagPt: row.tag_pt ?? null,
+          tagEn: row.tag_en ?? null,
+          badge1: row.badge1_label ?? null,
+          badge2: row.badge2_label ?? null,
+          ctaPrimaryUrl: row.cta_primary_url ?? null,
+          ctaSecondaryUrl: row.cta_secondary_url ?? null,
         };
       });
     },
