@@ -14,7 +14,7 @@ export function Footer() {
   return (
     <footer className="bg-navbar" style={{ borderTop: "3px solid #C8211A", paddingTop: "48px", paddingBottom: "24px" }}>
       <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
-        <div className="grid gap-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-[2fr,1fr,1fr,1fr]">
+        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-[2fr_1fr_1fr_1fr]">
           {/* Col 1 — Logo + tagline + social */}
           <div className="col-span-2 lg:col-span-1 space-y-4">
             <Logo />
