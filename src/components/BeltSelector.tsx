@@ -6,7 +6,7 @@
  * - Renders a small color badge next to each select for visual context.
  * - Uncontrolled-friendly: pass `value`/`onChange` props.
  */
-import { useEffect, useId } from "react";
+import { useEffect, useId, useRef } from "react";
 import {
   BELT_DEFS,
   ADULT_BELT_NAMES,
