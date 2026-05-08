@@ -47,7 +47,7 @@ function AdminAthletesPage() {
     setLoading(true);
     const { data, error } = await supabase
       .from("athlete_profiles")
-      .select("id, user_id, full_name, belt, degree, academy, status, created_at, registration_number, valid_until")
+      .select("id, user_id, full_name, belt, degree, academy, status, created_at, registration_number, valid_until, is_certified")
       .order("created_at", { ascending: false });
     if (error) toast.error(error.message);
     setRows((data ?? []) as Row[]);
