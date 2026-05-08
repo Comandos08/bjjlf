@@ -10,7 +10,7 @@ import { formatBeltLine, defaultDegreeForBelt, normalizeBelt, type BeltName } fr
 import { ADMIN_PAGE_SIZE, Pagination, useDebounced } from "@/components/admin/Pagination";
 
 export const Route = createFileRoute("/admin/athletes")({
-  head: () => ({ meta: [{ title: "Admin — Atletas" }, { name: "robots", content: "noindex, nofollow" }] }),
+  head: () => ({ meta: [{ title: "Admin — Membros" }, { name: "robots", content: "noindex, nofollow" }] }),
   component: AdminAthletesPage,
 });
 
