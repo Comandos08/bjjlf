@@ -163,6 +163,7 @@ export function Navbar() {
                 </Link>
               ))}
               <MobileAthleteLinks onNavigate={() => setOpen(false)} />
+              <MobileGuestLinks onNavigate={() => setOpen(false)} />
               <div className="flex items-center gap-3 pt-3 border-t border-[#333] mt-2">
                 <LangToggle lang={lang} onChange={setLang} />
                 <button aria-label="Shop" className="text-gray-400 hover:text-white">
