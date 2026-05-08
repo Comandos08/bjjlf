@@ -101,7 +101,7 @@ function SettingsPage() {
         <div className="border p-6 space-y-3" style={{ background: "#FFFFFF", borderColor: "#E5E5E5" }}>
           <div>
             <label className="admin-label">Nome da Federação</label>
-            <input className="admin-input w-full" defaultValue="Brazilian Jiu-Jitsu Lovable Federation" readOnly />
+            <input className="admin-input w-full" defaultValue="Brazilian Jiu-Jitsu Legends Federation" readOnly />
           </div>
           <div>
             <label className="admin-label">Email de contato</label>
