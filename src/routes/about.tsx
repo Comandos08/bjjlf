@@ -4,10 +4,10 @@ import { AboutPage } from "@/pages/AboutPage";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About BJJLF — Mission, History & Leadership" },
-      { name: "description", content: "Discover the mission, history, and leadership behind the Brazilian Jiu-Jitsu Legends Federation." },
-      { property: "og:title", content: "About BJJLF" },
-      { property: "og:description", content: "Mission, history, and leadership of the Brazilian Jiu-Jitsu Legends Federation." },
+      { title: "Sobre a BJJLF — Missão, História e Liderança" },
+      { name: "description", content: "Conheça a missão, história e liderança da Brazilian Jiu-Jitsu Legends Federation." },
+      { property: "og:title", content: "Sobre a BJJLF" },
+      { property: "og:description", content: "Conheça a missão, história e liderança da Brazilian Jiu-Jitsu Legends Federation." },
     ],
   }),
   component: AboutPage,
