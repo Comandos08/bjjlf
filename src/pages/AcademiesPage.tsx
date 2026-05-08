@@ -401,22 +401,32 @@ function AcademyCard({ academy: a }: { academy: Academy }) {
       <div className="p-6 flex flex-col flex-1">
         {/* Top row: avatar + verified pill */}
         <div className="flex items-center justify-between gap-3">
-          <div
-            className="grid place-items-center text-white shrink-0 rounded-full"
-            style={{
-              width: 64,
-              height: 64,
-              background: "#1A1A1A",
-              border: "2px solid #C8A84B",
-              fontFamily: "Barlow Condensed",
-              fontWeight: 700,
-              fontSize: 20,
-              letterSpacing: "0.04em",
-            }}
-            aria-hidden
-          >
-            {a.initials}
-          </div>
+          {a.logoUrl ? (
+            <img
+              src={a.logoUrl}
+              alt={a.name}
+              className="shrink-0 rounded-full object-cover bg-white"
+              style={{ width: 64, height: 64, border: "2px solid #C8A84B" }}
+              loading="lazy"
+            />
+          ) : (
+            <div
+              className="grid place-items-center text-white shrink-0 rounded-full"
+              style={{
+                width: 64,
+                height: 64,
+                background: "#1A1A1A",
+                border: "2px solid #C8A84B",
+                fontFamily: "Barlow Condensed",
+                fontWeight: 700,
+                fontSize: 20,
+                letterSpacing: "0.04em",
+              }}
+              aria-hidden
+            >
+              {a.initials}
+            </div>
+          )}
           <span
             className="inline-block uppercase rounded-full bg-green-50 text-green-700 border border-green-200 px-3 py-1 text-[10px] tracking-widest"
             style={{ fontFamily: "Barlow", fontWeight: 700 }}

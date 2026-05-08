@@ -182,6 +182,7 @@ export function useAcademies() {
           since: row.approved_at ? row.approved_at.slice(0, 7) : "",
           sinceTimestamp: Number.isFinite(ts) ? ts : 0,
           initials,
+          logoUrl: bustStorageUrl(row.logo_url, row.approved_at) ?? row.logo_url ?? null,
         };
       });
     },
