@@ -348,7 +348,7 @@ function formatBeltLabel(belt?: string | null): string {
   if (!belt) return "";
   const k = belt.trim().toLowerCase();
   const map: Record<string, string> = {
-    coral: "Coral",
+    coral: "Vermelha e Preta",
     black: "Preta",
     preta: "Preta",
     red_black: "Vermelha e Preta",

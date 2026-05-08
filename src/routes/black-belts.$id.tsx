@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { normalizeBelt } from "@/lib/belts-ibjjf";
 
 const SITE_URL = "https://bjjlf.lovable.app";
 const FALLBACK_OG_IMAGE = `${SITE_URL}/og-default.png`;
@@ -137,7 +138,7 @@ function BlackBeltDetail() {
                 className="inline-block bg-[#C8211A] text-white px-3 py-1 text-xs uppercase tracking-widest rounded-md mb-3"
                 style={{ fontFamily: "Barlow", fontWeight: 600 }}
               >
-                {bb.belt_degree}º Grau · {bb.belt_type}
+                {normalizeBelt(bb.belt_type) ?? bb.belt_type}{bb.belt_degree > 0 ? ` · ${bb.belt_degree}º Grau` : ""}
               </span>
               <h1
                 className="text-3xl md:text-4xl uppercase leading-tight"
