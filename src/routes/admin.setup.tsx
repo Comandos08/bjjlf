@@ -157,7 +157,7 @@ function SetupPage() {
                 type="email"
                 autoComplete="email"
                 className="admin-input w-full"
-                placeholder="admin@bjjlf.com"
+                placeholder="seu@email.com"
               />
             </Field>
             <Field label="Senha" error={errors.password?.message}>

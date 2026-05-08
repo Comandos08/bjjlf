@@ -104,8 +104,10 @@ function SettingsPage() {
             <input className="admin-input w-full" defaultValue="Brazilian Jiu-Jitsu Legends Federation" readOnly />
           </div>
           <div>
-            <label className="admin-label">Email de contato</label>
-            <input className="admin-input w-full" defaultValue="contato@bjjlf.com" readOnly />
+            <label className="admin-label">Contato público</label>
+            <p className="text-sm text-[#666666]">
+              Contato público via /contact. Nenhum email é exibido publicamente.
+            </p>
           </div>
           <p className="text-xs text-[#999999] pt-2">Mais configurações disponíveis em breve.</p>
         </div>
