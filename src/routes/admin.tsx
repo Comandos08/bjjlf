@@ -41,7 +41,7 @@ const NAV: { to: string; label: string; icon: typeof LayoutDashboard; section: A
   { to: "/admin/youtube", label: "YouTube", icon: Youtube, section: "youtube" },
   { to: "/admin/black-belts", label: "Faixas Pretas", icon: Award, section: "black-belts" },
   { to: "/admin/academies", label: "Academias", icon: Building2, section: "academies" },
-  { to: "/admin/athletes", label: "Atletas", icon: Users, section: "academies" },
+  { to: "/admin/athletes", label: "Membros", icon: Users, section: "academies" },
   { to: "/admin/registrations", label: "Inscrições", icon: ClipboardList, section: "academies" },
   { to: "/admin/permits", label: "Alvarás", icon: ShieldCheck, section: "academies" },
   { to: "/admin/hero", label: "Hero Slider", icon: ImageIcon, section: "hero" },
