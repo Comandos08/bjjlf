@@ -105,7 +105,7 @@ function LoginPage() {
                 type="email"
                 autoComplete="email"
                 className="admin-input w-full"
-                placeholder="admin@bjjlf.com"
+                placeholder="seu@email.com"
               />
               {errors.email && <span className="block text-xs text-[#C8211A] mt-1">{errors.email.message}</span>}
             </label>
