@@ -164,6 +164,7 @@ function AdminAthletesPage() {
             <tr>
               <th className="text-left px-4 py-3">Nome</th>
               <th className="text-left px-4 py-3">Faixa</th>
+              <th className="text-left px-4 py-3">Diplomado</th>
               <th className="text-left px-4 py-3">Academia</th>
               <th className="text-left px-4 py-3">ID</th>
               <th className="text-left px-4 py-3">Status</th>
