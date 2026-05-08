@@ -54,10 +54,11 @@ export async function appendDiplomaRow(row: DiplomaRow): Promise<void> {
       "PAID",
       "NO",
       "NO",
+      row.affiliateSource ?? "manual",
     ],
   ];
 
-  const range = `${TAB}!A:S`;
+  const range = `${TAB}!A:T`;
   const url = `${GATEWAY_URL}/spreadsheets/${SHEET_ID}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
 
   const response = await fetch(url, {
