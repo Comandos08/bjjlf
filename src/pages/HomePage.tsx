@@ -124,7 +124,7 @@ function HeroSlider() {
       {/* Setas laterais (visíveis no hover desktop, sempre no mobile) */}
       <button
         onClick={() => setI((p) => (p - 1 + SLIDES.length) % SLIDES.length)}
-        className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-11 w-11 grid place-items-center rounded-full bg-black/50 text-white border border-white/30 hover:bg-[#C8211A] hover:border-[#C8211A] transition md:opacity-0 md:group-hover/hero:opacity-100"
+        className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-11 w-11 hidden md:grid place-items-center rounded-full bg-black/50 text-white border border-white/30 hover:bg-[#C8211A] hover:border-[#C8211A] transition md:opacity-0 md:group-hover/hero:opacity-100"
         aria-label="Anterior"
       >
         <ChevronLeft className="h-5 w-5" />
