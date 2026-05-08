@@ -472,3 +472,19 @@ function AcademyCardSkeleton() {
     </div>
   );
 }
+
+function PermitCTAButton() {
+  const { user } = useAthleteAuth();
+  const to = user ? "/academy/permit" : "/athlete/login";
+  const search = user ? undefined : ({ redirect: "/academy/permit" } as never);
+  return (
+    <Link
+      to={to}
+      search={search}
+      className="bg-[#C8211A] hover:bg-[#8B1612] text-white text-sm uppercase tracking-widest px-6 py-3 rounded-lg transition-base shrink-0"
+      style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+    >
+      Solicitar Alvará →
+    </Link>
+  );
+}
