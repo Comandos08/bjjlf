@@ -76,6 +76,11 @@ function HeroSlider() {
         titleText: { pt: s.titlePt, en: s.titleEn },
         subText: { pt: s.subPt, en: s.subEn },
         badge: s.badge,
+        tagText: (s.tagPt || s.tagEn) ? { pt: s.tagPt ?? s.tagEn ?? "", en: s.tagEn ?? s.tagPt ?? "" } : null,
+        badge1: s.badge1,
+        badge2: s.badge2,
+        ctaPrimaryUrl: s.ctaPrimaryUrl,
+        ctaSecondaryUrl: s.ctaSecondaryUrl,
       }))
     : (slidesLoading ? [] : FALLBACK_SLIDES);
 
