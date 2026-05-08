@@ -41,7 +41,7 @@ export function AcademyRegistration() {
               <div className="grid sm:grid-cols-2 gap-5">
                 <Field label={t("reg.academy.belt")}>
                   <select className="h-9 w-full bg-input border border-border px-3 text-sm rounded-md" value={head.belt} onChange={(e) => setHead({ ...head, belt: e.target.value })}>
-                    <option>Preta · 1º Grau</option><option>Preta · 2º Grau</option><option>Preta · 3º Grau</option><option>Preta · 4º Grau</option><option>Vermelha e Preta · 7º Grau</option><option>Vermelha e Branca · 8º Grau</option><option>Vermelha · 9º Grau</option>
+                    <option>Preta Lisa</option><option>Preta · 1º Grau</option><option>Preta · 2º Grau</option><option>Preta · 3º Grau</option><option>Preta · 4º Grau</option><option>Preta · 5º Grau</option><option>Preta · 6º Grau</option><option>Vermelha e Preta · 7º Grau</option><option>Vermelha e Branca · 8º Grau</option><option>Vermelha · 9º Grau</option>
                   </select>
                 </Field>
                 <Field label={t("reg.academy.years")}><Input type="number" value={head.years} onChange={(e) => setHead({ ...head, years: e.target.value })} /></Field>
