@@ -140,12 +140,18 @@ function HeroSlider() {
 
       <div className="relative z-10 max-w-7xl mx-auto h-full px-4 lg:px-12 flex items-center pb-32">
         <div className="max-w-2xl">
-          <span
-            className="inline-block bg-[#C8211A] text-white px-3 py-1.5 mb-5 text-xs uppercase tracking-widest rounded-md"
-            style={{ fontFamily: "Barlow", fontWeight: 600 }}
-          >
-            {t("hero.featured")}
-          </span>
+          {(() => {
+            const tagValue = slide.tagText ? (slide.tagText[lang] || "").trim() : t("hero.featured");
+            if (!tagValue) return null;
+            return (
+              <span
+                className="inline-block bg-[#C8211A] text-white px-3 py-1.5 mb-5 text-xs uppercase tracking-widest rounded-md"
+                style={{ fontFamily: "Barlow", fontWeight: 600 }}
+              >
+                {tagValue}
+              </span>
+            );
+          })()}
           <h1
             className="font-display tracking-wider leading-[0.95] text-white"
             style={{ fontSize: "clamp(48px, 7vw, 96px)", letterSpacing: "0.04em" }}
@@ -159,20 +165,38 @@ function HeroSlider() {
             {slideSub}
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-2">
-            {["BJJLF", slide.badge].map((b, k) => (
-              <span
-                key={k}
-                className="px-3 py-1.5 bg-white/10 backdrop-blur border border-white/20 text-white text-xs uppercase tracking-widest rounded-md"
-                style={{ fontFamily: "Barlow", fontWeight: 600 }}
-              >
-                {b}
-              </span>
-            ))}
-          </div>
+          {(() => {
+            const badges = (slide.badge1 !== undefined || slide.badge2 !== undefined)
+              ? [slide.badge1, slide.badge2].filter((b): b is string => !!b && b.trim() !== "")
+              : ["BJJLF", slide.badge].filter((b) => !!b);
+            if (badges.length === 0) return null;
+            return (
+              <div className="mt-6 flex flex-wrap gap-2">
+                {badges.map((b, k) => (
+                  <span
+                    key={k}
+                    className="px-3 py-1.5 bg-white/10 backdrop-blur border border-white/20 text-white text-xs uppercase tracking-widest rounded-md"
+                    style={{ fontFamily: "Barlow", fontWeight: 600 }}
+                  >
+                    {b}
+                  </span>
+                ))}
+              </div>
+            );
+          })()}
 
           <div className="mt-7 flex flex-wrap gap-3">
-            {slide.event_id ? (
+            {slide.ctaPrimaryUrl !== undefined ? (
+              slide.ctaPrimaryUrl ? (
+                <a
+                  href={slide.ctaPrimaryUrl}
+                  className="inline-flex items-center justify-center rounded-md bg-white text-black hover:bg-gray-100 px-5 py-2.5 text-sm uppercase tracking-widest no-underline transition-base"
+                  style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                >
+                  {t("hero.cta.learnMore")}
+                </a>
+              ) : null
+            ) : slide.event_id ? (
               <Link
                 to="/events/$eventId"
                 params={{ eventId: slide.event_id }}
@@ -192,7 +216,17 @@ function HeroSlider() {
                 {t("hero.cta.learnMore")}
               </Link>
             )}
-            {slide.event_id ? (
+            {slide.ctaSecondaryUrl !== undefined ? (
+              slide.ctaSecondaryUrl ? (
+                <a
+                  href={slide.ctaSecondaryUrl}
+                  className="inline-flex items-center justify-center rounded-md bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest no-underline transition-base"
+                  style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                >
+                  {t("hero.cta.register")}
+                </a>
+              ) : null
+            ) : slide.event_id ? (
               <Link
                 to="/register/event/$eventId"
                 params={{ eventId: slide.event_id }}
