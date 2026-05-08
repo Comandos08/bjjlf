@@ -457,6 +457,23 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
   );
 }
 
+function MobileGuestLinks({ onNavigate }: { onNavigate: () => void }) {
+  const { user, profile, isActive, isLoading } = useAthleteAuth();
+  if (isLoading) return null;
+  if (user && profile && isActive) return null;
+
+  const linkClass = "py-2.5 text-sm text-gray-300 flex items-center gap-2 truncate";
+  const linkStyle = { fontFamily: "Barlow", fontWeight: 500 } as const;
+
+  return (
+    <div className="flex flex-col border-t border-[#333] mt-2 pt-2">
+      <Link to="/athlete/login" onClick={onNavigate} className={linkClass} style={linkStyle}>
+        <LogIn size={16} className="shrink-0" /> <span className="truncate">Entrar</span>
+      </Link>
+    </div>
+  );
+}
+
 function LangToggle({ lang, onChange }: { lang: Lang; onChange: (l: Lang) => void }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
