@@ -63,20 +63,47 @@ export async function appendDiplomaRow(row: DiplomaRow): Promise<void> {
   const range = `${TAB}!A:T`;
   const url = `${GATEWAY_URL}/spreadsheets/${SHEET_ID}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${LOVABLE_API_KEY}`,
-      "X-Connection-Api-Key": GOOGLE_SHEETS_API_KEY,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ values }),
+  // 1) Persist to Supabase first (authoritative source for the admin panel).
+  const { error: dbError } = await supabaseAdmin.from("diploma_leads").insert({
+    first_name: row.firstName,
+    last_name: row.lastName,
+    email: row.email,
+    whatsapp: row.whatsapp,
+    affiliate_code: row.affiliateCode,
+    affiliate_source: row.affiliateSource ?? "manual",
+    belt: row.belt,
+    martial_art: row.martialArt,
+    language: row.language,
+    currency: row.currency,
+    price: row.price,
   });
+  if (dbError) {
+    console.error("diploma_leads insert failed:", dbError);
+  }
 
-  if (!response.ok) {
-    const body = await response.text();
-    throw new Error(
-      `Google Sheets append failed [${response.status}]: ${body}`,
-    );
+  // 2) Best-effort append to Google Sheets. Failure here is logged but
+  //    does not break the request — Supabase is the system of record.
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "X-Connection-Api-Key": GOOGLE_SHEETS_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ values }),
+    });
+    if (!response.ok) {
+      const body = await response.text();
+      console.error(
+        `Google Sheets append failed [${response.status}]: ${body}`,
+      );
+    }
+  } catch (err) {
+    console.error("Google Sheets append threw:", err);
+  }
+
+  if (dbError) {
+    throw new Error(`diploma_leads insert failed: ${dbError.message}`);
   }
 }
