@@ -5,7 +5,7 @@
  */
 import { createFileRoute, Link, Outlet, redirect, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Loader2, LayoutDashboard, Calendar, FileText, Trophy, Youtube, Award, Building2, Image as ImageIcon, Settings, LogOut, Users, ClipboardList, ShieldCheck } from "lucide-react";
+import { Loader2, LayoutDashboard, Calendar, FileText, Trophy, Youtube, Award, Building2, Image as ImageIcon, Settings, LogOut, Users, ClipboardList, ShieldCheck, FileSignature } from "lucide-react";
 import { useAdminAuth, canAccessSection, type AdminSection } from "@/lib/admin-auth";
 import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
