@@ -435,6 +435,54 @@ export type Database = {
         }
         Relationships: []
       }
+      diploma_leads: {
+        Row: {
+          affiliate_code: string
+          affiliate_source: string
+          belt: string
+          created_at: string
+          currency: string
+          email: string
+          first_name: string
+          id: string
+          language: string
+          last_name: string
+          martial_art: string
+          price: number
+          whatsapp: string | null
+        }
+        Insert: {
+          affiliate_code: string
+          affiliate_source?: string
+          belt: string
+          created_at?: string
+          currency?: string
+          email: string
+          first_name: string
+          id?: string
+          language?: string
+          last_name: string
+          martial_art?: string
+          price?: number
+          whatsapp?: string | null
+        }
+        Update: {
+          affiliate_code?: string
+          affiliate_source?: string
+          belt?: string
+          created_at?: string
+          currency?: string
+          email?: string
+          first_name?: string
+          id?: string
+          language?: string
+          last_name?: string
+          martial_art?: string
+          price?: number
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
       event_prices: {
         Row: {
           amount_cents: number
