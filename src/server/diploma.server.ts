@@ -1,3 +1,5 @@
+import { supabaseAdmin } from "@/integrations/supabase/client.server";
+
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/google_sheets/v4";
 
 export type DiplomaRow = {
