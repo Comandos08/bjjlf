@@ -54,6 +54,7 @@ import { Route as AdminNewsRouteImport } from './routes/admin.news'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminHeroRouteImport } from './routes/admin.hero'
 import { Route as AdminEventsRouteImport } from './routes/admin.events'
+import { Route as AdminDiplomaRequestsRouteImport } from './routes/admin.diploma-requests'
 import { Route as AdminBlackBeltsRouteImport } from './routes/admin.black-belts'
 import { Route as AdminAthletesRouteImport } from './routes/admin.athletes'
 import { Route as AdminAcademiesRouteImport } from './routes/admin.academies'
@@ -286,6 +287,11 @@ const AdminEventsRoute = AdminEventsRouteImport.update({
   path: '/events',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminDiplomaRequestsRoute = AdminDiplomaRequestsRouteImport.update({
+  id: '/diploma-requests',
+  path: '/diploma-requests',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminBlackBeltsRoute = AdminBlackBeltsRouteImport.update({
   id: '/black-belts',
   path: '/black-belts',
@@ -346,6 +352,7 @@ export interface FileRoutesByFullPath {
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/athletes': typeof AdminAthletesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
+  '/admin/diploma-requests': typeof AdminDiplomaRequestsRoute
   '/admin/events': typeof AdminEventsRoute
   '/admin/hero': typeof AdminHeroRoute
   '/admin/login': typeof AdminLoginRoute
@@ -398,6 +405,7 @@ export interface FileRoutesByTo {
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/athletes': typeof AdminAthletesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
+  '/admin/diploma-requests': typeof AdminDiplomaRequestsRoute
   '/admin/events': typeof AdminEventsRoute
   '/admin/hero': typeof AdminHeroRoute
   '/admin/login': typeof AdminLoginRoute
@@ -452,6 +460,7 @@ export interface FileRoutesById {
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/athletes': typeof AdminAthletesRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
+  '/admin/diploma-requests': typeof AdminDiplomaRequestsRoute
   '/admin/events': typeof AdminEventsRoute
   '/admin/hero': typeof AdminHeroRoute
   '/admin/login': typeof AdminLoginRoute
@@ -507,6 +516,7 @@ export interface FileRouteTypes {
     | '/admin/academies'
     | '/admin/athletes'
     | '/admin/black-belts'
+    | '/admin/diploma-requests'
     | '/admin/events'
     | '/admin/hero'
     | '/admin/login'
@@ -559,6 +569,7 @@ export interface FileRouteTypes {
     | '/admin/academies'
     | '/admin/athletes'
     | '/admin/black-belts'
+    | '/admin/diploma-requests'
     | '/admin/events'
     | '/admin/hero'
     | '/admin/login'
@@ -612,6 +623,7 @@ export interface FileRouteTypes {
     | '/admin/academies'
     | '/admin/athletes'
     | '/admin/black-belts'
+    | '/admin/diploma-requests'
     | '/admin/events'
     | '/admin/hero'
     | '/admin/login'
@@ -992,6 +1004,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminEventsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/diploma-requests': {
+      id: '/admin/diploma-requests'
+      path: '/diploma-requests'
+      fullPath: '/admin/diploma-requests'
+      preLoaderRoute: typeof AdminDiplomaRequestsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/black-belts': {
       id: '/admin/black-belts'
       path: '/black-belts'
@@ -1041,6 +1060,7 @@ interface AdminRouteChildren {
   AdminAcademiesRoute: typeof AdminAcademiesRoute
   AdminAthletesRoute: typeof AdminAthletesRoute
   AdminBlackBeltsRoute: typeof AdminBlackBeltsRoute
+  AdminDiplomaRequestsRoute: typeof AdminDiplomaRequestsRoute
   AdminEventsRoute: typeof AdminEventsRoute
   AdminHeroRoute: typeof AdminHeroRoute
   AdminLoginRoute: typeof AdminLoginRoute
@@ -1058,6 +1078,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAcademiesRoute: AdminAcademiesRoute,
   AdminAthletesRoute: AdminAthletesRoute,
   AdminBlackBeltsRoute: AdminBlackBeltsRoute,
+  AdminDiplomaRequestsRoute: AdminDiplomaRequestsRoute,
   AdminEventsRoute: AdminEventsRoute,
   AdminHeroRoute: AdminHeroRoute,
   AdminLoginRoute: AdminLoginRoute,
