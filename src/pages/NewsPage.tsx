@@ -44,7 +44,8 @@ export function NewsPage() {
 
   const { data: news = [], isLoading } = useNews();
   const filtered = cat === "All" ? news : news.filter((n) => n.category === cat);
-  const featured = filtered.find((n) => n.featured) ?? filtered[0];
+  const featuredList = filtered.filter((n) => n.featured);
+  const featured = featuredList[0] ?? filtered[0];
   const rest = filtered.filter((n) => n.id !== featured?.id);
   const pages = Math.max(1, Math.ceil(rest.length / perPage));
   const visible = rest.slice((page - 1) * perPage, page * perPage);
@@ -90,71 +91,19 @@ export function NewsPage() {
         </div>
       </div>
 
-      {/* Featured */}
+      {/* Featured hero card */}
       {featured && (
         <section className="bg-white py-12 md:py-16">
           <div className="max-w-7xl mx-auto px-6">
-            <article className="grid lg:grid-cols-[3fr,2fr] gap-0 items-stretch bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden">
-              <div className="relative aspect-[16/10] lg:aspect-auto overflow-hidden bg-gray-100">
-                <img
-                  src={bustAnyImageUrl(featured.image) ?? featured.image}
-                  alt={translateTitle(featured)}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-8 lg:p-10 flex flex-col justify-center">
-                <div className="flex flex-wrap items-center gap-2 mb-4">
-                  <span
-                    className="bg-[#C8211A] text-white px-2 py-0.5 rounded text-xs uppercase tracking-widest"
-                    style={{ fontFamily: "Barlow", fontWeight: 700 }}
-                  >
-                    {t("news.featured")}
-                  </span>
-                  <span
-                    className="text-xs uppercase tracking-widest text-[#C8211A]"
-                    style={{ fontFamily: "Barlow", fontWeight: 700 }}
-                  >
-                    {translateCategory(featured.category)}
-                  </span>
-                </div>
-                <h2
-                  className="mb-4 text-2xl md:text-3xl text-gray-900 leading-tight"
-                  style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-                >
-                  {translateTitle(featured)}
-                </h2>
-                <p
-                  className="mb-5 text-base text-gray-600 leading-[1.7]"
-                  style={{ fontFamily: "Barlow", fontWeight: 400 }}
-                >
-                  {translateExcerpt(featured)}
-                </p>
-                <div
-                  className="mb-6 flex items-center gap-2 text-sm text-gray-500"
-                  style={{ fontFamily: "Barlow", fontWeight: 400 }}
-                >
-                  <Calendar className="h-3.5 w-3.5 text-[#C8A84B]" /> {formatDateShort(featured.date, lang)} · {featured.author}
-                </div>
-                {featured.slug ? (
-                  <Link
-                    to="/news/$slug"
-                    params={{ slug: featured.slug }}
-                    className="self-start inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest transition-base"
-                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-                  >
-                    {t("news.readStory")} <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                ) : (
-                  <span
-                    className="self-start inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest transition-base"
-                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-                  >
-                    {t("news.readStory")} <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                )}
-              </div>
-            </article>
+            <FeaturedHeroCard
+              n={featured}
+              title={translateTitle(featured)}
+              excerpt={translateExcerpt(featured)}
+              categoryLabel={translateCategory(featured.category)}
+              featuredLabel={t("news.featured")}
+              readLabel={t("news.readStory")}
+              lang={lang}
+            />
           </div>
         </section>
       )}
@@ -325,3 +274,102 @@ function NewsCardSkeleton() {
     </div>
   );
 }
+
+function FeaturedHeroCard({
+  n,
+  title,
+  excerpt,
+  categoryLabel,
+  featuredLabel,
+  readLabel,
+  lang,
+}: {
+  n: NewsItem;
+  title: string;
+  excerpt: string;
+  categoryLabel: string;
+  featuredLabel: string;
+  readLabel: string;
+  lang: Lang;
+}) {
+  const cardClass =
+    "group relative block overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-base ring-1 ring-black/5";
+  const inner = (
+    <>
+      <div className="relative aspect-[16/9] md:aspect-[21/9] lg:aspect-[21/8] w-full overflow-hidden bg-gray-900">
+        <img
+          src={bustAnyImageUrl(n.image) ?? n.image}
+          alt={title}
+          loading="eager"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+        {/* Gradient overlay for text legibility */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10"
+        />
+        {/* Featured ribbon */}
+        <div className="absolute top-5 left-5 z-10">
+          <span
+            className="inline-flex items-center gap-1.5 bg-[#C8211A] text-white px-3 py-1.5 rounded text-xs uppercase tracking-widest shadow-md"
+            style={{ fontFamily: "Barlow", fontWeight: 700 }}
+          >
+            ★ {featuredLabel}
+          </span>
+        </div>
+
+        {/* Content overlaid on image */}
+        <div className="absolute inset-x-0 bottom-0 p-6 md:p-10 lg:p-14 z-10">
+          <div className="max-w-3xl">
+            <span
+              className="inline-block text-xs uppercase tracking-widest text-[#F2C84B] mb-3"
+              style={{ fontFamily: "Barlow", fontWeight: 700 }}
+            >
+              {categoryLabel}
+            </span>
+            <h2
+              className="text-white leading-[1.05] mb-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
+              style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+            >
+              {title}
+            </h2>
+            {excerpt && (
+              <p
+                className="text-white/85 leading-[1.6] mb-5 max-w-2xl text-base md:text-lg line-clamp-3"
+                style={{ fontFamily: "Barlow", fontWeight: 400 }}
+              >
+                {excerpt}
+              </p>
+            )}
+            <div
+              className="flex flex-wrap items-center gap-4 text-sm text-white/80 mb-5"
+              style={{ fontFamily: "Barlow", fontWeight: 400 }}
+            >
+              <span className="inline-flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5 text-[#F2C84B]" />
+                {formatDateShort(n.date, lang)}
+              </span>
+              {n.author && <span>· {n.author}</span>}
+            </div>
+            <span
+              className="inline-flex items-center gap-2 rounded-lg bg-[#C8211A] group-hover:bg-[#8B1612] text-white px-6 py-3 text-sm uppercase tracking-widest transition-base shadow-lg"
+              style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+            >
+              {readLabel} <ArrowRight className="h-4 w-4" />
+            </span>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+
+  if (n.slug) {
+    return (
+      <Link to="/news/$slug" params={{ slug: n.slug }} className={cardClass}>
+        {inner}
+      </Link>
+    );
+  }
+  return <div className={cardClass}>{inner}</div>;
+}
+
