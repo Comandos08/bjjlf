@@ -98,7 +98,7 @@ function EventsListPage() {
   const urlQuery: string = search.q;
   const page: number = search.page;
   const perPage: number = search.perPage;
-  const navigate = useNavigate({ from: "/events" });
+  const navigate = useNavigate({ from: "/events/" });
 
   const [queryInput, setQueryInput] = useState(urlQuery);
   useEffect(() => {
