@@ -74,7 +74,9 @@ export function useEvents() {
 
       return data.map<Event>((row) => ({
         id: row.id,
-        name: row.name_en, // page uses single string; PT translation flows through i18n keys
+        name: row.name_pt ?? row.name_en,
+        nameEn: row.name_en,
+        namePt: row.name_pt ?? row.name_en,
         date: row.event_date,
         location: `${row.city}, ${row.country_code}`,
         image: bustStorageUrl(resolveAssetUrl(row.image_url), row.created_at) ?? FALLBACK_EVENT_IMG,
