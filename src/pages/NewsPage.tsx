@@ -274,3 +274,102 @@ function NewsCardSkeleton() {
     </div>
   );
 }
+
+function FeaturedHeroCard({
+  n,
+  title,
+  excerpt,
+  categoryLabel,
+  featuredLabel,
+  readLabel,
+  lang,
+}: {
+  n: NewsItem;
+  title: string;
+  excerpt: string;
+  categoryLabel: string;
+  featuredLabel: string;
+  readLabel: string;
+  lang: Lang;
+}) {
+  const cardClass =
+    "group relative block overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-base ring-1 ring-black/5";
+  const inner = (
+    <>
+      <div className="relative aspect-[16/9] md:aspect-[21/9] lg:aspect-[21/8] w-full overflow-hidden bg-gray-900">
+        <img
+          src={bustAnyImageUrl(n.image) ?? n.image}
+          alt={title}
+          loading="eager"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+        {/* Gradient overlay for text legibility */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10"
+        />
+        {/* Featured ribbon */}
+        <div className="absolute top-5 left-5 z-10">
+          <span
+            className="inline-flex items-center gap-1.5 bg-[#C8211A] text-white px-3 py-1.5 rounded text-xs uppercase tracking-widest shadow-md"
+            style={{ fontFamily: "Barlow", fontWeight: 700 }}
+          >
+            ★ {featuredLabel}
+          </span>
+        </div>
+
+        {/* Content overlaid on image */}
+        <div className="absolute inset-x-0 bottom-0 p-6 md:p-10 lg:p-14 z-10">
+          <div className="max-w-3xl">
+            <span
+              className="inline-block text-xs uppercase tracking-widest text-[#F2C84B] mb-3"
+              style={{ fontFamily: "Barlow", fontWeight: 700 }}
+            >
+              {categoryLabel}
+            </span>
+            <h2
+              className="text-white leading-[1.05] mb-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
+              style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+            >
+              {title}
+            </h2>
+            {excerpt && (
+              <p
+                className="text-white/85 leading-[1.6] mb-5 max-w-2xl text-base md:text-lg line-clamp-3"
+                style={{ fontFamily: "Barlow", fontWeight: 400 }}
+              >
+                {excerpt}
+              </p>
+            )}
+            <div
+              className="flex flex-wrap items-center gap-4 text-sm text-white/80 mb-5"
+              style={{ fontFamily: "Barlow", fontWeight: 400 }}
+            >
+              <span className="inline-flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5 text-[#F2C84B]" />
+                {formatDateShort(n.date, lang)}
+              </span>
+              {n.author && <span>· {n.author}</span>}
+            </div>
+            <span
+              className="inline-flex items-center gap-2 rounded-lg bg-[#C8211A] group-hover:bg-[#8B1612] text-white px-6 py-3 text-sm uppercase tracking-widest transition-base shadow-lg"
+              style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+            >
+              {readLabel} <ArrowRight className="h-4 w-4" />
+            </span>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+
+  if (n.slug) {
+    return (
+      <Link to="/news/$slug" params={{ slug: n.slug }} className={cardClass}>
+        {inner}
+      </Link>
+    );
+  }
+  return <div className={cardClass}>{inner}</div>;
+}
+
