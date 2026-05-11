@@ -73,9 +73,9 @@ export function writePersistedBadges(badges: ReadonlyArray<EventTypeBadge>): voi
  * (a shared `/events?badges=GI` URL is honored as-is, not overwritten).
  */
 export function usePersistedEventFilters() {
-  const search = useSearch({ from: "/events" });
+  const search = useSearch({ from: "/events/" });
   const badges: EventTypeBadge[] = search.badges;
-  const navigate = useNavigate({ from: "/events" });
+  const navigate = useNavigate({ from: "/events/" });
   const hydratedRef = useRef(false);
 
   // 1) Hydrate from localStorage once, only if URL has no filters.
