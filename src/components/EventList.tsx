@@ -235,7 +235,7 @@ export function EventList({
               <Link
                 to="/events/$eventId"
                 params={{ eventId: e.id }}
-                search={((prev: unknown) => prev) as never}
+                
                 className="block no-underline"
                 aria-label={displayName}
               >
@@ -255,7 +255,7 @@ export function EventList({
                 <Link
                   to="/events/$eventId"
                   params={{ eventId: e.id }}
-                  search={((prev: unknown) => prev) as never}
+                  
                   className="no-underline"
                 >
                   <h3
@@ -281,7 +281,7 @@ export function EventList({
                   <Link
                     to="/events/$eventId"
                     params={{ eventId: e.id }}
-                    search={((prev: unknown) => prev) as never}
+                    
                     className="w-full inline-flex items-center justify-center rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white text-sm uppercase tracking-widest py-3 transition-base no-underline"
                     style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
                   >
