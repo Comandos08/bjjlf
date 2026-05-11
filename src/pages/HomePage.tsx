@@ -114,7 +114,7 @@ function HeroSlider() {
             fallbackLabel={s.badge}
             source="hero"
             wrapperClassName="absolute inset-0"
-            className="!object-contain"
+            className="!object-cover"
             style={{ objectPosition: "center" }}
           />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3) 100%)" }} />
