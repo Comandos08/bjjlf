@@ -237,12 +237,14 @@ function NewsCard({
   lang,
   t,
   title,
+  excerpt,
   categoryLabel,
 }: {
   n: NewsItem;
   lang: Lang;
   t: (k: string) => string;
   title: string;
+  excerpt: string;
   categoryLabel: string;
 }) {
   return (
@@ -275,7 +277,7 @@ function NewsCard({
           className="px-5 mt-2 text-sm text-gray-500 line-clamp-2 leading-[1.6]"
           style={{ fontFamily: "Barlow", fontWeight: 400 }}
         >
-          {n.excerpt}
+          {excerpt}
         </p>
         <div
           className="mt-3 mx-5 mb-5 pt-3 border-t border-gray-100 text-xs text-gray-400"
