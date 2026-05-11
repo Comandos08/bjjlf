@@ -27,6 +27,7 @@ import { Route as DiplomaRequestRouteImport } from './routes/diploma-request'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ChampionshipsRouteImport } from './routes/championships'
 import { Route as BlackBeltsRouteImport } from './routes/black-belts'
+import { Route as BenefitsRouteImport } from './routes/benefits'
 import { Route as AthletesRouteImport } from './routes/athletes'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AcademiesRouteImport } from './routes/academies'
@@ -151,6 +152,11 @@ const ChampionshipsRoute = ChampionshipsRouteImport.update({
 const BlackBeltsRoute = BlackBeltsRouteImport.update({
   id: '/black-belts',
   path: '/black-belts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BenefitsRoute = BenefitsRouteImport.update({
+  id: '/benefits',
+  path: '/benefits',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AthletesRoute = AthletesRouteImport.update({
@@ -336,6 +342,7 @@ export interface FileRoutesByFullPath {
   '/academies': typeof AcademiesRoute
   '/admin': typeof AdminRouteWithChildren
   '/athletes': typeof AthletesRoute
+  '/benefits': typeof BenefitsRoute
   '/black-belts': typeof BlackBeltsRouteWithChildren
   '/championships': typeof ChampionshipsRoute
   '/contact': typeof ContactRoute
@@ -390,6 +397,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/academies': typeof AcademiesRoute
   '/athletes': typeof AthletesRoute
+  '/benefits': typeof BenefitsRoute
   '/black-belts': typeof BlackBeltsRouteWithChildren
   '/championships': typeof ChampionshipsRoute
   '/contact': typeof ContactRoute
@@ -446,6 +454,7 @@ export interface FileRoutesById {
   '/academies': typeof AcademiesRoute
   '/admin': typeof AdminRouteWithChildren
   '/athletes': typeof AthletesRoute
+  '/benefits': typeof BenefitsRoute
   '/black-belts': typeof BlackBeltsRouteWithChildren
   '/championships': typeof ChampionshipsRoute
   '/contact': typeof ContactRoute
@@ -503,6 +512,7 @@ export interface FileRouteTypes {
     | '/academies'
     | '/admin'
     | '/athletes'
+    | '/benefits'
     | '/black-belts'
     | '/championships'
     | '/contact'
@@ -557,6 +567,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/academies'
     | '/athletes'
+    | '/benefits'
     | '/black-belts'
     | '/championships'
     | '/contact'
@@ -612,6 +623,7 @@ export interface FileRouteTypes {
     | '/academies'
     | '/admin'
     | '/athletes'
+    | '/benefits'
     | '/black-belts'
     | '/championships'
     | '/contact'
@@ -668,6 +680,7 @@ export interface RootRouteChildren {
   AcademiesRoute: typeof AcademiesRoute
   AdminRoute: typeof AdminRouteWithChildren
   AthletesRoute: typeof AthletesRoute
+  BenefitsRoute: typeof BenefitsRoute
   BlackBeltsRoute: typeof BlackBeltsRouteWithChildren
   ChampionshipsRoute: typeof ChampionshipsRoute
   ContactRoute: typeof ContactRoute
@@ -825,6 +838,13 @@ declare module '@tanstack/react-router' {
       path: '/black-belts'
       fullPath: '/black-belts'
       preLoaderRoute: typeof BlackBeltsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/benefits': {
+      id: '/benefits'
+      path: '/benefits'
+      fullPath: '/benefits'
+      preLoaderRoute: typeof BenefitsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/athletes': {
@@ -1156,6 +1176,7 @@ const rootRouteChildren: RootRouteChildren = {
   AcademiesRoute: AcademiesRoute,
   AdminRoute: AdminRouteWithChildren,
   AthletesRoute: AthletesRoute,
+  BenefitsRoute: BenefitsRoute,
   BlackBeltsRoute: BlackBeltsRouteWithChildren,
   ChampionshipsRoute: ChampionshipsRoute,
   ContactRoute: ContactRoute,
