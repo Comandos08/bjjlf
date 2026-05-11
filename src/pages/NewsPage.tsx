@@ -186,6 +186,7 @@ export function NewsPage() {
                   lang={lang}
                   t={t}
                   title={translateTitle(n)}
+                  excerpt={translateExcerpt(n)}
                   categoryLabel={translateCategory(n.category)}
                 />
               ))}
