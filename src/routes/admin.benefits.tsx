@@ -306,11 +306,7 @@ function BenefitFormModal({ open, row, onClose }: { open: boolean; row: BenefitR
           <AdminToggle
             checked={isFeatured}
             onChange={(v) => setValue("is_featured", v)}
-            label={
-              <span className="inline-flex items-center gap-1">
-                <Star size={12} /> Destaque
-              </span> as unknown as string
-            }
+            label="Destaque"
           />
           <AdminToggle checked={isActive} onChange={(v) => setValue("is_active", v)} label="Ativo" />
         </div>
