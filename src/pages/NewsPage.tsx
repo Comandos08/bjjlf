@@ -294,8 +294,19 @@ function NewsCard({
           {formatDateShort(n.date, lang)} · 4 {t("home.news.minRead")}
         </div>
       </div>
-    </Link>
+    </>
   );
+
+  const className = "group flex flex-col bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden cursor-pointer";
+
+  if (n.slug) {
+    return (
+      <Link to="/news/$slug" params={{ slug: n.slug }} className={className}>
+        {inner}
+      </Link>
+    );
+  }
+  return <div className={className}>{inner}</div>;
 }
 
 function NewsCardSkeleton() {
