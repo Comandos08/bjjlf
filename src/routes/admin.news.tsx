@@ -280,7 +280,7 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
               <div>
                 <label className="admin-label">Categoria</label>
                 <select className="admin-input w-full" {...register("category")}>
-                  {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                  {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
                 </select>
               </div>
             </div>
