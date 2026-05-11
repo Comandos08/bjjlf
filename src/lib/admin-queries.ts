@@ -41,6 +41,10 @@ type AcademyUpdate = Database["public"]["Tables"]["affiliated_academies"]["Updat
 
 type AdminUserRow = Database["public"]["Tables"]["admin_users"]["Row"];
 
+type BenefitRow = Database["public"]["Tables"]["member_benefits"]["Row"];
+type BenefitInsert = Database["public"]["Tables"]["member_benefits"]["Insert"];
+type BenefitUpdate = Database["public"]["Tables"]["member_benefits"]["Update"];
+
 /* ============================================================
  * Dashboard counts
  * ============================================================ */
@@ -473,6 +477,14 @@ export const useDeleteAcademy = makeDeleteHook("affiliated_academies", "academie
 export const useToggleAcademyField = makeFieldToggleHook<AcademyUpdate>("affiliated_academies", "academies", "academies");
 
 /* ============================================================
+ * Member benefits
+ * ============================================================ */
+export const useAdminBenefits = makeListHook<BenefitRow>("member_benefits", "benefits", { column: "sort_order", asc: true });
+export const useUpsertBenefit = makeUpsertHook<BenefitInsert, BenefitUpdate>("member_benefits", "benefits", "benefits");
+export const useDeleteBenefit = makeDeleteHook("member_benefits", "benefits", "benefits");
+export const useToggleBenefitField = makeFieldToggleHook<BenefitUpdate>("member_benefits", "benefits", "benefits");
+
+/* ============================================================
  * Admin users (settings)
  * ============================================================ */
 export function useAdminUsers() {
@@ -523,4 +535,5 @@ export type {
   BlackBeltRow,
   AcademyRow,
   AdminUserRow,
+  BenefitRow,
 };

@@ -56,6 +56,7 @@ import { Route as AdminHeroRouteImport } from './routes/admin.hero'
 import { Route as AdminEventsRouteImport } from './routes/admin.events'
 import { Route as AdminDiplomaRequestsRouteImport } from './routes/admin.diploma-requests'
 import { Route as AdminBlackBeltsRouteImport } from './routes/admin.black-belts'
+import { Route as AdminBenefitsRouteImport } from './routes/admin.benefits'
 import { Route as AdminAthletesRouteImport } from './routes/admin.athletes'
 import { Route as AdminAcademiesRouteImport } from './routes/admin.academies'
 import { Route as AcademyPermitRouteImport } from './routes/academy.permit'
@@ -297,6 +298,11 @@ const AdminBlackBeltsRoute = AdminBlackBeltsRouteImport.update({
   path: '/black-belts',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminBenefitsRoute = AdminBenefitsRouteImport.update({
+  id: '/benefits',
+  path: '/benefits',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAthletesRoute = AdminAthletesRouteImport.update({
   id: '/athletes',
   path: '/athletes',
@@ -351,6 +357,7 @@ export interface FileRoutesByFullPath {
   '/academy/permit': typeof AcademyPermitRoute
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/athletes': typeof AdminAthletesRoute
+  '/admin/benefits': typeof AdminBenefitsRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
   '/admin/diploma-requests': typeof AdminDiplomaRequestsRoute
   '/admin/events': typeof AdminEventsRoute
@@ -404,6 +411,7 @@ export interface FileRoutesByTo {
   '/academy/permit': typeof AcademyPermitRoute
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/athletes': typeof AdminAthletesRoute
+  '/admin/benefits': typeof AdminBenefitsRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
   '/admin/diploma-requests': typeof AdminDiplomaRequestsRoute
   '/admin/events': typeof AdminEventsRoute
@@ -459,6 +467,7 @@ export interface FileRoutesById {
   '/academy/permit': typeof AcademyPermitRoute
   '/admin/academies': typeof AdminAcademiesRoute
   '/admin/athletes': typeof AdminAthletesRoute
+  '/admin/benefits': typeof AdminBenefitsRoute
   '/admin/black-belts': typeof AdminBlackBeltsRoute
   '/admin/diploma-requests': typeof AdminDiplomaRequestsRoute
   '/admin/events': typeof AdminEventsRoute
@@ -515,6 +524,7 @@ export interface FileRouteTypes {
     | '/academy/permit'
     | '/admin/academies'
     | '/admin/athletes'
+    | '/admin/benefits'
     | '/admin/black-belts'
     | '/admin/diploma-requests'
     | '/admin/events'
@@ -568,6 +578,7 @@ export interface FileRouteTypes {
     | '/academy/permit'
     | '/admin/academies'
     | '/admin/athletes'
+    | '/admin/benefits'
     | '/admin/black-belts'
     | '/admin/diploma-requests'
     | '/admin/events'
@@ -622,6 +633,7 @@ export interface FileRouteTypes {
     | '/academy/permit'
     | '/admin/academies'
     | '/admin/athletes'
+    | '/admin/benefits'
     | '/admin/black-belts'
     | '/admin/diploma-requests'
     | '/admin/events'
@@ -1018,6 +1030,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlackBeltsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/benefits': {
+      id: '/admin/benefits'
+      path: '/benefits'
+      fullPath: '/admin/benefits'
+      preLoaderRoute: typeof AdminBenefitsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/athletes': {
       id: '/admin/athletes'
       path: '/athletes'
@@ -1059,6 +1078,7 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminAcademiesRoute: typeof AdminAcademiesRoute
   AdminAthletesRoute: typeof AdminAthletesRoute
+  AdminBenefitsRoute: typeof AdminBenefitsRoute
   AdminBlackBeltsRoute: typeof AdminBlackBeltsRoute
   AdminDiplomaRequestsRoute: typeof AdminDiplomaRequestsRoute
   AdminEventsRoute: typeof AdminEventsRoute
@@ -1077,6 +1097,7 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAcademiesRoute: AdminAcademiesRoute,
   AdminAthletesRoute: AdminAthletesRoute,
+  AdminBenefitsRoute: AdminBenefitsRoute,
   AdminBlackBeltsRoute: AdminBlackBeltsRoute,
   AdminDiplomaRequestsRoute: AdminDiplomaRequestsRoute,
   AdminEventsRoute: AdminEventsRoute,
