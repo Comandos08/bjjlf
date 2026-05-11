@@ -442,12 +442,10 @@ function EventFormModal({
             <label className="admin-label">Tipo</label>
             <select className="admin-input w-full" {...register("event_type")}>
               <option value="gi">Gi (Campeonato)</option>
-              <option value="no_gi">No-Gi (Campeonato)</option>
-              <option value="gi_no_gi">Gi &amp; No-Gi (Campeonato)</option>
+              <option value="nogi">No-Gi (Campeonato)</option>
+              <option value="gi_nogi">Gi &amp; No-Gi (Campeonato)</option>
               <option value="kids">Kids (Campeonato)</option>
               <option value="master">Master (Campeonato)</option>
-              <option value="seminar">Seminário</option>
-              <option value="course">Curso</option>
             </select>
           </div>
           <div>
