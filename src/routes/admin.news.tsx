@@ -28,8 +28,14 @@ export const Route = createFileRoute("/admin/news")({
   component: NewsAdminPage,
 });
 
-const CATEGORIES = [
-  "Eventos", "Graduações", "Estilo de Vida", "Resultados", "Entrevistas", "Regras", "Federação",
+const CATEGORIES: { value: string; label: string }[] = [
+  { value: "tournaments", label: "Eventos" },
+  { value: "promotions", label: "Graduações" },
+  { value: "lifestyle", label: "Estilo de Vida" },
+  { value: "results", label: "Resultados" },
+  { value: "interviews", label: "Entrevistas" },
+  { value: "rules", label: "Regras" },
+  { value: "federation", label: "Federação" },
 ];
 
 function slugify(s: string) {
