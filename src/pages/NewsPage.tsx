@@ -44,7 +44,8 @@ export function NewsPage() {
 
   const { data: news = [], isLoading } = useNews();
   const filtered = cat === "All" ? news : news.filter((n) => n.category === cat);
-  const featured = filtered.find((n) => n.featured) ?? filtered[0];
+  const featuredList = filtered.filter((n) => n.featured);
+  const featured = featuredList[0] ?? filtered[0];
   const rest = filtered.filter((n) => n.id !== featured?.id);
   const pages = Math.max(1, Math.ceil(rest.length / perPage));
   const visible = rest.slice((page - 1) * perPage, page * perPage);
