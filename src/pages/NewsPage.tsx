@@ -136,12 +136,23 @@ export function NewsPage() {
                 >
                   <Calendar className="h-3.5 w-3.5 text-[#C8A84B]" /> {formatDateShort(featured.date, lang)} · {featured.author}
                 </div>
-                <span
-                  className="self-start inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest transition-base"
-                  style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-                >
-                  {t("news.readStory")} <ArrowRight className="h-3.5 w-3.5" />
-                </span>
+                {featured.slug ? (
+                  <Link
+                    to="/news/$slug"
+                    params={{ slug: featured.slug }}
+                    className="self-start inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest transition-base"
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                  >
+                    {t("news.readStory")} <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                ) : (
+                  <span
+                    className="self-start inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest transition-base"
+                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                  >
+                    {t("news.readStory")} <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                )}
               </div>
             </article>
           </div>
@@ -247,11 +258,8 @@ function NewsCard({
   excerpt: string;
   categoryLabel: string;
 }) {
-  return (
-    <Link
-      to="/news"
-      className="group flex flex-col bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden cursor-pointer"
-    >
+  const inner = (
+    <>
       <div className="relative aspect-video overflow-hidden bg-gray-100">
         <img
           src={bustAnyImageUrl(n.image) ?? n.image}
@@ -286,8 +294,19 @@ function NewsCard({
           {formatDateShort(n.date, lang)} · 4 {t("home.news.minRead")}
         </div>
       </div>
-    </Link>
+    </>
   );
+
+  const className = "group flex flex-col bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden cursor-pointer";
+
+  if (n.slug) {
+    return (
+      <Link to="/news/$slug" params={{ slug: n.slug }} className={className}>
+        {inner}
+      </Link>
+    );
+  }
+  return <div className={className}>{inner}</div>;
 }
 
 function NewsCardSkeleton() {

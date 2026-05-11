@@ -37,6 +37,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as VerifyAthleteIdRouteImport } from './routes/verify.$athleteId'
 import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
 import { Route as RegisterAcademyRouteImport } from './routes/register.academy'
+import { Route as NewsSlugRouteImport } from './routes/news.$slug'
 import { Route as MyPermitPermitNumberRouteImport } from './routes/my-permit.$permitNumber'
 import { Route as GraduatesGraduateIdRouteImport } from './routes/graduates.$graduateId'
 import { Route as EventsEventIdRouteImport } from './routes/events.$eventId'
@@ -204,6 +205,11 @@ const RegisterAcademyRoute = RegisterAcademyRouteImport.update({
   path: '/register/academy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NewsSlugRoute = NewsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => NewsRoute,
+} as any)
 const MyPermitPermitNumberRoute = MyPermitPermitNumberRouteImport.update({
   id: '/my-permit/$permitNumber',
   path: '/my-permit/$permitNumber',
@@ -354,7 +360,7 @@ export interface FileRoutesByFullPath {
   '/my-competitions': typeof MyCompetitionsRoute
   '/my-permits': typeof MyPermitsRoute
   '/my-profile': typeof MyProfileRoute
-  '/news': typeof NewsRoute
+  '/news': typeof NewsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
@@ -385,6 +391,7 @@ export interface FileRoutesByFullPath {
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/my-permit/$permitNumber': typeof MyPermitPermitNumberRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
@@ -409,7 +416,7 @@ export interface FileRoutesByTo {
   '/my-competitions': typeof MyCompetitionsRoute
   '/my-permits': typeof MyPermitsRoute
   '/my-profile': typeof MyProfileRoute
-  '/news': typeof NewsRoute
+  '/news': typeof NewsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
@@ -440,6 +447,7 @@ export interface FileRoutesByTo {
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/my-permit/$permitNumber': typeof MyPermitPermitNumberRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
@@ -466,7 +474,7 @@ export interface FileRoutesById {
   '/my-competitions': typeof MyCompetitionsRoute
   '/my-permits': typeof MyPermitsRoute
   '/my-profile': typeof MyProfileRoute
-  '/news': typeof NewsRoute
+  '/news': typeof NewsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
@@ -497,6 +505,7 @@ export interface FileRoutesById {
   '/events/$eventId': typeof EventsEventIdRoute
   '/graduates/$graduateId': typeof GraduatesGraduateIdRoute
   '/my-permit/$permitNumber': typeof MyPermitPermitNumberRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/register/academy': typeof RegisterAcademyRoute
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
@@ -555,6 +564,7 @@ export interface FileRouteTypes {
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/my-permit/$permitNumber'
+    | '/news/$slug'
     | '/register/academy'
     | '/register/athlete'
     | '/verify/$athleteId'
@@ -610,6 +620,7 @@ export interface FileRouteTypes {
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/my-permit/$permitNumber'
+    | '/news/$slug'
     | '/register/academy'
     | '/register/athlete'
     | '/verify/$athleteId'
@@ -666,6 +677,7 @@ export interface FileRouteTypes {
     | '/events/$eventId'
     | '/graduates/$graduateId'
     | '/my-permit/$permitNumber'
+    | '/news/$slug'
     | '/register/academy'
     | '/register/athlete'
     | '/verify/$athleteId'
@@ -692,7 +704,7 @@ export interface RootRouteChildren {
   MyCompetitionsRoute: typeof MyCompetitionsRoute
   MyPermitsRoute: typeof MyPermitsRoute
   MyProfileRoute: typeof MyProfileRoute
-  NewsRoute: typeof NewsRoute
+  NewsRoute: typeof NewsRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   RankingsRoute: typeof RankingsRoute
   RulesRoute: typeof RulesRoute
@@ -909,6 +921,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/register/academy'
       preLoaderRoute: typeof RegisterAcademyRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/news/$slug': {
+      id: '/news/$slug'
+      path: '/$slug'
+      fullPath: '/news/$slug'
+      preLoaderRoute: typeof NewsSlugRouteImport
+      parentRoute: typeof NewsRoute
     }
     '/my-permit/$permitNumber': {
       id: '/my-permit/$permitNumber'
@@ -1170,6 +1189,16 @@ const GraduatesRouteWithChildren = GraduatesRoute._addFileChildren(
   GraduatesRouteChildren,
 )
 
+interface NewsRouteChildren {
+  NewsSlugRoute: typeof NewsSlugRoute
+}
+
+const NewsRouteChildren: NewsRouteChildren = {
+  NewsSlugRoute: NewsSlugRoute,
+}
+
+const NewsRouteWithChildren = NewsRoute._addFileChildren(NewsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -1188,7 +1217,7 @@ const rootRouteChildren: RootRouteChildren = {
   MyCompetitionsRoute: MyCompetitionsRoute,
   MyPermitsRoute: MyPermitsRoute,
   MyProfileRoute: MyProfileRoute,
-  NewsRoute: NewsRoute,
+  NewsRoute: NewsRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   RankingsRoute: RankingsRoute,
   RulesRoute: RulesRoute,
