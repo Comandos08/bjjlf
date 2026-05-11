@@ -3,7 +3,7 @@
  */
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Plus, Pencil, Trash2, Loader2, Star } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
