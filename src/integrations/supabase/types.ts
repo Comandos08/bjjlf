@@ -723,6 +723,51 @@ export type Database = {
         }
         Relationships: []
       }
+      member_benefits: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          discount_label: string | null
+          external_link: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          is_featured: boolean
+          name: string
+          sort_order: number
+          value_label: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          discount_label?: string | null
+          external_link?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          is_featured?: boolean
+          name: string
+          sort_order?: number
+          value_label?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          discount_label?: string | null
+          external_link?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          is_featured?: boolean
+          name?: string
+          sort_order?: number
+          value_label?: string | null
+        }
+        Relationships: []
+      }
       news: {
         Row: {
           author: string | null
