@@ -19,6 +19,7 @@ import { getEventName } from "@/data/events";
 export function EventDetail() {
   const e = useLoaderData({ from: "/events/$eventId" });
   const { t, lang } = useI18n();
+  const displayName = getEventName(e, lang);
 
   return (
     <article>
