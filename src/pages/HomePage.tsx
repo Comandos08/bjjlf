@@ -425,7 +425,7 @@ function NewsSection() {
               >
                 <SafeImage
                   src={n.image}
-                  alt={translatedTitle === titleKey(n.id) ? n.title : translatedTitle}
+                  alt={translatedTitle}
                   fallbackLabel={n.title}
                   source="news"
                   wrapperClassName="h-[180px]"
