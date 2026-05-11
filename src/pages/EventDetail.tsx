@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { SafeImage } from "@/components/SafeImage";
 import { EventBadge } from "@/components/EventBadge";
 import { useI18n, formatDate } from "@/lib/i18n";
+import { getEventName } from "@/data/events";
 
 /**
  * Generic event detail page.
