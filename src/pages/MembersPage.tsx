@@ -207,6 +207,39 @@ export function MembersPage() {
           </p>
         </header>
 
+        {/* CTA destaque — Cadastre-se como Atleta */}
+        <div className="bg-gradient-to-r from-[#1A1A1A] to-[#2a2a2a] border border-[#C8A84B]/30 rounded-xl p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
+          <div className="flex-1 min-w-0">
+            <span
+              className="inline-block bg-[#C8A84B] text-black text-xs uppercase px-2 py-0.5 rounded-full mb-2"
+              style={{ fontFamily: "Barlow", fontWeight: 700 }}
+            >
+              {lang === "en" ? "New" : "Novo"}
+            </span>
+            <h3
+              className="text-white text-2xl uppercase leading-tight"
+              style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
+            >
+              {lang === "en" ? "Register as an Athlete" : "Cadastre-se como Atleta"}
+            </h3>
+            <p
+              className="text-gray-400 text-sm mt-1 leading-relaxed"
+              style={{ fontFamily: "Barlow", fontWeight: 400 }}
+            >
+              {lang === "en"
+                ? "Join the official BJJLF registry and get your federation ID."
+                : "Junte-se ao registro oficial da BJJLF e obtenha seu número de federado."}
+            </p>
+          </div>
+          <Link
+            to="/register/athlete"
+            className="bg-[#C8211A] hover:bg-[#8B1612] text-white text-sm uppercase tracking-widest px-6 py-3 rounded-lg transition-base shrink-0"
+            style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+          >
+            {lang === "en" ? "Register Now →" : "Cadastrar Agora →"}
+          </Link>
+        </div>
+
         {/* Search */}
         <div className="relative mb-3">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
