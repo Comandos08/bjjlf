@@ -63,7 +63,7 @@ function parseQuery(input: unknown): string {
   return input.replace(/\s+/g, " ").trim().slice(0, 100);
 }
 
-export const Route = createFileRoute("/events")({
+export const Route = createFileRoute("/events/")({
   validateSearch: (search: Record<string, unknown>): EventsSearch => ({
     badges: parseBadges(search.badges),
     sort: parseEventSort(search.sort),

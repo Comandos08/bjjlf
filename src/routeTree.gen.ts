@@ -21,7 +21,6 @@ import { Route as MyCompetitionsRouteImport } from './routes/my-competitions'
 import { Route as MyCardRouteImport } from './routes/my-card'
 import { Route as MembersRouteImport } from './routes/members'
 import { Route as GraduatesRouteImport } from './routes/graduates'
-import { Route as EventsRouteImport } from './routes/events'
 import { Route as DiplomaRequestRouteImport } from './routes/diploma-request'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ChampionshipsRouteImport } from './routes/championships'
@@ -33,6 +32,7 @@ import { Route as AcademiesRouteImport } from './routes/academies'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NewsIndexRouteImport } from './routes/news.index'
+import { Route as EventsIndexRouteImport } from './routes/events.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as VerifyAthleteIdRouteImport } from './routes/verify.$athleteId'
 import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
@@ -125,11 +125,6 @@ const GraduatesRoute = GraduatesRouteImport.update({
   path: '/graduates',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EventsRoute = EventsRouteImport.update({
-  id: '/events',
-  path: '/events',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DiplomaRequestRoute = DiplomaRequestRouteImport.update({
   id: '/diploma-request',
   path: '/diploma-request',
@@ -185,6 +180,11 @@ const NewsIndexRoute = NewsIndexRouteImport.update({
   path: '/news/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EventsIndexRoute = EventsIndexRouteImport.update({
+  id: '/events/',
+  path: '/events/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -221,9 +221,9 @@ const GraduatesGraduateIdRoute = GraduatesGraduateIdRouteImport.update({
   getParentRoute: () => GraduatesRoute,
 } as any)
 const EventsEventIdRoute = EventsEventIdRouteImport.update({
-  id: '/$eventId',
-  path: '/$eventId',
-  getParentRoute: () => EventsRoute,
+  id: '/events/$eventId',
+  path: '/events/$eventId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BlackBeltsIdRoute = BlackBeltsIdRouteImport.update({
   id: '/$id',
@@ -353,7 +353,6 @@ export interface FileRoutesByFullPath {
   '/championships': typeof ChampionshipsRoute
   '/contact': typeof ContactRoute
   '/diploma-request': typeof DiplomaRequestRoute
-  '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/members': typeof MembersRoute
   '/my-card': typeof MyCardRoute
@@ -395,6 +394,7 @@ export interface FileRoutesByFullPath {
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/events/': typeof EventsIndexRoute
   '/news/': typeof NewsIndexRoute
   '/register/event/$eventId': typeof RegisterEventEventIdRoute
   '/verify/academy/$permitNumber': typeof VerifyAcademyPermitNumberRoute
@@ -409,7 +409,6 @@ export interface FileRoutesByTo {
   '/championships': typeof ChampionshipsRoute
   '/contact': typeof ContactRoute
   '/diploma-request': typeof DiplomaRequestRoute
-  '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/members': typeof MembersRoute
   '/my-card': typeof MyCardRoute
@@ -451,6 +450,7 @@ export interface FileRoutesByTo {
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin': typeof AdminIndexRoute
+  '/events': typeof EventsIndexRoute
   '/news': typeof NewsIndexRoute
   '/register/event/$eventId': typeof RegisterEventEventIdRoute
   '/verify/academy/$permitNumber': typeof VerifyAcademyPermitNumberRoute
@@ -467,7 +467,6 @@ export interface FileRoutesById {
   '/championships': typeof ChampionshipsRoute
   '/contact': typeof ContactRoute
   '/diploma-request': typeof DiplomaRequestRoute
-  '/events': typeof EventsRouteWithChildren
   '/graduates': typeof GraduatesRouteWithChildren
   '/members': typeof MembersRoute
   '/my-card': typeof MyCardRoute
@@ -509,6 +508,7 @@ export interface FileRoutesById {
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/events/': typeof EventsIndexRoute
   '/news/': typeof NewsIndexRoute
   '/register/event/$eventId': typeof RegisterEventEventIdRoute
   '/verify/academy/$permitNumber': typeof VerifyAcademyPermitNumberRoute
@@ -526,7 +526,6 @@ export interface FileRouteTypes {
     | '/championships'
     | '/contact'
     | '/diploma-request'
-    | '/events'
     | '/graduates'
     | '/members'
     | '/my-card'
@@ -568,6 +567,7 @@ export interface FileRouteTypes {
     | '/register/athlete'
     | '/verify/$athleteId'
     | '/admin/'
+    | '/events/'
     | '/news/'
     | '/register/event/$eventId'
     | '/verify/academy/$permitNumber'
@@ -582,7 +582,6 @@ export interface FileRouteTypes {
     | '/championships'
     | '/contact'
     | '/diploma-request'
-    | '/events'
     | '/graduates'
     | '/members'
     | '/my-card'
@@ -624,6 +623,7 @@ export interface FileRouteTypes {
     | '/register/athlete'
     | '/verify/$athleteId'
     | '/admin'
+    | '/events'
     | '/news'
     | '/register/event/$eventId'
     | '/verify/academy/$permitNumber'
@@ -639,7 +639,6 @@ export interface FileRouteTypes {
     | '/championships'
     | '/contact'
     | '/diploma-request'
-    | '/events'
     | '/graduates'
     | '/members'
     | '/my-card'
@@ -681,6 +680,7 @@ export interface FileRouteTypes {
     | '/register/athlete'
     | '/verify/$athleteId'
     | '/admin/'
+    | '/events/'
     | '/news/'
     | '/register/event/$eventId'
     | '/verify/academy/$permitNumber'
@@ -697,7 +697,6 @@ export interface RootRouteChildren {
   ChampionshipsRoute: typeof ChampionshipsRoute
   ContactRoute: typeof ContactRoute
   DiplomaRequestRoute: typeof DiplomaRequestRoute
-  EventsRoute: typeof EventsRouteWithChildren
   GraduatesRoute: typeof GraduatesRouteWithChildren
   MembersRoute: typeof MembersRoute
   MyCardRoute: typeof MyCardRoute
@@ -715,11 +714,13 @@ export interface RootRouteChildren {
   AthleteLoginRoute: typeof AthleteLoginRoute
   AthleteResetPasswordRoute: typeof AthleteResetPasswordRoute
   AthleteSignupRoute: typeof AthleteSignupRoute
+  EventsEventIdRoute: typeof EventsEventIdRoute
   MyPermitPermitNumberRoute: typeof MyPermitPermitNumberRoute
   NewsSlugRoute: typeof NewsSlugRoute
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
   VerifyAthleteIdRoute: typeof VerifyAthleteIdRoute
+  EventsIndexRoute: typeof EventsIndexRoute
   NewsIndexRoute: typeof NewsIndexRoute
   RegisterEventEventIdRoute: typeof RegisterEventEventIdRoute
   VerifyAcademyPermitNumberRoute: typeof VerifyAcademyPermitNumberRoute
@@ -811,13 +812,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GraduatesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/events': {
-      id: '/events'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: typeof EventsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/diploma-request': {
       id: '/diploma-request'
       path: '/diploma-request'
@@ -895,6 +889,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/events/': {
+      id: '/events/'
+      path: '/events'
+      fullPath: '/events/'
+      preLoaderRoute: typeof EventsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
@@ -946,10 +947,10 @@ declare module '@tanstack/react-router' {
     }
     '/events/$eventId': {
       id: '/events/$eventId'
-      path: '/$eventId'
+      path: '/events/$eventId'
       fullPath: '/events/$eventId'
       preLoaderRoute: typeof EventsEventIdRouteImport
-      parentRoute: typeof EventsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/black-belts/$id': {
       id: '/black-belts/$id'
@@ -1167,17 +1168,6 @@ const BlackBeltsRouteWithChildren = BlackBeltsRoute._addFileChildren(
   BlackBeltsRouteChildren,
 )
 
-interface EventsRouteChildren {
-  EventsEventIdRoute: typeof EventsEventIdRoute
-}
-
-const EventsRouteChildren: EventsRouteChildren = {
-  EventsEventIdRoute: EventsEventIdRoute,
-}
-
-const EventsRouteWithChildren =
-  EventsRoute._addFileChildren(EventsRouteChildren)
-
 interface GraduatesRouteChildren {
   GraduatesGraduateIdRoute: typeof GraduatesGraduateIdRoute
 }
@@ -1201,7 +1191,6 @@ const rootRouteChildren: RootRouteChildren = {
   ChampionshipsRoute: ChampionshipsRoute,
   ContactRoute: ContactRoute,
   DiplomaRequestRoute: DiplomaRequestRoute,
-  EventsRoute: EventsRouteWithChildren,
   GraduatesRoute: GraduatesRouteWithChildren,
   MembersRoute: MembersRoute,
   MyCardRoute: MyCardRoute,
@@ -1219,11 +1208,13 @@ const rootRouteChildren: RootRouteChildren = {
   AthleteLoginRoute: AthleteLoginRoute,
   AthleteResetPasswordRoute: AthleteResetPasswordRoute,
   AthleteSignupRoute: AthleteSignupRoute,
+  EventsEventIdRoute: EventsEventIdRoute,
   MyPermitPermitNumberRoute: MyPermitPermitNumberRoute,
   NewsSlugRoute: NewsSlugRoute,
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,
   VerifyAthleteIdRoute: VerifyAthleteIdRoute,
+  EventsIndexRoute: EventsIndexRoute,
   NewsIndexRoute: NewsIndexRoute,
   RegisterEventEventIdRoute: RegisterEventEventIdRoute,
   VerifyAcademyPermitNumberRoute: VerifyAcademyPermitNumberRoute,
@@ -1231,3 +1222,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
