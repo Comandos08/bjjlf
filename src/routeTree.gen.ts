@@ -15,7 +15,6 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as NewsRouteImport } from './routes/news'
 import { Route as MyProfileRouteImport } from './routes/my-profile'
 import { Route as MyPermitsRouteImport } from './routes/my-permits'
 import { Route as MyCompetitionsRouteImport } from './routes/my-competitions'
@@ -33,6 +32,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AcademiesRouteImport } from './routes/academies'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NewsIndexRouteImport } from './routes/news.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as VerifyAthleteIdRouteImport } from './routes/verify.$athleteId'
 import { Route as RegisterAthleteRouteImport } from './routes/register.athlete'
@@ -93,11 +93,6 @@ const RankingsRoute = RankingsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NewsRoute = NewsRouteImport.update({
-  id: '/news',
-  path: '/news',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MyProfileRoute = MyProfileRouteImport.update({
@@ -183,6 +178,11 @@ const AboutRoute = AboutRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsIndexRoute = NewsIndexRouteImport.update({
+  id: '/news/',
+  path: '/news/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -360,7 +360,6 @@ export interface FileRoutesByFullPath {
   '/my-competitions': typeof MyCompetitionsRoute
   '/my-permits': typeof MyPermitsRoute
   '/my-profile': typeof MyProfileRoute
-  '/news': typeof NewsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
@@ -396,6 +395,7 @@ export interface FileRoutesByFullPath {
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/news/': typeof NewsIndexRoute
   '/register/event/$eventId': typeof RegisterEventEventIdRoute
   '/verify/academy/$permitNumber': typeof VerifyAcademyPermitNumberRoute
 }
@@ -416,7 +416,6 @@ export interface FileRoutesByTo {
   '/my-competitions': typeof MyCompetitionsRoute
   '/my-permits': typeof MyPermitsRoute
   '/my-profile': typeof MyProfileRoute
-  '/news': typeof NewsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
@@ -452,6 +451,7 @@ export interface FileRoutesByTo {
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin': typeof AdminIndexRoute
+  '/news': typeof NewsIndexRoute
   '/register/event/$eventId': typeof RegisterEventEventIdRoute
   '/verify/academy/$permitNumber': typeof VerifyAcademyPermitNumberRoute
 }
@@ -474,7 +474,6 @@ export interface FileRoutesById {
   '/my-competitions': typeof MyCompetitionsRoute
   '/my-permits': typeof MyPermitsRoute
   '/my-profile': typeof MyProfileRoute
-  '/news': typeof NewsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
@@ -510,6 +509,7 @@ export interface FileRoutesById {
   '/register/athlete': typeof RegisterAthleteRoute
   '/verify/$athleteId': typeof VerifyAthleteIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/news/': typeof NewsIndexRoute
   '/register/event/$eventId': typeof RegisterEventEventIdRoute
   '/verify/academy/$permitNumber': typeof VerifyAcademyPermitNumberRoute
 }
@@ -533,7 +533,6 @@ export interface FileRouteTypes {
     | '/my-competitions'
     | '/my-permits'
     | '/my-profile'
-    | '/news'
     | '/privacy'
     | '/rankings'
     | '/rules'
@@ -569,6 +568,7 @@ export interface FileRouteTypes {
     | '/register/athlete'
     | '/verify/$athleteId'
     | '/admin/'
+    | '/news/'
     | '/register/event/$eventId'
     | '/verify/academy/$permitNumber'
   fileRoutesByTo: FileRoutesByTo
@@ -589,7 +589,6 @@ export interface FileRouteTypes {
     | '/my-competitions'
     | '/my-permits'
     | '/my-profile'
-    | '/news'
     | '/privacy'
     | '/rankings'
     | '/rules'
@@ -625,6 +624,7 @@ export interface FileRouteTypes {
     | '/register/athlete'
     | '/verify/$athleteId'
     | '/admin'
+    | '/news'
     | '/register/event/$eventId'
     | '/verify/academy/$permitNumber'
   id:
@@ -646,7 +646,6 @@ export interface FileRouteTypes {
     | '/my-competitions'
     | '/my-permits'
     | '/my-profile'
-    | '/news'
     | '/privacy'
     | '/rankings'
     | '/rules'
@@ -682,6 +681,7 @@ export interface FileRouteTypes {
     | '/register/athlete'
     | '/verify/$athleteId'
     | '/admin/'
+    | '/news/'
     | '/register/event/$eventId'
     | '/verify/academy/$permitNumber'
   fileRoutesById: FileRoutesById
@@ -704,7 +704,6 @@ export interface RootRouteChildren {
   MyCompetitionsRoute: typeof MyCompetitionsRoute
   MyPermitsRoute: typeof MyPermitsRoute
   MyProfileRoute: typeof MyProfileRoute
-  NewsRoute: typeof NewsRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   RankingsRoute: typeof RankingsRoute
   RulesRoute: typeof RulesRoute
@@ -720,6 +719,7 @@ export interface RootRouteChildren {
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
   VerifyAthleteIdRoute: typeof VerifyAthleteIdRoute
+  NewsIndexRoute: typeof NewsIndexRoute
   RegisterEventEventIdRoute: typeof RegisterEventEventIdRoute
   VerifyAcademyPermitNumberRoute: typeof VerifyAcademyPermitNumberRoute
 }
@@ -766,13 +766,6 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/news': {
-      id: '/news'
-      path: '/news'
-      fullPath: '/news'
-      preLoaderRoute: typeof NewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/my-profile': {
@@ -892,6 +885,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/': {
+      id: '/news/'
+      path: '/news'
+      fullPath: '/news/'
+      preLoaderRoute: typeof NewsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -1189,16 +1189,6 @@ const GraduatesRouteWithChildren = GraduatesRoute._addFileChildren(
   GraduatesRouteChildren,
 )
 
-interface NewsRouteChildren {
-  NewsSlugRoute: typeof NewsSlugRoute
-}
-
-const NewsRouteChildren: NewsRouteChildren = {
-  NewsSlugRoute: NewsSlugRoute,
-}
-
-const NewsRouteWithChildren = NewsRoute._addFileChildren(NewsRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -1217,7 +1207,6 @@ const rootRouteChildren: RootRouteChildren = {
   MyCompetitionsRoute: MyCompetitionsRoute,
   MyPermitsRoute: MyPermitsRoute,
   MyProfileRoute: MyProfileRoute,
-  NewsRoute: NewsRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   RankingsRoute: RankingsRoute,
   RulesRoute: RulesRoute,
@@ -1233,9 +1222,19 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,
   VerifyAthleteIdRoute: VerifyAthleteIdRoute,
+  NewsIndexRoute: NewsIndexRoute,
   RegisterEventEventIdRoute: RegisterEventEventIdRoute,
   VerifyAcademyPermitNumberRoute: VerifyAcademyPermitNumberRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
