@@ -2,13 +2,22 @@ export type EventTypeBadge = "GI" | "NO-GI" | "GI & NO-GI" | "KIDS" | "MASTER" |
 
 export type Event = {
   id: string;
+  /** Default/legacy display name. Prefer `nameEn`/`namePt` + getEventName() for i18n. */
   name: string;
+  nameEn?: string;
+  namePt?: string;
   date: string;
   location: string;
   image: string;
   type: "Gi" | "No-Gi" | "Open";
   badge: EventTypeBadge;
 };
+
+/** Pick the localized event name based on active language. */
+export function getEventName(e: Pick<Event, "name" | "nameEn" | "namePt">, lang: "pt" | "en"): string {
+  if (lang === "pt") return e.namePt ?? e.nameEn ?? e.name;
+  return e.nameEn ?? e.name ?? e.namePt ?? "";
+}
 
 export const EVENTS: Event[] = [
   {

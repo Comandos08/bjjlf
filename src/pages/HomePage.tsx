@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, Calendar, MapPin, ArrowRight, Users, Building2, Youtube } from "lucide-react";
 
 import { useEvents, useNews, useRankings, useHeroSlides, useYouTubeVideos } from "@/lib/queries";
+import { getEventName } from "@/data/events";
 import { useI18n, formatDateShort } from "@/lib/i18n";
 import { SafeImage } from "@/components/SafeImage";
 import { EventBadge } from "@/components/EventBadge";
@@ -325,7 +326,9 @@ function EventsSection() {
           action={{ label: t("home.events.viewAll"), to: "/events" }}
         />
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {events.slice(0, 6).map((e) => (
+          {events.slice(0, 6).map((e) => {
+            const displayName = getEventName(e, lang);
+            return (
             <article
               key={e.id}
               className="group flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden"
@@ -335,13 +338,13 @@ function EventsSection() {
                 params={{ eventId: e.id }}
                 search={((prev: unknown) => prev) as never}
                 className="block no-underline"
-                aria-label={e.name}
+                aria-label={displayName}
               >
                 <div className="relative">
                   <SafeImage
                     src={e.image}
-                    alt={`${e.name} — Brazilian Jiu-Jitsu event`}
-                    fallbackLabel={e.name}
+                    alt={`${displayName} — Brazilian Jiu-Jitsu event`}
+                    fallbackLabel={displayName}
                     source="event"
                     wrapperClassName="h-44 bg-gray-50"
                   />
@@ -359,7 +362,7 @@ function EventsSection() {
                     className="text-xl uppercase text-gray-900 leading-tight hover:text-[#C8211A] transition-base"
                     style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
                   >
-                    {e.name}
+                    {displayName}
                   </h3>
                 </Link>
                 <div className="flex items-center gap-1.5 text-sm text-gray-500" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
@@ -389,7 +392,8 @@ function EventsSection() {
                 </div>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

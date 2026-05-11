@@ -37,7 +37,9 @@ export const Route = createFileRoute("/events/$eventId")({
       if (data) {
         const evt: Event = {
           id: data.id,
-          name: data.name_en ?? data.name_pt ?? "Event",
+          name: data.name_pt ?? data.name_en ?? "Event",
+          nameEn: data.name_en ?? undefined,
+          namePt: data.name_pt ?? undefined,
           date: data.event_date,
           location: `${data.city}, ${data.country_code}`,
           image: bustStorageUrl(resolveAsset(data.image_url), data.created_at) ?? FALLBACK_EVENT_IMG,
