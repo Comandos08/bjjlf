@@ -91,73 +91,22 @@ export function NewsPage() {
         </div>
       </div>
 
-      {/* Featured */}
+      {/* Featured hero card */}
       {featured && (
         <section className="bg-white py-12 md:py-16">
           <div className="max-w-7xl mx-auto px-6">
-            <article className="grid lg:grid-cols-[3fr,2fr] gap-0 items-stretch bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden">
-              <div className="relative aspect-[16/10] lg:aspect-auto overflow-hidden bg-gray-100">
-                <img
-                  src={bustAnyImageUrl(featured.image) ?? featured.image}
-                  alt={translateTitle(featured)}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-8 lg:p-10 flex flex-col justify-center">
-                <div className="flex flex-wrap items-center gap-2 mb-4">
-                  <span
-                    className="bg-[#C8211A] text-white px-2 py-0.5 rounded text-xs uppercase tracking-widest"
-                    style={{ fontFamily: "Barlow", fontWeight: 700 }}
-                  >
-                    {t("news.featured")}
-                  </span>
-                  <span
-                    className="text-xs uppercase tracking-widest text-[#C8211A]"
-                    style={{ fontFamily: "Barlow", fontWeight: 700 }}
-                  >
-                    {translateCategory(featured.category)}
-                  </span>
-                </div>
-                <h2
-                  className="mb-4 text-2xl md:text-3xl text-gray-900 leading-tight"
-                  style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-                >
-                  {translateTitle(featured)}
-                </h2>
-                <p
-                  className="mb-5 text-base text-gray-600 leading-[1.7]"
-                  style={{ fontFamily: "Barlow", fontWeight: 400 }}
-                >
-                  {translateExcerpt(featured)}
-                </p>
-                <div
-                  className="mb-6 flex items-center gap-2 text-sm text-gray-500"
-                  style={{ fontFamily: "Barlow", fontWeight: 400 }}
-                >
-                  <Calendar className="h-3.5 w-3.5 text-[#C8A84B]" /> {formatDateShort(featured.date, lang)} · {featured.author}
-                </div>
-                {featured.slug ? (
-                  <Link
-                    to="/news/$slug"
-                    params={{ slug: featured.slug }}
-                    className="self-start inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest transition-base"
-                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-                  >
-                    {t("news.readStory")} <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                ) : (
-                  <span
-                    className="self-start inline-flex items-center gap-2 rounded-lg bg-[#C8211A] hover:bg-[#8B1612] text-white px-5 py-2.5 text-sm uppercase tracking-widest transition-base"
-                    style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
-                  >
-                    {t("news.readStory")} <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                )}
-              </div>
-            </article>
+            <FeaturedHeroCard
+              n={featured}
+              title={translateTitle(featured)}
+              excerpt={translateExcerpt(featured)}
+              categoryLabel={translateCategory(featured.category)}
+              featuredLabel={t("news.featured")}
+              readLabel={t("news.readStory")}
+              lang={lang}
+            />
           </div>
         </section>
+      )}
       )}
 
       {/* Grid */}
