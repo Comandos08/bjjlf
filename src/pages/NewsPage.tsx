@@ -107,7 +107,6 @@ export function NewsPage() {
           </div>
         </section>
       )}
-      )}
 
       {/* Grid */}
       <section className="bg-gray-50 py-12 md:py-16">
