@@ -28,8 +28,14 @@ export const Route = createFileRoute("/admin/news")({
   component: NewsAdminPage,
 });
 
-const CATEGORIES = [
-  "Eventos", "Graduações", "Estilo de Vida", "Resultados", "Entrevistas", "Regras", "Federação",
+const CATEGORIES: { value: string; label: string }[] = [
+  { value: "tournaments", label: "Eventos" },
+  { value: "promotions", label: "Graduações" },
+  { value: "lifestyle", label: "Estilo de Vida" },
+  { value: "results", label: "Resultados" },
+  { value: "interviews", label: "Entrevistas" },
+  { value: "rules", label: "Regras" },
+  { value: "federation", label: "Federação" },
 ];
 
 function slugify(s: string) {
@@ -156,7 +162,7 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
       title_pt: news?.title_pt ?? "",
       title_en: news?.title_en ?? "",
       slug: news?.slug ?? "",
-      category: news?.category ?? CATEGORIES[0],
+      category: news?.category ?? CATEGORIES[0].value,
       excerpt_pt: news?.excerpt_pt ?? "",
       excerpt_en: news?.excerpt_en ?? "",
       body_pt: news?.body_pt ?? "",
@@ -274,7 +280,7 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
               <div>
                 <label className="admin-label">Categoria</label>
                 <select className="admin-input w-full" {...register("category")}>
-                  {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                  {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
                 </select>
               </div>
             </div>
