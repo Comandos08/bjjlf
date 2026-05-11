@@ -41,6 +41,10 @@ type AcademyUpdate = Database["public"]["Tables"]["affiliated_academies"]["Updat
 
 type AdminUserRow = Database["public"]["Tables"]["admin_users"]["Row"];
 
+type BenefitRow = Database["public"]["Tables"]["member_benefits"]["Row"];
+type BenefitInsert = Database["public"]["Tables"]["member_benefits"]["Insert"];
+type BenefitUpdate = Database["public"]["Tables"]["member_benefits"]["Update"];
+
 /* ============================================================
  * Dashboard counts
  * ============================================================ */
