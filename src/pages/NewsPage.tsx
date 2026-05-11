@@ -128,7 +128,7 @@ export function NewsPage() {
                   className="mb-5 text-base text-gray-600 leading-[1.7]"
                   style={{ fontFamily: "Barlow", fontWeight: 400 }}
                 >
-                  {featured.excerpt}
+                  {translateExcerpt(featured)}
                 </p>
                 <div
                   className="mb-6 flex items-center gap-2 text-sm text-gray-500"
