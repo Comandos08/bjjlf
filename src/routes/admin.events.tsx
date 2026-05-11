@@ -45,12 +45,10 @@ export const Route = createFileRoute("/admin/events")({
 
 const TYPE_LABELS: Record<string, { label: string; color: "green" | "gold" | "red" | "blue" | "purple" | "gray" }> = {
   gi: { label: "GI", color: "green" },
-  no_gi: { label: "NO-GI", color: "gold" },
-  gi_no_gi: { label: "GI & NO-GI", color: "red" },
+  nogi: { label: "NO-GI", color: "gold" },
+  gi_nogi: { label: "GI & NO-GI", color: "red" },
   kids: { label: "KIDS", color: "blue" },
   master: { label: "MASTER", color: "purple" },
-  seminar: { label: "SEMINÁRIO", color: "gray" },
-  course: { label: "CURSO", color: "red" },
 };
 
 const STATUS_LABELS: Record<string, { label: string; color: "blue" | "orange" | "gray" | "red" }> = {
