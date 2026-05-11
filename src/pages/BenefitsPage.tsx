@@ -91,8 +91,6 @@ export function BenefitsPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8F8F8]">
-      <Navbar />
-
       <main className="flex-1">
         <div className="max-w-[1280px] mx-auto px-4 lg:px-6 py-10">
           {/* Header */}
@@ -274,8 +272,6 @@ export function BenefitsPage() {
           )}
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }
