@@ -225,6 +225,11 @@ export function EventList({
         >
           {visible.map((e) => {
             const displayName = getEventName(e, lang);
+            // TEMP debug: confirm lang + name fields at render time
+            if (typeof window !== "undefined") {
+              // eslint-disable-next-line no-console
+              console.log("[EventList] lang=", lang, "id=", e.id, "namePt=", e.namePt, "nameEn=", e.nameEn, "name=", e.name, "→ display=", displayName);
+            }
             return (
             <article
               key={e.id}
