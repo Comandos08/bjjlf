@@ -162,7 +162,7 @@ function NewsFormModal({ open, news, onClose }: { open: boolean; news: NewsRow |
       title_pt: news?.title_pt ?? "",
       title_en: news?.title_en ?? "",
       slug: news?.slug ?? "",
-      category: news?.category ?? CATEGORIES[0],
+      category: news?.category ?? CATEGORIES[0].value,
       excerpt_pt: news?.excerpt_pt ?? "",
       excerpt_en: news?.excerpt_en ?? "",
       body_pt: news?.body_pt ?? "",
