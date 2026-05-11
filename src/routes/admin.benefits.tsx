@@ -189,12 +189,12 @@ function BenefitsAdminPage() {
 
 const schema = z.object({
   name: z.string().trim().min(1, "Nome obrigatório").max(200),
-  description: z.string().max(2000).optional().default(""),
-  image_url: z.string().max(500).optional().default(""),
+  description: z.string().max(2000),
+  image_url: z.string().max(500),
   category: z.enum(["courses", "products", "health", "services", "partners"]),
-  value_label: z.string().max(60).optional().default(""),
-  discount_label: z.string().max(60).optional().default(""),
-  external_link: z.string().max(500).optional().default(""),
+  value_label: z.string().max(60),
+  discount_label: z.string().max(60),
+  external_link: z.string().max(500),
   is_featured: z.boolean(),
   is_active: z.boolean(),
   sort_order: z.coerce.number().int().min(0),
