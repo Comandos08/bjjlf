@@ -223,7 +223,9 @@ export function EventList({
             gridClassName ?? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
           )}
         >
-          {visible.map((e) => (
+          {visible.map((e) => {
+            const displayName = getEventName(e, lang);
+            return (
             <article
               key={e.id}
               data-testid="event-list-card"
@@ -235,13 +237,13 @@ export function EventList({
                 params={{ eventId: e.id }}
                 search={((prev: unknown) => prev) as never}
                 className="block no-underline"
-                aria-label={e.name}
+                aria-label={displayName}
               >
                 <div className="relative aspect-video">
                   <SafeImage
                     src={e.image}
-                    alt={`${e.name} — Brazilian Jiu-Jitsu event`}
-                    fallbackLabel={e.name}
+                    alt={`${displayName} — Brazilian Jiu-Jitsu event`}
+                    fallbackLabel={displayName}
                     source="event"
                     wrapperClassName="absolute inset-0 bg-gray-50"
                     className="object-cover w-full h-full"
@@ -260,7 +262,7 @@ export function EventList({
                     className="text-xl uppercase text-gray-900 leading-tight hover:text-[#C8211A] transition-base"
                     style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
                   >
-                    {e.name}
+                    {displayName}
                   </h3>
                 </Link>
                 <div
