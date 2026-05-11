@@ -477,6 +477,14 @@ export const useDeleteAcademy = makeDeleteHook("affiliated_academies", "academie
 export const useToggleAcademyField = makeFieldToggleHook<AcademyUpdate>("affiliated_academies", "academies", "academies");
 
 /* ============================================================
+ * Member benefits
+ * ============================================================ */
+export const useAdminBenefits = makeListHook<BenefitRow>("member_benefits", "benefits", { column: "sort_order", asc: true });
+export const useUpsertBenefit = makeUpsertHook<BenefitInsert, BenefitUpdate>("member_benefits", "benefits", "benefits");
+export const useDeleteBenefit = makeDeleteHook("member_benefits", "benefits", "benefits");
+export const useToggleBenefitField = makeFieldToggleHook<BenefitUpdate>("member_benefits", "benefits", "benefits");
+
+/* ============================================================
  * Admin users (settings)
  * ============================================================ */
 export function useAdminUsers() {
