@@ -414,7 +414,9 @@ function NewsSection() {
         <div className="grid md:grid-cols-3 gap-6">
           {items.map((n) => {
             const translatedCategory = t(categoryKey(n.category));
-            const translatedTitle = t(titleKey(n.id));
+            const langTitle = lang === "pt" ? n.titlePt : n.titleEn;
+            const fallbackTitle = t(titleKey(n.id));
+            const translatedTitle = langTitle ?? (fallbackTitle === titleKey(n.id) ? n.title : fallbackTitle);
             return (
               <Link
                 key={n.id}
@@ -423,7 +425,7 @@ function NewsSection() {
               >
                 <SafeImage
                   src={n.image}
-                  alt={translatedTitle === titleKey(n.id) ? n.title : translatedTitle}
+                  alt={translatedTitle}
                   fallbackLabel={n.title}
                   source="news"
                   wrapperClassName="h-[180px]"
@@ -440,7 +442,7 @@ function NewsSection() {
                     className="text-lg leading-tight text-gray-900"
                     style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
                   >
-                    {translatedTitle === titleKey(n.id) ? n.title : translatedTitle}
+                    {translatedTitle}
                   </h3>
                   <div className="text-xs text-gray-400 mt-auto" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
                     {formatDateShort(n.date, lang)} · 4 {t("home.news.minRead")}

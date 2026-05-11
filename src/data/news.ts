@@ -7,6 +7,10 @@ export type NewsItem = {
   id: string;
   title: string;
   excerpt: string;
+  titlePt?: string;
+  titleEn?: string;
+  excerptPt?: string;
+  excerptEn?: string;
   category: "Tournaments" | "Promotions" | "Athletes" | "Federation";
   image: string;
   date: string;

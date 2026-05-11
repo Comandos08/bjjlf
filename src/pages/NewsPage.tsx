@@ -21,16 +21,23 @@ function useTranslateNews() {
   };
 
   const translateTitle = (n: NewsItem) => {
+    const langField = lang === "pt" ? n.titlePt : n.titleEn;
+    if (langField) return langField;
     const key = `news.item.${n.id}.title`;
     const translated = t(key);
     return translated === key ? n.title : translated;
   };
 
-  return { t, lang, translateCategory, translateTitle };
+  const translateExcerpt = (n: NewsItem) => {
+    const langField = lang === "pt" ? n.excerptPt : n.excerptEn;
+    return langField ?? n.excerpt;
+  };
+
+  return { t, lang, translateCategory, translateTitle, translateExcerpt };
 }
 
 export function NewsPage() {
-  const { t, lang, translateCategory, translateTitle } = useTranslateNews();
+  const { t, lang, translateCategory, translateTitle, translateExcerpt } = useTranslateNews();
   const [cat, setCat] = useState<(typeof CATEGORIES)[number]>("All");
   const [page, setPage] = useState(1);
   const perPage = 6;
@@ -121,7 +128,7 @@ export function NewsPage() {
                   className="mb-5 text-base text-gray-600 leading-[1.7]"
                   style={{ fontFamily: "Barlow", fontWeight: 400 }}
                 >
-                  {featured.excerpt}
+                  {translateExcerpt(featured)}
                 </p>
                 <div
                   className="mb-6 flex items-center gap-2 text-sm text-gray-500"
@@ -179,6 +186,7 @@ export function NewsPage() {
                   lang={lang}
                   t={t}
                   title={translateTitle(n)}
+                  excerpt={translateExcerpt(n)}
                   categoryLabel={translateCategory(n.category)}
                 />
               ))}
@@ -229,12 +237,14 @@ function NewsCard({
   lang,
   t,
   title,
+  excerpt,
   categoryLabel,
 }: {
   n: NewsItem;
   lang: Lang;
   t: (k: string) => string;
   title: string;
+  excerpt: string;
   categoryLabel: string;
 }) {
   return (
@@ -267,7 +277,7 @@ function NewsCard({
           className="px-5 mt-2 text-sm text-gray-500 line-clamp-2 leading-[1.6]"
           style={{ fontFamily: "Barlow", fontWeight: 400 }}
         >
-          {n.excerpt}
+          {excerpt}
         </p>
         <div
           className="mt-3 mx-5 mb-5 pt-3 border-t border-gray-100 text-xs text-gray-400"
