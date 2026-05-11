@@ -258,11 +258,8 @@ function NewsCard({
   excerpt: string;
   categoryLabel: string;
 }) {
-  return (
-    <Link
-      to="/news"
-      className="group flex flex-col bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden cursor-pointer"
-    >
+  const inner = (
+    <>
       <div className="relative aspect-video overflow-hidden bg-gray-100">
         <img
           src={bustAnyImageUrl(n.image) ?? n.image}
