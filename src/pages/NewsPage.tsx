@@ -37,7 +37,7 @@ function useTranslateNews() {
 }
 
 export function NewsPage() {
-  const { t, lang, translateCategory, translateTitle } = useTranslateNews();
+  const { t, lang, translateCategory, translateTitle, translateExcerpt } = useTranslateNews();
   const [cat, setCat] = useState<(typeof CATEGORIES)[number]>("All");
   const [page, setPage] = useState(1);
   const perPage = 6;
