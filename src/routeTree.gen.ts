@@ -206,9 +206,9 @@ const RegisterAcademyRoute = RegisterAcademyRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsSlugRoute = NewsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => NewsRoute,
+  id: '/news/$slug',
+  path: '/news/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const MyPermitPermitNumberRoute = MyPermitPermitNumberRouteImport.update({
   id: '/my-permit/$permitNumber',
@@ -716,6 +716,7 @@ export interface RootRouteChildren {
   AthleteResetPasswordRoute: typeof AthleteResetPasswordRoute
   AthleteSignupRoute: typeof AthleteSignupRoute
   MyPermitPermitNumberRoute: typeof MyPermitPermitNumberRoute
+  NewsSlugRoute: typeof NewsSlugRoute
   RegisterAcademyRoute: typeof RegisterAcademyRoute
   RegisterAthleteRoute: typeof RegisterAthleteRoute
   VerifyAthleteIdRoute: typeof VerifyAthleteIdRoute
@@ -924,10 +925,10 @@ declare module '@tanstack/react-router' {
     }
     '/news/$slug': {
       id: '/news/$slug'
-      path: '/$slug'
+      path: '/news/$slug'
       fullPath: '/news/$slug'
       preLoaderRoute: typeof NewsSlugRouteImport
-      parentRoute: typeof NewsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/my-permit/$permitNumber': {
       id: '/my-permit/$permitNumber'
@@ -1219,6 +1220,7 @@ const rootRouteChildren: RootRouteChildren = {
   AthleteResetPasswordRoute: AthleteResetPasswordRoute,
   AthleteSignupRoute: AthleteSignupRoute,
   MyPermitPermitNumberRoute: MyPermitPermitNumberRoute,
+  NewsSlugRoute: NewsSlugRoute,
   RegisterAcademyRoute: RegisterAcademyRoute,
   RegisterAthleteRoute: RegisterAthleteRoute,
   VerifyAthleteIdRoute: VerifyAthleteIdRoute,
@@ -1229,12 +1231,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
