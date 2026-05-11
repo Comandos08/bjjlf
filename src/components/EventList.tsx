@@ -93,13 +93,13 @@ export function EventList({
     if (q.length > 0) {
       base = base.filter(
         (e) =>
-          e.name.toLocaleLowerCase().includes(q) ||
+          getEventName(e, lang).toLocaleLowerCase().includes(q) ||
           e.location.toLocaleLowerCase().includes(q),
       );
     }
 
     return sortEvents(base, sort);
-  }, [events, selectedBadges, sort, query]);
+  }, [events, selectedBadges, sort, query, lang]);
 
   const total = filtered.length;
   const totalPages = pageCount(total, perPage);
