@@ -5,6 +5,7 @@ import newsEuropeanOpenImg from "@/assets/news-european-open.jpg";
 
 export type NewsItem = {
   id: string;
+  slug?: string;
   title: string;
   excerpt: string;
   titlePt?: string;
