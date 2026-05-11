@@ -21,12 +21,19 @@ function useTranslateNews() {
   };
 
   const translateTitle = (n: NewsItem) => {
+    const langField = lang === "pt" ? n.titlePt : n.titleEn;
+    if (langField) return langField;
     const key = `news.item.${n.id}.title`;
     const translated = t(key);
     return translated === key ? n.title : translated;
   };
 
-  return { t, lang, translateCategory, translateTitle };
+  const translateExcerpt = (n: NewsItem) => {
+    const langField = lang === "pt" ? n.excerptPt : n.excerptEn;
+    return langField ?? n.excerpt;
+  };
+
+  return { t, lang, translateCategory, translateTitle, translateExcerpt };
 }
 
 export function NewsPage() {
