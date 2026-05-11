@@ -392,7 +392,8 @@ function EventsSection() {
                 </div>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
