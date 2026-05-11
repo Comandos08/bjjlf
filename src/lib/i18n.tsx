@@ -20,6 +20,22 @@ const PT: Dict = {
   "nav.search": "Buscar",
   "nav.about": "Sobre",
   "nav.home": "Início",
+  "nav.benefits": "Benefícios",
+
+  // Benefits page
+  "benefits.title": "Clube de Vantagens",
+  "benefits.subtitle": "Benefícios exclusivos para membros BJJLF",
+  "benefits.filter.all": "Todos",
+  "benefits.filter.courses": "Cursos",
+  "benefits.filter.products": "Produtos",
+  "benefits.filter.health": "Saúde",
+  "benefits.filter.services": "Serviços",
+  "benefits.filter.partners": "Parceiros",
+  "benefits.featured": "Em Destaque",
+  "benefits.cta": "Acessar Benefício",
+  "benefits.empty": "Nenhum benefício disponível nesta categoria ainda.",
+  "benefits.gate.message": "Faça login como membro para acessar os benefícios exclusivos.",
+  "benefits.gate.cta": "Entrar",
 
   // Hero
   "hero.featured": "Evento em Destaque",
@@ -541,6 +557,22 @@ const EN: Dict = {
   "nav.search": "Search",
   "nav.about": "About",
   "nav.home": "Home",
+  "nav.benefits": "Benefits",
+
+  // Benefits page
+  "benefits.title": "Benefits Club",
+  "benefits.subtitle": "Exclusive benefits for BJJLF members",
+  "benefits.filter.all": "All",
+  "benefits.filter.courses": "Courses",
+  "benefits.filter.products": "Products",
+  "benefits.filter.health": "Health",
+  "benefits.filter.services": "Services",
+  "benefits.filter.partners": "Partners",
+  "benefits.featured": "Featured",
+  "benefits.cta": "Access Benefit",
+  "benefits.empty": "No benefits available in this category yet.",
+  "benefits.gate.message": "Log in as a member to access exclusive benefits.",
+  "benefits.gate.cta": "Sign in",
 
   "hero.featured": "Featured Event",
   "hero.cta.learnMore": "Learn More",

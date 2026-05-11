@@ -27,6 +27,7 @@ type NavItem = {
     | "/black-belts"
     | "/athletes"
     | "/members"
+    | "/benefits"
     | "/rules";
   children?: { label: string; to: NavItem["to"] }[];
   nowrap?: boolean;
@@ -36,6 +37,8 @@ export function Navbar() {
   const { t, lang, setLang } = useI18n();
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const { user, profile, isActive } = useAthleteAuth();
+  const authed = !!user && !!profile && isActive;
 
   const NAV: NavItem[] = [
     { key: "championships", to: "/events" },
@@ -44,6 +47,7 @@ export function Navbar() {
     { key: "academies", to: "/academies" },
     { key: "rules", to: "/rules" },
     { key: "news", to: "/news" },
+    ...(authed ? [{ key: "benefits", to: "/benefits" as const }] : []),
   ];
 
   return (
