@@ -7,7 +7,7 @@ import { Footer } from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { useAthleteAuth } from "@/lib/athlete-auth";
 import { useI18n } from "@/lib/i18n";
-import logoDragon from "@/assets/bjjlf-dragon.png";
+import logoDragon from "@/assets/dragon-logo.png";
 
 type Benefit = {
   id: string;
