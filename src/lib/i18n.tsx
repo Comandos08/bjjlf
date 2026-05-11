@@ -20,6 +20,22 @@ const PT: Dict = {
   "nav.search": "Buscar",
   "nav.about": "Sobre",
   "nav.home": "Início",
+  "nav.benefits": "Benefícios",
+
+  // Benefits page
+  "benefits.title": "Clube de Vantagens",
+  "benefits.subtitle": "Benefícios exclusivos para membros BJJLF",
+  "benefits.filter.all": "Todos",
+  "benefits.filter.courses": "Cursos",
+  "benefits.filter.products": "Produtos",
+  "benefits.filter.health": "Saúde",
+  "benefits.filter.services": "Serviços",
+  "benefits.filter.partners": "Parceiros",
+  "benefits.featured": "Em Destaque",
+  "benefits.cta": "Acessar Benefício",
+  "benefits.empty": "Nenhum benefício disponível nesta categoria ainda.",
+  "benefits.gate.message": "Faça login como membro para acessar os benefícios exclusivos.",
+  "benefits.gate.cta": "Entrar",
 
   // Hero
   "hero.featured": "Evento em Destaque",
