@@ -111,7 +111,7 @@ export function AthleteLoginPage() {
       title="Entrar"
       subtitle="Acesse sua área de atleta"
       footer={
-        <Link to="/athlete/signup" className="text-[#C8211A] hover:underline">
+        <Link to="/register/athlete" className="text-[#C8211A] hover:underline">
           Não tem conta? Cadastre-se
         </Link>
       }
