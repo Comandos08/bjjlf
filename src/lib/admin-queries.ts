@@ -533,6 +533,14 @@ export type {
   YoutubeRow,
   HeroRow,
   BlackBeltRow,
+export type {
+  EventRow,
+  NewsRow,
+  RankingRow,
+  YoutubeRow,
+  HeroRow,
+  BlackBeltRow,
   AcademyRow,
   AdminUserRow,
+  BenefitRow,
 };
