@@ -2,8 +2,6 @@ import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Loader2, ExternalLink, Lock } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { useAthleteAuth } from "@/lib/athlete-auth";
 import { useI18n } from "@/lib/i18n";
@@ -91,8 +89,6 @@ export function BenefitsPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8F8F8]">
-      <Navbar />
-
       <main className="flex-1">
         <div className="max-w-[1280px] mx-auto px-4 lg:px-6 py-10">
           {/* Header */}
@@ -274,8 +270,6 @@ export function BenefitsPage() {
           )}
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }
