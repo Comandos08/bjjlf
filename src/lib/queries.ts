@@ -114,6 +114,7 @@ export function useNews() {
 
         return {
           id: row.id,
+          slug: row.slug,
           title: row.title_en,
           excerpt: row.excerpt_en ?? "",
           titleEn: row.title_en,
