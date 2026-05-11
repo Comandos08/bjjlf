@@ -2,8 +2,6 @@ import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Loader2, ExternalLink, Lock } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { useAthleteAuth } from "@/lib/athlete-auth";
 import { useI18n } from "@/lib/i18n";
