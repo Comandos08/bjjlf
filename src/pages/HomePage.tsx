@@ -442,7 +442,7 @@ function NewsSection() {
                     className="text-lg leading-tight text-gray-900"
                     style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
                   >
-                    {translatedTitle === titleKey(n.id) ? n.title : translatedTitle}
+                    {translatedTitle}
                   </h3>
                   <div className="text-xs text-gray-400 mt-auto" style={{ fontFamily: "Barlow", fontWeight: 400 }}>
                     {formatDateShort(n.date, lang)} · 4 {t("home.news.minRead")}
