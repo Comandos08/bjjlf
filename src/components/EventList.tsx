@@ -298,7 +298,8 @@ export function EventList({
                 </div>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       )}
 
