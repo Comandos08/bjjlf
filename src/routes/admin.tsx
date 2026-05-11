@@ -45,6 +45,7 @@ const NAV: { to: string; label: string; icon: typeof LayoutDashboard; section: A
   { to: "/admin/registrations", label: "Inscrições", icon: ClipboardList, section: "academies" },
   { to: "/admin/permits", label: "Alvarás", icon: ShieldCheck, section: "academies" },
   { to: "/admin/diploma-requests", label: "Leads / Diplomas", icon: FileSignature, section: "academies" },
+  { to: "/admin/benefits", label: "Benefícios", icon: Gift, section: "academies" },
   { to: "/admin/hero", label: "Hero Slider", icon: ImageIcon, section: "hero" },
   { to: "/admin/settings", label: "Configurações", icon: Settings, section: "settings" },
 ];
