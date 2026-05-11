@@ -28,8 +28,8 @@ export function EventDetail() {
         <div className="relative h-[280px] md:h-[360px]">
           <SafeImage
             src={e.image.replace(/w=\d+&h=\d+/, "w=1440&h=600")}
-            alt={`${e.name} — Brazilian Jiu-Jitsu event`}
-            fallbackLabel={e.name}
+            alt={`${displayName} — Brazilian Jiu-Jitsu event`}
+            fallbackLabel={displayName}
             source="event"
             wrapperClassName="absolute inset-0"
           />
@@ -54,7 +54,7 @@ export function EventDetail() {
               >
                 <ArrowLeft className="h-4 w-4" /> {t("event.back")}
               </Link>
-              <h1 className={cn(typo.heading.xl, "text-white max-w-3xl")}>{e.name}</h1>
+              <h1 className={cn(typo.heading.xl, "text-white max-w-3xl")}>{displayName}</h1>
               <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-white/85">
                 <span className={cn(typo.body.md, "inline-flex items-center gap-2")}>
                   <Calendar className="h-4 w-4 text-gold" />
@@ -79,7 +79,7 @@ export function EventDetail() {
               <h2 className={cn(typo.heading.lg, "mb-4")}>{t("event.about.title")}</h2>
               <p className={cn(typo.body.lg)}>
                 {t("event.about.body")
-                  .replace("{name}", e.name)
+                  .replace("{name}", displayName)
                   .replace("{location}", e.location)}
               </p>
             </div>
