@@ -102,8 +102,7 @@ function HeroSlider() {
 
   return (
     <section
-      className="relative w-full overflow-hidden bg-black group/hero"
-      style={{ aspectRatio: "20 / 9", maxHeight: "720px" }}
+      className="relative w-full overflow-hidden bg-black group/hero aspect-[4/5] min-h-[560px] md:aspect-[20/9] md:min-h-0 md:max-h-[720px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
