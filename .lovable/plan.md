@@ -1,47 +1,30 @@
-## Unify Academy Registration & Permit Flow
 
-A significant 7-step refactor merging `/register/academy` into an authenticated `/academy/permit` flow, with admin permits as the single academy control center.
+## Problema
 
-### Step 1 — Database
-- Migration on `academy_permits`: add `academy_logo_url`, `country_code`, `instagram`, `additional_professors jsonb`, `notes` (already has `academy_name`, `city`, `state`, `phone`, `website`).
-- Add nullable `athlete_id uuid` column linking to `athlete_profiles.id`.
-- Create `affiliated_academies_view` (status='active') with `GRANT SELECT TO anon, authenticated`.
-- Update `useAcademies` in `src/lib/queries.ts` to read from the new view.
+No mobile (390px), o hero da home usa `aspectRatio: 20/9`, o que dá uma altura de só ~175px. Dentro desse espaço estão empilhados: tag vermelha, título grande (mínimo 48px), subtítulo, badges e 2 botões de CTA. Resultado: título e CTAs ficam cortados pela barra de thumbnails na base.
 
-### Step 2 — `/academy/permit` page (full rewrite)
-- Auth-guarded; redirect unauthenticated → `/athlete/login?redirect=/academy/permit`.
-- Require active athlete profile; otherwise show error with link to `/register/athlete`.
-- 4-step wizard reusing `Stepper`, `BeltSelector`, `ImageUploader`:
-  1. Professor Responsável (read-only, from athlete profile + auth email)
-  2. Dados da Academia (name, logo, city, state, country dropdown, phone, website, instagram)
-  3. Outros Professores (dynamic list, optional)
-  4. Revisão + termo + Submit → insert into `academy_permits` with `status='pending'`, `athlete_id`, all fields
-- Success state with PT/EN message.
+## Correção proposta (apenas CSS, sem mudar conteúdo)
 
-### Step 3 — `/register/academy` redirect
-- Replace `register.academy.tsx` component with a redirect screen → `/academy/permit` (or login w/ redirect param).
+**`src/pages/HomePage.tsx` — `<HeroSlider />` (~linha 104-167):**
 
-### Step 4 — `/academies` public page
-- Already reads via `useAcademies`; just inherits the view swap. Confirm card shape compatible (map fields).
+1. **Altura responsiva** — manter `20/9` no desktop, mas no mobile usar uma proporção mais alta e min-height adequado:
+   - Mobile: `aspect-[4/5]` com `min-height: 560px`
+   - Desktop (md+): manter `aspect-[20/9]` com `max-height: 720px`
 
-### Step 5 — Admin permits
-- `admin.permits.tsx`: extended table (Academia, Professor, Cidade/País, Logo thumbnail, Status, Solicitado, Aprovado, Expira).
-- Actions: Aprovar (status=active, approved_at=now, expires_at=now+1yr, triggers existing permit_number gen), Rejeitar (status='rejected'), Revogar (status='revoked'), Ver detalhes (modal with full payload incl. additional_professors).
-- Approval confirmation dialog with i18n copy.
-- Validation trigger `validate_permit_status` currently only allows `pending_payment, active, expired, suspended, cancelled` — must extend to allow `pending`, `rejected`, `revoked`.
-- Remove `Academias` from admin sidebar (`src/routes/admin.tsx`); keep `admin.academies.tsx` route file but unlink (or convert to read-only — easiest: just remove the nav item).
+2. **Tipografia do título** — reduzir o piso do `clamp` para caber bem no mobile sem espremer:
+   - `clamp(36px, 8vw, 96px)` em vez de `clamp(48px, 7vw, 96px)`
 
-### Step 6 — Footer / Navbar
-- Footer: `Afiliar Academia` → `/academy/permit`.
-- Navbar: same swap in Academias dropdown.
+3. **Subtítulo no mobile** — `text-base` no mobile, `text-lg` em md+ (atualmente fixo `text-lg`).
 
-### Step 7 — i18n
-- Add PT/EN keys for all new copy (wizard steps, errors, success, admin actions, dialogs, redirect notice).
+4. **Padding interno** — adicionar `py-20 md:py-0` para o conteúdo respirar acima dos thumbs no mobile.
 
-### Out of scope (untouched)
-- `/members`, athlete auth, `/academies` UI, `certified_black_belts`, `/black-belts`, other admin sections, `affiliated_academies` table.
+5. **Gradiente** — no mobile o gradiente horizontal (40% preto → transparente à direita) deixa o texto pouco legível porque o conteúdo agora ocupa altura cheia. Trocar para um gradiente vertical no mobile (`to top`, preto embaixo) e manter o horizontal no desktop.
 
-### Notes / risks
-- Status enum extension requires updating the `validate_permit_status` trigger function in the same migration.
-- `academy_permits.amount_cents` defaults to 30000 — kept; no payment flow added (request is free until approved). Existing `generate_academy_permit_number` trigger only fires on `status='active'`, so approval will issue the permit number automatically — good.
-- View consumers: confirm `/academies` page card maps `name`, `city`, `country_code`, `logo_url`, `website`, `instagram`. May need light field-mapping in `useAcademies`.
+6. **Barra de thumbs (~linha 280)** — verificar se a `bottom-[88px]` dos dots ainda faz sentido com a nova altura; se a barra de thumbs for ocultada ou reduzida no mobile, ajustar.
+
+## Fora do escopo
+
+- Não mexer em conteúdo, traduções, dados do slider nem em outros componentes.
+- Não tocar em desktop/tablet acima de `md` além do necessário.
+
+Confirma que ataco só esses ajustes?
