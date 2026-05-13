@@ -117,7 +117,8 @@ function HeroSlider() {
             className="!object-cover"
             style={{ objectPosition: "center" }}
           />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3) 100%)" }} />
+          <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.9) 25%, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.35) 100%)" }} />
+          <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3) 100%)" }} />
         </div>
       ))}
 
