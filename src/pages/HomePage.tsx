@@ -102,8 +102,7 @@ function HeroSlider() {
 
   return (
     <section
-      className="relative w-full overflow-hidden bg-black group/hero"
-      style={{ aspectRatio: "20 / 9", maxHeight: "720px" }}
+      className="relative w-full overflow-hidden bg-black group/hero aspect-[4/5] min-h-[560px] md:aspect-[20/9] md:min-h-0 md:max-h-[720px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -118,7 +117,8 @@ function HeroSlider() {
             className="!object-cover"
             style={{ objectPosition: "center" }}
           />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3) 100%)" }} />
+          <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.9) 25%, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.35) 100%)" }} />
+          <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3) 100%)" }} />
         </div>
       ))}
 
@@ -139,14 +139,14 @@ function HeroSlider() {
       </button>
 
 
-      <div className="relative z-10 max-w-7xl mx-auto h-full px-4 lg:px-12 flex items-center">
+      <div className="relative z-10 max-w-7xl mx-auto h-full px-4 lg:px-12 flex items-end md:items-center pb-24 md:pb-0 pt-10 md:pt-0">
         <div className="max-w-2xl">
           {(() => {
             const tagValue = slide.tagText ? (slide.tagText[lang] || "").trim() : "";
             if (!tagValue) return null;
             return (
               <span
-                className="inline-block bg-[#C8211A] text-white px-3 py-1.5 mb-5 text-xs uppercase tracking-widest rounded-md"
+                className="inline-block bg-[#C8211A] text-white px-3 py-1.5 mb-4 md:mb-5 text-xs uppercase tracking-widest rounded-md"
                 style={{ fontFamily: "Barlow", fontWeight: 600 }}
               >
                 {tagValue}
@@ -155,12 +155,12 @@ function HeroSlider() {
           })()}
           <h1
             className="font-display tracking-wider leading-[0.95] text-white"
-            style={{ fontSize: "clamp(48px, 7vw, 96px)", letterSpacing: "0.04em" }}
+            style={{ fontSize: "clamp(36px, 8vw, 96px)", letterSpacing: "0.04em" }}
           >
             {slideTitle}
           </h1>
           <p
-            className="mt-4 max-w-xl text-lg leading-[1.6] text-gray-300"
+            className="mt-3 md:mt-4 max-w-xl text-base md:text-lg leading-[1.6] text-gray-300"
             style={{ fontFamily: "Barlow", fontWeight: 400 }}
           >
             {slideSub}
@@ -251,7 +251,7 @@ function HeroSlider() {
       </div>
 
       {/* Dots indicators (acima da barra de thumbs) */}
-      <div className="absolute bottom-[88px] left-0 right-0 z-20 flex justify-center gap-2">
+      <div className="absolute bottom-6 md:bottom-[88px] left-0 right-0 z-20 flex justify-center gap-2">
         {SLIDES.map((_, idx) => (
           <button
             key={idx}
