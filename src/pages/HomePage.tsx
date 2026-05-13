@@ -139,14 +139,14 @@ function HeroSlider() {
       </button>
 
 
-      <div className="relative z-10 max-w-7xl mx-auto h-full px-4 lg:px-12 flex items-center">
+      <div className="relative z-10 max-w-7xl mx-auto h-full px-4 lg:px-12 flex items-end md:items-center pb-24 md:pb-0 pt-10 md:pt-0">
         <div className="max-w-2xl">
           {(() => {
             const tagValue = slide.tagText ? (slide.tagText[lang] || "").trim() : "";
             if (!tagValue) return null;
             return (
               <span
-                className="inline-block bg-[#C8211A] text-white px-3 py-1.5 mb-5 text-xs uppercase tracking-widest rounded-md"
+                className="inline-block bg-[#C8211A] text-white px-3 py-1.5 mb-4 md:mb-5 text-xs uppercase tracking-widest rounded-md"
                 style={{ fontFamily: "Barlow", fontWeight: 600 }}
               >
                 {tagValue}
@@ -155,12 +155,12 @@ function HeroSlider() {
           })()}
           <h1
             className="font-display tracking-wider leading-[0.95] text-white"
-            style={{ fontSize: "clamp(48px, 7vw, 96px)", letterSpacing: "0.04em" }}
+            style={{ fontSize: "clamp(36px, 8vw, 96px)", letterSpacing: "0.04em" }}
           >
             {slideTitle}
           </h1>
           <p
-            className="mt-4 max-w-xl text-lg leading-[1.6] text-gray-300"
+            className="mt-3 md:mt-4 max-w-xl text-base md:text-lg leading-[1.6] text-gray-300"
             style={{ fontFamily: "Barlow", fontWeight: 400 }}
           >
             {slideSub}
