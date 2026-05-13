@@ -251,7 +251,7 @@ function HeroSlider() {
       </div>
 
       {/* Dots indicators (acima da barra de thumbs) */}
-      <div className="absolute bottom-[88px] left-0 right-0 z-20 flex justify-center gap-2">
+      <div className="absolute bottom-6 md:bottom-[88px] left-0 right-0 z-20 flex justify-center gap-2">
         {SLIDES.map((_, idx) => (
           <button
             key={idx}
