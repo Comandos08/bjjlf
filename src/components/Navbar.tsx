@@ -338,11 +338,13 @@ function AthleteMenu() {
             label="Minhas Competições"
             onClick={() => { setOpen(false); void navigate({ to: "/my-competitions" }); }}
           />
-          <AthleteMenuItem
-            icon={<Building2 size={15} />}
-            label="Alvará da Academia"
-            onClick={() => { setOpen(false); void navigate({ to: "/my-permits" }); }}
-          />
+          {hasAcademyPermit && (
+            <AthleteMenuItem
+              icon={<Building2 size={15} />}
+              label="Alvará da Academia"
+              onClick={() => { setOpen(false); void navigate({ to: "/my-permits" }); }}
+            />
+          )}
 
           <div className="border-t border-gray-100 my-1" />
           <AthleteMenuItem
