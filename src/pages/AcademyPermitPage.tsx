@@ -28,7 +28,12 @@ import { formatBeltLine, type BeltName } from "@/lib/belts-ibjjf";
 import { useServerFn } from "@tanstack/react-start";
 import { createStripeCheckout } from "@/server/stripe.functions";
 
-const PERMIT_AMOUNT_CENTS = 30000;
+type PermitCurrency = "BRL" | "EUR" | "USD";
+const PERMIT_PRICES: Record<PermitCurrency, { cents: number; label: string }> = {
+  BRL: { cents: 20000, label: "R$ 200,00" },
+  EUR: { cents: 3000, label: "€ 30,00" },
+  USD: { cents: 4000, label: "$ 40,00" },
+};
 
 type AddProf = { name: string; belt: string; degree: number; years: string };
 
@@ -96,6 +101,8 @@ export function AcademyPermitPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const checkout = useServerFn(createStripeCheckout);
+  const [currency, setCurrency] = useState<PermitCurrency>("BRL");
+  const priceInfo = PERMIT_PRICES[currency];
 
   // Show success view when returning from Stripe ?paid=1
   useEffect(() => {
@@ -243,7 +250,7 @@ export function AcademyPermitPage() {
           degree: p.degree,
           years: p.years,
         })),
-        amount_cents: PERMIT_AMOUNT_CENTS,
+        amount_cents: priceInfo.cents,
         status: "pending_payment" as const,
       };
       const { data: inserted, error: insertErr } = await supabase
@@ -257,8 +264,8 @@ export function AcademyPermitPage() {
         data: {
           kind: "academy_permit",
           recordId: inserted!.id,
-          amountCents: PERMIT_AMOUNT_CENTS,
-          currency: "BRL",
+          amountCents: priceInfo.cents,
+          currency,
           description: `Alvará BJJLF — ${insertRow.academy_name}`,
           customerEmail: insertRow.email || undefined,
           origin: window.location.origin,
@@ -455,6 +462,28 @@ export function AcademyPermitPage() {
                   ))}
                 </ReviewBlock>
               )}
+
+              <div className="p-4 border border-gray-200 rounded-lg bg-white">
+                <div className="text-xs uppercase tracking-widest text-gray-500 mb-2" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
+                  Moeda / Currency
+                </div>
+                <div className="flex gap-2">
+                  {(["BRL", "EUR", "USD"] as PermitCurrency[]).map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      onClick={() => setCurrency(c)}
+                      className={`flex-1 px-3 py-2 text-sm rounded-md border transition ${currency === c ? "border-[#C8211A] bg-[#C8211A] text-white" : "border-gray-300 text-gray-700 hover:border-gray-500"}`}
+                      style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                    >
+                      {c} — {PERMIT_PRICES[c].label}
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-3 text-2xl text-gray-900" style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}>
+                  Total: {priceInfo.label}
+                </div>
+              </div>
 
               <label className="flex items-start gap-3 p-4 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer">
                 <input

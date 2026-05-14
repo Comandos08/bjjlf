@@ -9,7 +9,12 @@ import { cn } from "@/lib/utils";
 import { useServerFn } from "@tanstack/react-start";
 import { createStripeCheckout } from "@/server/stripe.functions";
 
-const ATHLETE_AMOUNT_CENTS = 8900; // $89.00 USD
+type AthleteCurrency = "BRL" | "EUR" | "USD";
+const ATHLETE_PRICES: Record<AthleteCurrency, { cents: number; label: string }> = {
+  BRL: { cents: 5000, label: "R$ 50,00" },
+  EUR: { cents: 1000, label: "€ 10,00" },
+  USD: { cents: 1000, label: "$ 10,00" },
+};
 
 export function AthleteRegistration() {
   const { t } = useI18n();
@@ -26,6 +31,8 @@ export function AthleteRegistration() {
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
   const checkout = useServerFn(createStripeCheckout);
+  const [currency, setCurrency] = useState<AthleteCurrency>("BRL");
+  const priceInfo = ATHLETE_PRICES[currency];
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -39,8 +46,8 @@ export function AthleteRegistration() {
       const res = await checkout({
         data: {
           kind: "event_registration", // reused billing kind; no internal record yet
-          amountCents: ATHLETE_AMOUNT_CENTS,
-          currency: "USD",
+          amountCents: priceInfo.cents,
+          currency,
           description: `BJJLF Annual Membership — ${data.fullName || data.email || "Athlete"}`,
           customerEmail: data.email || undefined,
           origin: window.location.origin,
@@ -224,14 +231,28 @@ export function AthleteRegistration() {
           {step === 4 && (
             <div className="space-y-6">
               <FormSectionTitle>{t("reg.payment.title")}</FormSectionTitle>
-              <div className="border border-gold p-5 flex items-center justify-between" style={{ background: "#FFFBEB" }}>
-                <div>
-                  <p className={cn(typo.button.md, "text-gold")}>{t("reg.payment.annual")}</p>
-                  <p className={cn(typo.heading.md, "text-[#0F0F0F]")}>
-                    $ 89.00 <span className={cn(typo.body.sm, "text-[#6B7280] font-normal")}>{t("reg.payment.year")}</span>
-                  </p>
+              <div className="border border-gold p-5" style={{ background: "#FFFBEB" }}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className={cn(typo.button.md, "text-gold")}>{t("reg.payment.annual")}</p>
+                    <p className={cn(typo.heading.md, "text-[#0F0F0F]")}>
+                      {priceInfo.label} <span className={cn(typo.body.sm, "text-[#6B7280] font-normal")}>{t("reg.payment.year")}</span>
+                    </p>
+                  </div>
+                  <CreditCard className="h-8 w-8 text-gold" />
                 </div>
-                <CreditCard className="h-8 w-8 text-gold" />
+                <div className="mt-4 flex gap-2">
+                  {(["BRL", "EUR", "USD"] as AthleteCurrency[]).map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      onClick={() => setCurrency(c)}
+                      className={cn(typo.button.sm, "flex-1 px-3 py-2 border transition-base", currency === c ? "bg-primary text-white border-primary" : "bg-white text-[#0F0F0F] border-[#E5E5E5] hover:border-primary")}
+                    >
+                      {c} — {ATHLETE_PRICES[c].label}
+                    </button>
+                  ))}
+                </div>
               </div>
               {payError && (
                 <div className="border border-red-300 bg-red-50 text-red-700 text-sm p-3">{payError}</div>
@@ -247,7 +268,7 @@ export function AthleteRegistration() {
                   </>
                 ) : (
                   <>
-                    <Lock className="h-4 w-4" /> Pagar com Stripe — $ 89.00
+                    <Lock className="h-4 w-4" /> Pagar com Stripe — {priceInfo.label}
                   </>
                 )}
               </button>
