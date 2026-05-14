@@ -190,22 +190,13 @@ export function DiplomaRequestPage() {
     return true;
   };
 
-  const openConfirm = async () => {
+  const openConfirm = () => {
     setError(null);
     if (!form.belt || !form.sex || !isValid) {
       setTouched(true);
       return;
     }
-    setSavingLead(true);
-    try {
-      const ok = await persistLead();
-      if (!ok) return;
-      setConfirmOpen(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error saving request.");
-    } finally {
-      setSavingLead(false);
-    }
+    setConfirmOpen(true);
   };
 
   const startCheckout = async () => {
