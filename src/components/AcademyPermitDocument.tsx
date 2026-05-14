@@ -5,6 +5,7 @@
 import { QRCodeSVG } from "qrcode.react";
 import dragon from "@/assets/bjjlf-logo.png";
 import seloOficial from "@/assets/selo-oficial-bjjlf.png";
+import assinaturaMalibu from "@/assets/assinatura-malibu.png";
 
 type Props = {
   academyName: string;
@@ -136,7 +137,12 @@ export function AcademyPermitDocument({
         </div>
 
         {/* Signature */}
-        <div className="text-center flex-1">
+        <div className="text-center flex-1 flex flex-col items-center">
+          <img
+            src={assinaturaMalibu}
+            alt="Assinatura Mestre Sergio Malibu"
+            className="h-16 w-auto object-contain -mb-3"
+          />
           <div className="border-t border-gray-400 w-64 mx-auto pt-2">
             <p
               className="text-sm uppercase text-gray-900"
