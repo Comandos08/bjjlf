@@ -28,7 +28,12 @@ import { formatBeltLine, type BeltName } from "@/lib/belts-ibjjf";
 import { useServerFn } from "@tanstack/react-start";
 import { createStripeCheckout } from "@/server/stripe.functions";
 
-const PERMIT_AMOUNT_CENTS = 30000;
+type PermitCurrency = "BRL" | "EUR" | "USD";
+const PERMIT_PRICES: Record<PermitCurrency, { cents: number; label: string }> = {
+  BRL: { cents: 20000, label: "R$ 200,00" },
+  EUR: { cents: 3000, label: "€ 30,00" },
+  USD: { cents: 4000, label: "$ 40,00" },
+};
 
 type AddProf = { name: string; belt: string; degree: number; years: string };
 
