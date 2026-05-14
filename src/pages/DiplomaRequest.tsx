@@ -144,6 +144,7 @@ export function DiplomaRequestPage() {
 
   const checkout = useServerFn(createStripeCheckout);
   const [paying, setPaying] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   // Detect return from Stripe
   useEffect(() => {
@@ -631,7 +632,7 @@ export function DiplomaRequestPage() {
                         setTouched(true);
                         return;
                       }
-                      void startCheckout();
+                      setConfirmOpen(true);
                     }}
                     disabled={paying}
                     style={{
@@ -651,11 +652,7 @@ export function DiplomaRequestPage() {
                       transition: "all .15s",
                     }}
                   >
-                    {paying
-                      ? locale === "pt"
-                        ? "Redirecionando..."
-                        : "Redirecting..."
-                      : `${locale === "pt" ? "Pagar com Stripe" : "Pay with Stripe"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
+                    {`${locale === "pt" ? "Revisar e pagar" : "Review and pay"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
                   </button>
                   <p
                     style={{
@@ -672,6 +669,19 @@ export function DiplomaRequestPage() {
                 </div>
               </div>
             </div>
+
+            {confirmOpen && form.belt && (
+              <ConfirmModal
+                locale={locale}
+                belt={beltLabel}
+                beltSwatch={BELT_SWATCH[form.belt as BeltKey]}
+                currency={form.currency}
+                price={price}
+                paying={paying}
+                onCancel={() => !paying && setConfirmOpen(false)}
+                onConfirm={() => void startCheckout()}
+              />
+            )}
           </>
         )}
       </div>
@@ -876,5 +886,148 @@ function SuccessBlock({ title, body }: { title: string; body: string }) {
   );
 }
 
+function ConfirmModal({
+  locale,
+  belt,
+  beltSwatch,
+  currency,
+  price,
+  paying,
+  onCancel,
+  onConfirm,
+}: {
+  locale: Locale;
+  belt: string;
+  beltSwatch: string;
+  currency: Currency;
+  price: number;
+  paying: boolean;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) {
+  const isPt = locale === "pt";
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      onClick={onCancel}
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(0,0,0,0.75)",
+        zIndex: 50,
+        display: "grid",
+        placeItems: "center",
+        padding: 16,
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "100%",
+          maxWidth: 460,
+          background: "#0F0F0F",
+          border: `1px solid ${GOLD}`,
+          padding: 28,
+          fontFamily: "DM Sans, sans-serif",
+        }}
+      >
+        <h3
+          style={{
+            fontFamily: "Barlow Condensed, sans-serif",
+            fontWeight: 900,
+            fontSize: 26,
+            textTransform: "uppercase",
+            letterSpacing: "0.03em",
+            color: "#fff",
+            borderBottom: `2px solid ${RED}`,
+            paddingBottom: 8,
+            marginBottom: 18,
+          }}
+        >
+          {isPt ? "Confirmar pedido" : "Confirm order"}
+        </h3>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18 }}>
+          <div style={{ width: 48, height: 48, background: beltSwatch, border: "1px solid #000" }} />
+          <div>
+            <div style={{ color: GOLD, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em" }}>
+              {isPt ? "Faixa" : "Belt"}
+            </div>
+            <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontWeight: 900, fontSize: 22, color: "#fff", textTransform: "uppercase" }}>
+              {belt}
+            </div>
+          </div>
+        </div>
+
+        <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 14, marginBottom: 22, display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+          <span style={{ color: "#bbb", fontSize: 14, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            {isPt ? "Total" : "Total"}
+          </span>
+          <span style={{ fontFamily: "Barlow Condensed, sans-serif", fontWeight: 900, fontSize: 34, color: GOLD }}>
+            {CURRENCY_SYMBOL[currency]} {price.toFixed(2)} {currency}
+          </span>
+        </div>
+
+        <p style={{ fontSize: 12, color: "#888", marginBottom: 18 }}>
+          {isPt
+            ? "Você será redirecionado ao Stripe para concluir o pagamento de forma segura."
+            : "You will be redirected to Stripe to complete the payment securely."}
+        </p>
+
+        <div style={{ display: "flex", gap: 10 }}>
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={paying}
+            style={{
+              flex: 1,
+              padding: "12px 16px",
+              background: "transparent",
+              color: "#fff",
+              border: `1px solid ${BORDER}`,
+              borderRadius: 0,
+              fontFamily: "Barlow Condensed, sans-serif",
+              fontWeight: 700,
+              fontSize: 14,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              cursor: paying ? "not-allowed" : "pointer",
+              opacity: paying ? 0.5 : 1,
+            }}
+          >
+            {isPt ? "Cancelar" : "Cancel"}
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            disabled={paying}
+            style={{
+              flex: 2,
+              padding: "12px 16px",
+              background: GOLD,
+              color: "#000",
+              border: "none",
+              borderRadius: 0,
+              fontFamily: "Barlow Condensed, sans-serif",
+              fontWeight: 900,
+              fontSize: 15,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              cursor: paying ? "not-allowed" : "pointer",
+              opacity: paying ? 0.6 : 1,
+            }}
+          >
+            {paying
+              ? isPt ? "Redirecionando..." : "Redirecting..."
+              : isPt ? `Confirmar e pagar — ${CURRENCY_SYMBOL[currency]} ${price.toFixed(2)}` : `Confirm and pay — ${CURRENCY_SYMBOL[currency]} ${price.toFixed(2)}`}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // suppress unused-import warning for useEffect (kept for future hooks)
 void useEffect;
+void PRICES;
