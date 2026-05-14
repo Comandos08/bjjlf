@@ -280,30 +280,6 @@ export function AthleteRegistration() {
               </button>
             ) : null}
           </div>
-
-          {step === 5 && <MembershipCard data={data} />}
-
-          <div className="flex justify-between mt-10 pt-6 border-t border-[#E5E5E5]">
-            <button
-              onClick={prev}
-              disabled={step === 0}
-              className={cn(typo.button.md, "inline-flex items-center gap-2 px-5 py-2.5 border border-[#E5E5E5] text-[#6B7280] hover:bg-[#F7F9FC] disabled:opacity-30 transition-base")}
-            >
-              <ArrowLeft className="h-3.5 w-3.5" /> {t("reg.back")}
-            </button>
-            {step < STEPS.length - 1 ? (
-              <button
-                onClick={next}
-                className={cn(typo.button.md, "inline-flex items-center gap-2 px-6 py-3 bg-primary text-white hover:bg-primary-dark transition-base")}
-              >
-                {step === 4 ? t("reg.payConfirm") : t("reg.next")} <ArrowRight className="h-3.5 w-3.5" />
-              </button>
-            ) : (
-              <button className={cn(typo.button.md, "inline-flex items-center gap-2 px-6 py-3 bg-gold text-[#0F0F0F] hover:bg-gold-light transition-base")}>
-                {t("reg.download")}
-              </button>
-            )}
-          </div>
         </div>
       </section>
     </div>
