@@ -5,6 +5,7 @@ import { Logo } from "./Logo";
 import { useI18n, type Lang } from "@/lib/i18n";
 import { useAthleteAuth, type AthleteProfile } from "@/lib/athlete-auth";
 import { formatBeltLine as formatBeltLineFromBelt } from "@/lib/belts-ibjjf";
+import { useHasAcademyPermit } from "@/hooks/useHasAcademyPermit";
 
 function formatBeltLine(profile: Pick<AthleteProfile, "belt" | "degree"> | null | undefined): string | null {
   const belt = profile?.belt?.trim();
