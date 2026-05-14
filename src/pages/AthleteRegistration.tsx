@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { Stepper, PageHero } from "@/components/Stepper";
 import { BELTS, type BeltColor } from "@/lib/belts";
 import { useI18n } from "@/lib/i18n";
-import { ArrowLeft, ArrowRight, CheckCircle2, Search, CreditCard, Lock, AlertTriangle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Search, CreditCard, Lock, AlertTriangle, Loader2 } from "lucide-react";
 import dragon from "@/assets/dragon-logo.png";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
+import { useServerFn } from "@tanstack/react-start";
+import { createStripeCheckout } from "@/server/stripe.functions";
+
+const ATHLETE_AMOUNT_CENTS = 8900; // $89.00 USD
 
 export function AthleteRegistration() {
   const { t } = useI18n();
