@@ -144,34 +144,79 @@ export function DiplomaRequestPage() {
     marginBottom: 20,
   };
 
-  const handlePaymentApproved = async (orderId: string) => {
-    setError(null);
-    if (!form.belt || !form.sex) return;
-    const res = await submit({
-      data: {
-        firstName: form.firstName.trim(),
-        lastName: form.lastName.trim(),
-        email: form.email.trim(),
-        whatsapp: form.whatsapp.trim(),
-        affiliateCode: form.affiliateCode.trim(),
-        affiliateSource: affiliateLocked ? "url" : "manual",
-        dob: form.dob,
-        sex: form.sex,
-        documentNumber: form.documentNumber.trim(),
-        fatherName: form.fatherName.trim(),
-        motherName: form.motherName.trim(),
-        belt: t.belts[form.belt as BeltKey],
-        martialArt: "Brazilian Jiu-Jitsu",
-        language: locale,
-        currency: form.currency,
-        price,
-      },
-    });
-    if (res.ok) {
+  const checkout = useServerFn(createStripeCheckout);
+  const [paying, setPaying] = useState(false);
+
+  // Detect return from Stripe
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("paid") === "1") {
       setSuccess(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      setError(res.error || "Error saving request. Order ID: " + orderId);
+    }
+  }, []);
+
+  const startCheckout = async () => {
+    setError(null);
+    if (!form.belt || !form.sex || !isValid) {
+      setTouched(true);
+      return;
+    }
+    setPaying(true);
+    try {
+      // 1) Persist the lead so partner referral is tracked even if user abandons.
+      const leadRes = await submit({
+        data: {
+          firstName: form.firstName.trim(),
+          lastName: form.lastName.trim(),
+          email: form.email.trim(),
+          whatsapp: form.whatsapp.trim(),
+          affiliateCode: form.affiliateCode.trim(),
+          affiliateSource: affiliateLocked ? "url" : "manual",
+          dob: form.dob,
+          sex: form.sex,
+          documentNumber: form.documentNumber.trim(),
+          fatherName: form.fatherName.trim(),
+          motherName: form.motherName.trim(),
+          belt: t.belts[form.belt as BeltKey],
+          martialArt: "Brazilian Jiu-Jitsu",
+          language: locale,
+          currency: form.currency,
+          price,
+        },
+      });
+      if (!leadRes.ok) {
+        setError(leadRes.error || "Error saving request.");
+        setPaying(false);
+        return;
+      }
+
+      // 2) Create Stripe Checkout session and redirect.
+      const res = await checkout({
+        data: {
+          kind: "diploma",
+          amountCents: Math.round(price * 100),
+          currency: form.currency,
+          description: `BJJLF Diploma — ${t.belts[form.belt as BeltKey]}`,
+          customerEmail: form.email.trim(),
+          origin: window.location.origin,
+          successPath: `/diploma-request?paid=1`,
+          cancelPath: `/diploma-request?canceled=1`,
+          metadata: {
+            belt: form.belt,
+            affiliate: form.affiliateCode.trim(),
+          },
+        },
+      });
+      if (!res.ok || !res.url) {
+        setError(res.ok ? "Stripe URL missing" : res.error);
+        setPaying(false);
+        return;
+      }
+      window.location.href = res.url;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Payment error");
+      setPaying(false);
     }
   };
 
