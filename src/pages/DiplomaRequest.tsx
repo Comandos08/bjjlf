@@ -1,8 +1,4 @@
 import { useMemo, useState, useRef, useEffect } from "react";
-import {
-  PayPalScriptProvider,
-  PayPalButtons,
-} from "@paypal/react-paypal-js";
 import { useServerFn } from "@tanstack/react-start";
 import { useSearch } from "@tanstack/react-router";
 import { Logo } from "@/components/Logo";
@@ -17,6 +13,7 @@ import {
 } from "@/lib/diploma-pricing";
 import { I18N, LOCALES, type Locale } from "@/lib/diploma-i18n";
 import { submitDiplomaRequest } from "@/server/diploma.functions";
+import { createStripeCheckout } from "@/server/stripe.functions";
 
 type FormState = {
   email: string;
@@ -60,9 +57,7 @@ const initial: FormState = {
   currency: "EUR",
 };
 
-const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID as
-  | string
-  | undefined;
+// PayPal removed — payments now via Stripe.
 
 const GOLD = "#B8960C";
 const RED = "#C41E3A";
@@ -147,34 +142,79 @@ export function DiplomaRequestPage() {
     marginBottom: 20,
   };
 
-  const handlePaymentApproved = async (orderId: string) => {
-    setError(null);
-    if (!form.belt || !form.sex) return;
-    const res = await submit({
-      data: {
-        firstName: form.firstName.trim(),
-        lastName: form.lastName.trim(),
-        email: form.email.trim(),
-        whatsapp: form.whatsapp.trim(),
-        affiliateCode: form.affiliateCode.trim(),
-        affiliateSource: affiliateLocked ? "url" : "manual",
-        dob: form.dob,
-        sex: form.sex,
-        documentNumber: form.documentNumber.trim(),
-        fatherName: form.fatherName.trim(),
-        motherName: form.motherName.trim(),
-        belt: t.belts[form.belt as BeltKey],
-        martialArt: "Brazilian Jiu-Jitsu",
-        language: locale,
-        currency: form.currency,
-        price,
-      },
-    });
-    if (res.ok) {
+  const checkout = useServerFn(createStripeCheckout);
+  const [paying, setPaying] = useState(false);
+
+  // Detect return from Stripe
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("paid") === "1") {
       setSuccess(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      setError(res.error || "Error saving request. Order ID: " + orderId);
+    }
+  }, []);
+
+  const startCheckout = async () => {
+    setError(null);
+    if (!form.belt || !form.sex || !isValid) {
+      setTouched(true);
+      return;
+    }
+    setPaying(true);
+    try {
+      // 1) Persist the lead so partner referral is tracked even if user abandons.
+      const leadRes = await submit({
+        data: {
+          firstName: form.firstName.trim(),
+          lastName: form.lastName.trim(),
+          email: form.email.trim(),
+          whatsapp: form.whatsapp.trim(),
+          affiliateCode: form.affiliateCode.trim(),
+          affiliateSource: affiliateLocked ? "url" : "manual",
+          dob: form.dob,
+          sex: form.sex,
+          documentNumber: form.documentNumber.trim(),
+          fatherName: form.fatherName.trim(),
+          motherName: form.motherName.trim(),
+          belt: t.belts[form.belt as BeltKey],
+          martialArt: "Brazilian Jiu-Jitsu",
+          language: locale,
+          currency: form.currency,
+          price,
+        },
+      });
+      if (!leadRes.ok) {
+        setError(leadRes.error || "Error saving request.");
+        setPaying(false);
+        return;
+      }
+
+      // 2) Create Stripe Checkout session and redirect.
+      const res = await checkout({
+        data: {
+          kind: "diploma",
+          amountCents: Math.round(price * 100),
+          currency: form.currency,
+          description: `BJJLF Diploma — ${t.belts[form.belt as BeltKey]}`,
+          customerEmail: form.email.trim(),
+          origin: window.location.origin,
+          successPath: `/diploma-request?paid=1`,
+          cancelPath: `/diploma-request?canceled=1`,
+          metadata: {
+            belt: form.belt,
+            affiliate: form.affiliateCode.trim(),
+          },
+        },
+      });
+      if (!res.ok || !res.url) {
+        setError(res.ok ? "Stripe URL missing" : res.error);
+        setPaying(false);
+        return;
+      }
+      window.location.href = res.url;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Payment error");
+      setPaying(false);
     }
   };
 
@@ -583,59 +623,52 @@ export function DiplomaRequestPage() {
                     {error}
                   </div>
                 )}
-                <div
-                  style={{
-                    pointerEvents: isValid ? "auto" : "none",
-                    opacity: isValid ? 1 : 0.4,
-                  }}
-                  onMouseDown={() => {
-                    if (!isValid) setTouched(true);
-                  }}
-                >
-                  {PAYPAL_CLIENT_ID ? (
-                    <PayPalScriptProvider
-                      options={{
-                        clientId: PAYPAL_CLIENT_ID,
-                        currency: form.currency,
-                        intent: "capture",
-                      }}
-                      key={form.currency}
-                    >
-                      <PayPalButtons
-                        key={`${form.belt}-${form.currency}`}
-                        disabled={!isValid}
-                        style={{ layout: "vertical", color: "gold", shape: "rect" }}
-                        createOrder={(_data, actions) =>
-                          actions.order.create({
-                            intent: "CAPTURE",
-                            purchase_units: [
-                              {
-                                description: `BJJLF Diploma Certificate — ${beltLabel}`,
-                                amount: {
-                                  currency_code: form.currency,
-                                  value: price.toFixed(2),
-                                },
-                              },
-                            ],
-                          })
-                        }
-                        onApprove={async (_data, actions) => {
-                          const details = await actions.order?.capture();
-                          await handlePaymentApproved(
-                            details?.id || _data.orderID,
-                          );
-                        }}
-                        onError={(err) => {
-                          console.error("PayPal error:", err);
-                          setError("Payment error. Please try again.");
-                        }}
-                      />
-                    </PayPalScriptProvider>
-                  ) : (
-                    <div style={{ color: RED, textAlign: "center" }}>
-                      PayPal not configured.
-                    </div>
-                  )}
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!isValid) {
+                        setTouched(true);
+                        return;
+                      }
+                      void startCheckout();
+                    }}
+                    disabled={paying}
+                    style={{
+                      width: "100%",
+                      padding: "16px 24px",
+                      backgroundColor: isValid ? GOLD : "#444",
+                      color: "#000",
+                      border: "none",
+                      borderRadius: 0,
+                      fontFamily: "Barlow Condensed, sans-serif",
+                      fontWeight: 900,
+                      fontSize: 18,
+                      letterSpacing: "0.05em",
+                      textTransform: "uppercase",
+                      cursor: isValid && !paying ? "pointer" : "not-allowed",
+                      opacity: paying ? 0.6 : 1,
+                      transition: "all .15s",
+                    }}
+                  >
+                    {paying
+                      ? locale === "pt"
+                        ? "Redirecionando..."
+                        : "Redirecting..."
+                      : `${locale === "pt" ? "Pagar com Stripe" : "Pay with Stripe"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
+                  </button>
+                  <p
+                    style={{
+                      fontSize: 11,
+                      color: "#888",
+                      marginTop: 10,
+                      textAlign: "center",
+                    }}
+                  >
+                    {locale === "pt"
+                      ? "Pagamento seguro processado pelo Stripe."
+                      : "Secure payment processed by Stripe."}
+                  </p>
                 </div>
               </div>
             </div>

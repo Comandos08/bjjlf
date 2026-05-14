@@ -11,7 +11,7 @@
  * - Stripe is not wired yet: success view shows "Aguardando Pagamento".
  */
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "@tanstack/react-router";
+import { Link, useParams, useSearch } from "@tanstack/react-router";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -25,6 +25,8 @@ import { useEvents } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 import { BeltSelector } from "@/components/BeltSelector";
 import { defaultDegreeForBelt, type BeltName } from "@/lib/belts-ibjjf";
+import { useServerFn } from "@tanstack/react-start";
+import { createStripeCheckout } from "@/server/stripe.functions";
 
 const MODALITIES = ["GI", "NO-GI", "GI & NO-GI"];
 const CATEGORIES = [
@@ -101,6 +103,22 @@ export function EventRegistrationPage() {
     modality: string;
     amount_cents: number;
   }>(null);
+  const checkout = useServerFn(createStripeCheckout);
+  const search = useSearch({ strict: false }) as { paid?: string };
+
+  // Show success view when returning from Stripe
+  useEffect(() => {
+    if (search?.paid === "1") {
+      setSuccess({
+        full_name: form.full_name || "",
+        category: form.category,
+        weight_class: form.weight_class,
+        modality: form.modality,
+        amount_cents: amountCents,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search?.paid]);
 
   // Pre-fill from profile
   useEffect(() => {
@@ -206,19 +224,32 @@ export function EventRegistrationPage() {
         status: "pending_payment",
       };
 
-      const { error: insertError } = await supabase
+      const { data: inserted, error: insertError } = await supabase
         .from("event_registrations")
-        .insert(insertRow);
+        .insert(insertRow)
+        .select("id")
+        .single();
 
       if (insertError) throw insertError;
 
-      setSuccess({
-        full_name: insertRow.full_name,
-        category: form.category,
-        weight_class: form.weight_class,
-        modality: form.modality,
-        amount_cents: amountCents,
+      const res = await checkout({
+        data: {
+          kind: "event_registration",
+          recordId: inserted!.id,
+          amountCents,
+          currency: "BRL",
+          description: `${event!.name} — ${form.category} ${form.modality} ${form.weight_class}`,
+          customerEmail: insertRow.email || undefined,
+          origin: window.location.origin,
+          successPath: `/register/event/${eventId}?paid=1`,
+          cancelPath: `/register/event/${eventId}?canceled=1`,
+        },
       });
+
+      if (!res.ok || !res.url) {
+        throw new Error(res.ok ? "Stripe URL ausente" : res.error);
+      }
+      window.location.href = res.url;
     } catch (err) {
       const msg =
         err instanceof Error ? err.message : "Falha ao enviar a inscrição.";

@@ -25,6 +25,10 @@ import { Stepper } from "@/components/Stepper";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { BeltSelector } from "@/components/BeltSelector";
 import { formatBeltLine, type BeltName } from "@/lib/belts-ibjjf";
+import { useServerFn } from "@tanstack/react-start";
+import { createStripeCheckout } from "@/server/stripe.functions";
+
+const PERMIT_AMOUNT_CENTS = 30000;
 
 type AddProf = { name: string; belt: string; degree: number; years: string };
 
@@ -91,6 +95,13 @@ export function AcademyPermitPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const checkout = useServerFn(createStripeCheckout);
+
+  // Show success view when returning from Stripe ?paid=1
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("paid") === "1") setSuccess(true);
+  }, []);
 
   const STEPS = [
     t("academyPermit.step1"),
@@ -232,14 +243,31 @@ export function AcademyPermitPage() {
           degree: p.degree,
           years: p.years,
         })),
-        amount_cents: 0,
-        status: "pending" as const,
+        amount_cents: PERMIT_AMOUNT_CENTS,
+        status: "pending_payment" as const,
       };
-      const { error: insertErr } = await supabase
+      const { data: inserted, error: insertErr } = await supabase
         .from("academy_permits")
-        .insert(insertRow);
+        .insert(insertRow)
+        .select("id")
+        .single();
       if (insertErr) throw insertErr;
-      setSuccess(true);
+
+      const res = await checkout({
+        data: {
+          kind: "academy_permit",
+          recordId: inserted!.id,
+          amountCents: PERMIT_AMOUNT_CENTS,
+          currency: "BRL",
+          description: `Alvará BJJLF — ${insertRow.academy_name}`,
+          customerEmail: insertRow.email || undefined,
+          origin: window.location.origin,
+          successPath: `/academy/permit?paid=1`,
+          cancelPath: `/academy/permit?canceled=1`,
+        },
+      });
+      if (!res.ok || !res.url) throw new Error(res.ok ? "Stripe URL ausente" : res.error);
+      window.location.href = res.url;
     } catch (err) {
       setError(err instanceof Error ? err.message : t("academyPermit.error.generic"));
     } finally {

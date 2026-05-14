@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { Stepper, PageHero } from "@/components/Stepper";
 import { BELTS, type BeltColor } from "@/lib/belts";
 import { useI18n } from "@/lib/i18n";
-import { ArrowLeft, ArrowRight, CheckCircle2, Search, CreditCard, Lock, AlertTriangle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Search, CreditCard, Lock, AlertTriangle, Loader2 } from "lucide-react";
 import dragon from "@/assets/dragon-logo.png";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
+import { useServerFn } from "@tanstack/react-start";
+import { createStripeCheckout } from "@/server/stripe.functions";
+
+const ATHLETE_AMOUNT_CENTS = 8900; // $89.00 USD
 
 export function AthleteRegistration() {
   const { t } = useI18n();
@@ -19,6 +23,44 @@ export function AthleteRegistration() {
   ];
 
   const [step, setStep] = useState(0);
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
+  const checkout = useServerFn(createStripeCheckout);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("paid") === "1") setStep(5);
+  }, []);
+
+  const startStripeCheckout = async () => {
+    setPayError(null);
+    setPaying(true);
+    try {
+      const res = await checkout({
+        data: {
+          kind: "event_registration", // reused billing kind; no internal record yet
+          amountCents: ATHLETE_AMOUNT_CENTS,
+          currency: "USD",
+          description: `BJJLF Annual Membership — ${data.fullName || data.email || "Athlete"}`,
+          customerEmail: data.email || undefined,
+          origin: window.location.origin,
+          successPath: `/register/athlete?paid=1`,
+          cancelPath: `/register/athlete?canceled=1`,
+          metadata: {
+            purpose: "athlete_membership",
+            email: data.email,
+            full_name: data.fullName,
+          },
+        },
+      });
+      if (!res.ok || !res.url) throw new Error(res.ok ? "Stripe URL ausente" : res.error);
+      window.location.href = res.url;
+    } catch (err) {
+      setPayError(err instanceof Error ? err.message : "Payment error");
+      setPaying(false);
+    }
+  };
+
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -191,13 +233,27 @@ export function AthleteRegistration() {
                 </div>
                 <CreditCard className="h-8 w-8 text-gold" />
               </div>
-              <Field label={t("reg.card.number")}><TextInput placeholder="1234 5678 9012 3456" /></Field>
-              <div className="grid sm:grid-cols-3 gap-5">
-                <Field label={t("reg.card.expiry")}><TextInput placeholder="MM/YY" /></Field>
-                <Field label={t("reg.card.cvc")}><TextInput placeholder="123" /></Field>
-                <Field label={t("reg.card.zip")}><TextInput placeholder="00000" /></Field>
-              </div>
-              <Field label={t("reg.card.holder")}><TextInput placeholder={t("reg.card.holder.placeholder")} /></Field>
+              {payError && (
+                <div className="border border-red-300 bg-red-50 text-red-700 text-sm p-3">{payError}</div>
+              )}
+              <button
+                onClick={() => void startStripeCheckout()}
+                disabled={paying}
+                className={cn(typo.button.md, "w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white hover:bg-primary-dark transition-base disabled:opacity-60")}
+              >
+                {paying ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" /> Redirecionando...
+                  </>
+                ) : (
+                  <>
+                    <Lock className="h-4 w-4" /> Pagar com Stripe — $ 89.00
+                  </>
+                )}
+              </button>
+              <p className={cn(typo.body.xs, "text-[#6B7280] text-center")}>
+                Pagamento seguro processado pelo Stripe.
+              </p>
             </div>
           )}
 
@@ -211,18 +267,18 @@ export function AthleteRegistration() {
             >
               <ArrowLeft className="h-3.5 w-3.5" /> {t("reg.back")}
             </button>
-            {step < STEPS.length - 1 ? (
+            {step < 4 ? (
               <button
                 onClick={next}
                 className={cn(typo.button.md, "inline-flex items-center gap-2 px-6 py-3 bg-primary text-white hover:bg-primary-dark transition-base")}
               >
-                {step === 4 ? t("reg.payConfirm") : t("reg.next")} <ArrowRight className="h-3.5 w-3.5" />
+                {t("reg.next")} <ArrowRight className="h-3.5 w-3.5" />
               </button>
-            ) : (
+            ) : step === 5 ? (
               <button className={cn(typo.button.md, "inline-flex items-center gap-2 px-6 py-3 bg-gold text-[#0F0F0F] hover:bg-gold-light transition-base")}>
                 {t("reg.download")}
               </button>
-            )}
+            ) : null}
           </div>
         </div>
       </section>
