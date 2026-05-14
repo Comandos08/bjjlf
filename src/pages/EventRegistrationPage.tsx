@@ -223,7 +223,7 @@ export function EventRegistrationPage() {
           recordId: inserted!.id,
           amountCents,
           currency: "BRL",
-          description: `${event.name} — ${form.category} ${form.modality} ${form.weight_class}`,
+          description: `${event!.name} — ${form.category} ${form.modality} ${form.weight_class}`,
           customerEmail: insertRow.email || undefined,
           origin: window.location.origin,
           successPath: `/register/event/${eventId}?paid=1`,
