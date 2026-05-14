@@ -104,6 +104,21 @@ export function EventRegistrationPage() {
     amount_cents: number;
   }>(null);
   const checkout = useServerFn(createStripeCheckout);
+  const search = useSearch({ strict: false }) as { paid?: string };
+
+  // Show success view when returning from Stripe
+  useEffect(() => {
+    if (search?.paid === "1") {
+      setSuccess({
+        full_name: form.full_name || "",
+        category: form.category,
+        weight_class: form.weight_class,
+        modality: form.modality,
+        amount_cents: amountCents,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search?.paid]);
 
   // Pre-fill from profile
   useEffect(() => {
