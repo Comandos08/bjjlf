@@ -95,6 +95,13 @@ export function AcademyPermitPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const checkout = useServerFn(createStripeCheckout);
+
+  // Show success view when returning from Stripe ?paid=1
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("paid") === "1") setSuccess(true);
+  }, []);
 
   const STEPS = [
     t("academyPermit.step1"),
