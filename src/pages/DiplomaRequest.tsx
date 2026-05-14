@@ -660,14 +660,8 @@ export function DiplomaRequestPage() {
                 <div>
                   <button
                     type="button"
-                    onClick={() => {
-                      if (!isValid) {
-                        setTouched(true);
-                        return;
-                      }
-                      setConfirmOpen(true);
-                    }}
-                    disabled={paying}
+                    onClick={() => void openConfirm()}
+                    disabled={paying || savingLead}
                     style={{
                       width: "100%",
                       padding: "16px 24px",
@@ -680,12 +674,19 @@ export function DiplomaRequestPage() {
                       fontSize: 18,
                       letterSpacing: "0.05em",
                       textTransform: "uppercase",
-                      cursor: isValid && !paying ? "pointer" : "not-allowed",
-                      opacity: paying ? 0.6 : 1,
+                      cursor:
+                        isValid && !paying && !savingLead
+                          ? "pointer"
+                          : "not-allowed",
+                      opacity: paying || savingLead ? 0.6 : 1,
                       transition: "all .15s",
                     }}
                   >
-                    {`${locale === "pt" ? "Revisar e pagar" : "Review and pay"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
+                    {savingLead
+                      ? locale === "pt"
+                        ? "Salvando pedido…"
+                        : "Saving order…"
+                      : `${locale === "pt" ? "Revisar e pagar" : "Review and pay"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
                   </button>
                   <p
                     style={{
