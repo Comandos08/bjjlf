@@ -463,6 +463,28 @@ export function AcademyPermitPage() {
                 </ReviewBlock>
               )}
 
+              <div className="p-4 border border-gray-200 rounded-lg bg-white">
+                <div className="text-xs uppercase tracking-widest text-gray-500 mb-2" style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}>
+                  Moeda / Currency
+                </div>
+                <div className="flex gap-2">
+                  {(["BRL", "EUR", "USD"] as PermitCurrency[]).map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      onClick={() => setCurrency(c)}
+                      className={`flex-1 px-3 py-2 text-sm rounded-md border transition ${currency === c ? "border-[#C8211A] bg-[#C8211A] text-white" : "border-gray-300 text-gray-700 hover:border-gray-500"}`}
+                      style={{ fontFamily: "Barlow Condensed", fontWeight: 700 }}
+                    >
+                      {c} — {PERMIT_PRICES[c].label}
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-3 text-2xl text-gray-900" style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}>
+                  Total: {priceInfo.label}
+                </div>
+              </div>
+
               <label className="flex items-start gap-3 p-4 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer">
                 <input
                   type="checkbox"
