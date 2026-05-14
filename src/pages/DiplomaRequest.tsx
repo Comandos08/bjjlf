@@ -348,24 +348,17 @@ export function DiplomaRequestPage() {
                   />
                 </Field>
                 <div className="md:col-span-2">
-                  <Field label={t.affiliateCode} required help={t.affiliateHelp}>
+                  <Field label={t.affiliateCode} help={t.affiliateHelp}>
                     <input
                       type="text"
                       value={form.affiliateCode}
-                      readOnly={affiliateLocked}
-                      onChange={(e) =>
-                        !affiliateLocked &&
-                        update("affiliateCode", e.target.value.toUpperCase())
-                      }
+                      readOnly
+                      tabIndex={-1}
                       style={{
                         ...inputStyle("affiliateCode"),
                         backgroundColor: affiliateLocked ? "#1A1A0A" : INPUT_BG,
-                        cursor: affiliateLocked ? "not-allowed" : "text",
-                        borderColor: affiliateLocked
-                          ? GOLD
-                          : touched && errors.affiliateCode
-                            ? RED
-                            : BORDER,
+                        cursor: "not-allowed",
+                        borderColor: affiliateLocked ? GOLD : BORDER,
                       }}
                       className={inputCls("affiliateCode")}
                     />
