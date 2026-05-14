@@ -103,6 +103,7 @@ export function EventRegistrationPage() {
     modality: string;
     amount_cents: number;
   }>(null);
+  const checkout = useServerFn(createStripeCheckout);
 
   // Pre-fill from profile
   useEffect(() => {
