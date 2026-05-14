@@ -5,6 +5,7 @@ import { Logo } from "./Logo";
 import { useI18n, type Lang } from "@/lib/i18n";
 import { useAthleteAuth, type AthleteProfile } from "@/lib/athlete-auth";
 import { formatBeltLine as formatBeltLineFromBelt } from "@/lib/belts-ibjjf";
+import { useHasAcademyPermit } from "@/hooks/useHasAcademyPermit";
 
 function formatBeltLine(profile: Pick<AthleteProfile, "belt" | "degree"> | null | undefined): string | null {
   const belt = profile?.belt?.trim();
@@ -204,6 +205,7 @@ export function Navbar() {
 
 function AthleteMenu() {
   const { user, profile, isActive, isLoading, signOut } = useAthleteAuth();
+  const hasAcademyPermit = useHasAcademyPermit();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -336,11 +338,13 @@ function AthleteMenu() {
             label="Minhas Competições"
             onClick={() => { setOpen(false); void navigate({ to: "/my-competitions" }); }}
           />
-          <AthleteMenuItem
-            icon={<Building2 size={15} />}
-            label="Alvará da Academia"
-            onClick={() => { setOpen(false); void navigate({ to: "/my-permits" }); }}
-          />
+          {hasAcademyPermit && (
+            <AthleteMenuItem
+              icon={<Building2 size={15} />}
+              label="Alvará da Academia"
+              onClick={() => { setOpen(false); void navigate({ to: "/my-permits" }); }}
+            />
+          )}
 
           <div className="border-t border-gray-100 my-1" />
           <AthleteMenuItem
@@ -448,6 +452,7 @@ function MobileProfileBlock() {
 
 function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
   const { user, profile, isActive, isLoading, signOut } = useAthleteAuth();
+  const hasAcademyPermit = useHasAcademyPermit();
 
   if (isLoading) return null;
   const showAthlete = !!user && !!profile && isActive;
@@ -467,9 +472,11 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
       <Link to="/my-competitions" onClick={onNavigate} className={linkClass} style={linkStyle}>
         <Trophy size={16} className="shrink-0" /> <span className="truncate">Minhas Competições</span>
       </Link>
-      <Link to="/my-permits" onClick={onNavigate} className={linkClass} style={linkStyle}>
-        <Building2 size={16} className="shrink-0" /> <span className="truncate">Alvará da Academia</span>
-      </Link>
+      {hasAcademyPermit && (
+        <Link to="/my-permits" onClick={onNavigate} className={linkClass} style={linkStyle}>
+          <Building2 size={16} className="shrink-0" /> <span className="truncate">Alvará da Academia</span>
+        </Link>
+      )}
       <div className="border-t border-[#222] my-1" />
       <button
         onClick={() => { onNavigate(); void signOut(); }}
