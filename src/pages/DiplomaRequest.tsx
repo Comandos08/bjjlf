@@ -144,7 +144,7 @@ export function DiplomaRequestPage() {
 
   const checkout = useServerFn(createStripeCheckout);
   const [paying, setPaying] = useState(false);
-  const [savingLead, setSavingLead] = useState(false);
+  
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [leadSavedFor, setLeadSavedFor] = useState<string | null>(null);
 
