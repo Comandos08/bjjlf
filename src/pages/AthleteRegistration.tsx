@@ -78,6 +78,7 @@ export function AthleteRegistration() {
     document: "",
     phone: "",
     belt: "white" as BeltColor,
+    beltDegree: 0,
     academy: "",
     professor: "",
     weight: "",
