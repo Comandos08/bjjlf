@@ -452,6 +452,7 @@ function MobileProfileBlock() {
 
 function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
   const { user, profile, isActive, isLoading, signOut } = useAthleteAuth();
+  const hasAcademyPermit = useHasAcademyPermit();
 
   if (isLoading) return null;
   const showAthlete = !!user && !!profile && isActive;
