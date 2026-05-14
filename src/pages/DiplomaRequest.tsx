@@ -144,7 +144,7 @@ export function DiplomaRequestPage() {
 
   const checkout = useServerFn(createStripeCheckout);
   const [paying, setPaying] = useState(false);
-  const [savingLead, setSavingLead] = useState(false);
+  
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [leadSavedFor, setLeadSavedFor] = useState<string | null>(null);
 
@@ -190,22 +190,13 @@ export function DiplomaRequestPage() {
     return true;
   };
 
-  const openConfirm = async () => {
+  const openConfirm = () => {
     setError(null);
     if (!form.belt || !form.sex || !isValid) {
       setTouched(true);
       return;
     }
-    setSavingLead(true);
-    try {
-      const ok = await persistLead();
-      if (!ok) return;
-      setConfirmOpen(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error saving request.");
-    } finally {
-      setSavingLead(false);
-    }
+    setConfirmOpen(true);
   };
 
   const startCheckout = async () => {
@@ -660,8 +651,8 @@ export function DiplomaRequestPage() {
                 <div>
                   <button
                     type="button"
-                    onClick={() => void openConfirm()}
-                    disabled={paying || savingLead}
+                    onClick={openConfirm}
+                    disabled={paying}
                     style={{
                       width: "100%",
                       padding: "16px 24px",
@@ -674,19 +665,12 @@ export function DiplomaRequestPage() {
                       fontSize: 18,
                       letterSpacing: "0.05em",
                       textTransform: "uppercase",
-                      cursor:
-                        isValid && !paying && !savingLead
-                          ? "pointer"
-                          : "not-allowed",
-                      opacity: paying || savingLead ? 0.6 : 1,
+                      cursor: isValid && !paying ? "pointer" : "not-allowed",
+                      opacity: paying ? 0.6 : 1,
                       transition: "all .15s",
                     }}
                   >
-                    {savingLead
-                      ? locale === "pt"
-                        ? "Salvando pedido…"
-                        : "Saving order…"
-                      : `${locale === "pt" ? "Revisar e pagar" : "Review and pay"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
+                    {`${locale === "pt" ? "Revisar e pagar" : "Review and pay"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
                   </button>
                   <p
                     style={{
