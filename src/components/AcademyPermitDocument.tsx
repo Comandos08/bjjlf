@@ -3,7 +3,7 @@
  * Used at /my-permit/$permitNumber. Hides chrome via @media print.
  */
 import { QRCodeSVG } from "qrcode.react";
-import dragon from "@/assets/dragon-logo.png";
+import dragon from "@/assets/bjjlf-logo.png";
 
 type Props = {
   academyName: string;
