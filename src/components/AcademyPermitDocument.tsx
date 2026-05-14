@@ -4,6 +4,7 @@
  */
 import { QRCodeSVG } from "qrcode.react";
 import dragon from "@/assets/bjjlf-logo.png";
+import seloOficial from "@/assets/selo-oficial-bjjlf.png";
 
 type Props = {
   academyName: string;
@@ -127,25 +128,11 @@ export function AcademyPermitDocument({
       <div className="mt-10 flex items-end justify-between gap-6">
         {/* Seal */}
         <div className="flex flex-col items-center">
-          <div
-            className="w-24 h-24 rounded-full grid place-items-center text-center"
-            style={{
-              background: "radial-gradient(circle, #C8A84B 0%, #8B7011 100%)",
-              border: "3px double #FFFFFF",
-              boxShadow: "0 0 0 2px #C8A84B",
-            }}
-          >
-            <span
-              className="text-white text-[10px] uppercase tracking-wider leading-tight px-2"
-              style={{ fontFamily: "Barlow Condensed", fontWeight: 800 }}
-            >
-              Selo
-              <br />
-              Oficial
-              <br />
-              BJJLF
-            </span>
-          </div>
+          <img
+            src={seloOficial}
+            alt="Selo Oficial BJJLF"
+            className="w-28 h-28 object-contain"
+          />
         </div>
 
         {/* Signature */}
