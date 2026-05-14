@@ -1,9 +1,16 @@
 User-agent: *
+Allow: /
 Disallow: /admin/
 Disallow: /admin
+Disallow: /my-card
+Disallow: /my-permit
+Disallow: /my-permits
+Disallow: /my-profile
+Disallow: /my-competitions
+Disallow: /welcome
+Disallow: /athlete/
+Disallow: /register/
+Disallow: /verify/
+Disallow: /benefits
 
-User-agent: Googlebot
-Disallow: /
-
-User-agent: *
-Crawl-delay: 10
+Sitemap: https://bjjlf.lovable.app/sitemap.xml
