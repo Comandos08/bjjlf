@@ -25,6 +25,8 @@ import { useEvents } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 import { BeltSelector } from "@/components/BeltSelector";
 import { defaultDegreeForBelt, type BeltName } from "@/lib/belts-ibjjf";
+import { useServerFn } from "@tanstack/react-start";
+import { createStripeCheckout } from "@/server/stripe.functions";
 
 const MODALITIES = ["GI", "NO-GI", "GI & NO-GI"];
 const CATEGORIES = [

@@ -65,6 +65,7 @@ import { Route as AdminAcademiesRouteImport } from './routes/admin.academies'
 import { Route as AcademyPermitRouteImport } from './routes/academy.permit'
 import { Route as VerifyAcademyPermitNumberRouteImport } from './routes/verify.academy.$permitNumber'
 import { Route as RegisterEventEventIdRouteImport } from './routes/register.event.$eventId'
+import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
 
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
@@ -347,6 +348,11 @@ const RegisterEventEventIdRoute = RegisterEventEventIdRouteImport.update({
   path: '/register/event/$eventId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
+  id: '/api/public/stripe-webhook',
+  path: '/api/public/stripe-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -403,6 +409,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/events/': typeof EventsIndexRoute
   '/news/': typeof NewsIndexRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/register/event/$eventId': typeof RegisterEventEventIdRoute
   '/verify/academy/$permitNumber': typeof VerifyAcademyPermitNumberRoute
 }
@@ -460,6 +467,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/events': typeof EventsIndexRoute
   '/news': typeof NewsIndexRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/register/event/$eventId': typeof RegisterEventEventIdRoute
   '/verify/academy/$permitNumber': typeof VerifyAcademyPermitNumberRoute
 }
@@ -519,6 +527,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/events/': typeof EventsIndexRoute
   '/news/': typeof NewsIndexRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/register/event/$eventId': typeof RegisterEventEventIdRoute
   '/verify/academy/$permitNumber': typeof VerifyAcademyPermitNumberRoute
 }
@@ -579,6 +588,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/events/'
     | '/news/'
+    | '/api/public/stripe-webhook'
     | '/register/event/$eventId'
     | '/verify/academy/$permitNumber'
   fileRoutesByTo: FileRoutesByTo
@@ -636,6 +646,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/events'
     | '/news'
+    | '/api/public/stripe-webhook'
     | '/register/event/$eventId'
     | '/verify/academy/$permitNumber'
   id:
@@ -694,6 +705,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/events/'
     | '/news/'
+    | '/api/public/stripe-webhook'
     | '/register/event/$eventId'
     | '/verify/academy/$permitNumber'
   fileRoutesById: FileRoutesById
@@ -735,6 +747,7 @@ export interface RootRouteChildren {
   VerifyAthleteIdRoute: typeof VerifyAthleteIdRoute
   EventsIndexRoute: typeof EventsIndexRoute
   NewsIndexRoute: typeof NewsIndexRoute
+  ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
   RegisterEventEventIdRoute: typeof RegisterEventEventIdRoute
   VerifyAcademyPermitNumberRoute: typeof VerifyAcademyPermitNumberRoute
 }
@@ -1133,6 +1146,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterEventEventIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/stripe-webhook': {
+      id: '/api/public/stripe-webhook'
+      path: '/api/public/stripe-webhook'
+      fullPath: '/api/public/stripe-webhook'
+      preLoaderRoute: typeof ApiPublicStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1237,6 +1257,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerifyAthleteIdRoute: VerifyAthleteIdRoute,
   EventsIndexRoute: EventsIndexRoute,
   NewsIndexRoute: NewsIndexRoute,
+  ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
   RegisterEventEventIdRoute: RegisterEventEventIdRoute,
   VerifyAcademyPermitNumberRoute: VerifyAcademyPermitNumberRoute,
 }
