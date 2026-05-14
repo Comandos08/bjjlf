@@ -233,15 +233,53 @@ export function AthleteRegistration() {
                 </div>
                 <CreditCard className="h-8 w-8 text-gold" />
               </div>
-              <Field label={t("reg.card.number")}><TextInput placeholder="1234 5678 9012 3456" /></Field>
-              <div className="grid sm:grid-cols-3 gap-5">
-                <Field label={t("reg.card.expiry")}><TextInput placeholder="MM/YY" /></Field>
-                <Field label={t("reg.card.cvc")}><TextInput placeholder="123" /></Field>
-                <Field label={t("reg.card.zip")}><TextInput placeholder="00000" /></Field>
-              </div>
-              <Field label={t("reg.card.holder")}><TextInput placeholder={t("reg.card.holder.placeholder")} /></Field>
+              {payError && (
+                <div className="border border-red-300 bg-red-50 text-red-700 text-sm p-3">{payError}</div>
+              )}
+              <button
+                onClick={() => void startStripeCheckout()}
+                disabled={paying}
+                className={cn(typo.button.md, "w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white hover:bg-primary-dark transition-base disabled:opacity-60")}
+              >
+                {paying ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" /> Redirecionando...
+                  </>
+                ) : (
+                  <>
+                    <Lock className="h-4 w-4" /> Pagar com Stripe — $ 89.00
+                  </>
+                )}
+              </button>
+              <p className={cn(typo.body.xs, "text-[#6B7280] text-center")}>
+                Pagamento seguro processado pelo Stripe.
+              </p>
             </div>
           )}
+
+          {step === 5 && <MembershipCard data={data} />}
+
+          <div className="flex justify-between mt-10 pt-6 border-t border-[#E5E5E5]">
+            <button
+              onClick={prev}
+              disabled={step === 0}
+              className={cn(typo.button.md, "inline-flex items-center gap-2 px-5 py-2.5 border border-[#E5E5E5] text-[#6B7280] hover:bg-[#F7F9FC] disabled:opacity-30 transition-base")}
+            >
+              <ArrowLeft className="h-3.5 w-3.5" /> {t("reg.back")}
+            </button>
+            {step < 4 ? (
+              <button
+                onClick={next}
+                className={cn(typo.button.md, "inline-flex items-center gap-2 px-6 py-3 bg-primary text-white hover:bg-primary-dark transition-base")}
+              >
+                {t("reg.next")} <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+            ) : step === 5 ? (
+              <button className={cn(typo.button.md, "inline-flex items-center gap-2 px-6 py-3 bg-gold text-[#0F0F0F] hover:bg-gold-light transition-base")}>
+                {t("reg.download")}
+              </button>
+            ) : null}
+          </div>
 
           {step === 5 && <MembershipCard data={data} />}
 
