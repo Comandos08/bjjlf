@@ -11,7 +11,7 @@
  * - Stripe is not wired yet: success view shows "Aguardando Pagamento".
  */
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "@tanstack/react-router";
+import { Link, useParams, useSearch } from "@tanstack/react-router";
 import {
   ArrowLeft,
   CheckCircle2,
