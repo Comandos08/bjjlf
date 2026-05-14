@@ -33,18 +33,22 @@ async function fetchDynamicEntries(): Promise<SitemapEntry[]> {
   const entries: SitemapEntry[] = [];
   try {
     const [events, news, blackBelts] = await Promise.all([
-      supabaseAdmin.from("events").select("id, updated_at").limit(1000),
-      supabaseAdmin.from("news").select("slug, updated_at").eq("published", true).limit(1000),
+      supabaseAdmin.from("events").select("id, created_at").eq("is_active", true).limit(1000),
+      supabaseAdmin
+        .from("news")
+        .select("slug, published_at")
+        .eq("is_published", true)
+        .limit(1000),
       supabaseAdmin
         .from("certified_black_belts")
-        .select("id, updated_at")
+        .select("id, created_at")
         .eq("is_active", true)
         .limit(1000),
     ]);
     for (const e of events.data ?? []) {
       entries.push({
         path: `/events/${e.id}`,
-        lastmod: e.updated_at ?? undefined,
+        lastmod: e.created_at ?? undefined,
         changefreq: "weekly",
         priority: "0.7",
       });
@@ -53,7 +57,7 @@ async function fetchDynamicEntries(): Promise<SitemapEntry[]> {
       if (!n.slug) continue;
       entries.push({
         path: `/news/${n.slug}`,
-        lastmod: n.updated_at ?? undefined,
+        lastmod: n.published_at ?? undefined,
         changefreq: "monthly",
         priority: "0.6",
       });
@@ -61,7 +65,7 @@ async function fetchDynamicEntries(): Promise<SitemapEntry[]> {
     for (const bb of blackBelts.data ?? []) {
       entries.push({
         path: `/black-belts/${bb.id}`,
-        lastmod: bb.updated_at ?? undefined,
+        lastmod: bb.created_at ?? undefined,
         changefreq: "monthly",
         priority: "0.6",
       });
