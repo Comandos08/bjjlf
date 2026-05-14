@@ -3,7 +3,7 @@
  * Used at /my-permit/$permitNumber. Hides chrome via @media print.
  */
 import { QRCodeSVG } from "qrcode.react";
-import dragon from "@/assets/dragon-logo.png";
+import dragon from "@/assets/bjjlf-logo.png";
 
 type Props = {
   academyName: string;
@@ -57,17 +57,8 @@ export function AcademyPermitDocument({
     >
       {/* Header */}
       <div className="text-center pt-2">
-        <div className="flex items-center justify-center gap-3">
-          <img src={dragon} alt="BJJLF" className="h-12 w-12 object-contain" />
-          <span
-            className="text-3xl text-[#C8211A]"
-            style={{
-              fontFamily: "Bebas Neue, Barlow Condensed, sans-serif",
-              letterSpacing: "4px",
-            }}
-          >
-            BJJLF
-          </span>
+        <div className="flex items-center justify-center">
+          <img src={dragon} alt="BJJLF" className="h-20 w-auto object-contain" />
         </div>
         <p
           className="mt-1 text-xs uppercase tracking-[0.3em] text-gray-500"
