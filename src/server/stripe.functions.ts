@@ -23,7 +23,7 @@ export const createStripeCheckout = createServerFn({ method: "POST" })
     if (!key) {
       return { ok: false as const, error: "STRIPE_SECRET_KEY not configured" };
     }
-    const stripe = new Stripe(key, { apiVersion: "2024-06-20" as Stripe.LatestApiVersion });
+    const stripe = new Stripe(key);
 
     const successUrl = `${data.origin}${data.successPath}${data.successPath.includes("?") ? "&" : "?"}session_id={CHECKOUT_SESSION_ID}`;
     const cancelUrl = `${data.origin}${data.cancelPath}`;
