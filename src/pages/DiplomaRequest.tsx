@@ -144,6 +144,7 @@ export function DiplomaRequestPage() {
 
   const checkout = useServerFn(createStripeCheckout);
   const [paying, setPaying] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   // Detect return from Stripe
   useEffect(() => {
@@ -631,7 +632,7 @@ export function DiplomaRequestPage() {
                         setTouched(true);
                         return;
                       }
-                      void startCheckout();
+                      setConfirmOpen(true);
                     }}
                     disabled={paying}
                     style={{
@@ -651,11 +652,7 @@ export function DiplomaRequestPage() {
                       transition: "all .15s",
                     }}
                   >
-                    {paying
-                      ? locale === "pt"
-                        ? "Redirecionando..."
-                        : "Redirecting..."
-                      : `${locale === "pt" ? "Pagar com Stripe" : "Pay with Stripe"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
+                    {`${locale === "pt" ? "Revisar e pagar" : "Review and pay"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
                   </button>
                   <p
                     style={{
@@ -672,6 +669,19 @@ export function DiplomaRequestPage() {
                 </div>
               </div>
             </div>
+
+            {confirmOpen && form.belt && (
+              <ConfirmModal
+                locale={locale}
+                belt={beltLabel}
+                beltSwatch={BELT_SWATCH[form.belt as BeltKey]}
+                currency={form.currency}
+                price={price}
+                paying={paying}
+                onCancel={() => !paying && setConfirmOpen(false)}
+                onConfirm={() => void startCheckout()}
+              />
+            )}
           </>
         )}
       </div>
