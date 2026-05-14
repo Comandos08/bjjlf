@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as TypographyRouteImport } from './routes/typography'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -78,6 +79,11 @@ const TypographyRoute = TypographyRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RulesRoute = RulesRouteImport.update({
@@ -362,6 +368,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/typography': typeof TypographyRoute
   '/welcome': typeof WelcomeRoute
@@ -418,6 +425,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/typography': typeof TypographyRoute
   '/welcome': typeof WelcomeRoute
@@ -476,6 +484,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/rankings': typeof RankingsRoute
   '/rules': typeof RulesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/typography': typeof TypographyRoute
   '/welcome': typeof WelcomeRoute
@@ -535,6 +544,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/rankings'
     | '/rules'
+    | '/sitemap.xml'
     | '/terms'
     | '/typography'
     | '/welcome'
@@ -591,6 +601,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/rankings'
     | '/rules'
+    | '/sitemap.xml'
     | '/terms'
     | '/typography'
     | '/welcome'
@@ -648,6 +659,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/rankings'
     | '/rules'
+    | '/sitemap.xml'
     | '/terms'
     | '/typography'
     | '/welcome'
@@ -706,6 +718,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RankingsRoute: typeof RankingsRoute
   RulesRoute: typeof RulesRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   TypographyRoute: typeof TypographyRoute
   WelcomeRoute: typeof WelcomeRoute
@@ -747,6 +760,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/rules': {
@@ -1200,6 +1220,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RankingsRoute: RankingsRoute,
   RulesRoute: RulesRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   TypographyRoute: TypographyRoute,
   WelcomeRoute: WelcomeRoute,

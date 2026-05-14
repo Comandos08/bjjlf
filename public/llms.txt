@@ -1,0 +1,32 @@
+# BJJLF — Brazilian Jiu-Jitsu Legends Federation
+
+> Federação oficial de Jiu-Jitsu Brasileiro: carteirinha digital, eventos sancionados, ranking global e registro mundial de faixas pretas.
+
+A BJJLF (Brazilian Jiu-Jitsu Legends Federation) é uma federação internacional de Jiu-Jitsu que oferece carteirinha digital de atleta, alvarás de academia, organização de campeonatos, ranking global e o registro mundial de faixas pretas certificadas.
+
+## Pages
+
+- [Início](/): Visão geral da federação, próximos eventos e destaques.
+- [Sobre](/about): História, missão e estrutura da BJJLF.
+- [Academias](/academies): Academias filiadas pelo mundo.
+- [Faixas Pretas](/black-belts): Registro mundial de faixas pretas certificadas pela BJJLF.
+- [Atletas](/athletes): Atletas registrados na federação.
+- [Eventos](/events): Calendário de campeonatos sancionados.
+- [Notícias](/news): Resultados, promoções e anúncios oficiais.
+- [Ranking](/rankings): Ranking global de atletas.
+- [Regras](/rules): Regulamento de competição.
+- [Graduados](/graduates): Histórico de graduações.
+- [Membros](/members): Categorias de filiação.
+- [Contato](/contact): Fale com a federação.
+
+## Services
+
+- [Inscrição de Atleta](/register/athlete): Cadastro de novo atleta.
+- [Registro de Academia](/register/academy): Filiação de academia.
+- [Alvará de Academia](/academy/permit): Solicitação de alvará oficial.
+- [Solicitar Diploma](/diploma-request): Pedido de diploma de graduação.
+
+## Optional
+
+- [Privacidade](/privacy): Política de privacidade.
+- [Termos](/terms): Termos de uso.
