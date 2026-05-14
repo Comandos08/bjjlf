@@ -101,6 +101,8 @@ export function AcademyPermitPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const checkout = useServerFn(createStripeCheckout);
+  const [currency, setCurrency] = useState<PermitCurrency>("BRL");
+  const priceInfo = PERMIT_PRICES[currency];
 
   // Show success view when returning from Stripe ?paid=1
   useEffect(() => {
@@ -248,7 +250,7 @@ export function AcademyPermitPage() {
           degree: p.degree,
           years: p.years,
         })),
-        amount_cents: PERMIT_AMOUNT_CENTS,
+        amount_cents: priceInfo.cents,
         status: "pending_payment" as const,
       };
       const { data: inserted, error: insertErr } = await supabase
@@ -262,8 +264,8 @@ export function AcademyPermitPage() {
         data: {
           kind: "academy_permit",
           recordId: inserted!.id,
-          amountCents: PERMIT_AMOUNT_CENTS,
-          currency: "BRL",
+          amountCents: priceInfo.cents,
+          currency,
           description: `Alvará BJJLF — ${insertRow.academy_name}`,
           customerEmail: insertRow.email || undefined,
           origin: window.location.origin,
