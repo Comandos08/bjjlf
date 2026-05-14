@@ -472,9 +472,11 @@ function MobileAthleteLinks({ onNavigate }: { onNavigate: () => void }) {
       <Link to="/my-competitions" onClick={onNavigate} className={linkClass} style={linkStyle}>
         <Trophy size={16} className="shrink-0" /> <span className="truncate">Minhas Competições</span>
       </Link>
-      <Link to="/my-permits" onClick={onNavigate} className={linkClass} style={linkStyle}>
-        <Building2 size={16} className="shrink-0" /> <span className="truncate">Alvará da Academia</span>
-      </Link>
+      {hasAcademyPermit && (
+        <Link to="/my-permits" onClick={onNavigate} className={linkClass} style={linkStyle}>
+          <Building2 size={16} className="shrink-0" /> <span className="truncate">Alvará da Academia</span>
+        </Link>
+      )}
       <div className="border-t border-[#222] my-1" />
       <button
         onClick={() => { onNavigate(); void signOut(); }}
