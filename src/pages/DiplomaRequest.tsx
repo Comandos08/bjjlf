@@ -1,8 +1,4 @@
 import { useMemo, useState, useRef, useEffect } from "react";
-import {
-  PayPalScriptProvider,
-  PayPalButtons,
-} from "@paypal/react-paypal-js";
 import { useServerFn } from "@tanstack/react-start";
 import { useSearch } from "@tanstack/react-router";
 import { Logo } from "@/components/Logo";
@@ -17,6 +13,7 @@ import {
 } from "@/lib/diploma-pricing";
 import { I18N, LOCALES, type Locale } from "@/lib/diploma-i18n";
 import { submitDiplomaRequest } from "@/server/diploma.functions";
+import { createStripeCheckout } from "@/server/stripe.functions";
 
 type FormState = {
   email: string;
