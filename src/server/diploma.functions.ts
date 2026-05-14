@@ -7,7 +7,7 @@ const schema = z.object({
   lastName: z.string().min(1).max(100),
   email: z.string().email().max(255),
   whatsapp: z.string().min(5).max(40),
-  affiliateCode: z.string().min(1).max(60),
+  affiliateCode: z.string().max(60).optional().default(""),
   affiliateSource: z.enum(["url", "manual"]).optional().default("manual"),
   dob: z.string().min(4).max(20),
   sex: z.enum(["male", "female"]),
