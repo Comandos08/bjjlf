@@ -625,59 +625,52 @@ export function DiplomaRequestPage() {
                     {error}
                   </div>
                 )}
-                <div
-                  style={{
-                    pointerEvents: isValid ? "auto" : "none",
-                    opacity: isValid ? 1 : 0.4,
-                  }}
-                  onMouseDown={() => {
-                    if (!isValid) setTouched(true);
-                  }}
-                >
-                  {PAYPAL_CLIENT_ID ? (
-                    <PayPalScriptProvider
-                      options={{
-                        clientId: PAYPAL_CLIENT_ID,
-                        currency: form.currency,
-                        intent: "capture",
-                      }}
-                      key={form.currency}
-                    >
-                      <PayPalButtons
-                        key={`${form.belt}-${form.currency}`}
-                        disabled={!isValid}
-                        style={{ layout: "vertical", color: "gold", shape: "rect" }}
-                        createOrder={(_data, actions) =>
-                          actions.order.create({
-                            intent: "CAPTURE",
-                            purchase_units: [
-                              {
-                                description: `BJJLF Diploma Certificate — ${beltLabel}`,
-                                amount: {
-                                  currency_code: form.currency,
-                                  value: price.toFixed(2),
-                                },
-                              },
-                            ],
-                          })
-                        }
-                        onApprove={async (_data, actions) => {
-                          const details = await actions.order?.capture();
-                          await handlePaymentApproved(
-                            details?.id || _data.orderID,
-                          );
-                        }}
-                        onError={(err) => {
-                          console.error("PayPal error:", err);
-                          setError("Payment error. Please try again.");
-                        }}
-                      />
-                    </PayPalScriptProvider>
-                  ) : (
-                    <div style={{ color: RED, textAlign: "center" }}>
-                      PayPal not configured.
-                    </div>
-                  )}
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!isValid) {
+                        setTouched(true);
+                        return;
+                      }
+                      void startCheckout();
+                    }}
+                    disabled={paying}
+                    style={{
+                      width: "100%",
+                      padding: "16px 24px",
+                      backgroundColor: isValid ? GOLD : "#444",
+                      color: "#000",
+                      border: "none",
+                      borderRadius: 0,
+                      fontFamily: "Barlow Condensed, sans-serif",
+                      fontWeight: 900,
+                      fontSize: 18,
+                      letterSpacing: "0.05em",
+                      textTransform: "uppercase",
+                      cursor: isValid && !paying ? "pointer" : "not-allowed",
+                      opacity: paying ? 0.6 : 1,
+                      transition: "all .15s",
+                    }}
+                  >
+                    {paying
+                      ? t.locale === "pt"
+                        ? "Redirecionando..."
+                        : "Redirecting..."
+                      : `${t.locale === "pt" ? "Pagar com Stripe" : "Pay with Stripe"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
+                  </button>
+                  <p
+                    style={{
+                      fontSize: 11,
+                      color: "#888",
+                      marginTop: 10,
+                      textAlign: "center",
+                    }}
+                  >
+                    {t.locale === "pt"
+                      ? "Pagamento seguro processado pelo Stripe."
+                      : "Secure payment processed by Stripe."}
+                  </p>
                 </div>
               </div>
             </div>
