@@ -25,6 +25,10 @@ import { Stepper } from "@/components/Stepper";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { BeltSelector } from "@/components/BeltSelector";
 import { formatBeltLine, type BeltName } from "@/lib/belts-ibjjf";
+import { useServerFn } from "@tanstack/react-start";
+import { createStripeCheckout } from "@/server/stripe.functions";
+
+const PERMIT_AMOUNT_CENTS = 30000;
 
 type AddProf = { name: string; belt: string; degree: number; years: string };
 
