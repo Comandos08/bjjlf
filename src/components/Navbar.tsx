@@ -205,6 +205,7 @@ export function Navbar() {
 
 function AthleteMenu() {
   const { user, profile, isActive, isLoading, signOut } = useAthleteAuth();
+  const hasAcademyPermit = useHasAcademyPermit();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [imgError, setImgError] = useState(false);
