@@ -144,7 +144,9 @@ export function DiplomaRequestPage() {
 
   const checkout = useServerFn(createStripeCheckout);
   const [paying, setPaying] = useState(false);
+  const [savingLead, setSavingLead] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [leadSavedFor, setLeadSavedFor] = useState<string | null>(null);
 
   // Detect return from Stripe
   useEffect(() => {
@@ -155,6 +157,57 @@ export function DiplomaRequestPage() {
     }
   }, []);
 
+  // Signature of the persisted order — re-save if belt/currency/price/email changed.
+  const orderSignature = `${form.belt}|${form.currency}|${price}|${form.email.trim().toLowerCase()}`;
+
+  const persistLead = async (): Promise<boolean> => {
+    if (leadSavedFor === orderSignature) return true;
+    const leadRes = await submit({
+      data: {
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        email: form.email.trim(),
+        whatsapp: form.whatsapp.trim(),
+        affiliateCode: form.affiliateCode.trim(),
+        affiliateSource: affiliateLocked ? "url" : "manual",
+        dob: form.dob,
+        sex: form.sex,
+        documentNumber: form.documentNumber.trim(),
+        fatherName: form.fatherName.trim(),
+        motherName: form.motherName.trim(),
+        belt: t.belts[form.belt as BeltKey],
+        martialArt: "Brazilian Jiu-Jitsu",
+        language: locale,
+        currency: form.currency,
+        price,
+      },
+    });
+    if (!leadRes.ok) {
+      setError(leadRes.error || "Error saving request.");
+      return false;
+    }
+    setLeadSavedFor(orderSignature);
+    return true;
+  };
+
+  const openConfirm = async () => {
+    setError(null);
+    if (!form.belt || !form.sex || !isValid) {
+      setTouched(true);
+      return;
+    }
+    setSavingLead(true);
+    try {
+      const ok = await persistLead();
+      if (!ok) return;
+      setConfirmOpen(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error saving request.");
+    } finally {
+      setSavingLead(false);
+    }
+  };
+
   const startCheckout = async () => {
     setError(null);
     if (!form.belt || !form.sex || !isValid) {
@@ -163,34 +216,14 @@ export function DiplomaRequestPage() {
     }
     setPaying(true);
     try {
-      // 1) Persist the lead so partner referral is tracked even if user abandons.
-      const leadRes = await submit({
-        data: {
-          firstName: form.firstName.trim(),
-          lastName: form.lastName.trim(),
-          email: form.email.trim(),
-          whatsapp: form.whatsapp.trim(),
-          affiliateCode: form.affiliateCode.trim(),
-          affiliateSource: affiliateLocked ? "url" : "manual",
-          dob: form.dob,
-          sex: form.sex,
-          documentNumber: form.documentNumber.trim(),
-          fatherName: form.fatherName.trim(),
-          motherName: form.motherName.trim(),
-          belt: t.belts[form.belt as BeltKey],
-          martialArt: "Brazilian Jiu-Jitsu",
-          language: locale,
-          currency: form.currency,
-          price,
-        },
-      });
-      if (!leadRes.ok) {
-        setError(leadRes.error || "Error saving request.");
+      // Ensure the lead is persisted (no-op if already saved for this order).
+      const ok = await persistLead();
+      if (!ok) {
         setPaying(false);
         return;
       }
 
-      // 2) Create Stripe Checkout session and redirect.
+      // Create Stripe Checkout session and redirect.
       const res = await checkout({
         data: {
           kind: "diploma",
@@ -627,14 +660,8 @@ export function DiplomaRequestPage() {
                 <div>
                   <button
                     type="button"
-                    onClick={() => {
-                      if (!isValid) {
-                        setTouched(true);
-                        return;
-                      }
-                      setConfirmOpen(true);
-                    }}
-                    disabled={paying}
+                    onClick={() => void openConfirm()}
+                    disabled={paying || savingLead}
                     style={{
                       width: "100%",
                       padding: "16px 24px",
@@ -647,12 +674,19 @@ export function DiplomaRequestPage() {
                       fontSize: 18,
                       letterSpacing: "0.05em",
                       textTransform: "uppercase",
-                      cursor: isValid && !paying ? "pointer" : "not-allowed",
-                      opacity: paying ? 0.6 : 1,
+                      cursor:
+                        isValid && !paying && !savingLead
+                          ? "pointer"
+                          : "not-allowed",
+                      opacity: paying || savingLead ? 0.6 : 1,
                       transition: "all .15s",
                     }}
                   >
-                    {`${locale === "pt" ? "Revisar e pagar" : "Review and pay"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
+                    {savingLead
+                      ? locale === "pt"
+                        ? "Salvando pedido…"
+                        : "Saving order…"
+                      : `${locale === "pt" ? "Revisar e pagar" : "Review and pay"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
                   </button>
                   <p
                     style={{
