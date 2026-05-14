@@ -209,19 +209,32 @@ export function EventRegistrationPage() {
         status: "pending_payment",
       };
 
-      const { error: insertError } = await supabase
+      const { data: inserted, error: insertError } = await supabase
         .from("event_registrations")
-        .insert(insertRow);
+        .insert(insertRow)
+        .select("id")
+        .single();
 
       if (insertError) throw insertError;
 
-      setSuccess({
-        full_name: insertRow.full_name,
-        category: form.category,
-        weight_class: form.weight_class,
-        modality: form.modality,
-        amount_cents: amountCents,
+      const res = await checkout({
+        data: {
+          kind: "event_registration",
+          recordId: inserted!.id,
+          amountCents,
+          currency: "BRL",
+          description: `${event.name} — ${form.category} ${form.modality} ${form.weight_class}`,
+          customerEmail: insertRow.email || undefined,
+          origin: window.location.origin,
+          successPath: `/register/event/${eventId}?paid=1`,
+          cancelPath: `/register/event/${eventId}?canceled=1`,
+        },
       });
+
+      if (!res.ok || !res.url) {
+        throw new Error(res.ok ? "Stripe URL ausente" : res.error);
+      }
+      window.location.href = res.url;
     } catch (err) {
       const msg =
         err instanceof Error ? err.message : "Falha ao enviar a inscrição.";
