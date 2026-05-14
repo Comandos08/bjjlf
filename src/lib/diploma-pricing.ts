@@ -92,7 +92,7 @@ export const ALL_BELTS: BeltKey[] = [
   "black4",
   "black5",
   "black6",
-  "black7",
+  
   "vermelha_e_preta7",
   "vermelha_e_branca8",
   "red9",
