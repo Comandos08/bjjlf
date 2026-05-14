@@ -33,7 +33,6 @@ type FormState = {
 const REQUIRED_KEYS: (keyof FormState)[] = [
   "email",
   "whatsapp",
-  "affiliateCode",
   "firstName",
   "lastName",
   "dob",
