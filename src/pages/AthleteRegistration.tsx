@@ -143,29 +143,53 @@ export function AthleteRegistration() {
             <div className="space-y-6">
               <FormSectionTitle>{t("reg.sport.title")}</FormSectionTitle>
 
-              <div>
-                <FieldLabel>{t("reg.belt.current")}</FieldLabel>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {BELTS.map((b) => {
-                    const selected = data.belt === b.value;
-                    return (
-                      <button
-                        key={b.value}
-                        type="button"
-                        onClick={() => set("belt", b.value)}
-                        className={cn(typo.button.md, "px-4 py-2 transition-base")}
-                        style={{
-                          background: b.hex,
-                          color: b.text,
-                          border: "1px solid " + (b.value === "white" ? "#E5E5E5" : b.hex),
-                          boxShadow: selected ? "0 0 0 3px #B8960C" : "none",
-                          transform: selected ? "scale(1.05)" : "scale(1)",
-                        }}
-                      >
-                        {b.label}
-                      </button>
-                    );
-                  })}
+              <div className="grid sm:grid-cols-[1fr_140px] gap-4">
+                <div>
+                  <FieldLabel>{t("reg.belt.current")}</FieldLabel>
+                  <div className="relative mt-2">
+                    <span
+                      aria-hidden
+                      className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 border border-[#E5E5E5] pointer-events-none"
+                      style={{ background: BELTS.find((b) => b.value === data.belt)?.hex ?? "#000" }}
+                    />
+                    <select
+                      value={data.belt}
+                      onChange={(e) => {
+                        set("belt", e.target.value as BeltColor);
+                        set("beltDegree", 0);
+                      }}
+                      className={cn(
+                        typo.body.md,
+                        "w-full pl-11 pr-3 py-2.5 bg-white border border-[#E5E5E5] text-[#0F0F0F] outline-none focus:border-[#B8960C] transition-base appearance-none",
+                      )}
+                    >
+                      {BELTS.map((b) => (
+                        <option key={b.value} value={b.value}>
+                          {b.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <FieldLabel>{t("reg.belt.degree") ?? "Grau"}</FieldLabel>
+                  <select
+                    value={data.beltDegree}
+                    onChange={(e) => set("beltDegree", Number(e.target.value))}
+                    className={cn(
+                      typo.body.md,
+                      "mt-2 w-full px-3 py-2.5 bg-white border border-[#E5E5E5] text-[#0F0F0F] outline-none focus:border-[#B8960C] transition-base appearance-none",
+                    )}
+                  >
+                    {Array.from(
+                      { length: data.belt === "black" ? 7 : 5 },
+                      (_, i) => i,
+                    ).map((d) => (
+                      <option key={d} value={d}>
+                        {d === 0 ? "Sem grau" : `${d}º grau`}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
