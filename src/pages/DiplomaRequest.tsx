@@ -57,9 +57,7 @@ const initial: FormState = {
   currency: "EUR",
 };
 
-const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID as
-  | string
-  | undefined;
+// PayPal removed — payments now via Stripe.
 
 const GOLD = "#B8960C";
 const RED = "#C41E3A";
