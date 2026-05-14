@@ -654,10 +654,10 @@ export function DiplomaRequestPage() {
                     }}
                   >
                     {paying
-                      ? t.locale === "pt"
+                      ? locale === "pt"
                         ? "Redirecionando..."
                         : "Redirecting..."
-                      : `${t.locale === "pt" ? "Pagar com Stripe" : "Pay with Stripe"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
+                      : `${locale === "pt" ? "Pagar com Stripe" : "Pay with Stripe"} — ${CURRENCY_SYMBOL[form.currency]} ${price.toFixed(2)}`}
                   </button>
                   <p
                     style={{
@@ -667,7 +667,7 @@ export function DiplomaRequestPage() {
                       textAlign: "center",
                     }}
                   >
-                    {t.locale === "pt"
+                    {locale === "pt"
                       ? "Pagamento seguro processado pelo Stripe."
                       : "Secure payment processed by Stripe."}
                   </p>
