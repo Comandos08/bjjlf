@@ -243,14 +243,31 @@ export function AcademyPermitPage() {
           degree: p.degree,
           years: p.years,
         })),
-        amount_cents: 0,
-        status: "pending" as const,
+        amount_cents: PERMIT_AMOUNT_CENTS,
+        status: "pending_payment" as const,
       };
-      const { error: insertErr } = await supabase
+      const { data: inserted, error: insertErr } = await supabase
         .from("academy_permits")
-        .insert(insertRow);
+        .insert(insertRow)
+        .select("id")
+        .single();
       if (insertErr) throw insertErr;
-      setSuccess(true);
+
+      const res = await checkout({
+        data: {
+          kind: "academy_permit",
+          recordId: inserted!.id,
+          amountCents: PERMIT_AMOUNT_CENTS,
+          currency: "BRL",
+          description: `Alvará BJJLF — ${insertRow.academy_name}`,
+          customerEmail: insertRow.email || undefined,
+          origin: window.location.origin,
+          successPath: `/academy/permit?paid=1`,
+          cancelPath: `/academy/permit?canceled=1`,
+        },
+      });
+      if (!res.ok || !res.url) throw new Error(res.ok ? "Stripe URL ausente" : res.error);
+      window.location.href = res.url;
     } catch (err) {
       setError(err instanceof Error ? err.message : t("academyPermit.error.generic"));
     } finally {
