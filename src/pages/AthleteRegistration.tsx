@@ -23,6 +23,44 @@ export function AthleteRegistration() {
   ];
 
   const [step, setStep] = useState(0);
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
+  const checkout = useServerFn(createStripeCheckout);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("paid") === "1") setStep(5);
+  }, []);
+
+  const startStripeCheckout = async () => {
+    setPayError(null);
+    setPaying(true);
+    try {
+      const res = await checkout({
+        data: {
+          kind: "event_registration", // reused billing kind; no internal record yet
+          amountCents: ATHLETE_AMOUNT_CENTS,
+          currency: "USD",
+          description: `BJJLF Annual Membership — ${data.fullName || data.email || "Athlete"}`,
+          customerEmail: data.email || undefined,
+          origin: window.location.origin,
+          successPath: `/register/athlete?paid=1`,
+          cancelPath: `/register/athlete?canceled=1`,
+          metadata: {
+            purpose: "athlete_membership",
+            email: data.email,
+            full_name: data.fullName,
+          },
+        },
+      });
+      if (!res.ok || !res.url) throw new Error(res.ok ? "Stripe URL ausente" : res.error);
+      window.location.href = res.url;
+    } catch (err) {
+      setPayError(err instanceof Error ? err.message : "Payment error");
+      setPaying(false);
+    }
+  };
+
   const [data, setData] = useState({
     email: "",
     password: "",
