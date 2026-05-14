@@ -155,8 +155,14 @@ export function AthleteRegistration() {
                     <select
                       value={data.belt}
                       onChange={(e) => {
-                        set("belt", e.target.value as BeltColor);
-                        set("beltDegree", 0);
+                        const v = e.target.value as BeltColor;
+                        set("belt", v);
+                        const fixed: Partial<Record<BeltColor, number>> = {
+                          red_black: 7,
+                          red_white: 8,
+                          red: 9,
+                        };
+                        set("beltDegree", fixed[v] ?? 0);
                       }}
                       className={cn(
                         typo.body.md,
@@ -173,23 +179,37 @@ export function AthleteRegistration() {
                 </div>
                 <div>
                   <FieldLabel>{t("reg.belt.degree") ?? "Grau"}</FieldLabel>
-                  <select
-                    value={data.beltDegree}
-                    onChange={(e) => set("beltDegree", Number(e.target.value))}
-                    className={cn(
-                      typo.body.md,
-                      "mt-2 w-full px-3 py-2.5 bg-white border border-[#E5E5E5] text-[#0F0F0F] outline-none focus:border-[#B8960C] transition-base appearance-none",
-                    )}
-                  >
-                    {Array.from(
-                      { length: data.belt === "black" ? 7 : 5 },
-                      (_, i) => i,
-                    ).map((d) => (
-                      <option key={d} value={d}>
-                        {d === 0 ? "Sem grau" : `${d}º grau`}
-                      </option>
-                    ))}
-                  </select>
+                  {(() => {
+                    const degreeOptions: number[] =
+                      data.belt === "red_black"
+                        ? [7]
+                        : data.belt === "red_white"
+                          ? [8]
+                          : data.belt === "red"
+                            ? [9]
+                            : data.belt === "black"
+                              ? [0, 1, 2, 3, 4, 5, 6]
+                              : [0, 1, 2, 3, 4];
+                    const locked = degreeOptions.length === 1;
+                    return (
+                      <select
+                        value={data.beltDegree}
+                        disabled={locked}
+                        onChange={(e) => set("beltDegree", Number(e.target.value))}
+                        className={cn(
+                          typo.body.md,
+                          "mt-2 w-full px-3 py-2.5 bg-white border border-[#E5E5E5] text-[#0F0F0F] outline-none focus:border-[#B8960C] transition-base appearance-none",
+                          locked && "opacity-70 cursor-not-allowed",
+                        )}
+                      >
+                        {degreeOptions.map((d) => (
+                          <option key={d} value={d}>
+                            {d === 0 ? "Sem grau" : `${d}º grau`}
+                          </option>
+                        ))}
+                      </select>
+                    );
+                  })()}
                 </div>
               </div>
 
