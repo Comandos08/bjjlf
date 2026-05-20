@@ -7,7 +7,7 @@ import dragon from "@/assets/dragon-logo.png";
 import { typo } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import { useServerFn } from "@tanstack/react-start";
-import { createStripeCheckout } from "@/server/stripe.functions";
+import { createStripeCheckout } from "@/rpc/stripe.functions";
 
 type AthleteCurrency = "BRL" | "EUR" | "USD";
 const ATHLETE_PRICES: Record<AthleteCurrency, { cents: number; label: string }> = {

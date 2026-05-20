@@ -26,7 +26,7 @@ import { ImageUploader } from "@/components/admin/ImageUploader";
 import { BeltSelector } from "@/components/BeltSelector";
 import { formatBeltLine, type BeltName } from "@/lib/belts-ibjjf";
 import { useServerFn } from "@tanstack/react-start";
-import { createStripeCheckout } from "@/server/stripe.functions";
+import { createStripeCheckout } from "@/rpc/stripe.functions";
 
 type PermitCurrency = "BRL" | "EUR" | "USD";
 const PERMIT_PRICES: Record<PermitCurrency, { cents: number; label: string }> = {
