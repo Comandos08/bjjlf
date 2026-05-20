@@ -355,6 +355,7 @@ function formatBeltLabel(belt?: string | null): string {
     vermelha_e_preta: "Vermelha e Preta",
     red_white: "Vermelha e Branca",
     vermelha_e_branca: "Vermelha e Branca",
+    "vermelha e branca": "Vermelha e Branca",
     red: "Vermelha",
     vermelha: "Vermelha",
     brown: "Marrom",

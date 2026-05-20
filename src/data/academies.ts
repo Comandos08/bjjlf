@@ -22,7 +22,9 @@ export type Academy = {
   /** Flag emoji rendered inline next to the country. */
   flag: string;
   /** Belt rank of the head professor. Visible on the card. */
-  belt: "Preta" | "Vermelha e Preta";
+  belt: "Preta" | "Vermelha e Preta" | "Vermelha e Branca";
+  /** Full address (street, number, complement). Optional — shown when available. */
+  address?: string;
   /** Degree on the belt (e.g. 4 for Preta 4° grau). */
   degree: number;
   /** Display string for "affiliated since" (e.g. "Jan 2020"). Used for label
@@ -39,6 +41,21 @@ export type Academy = {
 };
 
 export const ACADEMIES: Academy[] = [
+  {
+    slug: "escola-malibu-gracie-jiu-jitsu",
+    name: "Escola Malibu Gracie Jiu-Jitsu",
+    professor: "Mestre Sergio Malibu",
+    address: "Av. das Américas 297, sala 308/309 - Barra da Tijuca",
+    city: "Rio de Janeiro",
+    state: "RJ",
+    country: "Brasil",
+    flag: "🇧🇷",
+    belt: "Vermelha e Branca",
+    degree: 8,
+    since: "Mai 2026",
+    sinceTimestamp: Date.UTC(2026, 4, 1),
+    initials: "EM",
+  },
   {
     slug: "alliance-sao-paulo",
     name: "Alliance São Paulo",
