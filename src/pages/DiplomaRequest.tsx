@@ -12,8 +12,8 @@ import {
   type Currency,
 } from "@/lib/diploma-pricing";
 import { I18N, LOCALES, type Locale } from "@/lib/diploma-i18n";
-import { submitDiplomaRequest } from "@/server/diploma.functions";
-import { createStripeCheckout } from "@/server/stripe.functions";
+import { submitDiplomaRequest } from "@/rpc/diploma.functions";
+import { createStripeCheckout } from "@/rpc/stripe.functions";
 
 type FormState = {
   email: string;
