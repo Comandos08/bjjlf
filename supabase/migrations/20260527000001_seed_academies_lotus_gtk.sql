@@ -31,7 +31,32 @@ INSERT INTO public.academy_permits (
   0
 );
 
--- 2. Rio Jiu-Jitsu Old School (Brasil)
+-- 2. Tier One Grappling School (Brasil)
+INSERT INTO public.academy_permits (
+  academy_name,
+  responsible_name,
+  email,
+  city,
+  state,
+  country,
+  country_code,
+  country_flag,
+  status,
+  amount_cents
+) VALUES (
+  'Tier One Grappling School',
+  'Luiz Felipe Villar',
+  'luizfelipevillar@gmail.com',
+  'Rio de Janeiro',
+  'RJ',
+  'Brasil',
+  'BR',
+  '🇧🇷',
+  'active',
+  0
+);
+
+-- 3. Rio Jiu-Jitsu Old School (Brasil)
 -- NOTA: confirmar e-mail e telefone com a academia antes de aplicar
 INSERT INTO public.academy_permits (
   academy_name,
