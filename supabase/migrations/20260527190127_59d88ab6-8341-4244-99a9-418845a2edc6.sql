@@ -1,0 +1,1 @@
+UPDATE public.academy_permits SET academy_logo_url = 'https://wyktqcyxvxtaqteypluc.supabase.co/storage/v1/object/public/site-images/academies/gtk-palm-bay.jpg' WHERE id = 'a758c9b3-4e02-46bb-8ba4-9b95306f2ce9';
