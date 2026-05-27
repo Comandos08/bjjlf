@@ -1,0 +1,1 @@
+UPDATE public.academy_permits SET academy_logo_url = 'https://wyktqcyxvxtaqteypluc.supabase.co/storage/v1/object/public/site-images/academies/rio-jiu-jitsu-old-school.jpg' WHERE id = '51c5cef4-ae3b-40eb-8070-6a461a57228e';
