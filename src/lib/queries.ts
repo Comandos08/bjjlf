@@ -143,7 +143,7 @@ export function useAcademies() {
       // Reads approved academy permits exposed via the public view.
       const { data, error } = await supabase
         .from("affiliated_academies_view")
-        .select("id, name, logo_url, city, state, country, country_flag, professor, athlete_id, approved_at")
+        .select("id, name, logo_url, city, state, country, country_flag, professor, athlete_id, approved_at, belt, belt_degree")
         .order("approved_at", { ascending: false, nullsFirst: false });
 
       if (error) {
@@ -184,8 +184,8 @@ export function useAcademies() {
           state: row.state ?? "—",
           country: row.country ?? "—",
           flag: row.country_flag ?? "🏳️",
-          belt: ((beltInfo?.belt as Academy["belt"]) ?? "Preta"),
-          degree: beltInfo?.degree ?? 0,
+          belt: ((beltInfo?.belt ?? row.belt ?? "Preta") as Academy["belt"]),
+          degree: beltInfo?.degree ?? row.belt_degree ?? 0,
           since: row.approved_at ? row.approved_at.slice(0, 7) : "",
           sinceTimestamp: Number.isFinite(ts) ? ts : 0,
           initials,
