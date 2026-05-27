@@ -31,7 +31,37 @@ INSERT INTO public.academy_permits (
   0
 );
 
--- 2. GTK Academy of Martial Arts (EUA)
+-- 2. Rio Jiu-Jitsu Old School (Brasil)
+-- NOTA: confirmar e-mail e telefone com a academia antes de aplicar
+INSERT INTO public.academy_permits (
+  academy_name,
+  responsible_name,
+  email,
+  address,
+  city,
+  state,
+  country,
+  country_code,
+  country_flag,
+  notes,
+  status,
+  amount_cents
+) VALUES (
+  'Rio Jiu-Jitsu Old School',
+  'José Roberto Camargo',
+  'contato@riojjoldschool.com.br',    -- PLACEHOLDER: confirmar e-mail
+  'Av. Marechal Henrique Lott 120, Sala 204, Barra da Tijuca',
+  'Rio de Janeiro',
+  'RJ',
+  'Brasil',
+  'BR',
+  '🇧🇷',
+  '2ª unidade: Estrada dos Bandeirantes 22.774, Vargem Grande – Faixa Preta 6º Grau',
+  'active',
+  0
+);
+
+-- 3. GTK Academy of Martial Arts (EUA)
 -- NOTA: confirmar e-mail com a academia antes de aplicar
 INSERT INTO public.academy_permits (
   academy_name,
