@@ -936,6 +936,8 @@ export type Database = {
         Row: {
           approved_at: string | null
           athlete_id: string | null
+          belt: string | null
+          belt_degree: number | null
           city: string | null
           country: string | null
           country_code: string | null
@@ -954,6 +956,8 @@ export type Database = {
         Insert: {
           approved_at?: string | null
           athlete_id?: string | null
+          belt?: string | null
+          belt_degree?: number | null
           city?: string | null
           country?: string | null
           country_code?: string | null
@@ -972,6 +976,8 @@ export type Database = {
         Update: {
           approved_at?: string | null
           athlete_id?: string | null
+          belt?: string | null
+          belt_degree?: number | null
           city?: string | null
           country?: string | null
           country_code?: string | null
