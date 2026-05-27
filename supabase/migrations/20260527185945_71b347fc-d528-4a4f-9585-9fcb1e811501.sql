@@ -1,0 +1,1 @@
+UPDATE public.academy_permits SET academy_logo_url = 'https://wyktqcyxvxtaqteypluc.supabase.co/storage/v1/object/public/site-images/academies/lotus-club-milano.jpg' WHERE id = '7952881b-dbb7-46fc-bfb4-77e11b206df6';
