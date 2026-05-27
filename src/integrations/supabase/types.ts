@@ -1061,6 +1061,8 @@ export type Database = {
           alert_7_sent: boolean
           amount_cents: number
           athlete_id: string | null
+          belt: string | null
+          belt_degree: number | null
           city: string
           country: string
           country_code: string | null
