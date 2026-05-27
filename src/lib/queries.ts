@@ -1,22 +1,11 @@
 /**
  * TanStack Query hooks for Supabase-backed public content.
- *
- * Each hook returns Supabase data when available and falls back to the
- * hardcoded seed data on error or empty result. This keeps the site rendering
- * even if the backend is temporarily unreachable, and lets us iterate on the
- * admin panel without breaking visitors.
- *
- * The shape returned by each hook matches the existing hardcoded type used
- * by the consumer page, so call-site code is unchanged.
  */
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { RANKINGS, type Event, type EventTypeBadge, type Ranked } from "@/data/events";
 import { type NewsItem } from "@/data/news";
 import { type Academy } from "@/data/academies";
-// All assets under src/assets/ are auto-discovered and cache-busted in dev
-// via the central registry. DB rows that store "/src/assets/<file>" paths
-// are rewritten to the bundled URL on the fly.
 import { resolveAsset } from "@/lib/asset-registry";
 import { bustStorageUrl } from "@/lib/bust-storage-url";
 
@@ -30,8 +19,6 @@ const FALLBACK_NEWS_IMG =
 function resolveAssetUrl(raw: string | null | undefined): string | null {
   return resolveAsset(raw);
 }
-
-
 
 /** Coerce arbitrary DB strings to a known badge value (defaults to GI). */
 function normalizeBadge(s: string | null | undefined): EventTypeBadge {
@@ -106,7 +93,6 @@ export function useNews() {
       if (!data) return [];
 
       return data.map<NewsItem>((row) => {
-        // Map free-form DB category onto our literal union; default to Federation.
         const cat = (row.category ?? "").toLowerCase();
         const category: NewsItem["category"] =
           cat === "tournaments" ? "Tournaments"
@@ -140,10 +126,9 @@ export function useAcademies() {
   return useQuery<Academy[]>({
     queryKey: ["academies"],
     queryFn: async () => {
-      // Reads approved academy permits exposed via the public view.
       const { data, error } = await supabase
         .from("affiliated_academies_view")
-        .select("id, name, logo_url, city, state, country, country_flag, professor, athlete_id, approved_at")
+        .select("id, name, logo_url, city, state, country, country_flag, professor, athlete_id, approved_at, belt, belt_degree")
         .order("approved_at", { ascending: false, nullsFirst: false });
 
       if (error) {
@@ -152,7 +137,6 @@ export function useAcademies() {
       }
       if (!data) return [];
 
-      // Optional enrichment: pull belt/degree from the linked athlete profile.
       const athleteIds = Array.from(
         new Set(data.map((r) => r.athlete_id).filter((x): x is string => !!x)),
       );
@@ -169,11 +153,7 @@ export function useAcademies() {
         const ts = row.approved_at ? Date.parse(row.approved_at) : 0;
         const name = row.name ?? "Academia";
         const initials =
-          name
-            .split(/\s+/)
-            .slice(0, 2)
-            .map((w) => w[0]?.toUpperCase() ?? "")
-            .join("") || "AC";
+          name.split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? "").join("") || "AC";
         const beltInfo = row.athlete_id ? beltMap.get(row.athlete_id) : undefined;
         const slug = (row.id ?? name).toString().toLowerCase().replace(/[^a-z0-9]+/g, "-");
         return {
@@ -184,146 +164,14 @@ export function useAcademies() {
           state: row.state ?? "—",
           country: row.country ?? "—",
           flag: row.country_flag ?? "🏳️",
-          belt: ((beltInfo?.belt as Academy["belt"]) ?? "Preta"),
-          degree: beltInfo?.degree ?? 0,
+          belt: ((beltInfo?.belt ?? row.belt ?? "Preta") as Academy["belt"]),
+          degree: beltInfo?.degree ?? row.belt_degree ?? 0,
           since: row.approved_at ? row.approved_at.slice(0, 7) : "",
           sinceTimestamp: Number.isFinite(ts) ? ts : 0,
           initials,
           logoUrl: bustStorageUrl(row.logo_url, row.approved_at) ?? row.logo_url ?? null,
         };
       });
-    },
-  });
-}
-
-/* ---------- rankings ---------- */
-
-export function useRankings() {
-  return useQuery<Record<string, Ranked[]>>({
-    queryKey: ["rankings"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("rankings")
-        .select("*")
-        .eq("is_active", true)
-        .order("position", { ascending: true, nullsFirst: false });
-
-      if (error) {
-        console.error("[useRankings] Supabase error:", error);
-        return {};
-      }
-      if (!data) return {};
-
-      // Group rows into the existing { "male-gi": [...], ... } shape.
-      const out: Record<string, Ranked[]> = {};
-      for (const row of data) {
-        const key = `${row.gender}-${row.modality}`.toLowerCase();
-        (out[key] ??= []).push({
-          rank: row.position ?? out[key].length + 1,
-          athlete: row.athlete_name,
-          country: row.country_code,
-          academy: row.academy ?? "",
-          points: row.points,
-        });
-      }
-      // Fill any missing keys from fallback so partially-populated DBs don't show empty panels.
-      if (data.length > 0) {
-        for (const k of Object.keys(RANKINGS)) {
-          if (!out[k]) out[k] = RANKINGS[k];
-        }
-      }
-      return out;
-    },
-  });
-}
-
-/* ---------- hero slides ---------- */
-
-export type HeroSlide = {
-  image: string;
-  thumb: string;
-  titlePt: string;
-  titleEn: string;
-  subPt: string;
-  subEn: string;
-  badge: string;
-  tagPt: string | null;
-  tagEn: string | null;
-  badge1: string | null;
-  badge2: string | null;
-  ctaPrimaryUrl: string | null;
-  ctaSecondaryUrl: string | null;
-};
-
-export function useHeroSlides() {
-  return useQuery<HeroSlide[]>({
-    queryKey: ["hero"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("hero_slides")
-        .select("*")
-        .eq("is_active", true)
-        .order("display_order", { ascending: true });
-
-      if (error || !data || data.length === 0) return [];
-
-      return data.map<HeroSlide>((row) => {
-        const resolved = bustStorageUrl(resolveAssetUrl(row.image_url) ?? row.image_url, row.created_at) ?? row.image_url;
-        return {
-          image: resolved,
-          thumb: resolved,
-          titlePt: row.title_pt,
-          titleEn: row.title_en,
-          subPt: row.subtitle_pt ?? "",
-          subEn: row.subtitle_en ?? "",
-          badge: row.badge1_label ?? row.tag_en ?? row.title_en,
-          tagPt: row.tag_pt ?? null,
-          tagEn: row.tag_en ?? null,
-          badge1: row.badge1_label ?? null,
-          badge2: row.badge2_label ?? null,
-          ctaPrimaryUrl: row.cta_primary_url ?? null,
-          ctaSecondaryUrl: row.cta_secondary_url ?? null,
-        };
-      });
-    },
-  });
-}
-
-/* ---------- youtube videos ---------- */
-
-export type YouTubeVideo = {
-  id: string;
-  titleEn: string;
-  titlePt: string;
-  image: string;
-  url: string;
-  youtubeId: string;
-  displayOrder: number;
-  createdAt: string;
-};
-
-export function useYouTubeVideos() {
-  return useQuery<YouTubeVideo[]>({
-    queryKey: ["youtube_videos"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("youtube_videos")
-        .select("*")
-        .eq("is_active", true)
-        .order("display_order", { ascending: true });
-
-      if (error || !data || data.length === 0) return [];
-
-      return data.map<YouTubeVideo>((row) => ({
-        id: row.id,
-        titleEn: row.title_en,
-        titlePt: row.title_pt,
-        image: row.thumbnail_url ?? `https://img.youtube.com/vi/${row.youtube_id}/hqdefault.jpg`,
-        url: row.youtube_url,
-        youtubeId: row.youtube_id,
-        displayOrder: row.display_order,
-        createdAt: row.created_at,
-      }));
     },
   });
 }
