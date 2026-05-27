@@ -373,12 +373,20 @@ function formatBeltLabel(belt?: string | null): string {
 function AcademyCard({ academy: a }: { academy: Academy }) {
   const { t } = useI18n();
 
-  const beltColor =
-    a.belt?.toLowerCase().includes("preta") || a.belt?.toLowerCase().includes("black")
-      ? { bg: "#1a1a1a", color: "#FFFFFF" }
-      : a.belt?.toLowerCase().includes("vermelha")
-        ? { bg: "#C8211A", color: "#FFFFFF" }
-        : { bg: "#F3F4F6", color: "#111827" };
+  const beltBg =
+    a.belt === "Vermelha e Preta"
+      ? "linear-gradient(90deg, #C8211A 50%, #1A1A1A 50%)"
+      : a.belt === "Vermelha e Branca"
+        ? "linear-gradient(90deg, #C8211A 50%, #FFFFFF 50%)"
+        : a.belt?.toLowerCase().includes("preta") || a.belt?.toLowerCase().includes("black")
+          ? "#1A1A1A"
+          : a.belt?.toLowerCase().includes("vermelha")
+            ? "#C8211A"
+            : "#F3F4F6";
+  const beltColor = {
+    bg: beltBg,
+    color: a.belt === "Vermelha e Branca" ? "#C8211A" : "#FFFFFF",
+  };
 
   return (
     <article className="group bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-base overflow-hidden flex flex-col">
