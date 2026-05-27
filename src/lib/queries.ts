@@ -175,3 +175,127 @@ export function useAcademies() {
     },
   });
 }
+
+/* ---------- hero slides ---------- */
+
+export type HeroSlideData = {
+  image: string;
+  thumb: string;
+  titleEn: string;
+  titlePt: string;
+  subEn: string;
+  subPt: string;
+  badge: string;
+  tagEn: string | null;
+  tagPt: string | null;
+  badge1: string | null;
+  badge2: string | null;
+  ctaPrimaryUrl: string | null;
+  ctaSecondaryUrl: string | null;
+};
+
+export function useHeroSlides() {
+  return useQuery<HeroSlideData[]>({
+    queryKey: ["hero_slides"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("hero_slides")
+        .select("*")
+        .eq("is_active", true)
+        .order("display_order", { ascending: true });
+      if (error) {
+        console.error("[useHeroSlides] Supabase error:", error);
+        return [];
+      }
+      if (!data) return [];
+      return data.map<HeroSlideData>((row) => {
+        const img = bustStorageUrl(resolveAssetUrl(row.image_url), row.created_at) ?? row.image_url;
+        return {
+          image: img,
+          thumb: img,
+          titleEn: row.title_en,
+          titlePt: row.title_pt,
+          subEn: row.subtitle_en ?? "",
+          subPt: row.subtitle_pt ?? "",
+          badge: row.title_en,
+          tagEn: row.tag_en,
+          tagPt: row.tag_pt,
+          badge1: row.badge1_label,
+          badge2: row.badge2_label,
+          ctaPrimaryUrl: row.cta_primary_url,
+          ctaSecondaryUrl: row.cta_secondary_url,
+        };
+      });
+    },
+  });
+}
+
+/* ---------- rankings ---------- */
+
+export function useRankings() {
+  return useQuery<Record<string, Ranked[]>>({
+    queryKey: ["rankings"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("rankings")
+        .select("*")
+        .eq("is_active", true)
+        .order("position", { ascending: true, nullsFirst: false });
+      if (error || !data || data.length === 0) {
+        if (error) console.error("[useRankings] Supabase error:", error);
+        return RANKINGS;
+      }
+      const out: Record<string, Ranked[]> = {};
+      for (const row of data) {
+        const modality = (row.modality ?? "").toLowerCase().includes("no") ? "nogi" : "gi";
+        const gender = (row.gender ?? "").toLowerCase().startsWith("f") ? "female" : "male";
+        const key = `${gender}-${modality}`;
+        (out[key] ??= []).push({
+          rank: row.position ?? 0,
+          athlete: row.athlete_name,
+          country: row.country_code,
+          academy: row.academy ?? "—",
+          points: row.points,
+        });
+      }
+      return Object.keys(out).length > 0 ? out : RANKINGS;
+    },
+  });
+}
+
+/* ---------- youtube videos ---------- */
+
+export type YouTubeVideoData = {
+  youtubeId: string;
+  titleEn: string;
+  titlePt: string;
+  image: string;
+  displayOrder: number;
+  createdAt: string;
+};
+
+export function useYouTubeVideos() {
+  return useQuery<YouTubeVideoData[]>({
+    queryKey: ["youtube_videos"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("youtube_videos")
+        .select("*")
+        .eq("is_active", true)
+        .order("display_order", { ascending: true });
+      if (error) {
+        console.error("[useYouTubeVideos] Supabase error:", error);
+        return [];
+      }
+      if (!data) return [];
+      return data.map<YouTubeVideoData>((row) => ({
+        youtubeId: row.youtube_id,
+        titleEn: row.title_en,
+        titlePt: row.title_pt,
+        image: row.thumbnail_url ?? `https://img.youtube.com/vi/${row.youtube_id}/hqdefault.jpg`,
+        displayOrder: row.display_order,
+        createdAt: row.created_at,
+      }));
+    },
+  });
+}
