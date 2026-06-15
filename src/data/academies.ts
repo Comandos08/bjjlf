@@ -224,6 +224,48 @@ export const ACADEMIES: Academy[] = [
     sinceTimestamp: Date.UTC(2022, 6, 1),
     initials: "ZB",
   },
+  {
+    slug: "equipe-paiakan-fight",
+    name: "Equipe Paiakan Fight",
+    professor: "Anderson Francisco de Assis",
+    city: "Belo Horizonte",
+    state: "MG",
+    country: "Brasil",
+    flag: "🇧🇷",
+    belt: "Preta",
+    degree: 1,
+    since: "Mai 2026",
+    sinceTimestamp: Date.UTC(2026, 4, 1),
+    initials: "EP",
+  },
+  {
+    slug: "iam-instituto-de-artes-marciales",
+    name: "IAM, Instituto de Artes Marciales",
+    professor: "Davi Cavalcante",
+    city: "Madrid",
+    state: "—",
+    country: "Espanha",
+    flag: "🇪🇸",
+    belt: "Preta",
+    degree: 5,
+    since: "Mai 2026",
+    sinceTimestamp: Date.UTC(2026, 4, 1),
+    initials: "IA",
+  },
+  {
+    slug: "gracie-concepts-zurich",
+    name: "Gracie Concepts",
+    professor: "Franco Vacirca",
+    city: "Zürich",
+    state: "—",
+    country: "Suíça",
+    flag: "🇨🇭",
+    belt: "Vermelha e Preta",
+    degree: 7,
+    since: "Mai 2026",
+    sinceTimestamp: Date.UTC(2026, 4, 1),
+    initials: "GC",
+  },
 ];
 
 /** Canonical country list for the filter dropdown. Matches the seed data. */
@@ -234,6 +276,8 @@ export const ACADEMY_COUNTRIES: ReadonlyArray<string> = [
   "Argentina",
   "Reino Unido",
   "Japão",
+  "Espanha",
+  "Suíça",
 ];
 
 /** Brazilian states shown in the dropdown when country === "Brasil". Spec list. */
